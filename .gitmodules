@@ -4,3 +4,6 @@
 [submodule "UIAutomation"]
 	path = UIAutomation
 	url = git@github.com:Descolada/UIAutomation.git
+[submodule "JSON"]
+	path = JSON
+	url = git@github.com:cocobelgica/AutoHotkey-JSON.git
