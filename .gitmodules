@@ -1,3 +1,6 @@
 [submodule "Yunit"]
 	path = Yunit
 	url = git@github.com:Uberi/Yunit.git
+[submodule "UIAutomation"]
+	path = UIAutomation
+	url = git@github.com:Descolada/UIAutomation.git
