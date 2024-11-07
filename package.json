@@ -1,0 +1,12 @@
+{
+  "name": "rda-ahk",
+  "version": "1.0.0",
+  "description": "RDA Automation libraries in AutoHotkey",
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "dist": "echo TODO",
+    "docs": "powershell.exe -noprofile -executionpolicy bypass -file .\\docs.ps1",
+    "test": "cd test && AutoHotkeyU32.exe /ErrorStdOut \"dev.ahk\""
+  }
+}
