@@ -100,14 +100,14 @@ RDA_Array_Join(arr, separator := ",") {
 
 /*!
   Function: RDA_IsArray
-    Try to guess if the argument is an array.
+    Try to guess if the argument is a dense array.
 
   Remarks:
       ======= AutoHotKey =======
         RDA_IsArray({}) ; True - An empty Object it's an array.
         RDA_IsArray({1:1, 2:2, 3:3}) ; True - Looks like an array!
         RDA_IsArray({1:1, 2:2, 3:3, x: 0}) ; False
-        RDA_IsArray({1:1, 2:2, 4:3}) ; False
+        RDA_IsArray({1:1, 2:2, 4:3}) ; False, not dense
         x := {}
         x.push(1)
         RDA_IsArray(x) ; True
@@ -147,42 +147,61 @@ RDA_OnExit(ExitReason, ExitCode) {
   RDA_Log.write("ExitCode = " . ExitCode)
   RDA_Log.close()
 }
+/*!
+  Function: RDA_Log_Error
+    Log an error (level 1)
 
-RDA_Log_Error(text) {
+  Parameters:
+    input - any - input
+*/
+RDA_Log_Error(input) {
   local
   global RDA_Log
 
   FormatTime, d, A_Now, yyyy/MM/dd HH:mm:ss
 
-  RDA_Log.write(d . " [ERR]" . (IsObject(text) ? RDA_JSON_stringify(text, 0, 2) : text) . "`n")
+  RDA_Log.write(d . " [ERR]" . (IsObject(input) ? RDA_JSON_stringify(input, 0, 2) : input) . "`n")
   RDA_Log.read(0)
 }
-RDA_Log_Info(text) {
+/*!
+  Function: RDA_Log_Info
+    Log an info (level 2)
+
+  Parameters:
+    input - any - input
+*/
+RDA_Log_Info(input) {
   local
   global RDA_Log, RDA_Log_Level
   if (RDA_Log_Level > 1) {
     FormatTime, d, A_Now, yyyy/MM/dd HH:mm:ss
 
-    RDA_Log.write(d . " [INF]" . (IsObject(text) ? RDA_JSON_stringify(text, 0, 2) : text) . "`n")
+    RDA_Log.write(d . " [INF]" . (IsObject(input) ? RDA_JSON_stringify(input, 0, 2) : input) . "`n")
     RDA_Log.read(0)
   }
 }
+/*!
+  Function: RDA_Log_Debug
+    Log an debug (level 3)
 
-RDA_Log_Debug(text) {
+  Parameters:
+    input - any - input
+*/
+RDA_Log_Debug(input) {
   local
   global RDA_Log, RDA_Log_Level
 
   if (RDA_Log_Level > 2) {
     FormatTime, d, A_Now, yyyy/MM/dd HH:mm:ss
 
-    RDA_Log.write(d . " [DBG]" . (IsObject(text) ? RDA_JSON_stringify(text, 0, 2) : text) . "`n")
+    RDA_Log.write(d . " [DBG]" . (IsObject(input) ? RDA_JSON_stringify(input, 0, 2) : input) . "`n")
     RDA_Log.read(0)
   }
 }
 
 /*!
   Function: RDA_Exception
-    Generates an exception
+    Generates an exception and log the stack trace.
 
   Parameters:
     message - string - Exception message
@@ -208,7 +227,7 @@ RDA_Exception(message, trace_offset := 0, What := "") {
 
 /*!
   Function: RDA_Assert
-    Asserts (throw RDA_Exception) if given expression is true
+    Asserts (throw RDA_Exception) if given expression is false
 
   Parameters:
     expr - any - value
@@ -218,7 +237,7 @@ RDA_Exception(message, trace_offset := 0, What := "") {
     given message
 */
 RDA_Assert(expr, message) {
-  if (expr) {
+  if (!expr) {
     throw RDA_Exception(message)
   }
 }
@@ -935,7 +954,7 @@ RDA_PixelWaitDisappearColor(color, x, y, timeout, delay) {
 */
 RDA_PixelSearchColor(automation, color, x, y, w, h, variation := "") {
   local ox, oy, x2 := x + w, y2:= y + h, p
-  RDA_Assert(!automation, A_ThisFunc . " automation is null")
+  RDA_Assert(automation, A_ThisFunc . " automation is null")
 
   RDA_Log_Debug(A_ThisFunc . "(color = " color . ", (" . x . ", "  . y . "), (" . w . ", "  . h . "), "  . variation . ")")
 
@@ -1613,9 +1632,13 @@ _RDA_xPath_Parse(tokens) {
 
   Remarks:
     It a reduced version. It supports
+
     * descendant search: //
+
     * children search: /
+
     * type (tagName) search
+
     * atribute search with and/or expressions.
 
   Parameters:
@@ -1629,6 +1652,8 @@ _RDA_xPath_Parse(tokens) {
     x := RDA_xPath_Parse("//List/Label")
     ; Returns all nodes with type document or edit
     x := RDA_xPath_Parse("//*[@type = 'Document' or @type = 'Edit']")
+    ; Returns Labels under a list
+    x := RDA_xPath_Parse("//List/Label")
     ==========================
 
   Returns:

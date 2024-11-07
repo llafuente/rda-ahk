@@ -3,8 +3,6 @@
     Automation configuration and entry point.
 */
 class RDA_Automation extends RDA_Base {
-  ;static __Call := TooFewArguments(RDA_Automation)
-
   /*!
     static: TIMEOUT
       Default timeout, in miliseconds
@@ -113,18 +111,18 @@ class RDA_Automation extends RDA_Base {
   }
 
   ; internal
-  _jab := 0
+  _JAB := 0
   /*!
     Property: JAB
       <RDA_AutomationJAB> - Java acess bridge (lazy initialization)
   */
   JAB [] {
     get {
-      if (!this._jab) {
+      if (!this._JAB) {
         RDA_Log_Info("Initialize JAB")
-        this._jab := new RDA_AutomationJAB(this)
+        this._JAB := new RDA_AutomationJAB(this)
       }
-      return this._jab
+      return this._JAB
     }
   }
 
@@ -159,7 +157,7 @@ class RDA_Automation extends RDA_Base {
     }
 
     this._UIA := 0
-    this._jab := 0
+    this._JAB := 0
   }
   /*!
     Method: toString

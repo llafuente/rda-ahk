@@ -54,8 +54,8 @@ class RDA_AutomationWindow extends RDA_Base {
 
     this.hwnd := hwnd
 
-    RDA_Assert(!this.automation, A_ThisFunc . " automation is null")
-    RDA_Assert(!this.hwnd, A_ThisFunc . " hwnd is null")
+    RDA_Assert(this.automation, A_ThisFunc . " automation is null")
+    RDA_Assert(this.hwnd, A_ThisFunc . " hwnd is null")
 
     WinGetTitle title, ahk_id %hwnd%
     this.title := title
@@ -408,7 +408,7 @@ class RDA_AutomationWindow extends RDA_Base {
     RDA_Log_Debug(A_ThisFunc . "(text = " . text . ") " . this.automation.toString())
 
     this.activate()
-    this.automation.keyboard().type(text)
+    this.automation.keyboard().type(text, this.hwnd)
 
     return this
   }
@@ -426,7 +426,7 @@ class RDA_AutomationWindow extends RDA_Base {
     RDA_Log_Debug(A_ThisFunc . "(password.length = " . StrLen(password) . ") " . this.automation.toString())
 
     this.activate()
-    this.automation.keyboard().typePassword(password)
+    this.automation.keyboard().typePassword(password, this.hwnd)
 
     return this
   }
@@ -444,7 +444,7 @@ class RDA_AutomationWindow extends RDA_Base {
     RDA_Log_Debug(A_ThisFunc . "(keys = " . keys . ") " . this.automation.toString())
 
     this.activate()
-    this.automation.keyboard().sendKeys(keys)
+    this.automation.keyboard().sendKeys(keys, this.hwnd)
 
     return this
   }
@@ -462,7 +462,7 @@ class RDA_AutomationWindow extends RDA_Base {
     RDA_Log_Debug(A_ThisFunc . "(password.length = " . StrLen(password) . ") " . this.automation.toString())
 
     this.activate()
-    this.automation.keyboard().sendPassword(password)
+    this.automation.keyboard().sendPassword(password, this.hwnd)
 
 
     return this
@@ -701,6 +701,7 @@ class RDA_AutomationWindow extends RDA_Base {
   }
   /*!
     Method: searchColor
+      Searches a region of the screen for a pixel of the specified color.
 
     Parameters:
       color - number - RGB color
@@ -781,7 +782,7 @@ class RDA_AutomationWindow extends RDA_Base {
 
   /*!
     Method: setOpaque
-      Enables windows transparency
+      Disable windows transparency
 
     Returns:
       <RDA_AutomationWindow>
@@ -793,7 +794,7 @@ class RDA_AutomationWindow extends RDA_Base {
   }
   /*!
     Method: setTransparent
-      Hides the window.
+      Enables windows transparency
 
     Returns:
       <RDA_AutomationWindow>
@@ -859,6 +860,14 @@ class RDA_AutomationWindow extends RDA_Base {
     Method: asUIAElement
       Retrieves current windows as RDA_AutomationUIAElement
 
+    Example:
+      ======= AutoHotKey =======
+      automation := new RDA_Automation()
+      windows := automation.windows()
+      win := windows.waitOne({process: "notepad.exe"})
+      element := win.asUIAElement()
+      ==========================
+
     Throws:
       Not found
 
@@ -871,8 +880,16 @@ class RDA_AutomationWindow extends RDA_Base {
     return new RDA_AutomationUIAElement(this.automation, this.automation.UIA.elementFromHandle(this.hwnd))
   }
   /*!
-    Method: asUIAElement
+    Method: asJABElement
       Retrieves current windows as RDA_AutomationJABElement
+
+    Example:
+      ======= AutoHotKey =======
+      automation := new RDA_Automation()
+      windows := automation.windows()
+      win := windows.waitOne({process: "java.exe"})
+      element := win.asJABElement()
+      ==========================
 
     Throws:
       Not found

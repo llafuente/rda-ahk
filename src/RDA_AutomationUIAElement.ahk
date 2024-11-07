@@ -1,5 +1,8 @@
 /*!
   class: RDA_AutomationUIAElement
+    Automate applications using Microsoft UI Automation
+
+  Extends: RDA_AutomationBaseElement
 */
 class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
   automation := 0
@@ -13,8 +16,8 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
   cachedDescription := 0
 
   __New(automation, uiaHandle) {
-    RDA_Assert(!automation, A_ThisFunc . " automation is null")
-    RDA_Assert(!uiaHandle, A_ThisFunc . " uiaHandle is null")
+    RDA_Assert(automation, A_ThisFunc . " automation is null")
+    RDA_Assert(uiaHandle, A_ThisFunc . " uiaHandle is null")
 
     this.uiaHandle := uiaHandle
     this.automation := automation
@@ -1002,7 +1005,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
     RDA_Log_Debug(A_ThisFunc . "(" . funcName . ")")
 
     fn := Func(funcName)
-    RDA_Assert(funcName.MinParams == 1, A_ThisFunc " given callback shall have one parameter")
+    ; RDA_Assert(funcName.MinParams == 1, A_ThisFunc " given callback shall have one parameter")
 
     handler := UIA_CreateEventHandler(funcName, "FocusChanged")
     this.automation.UIA.AddFocusChangedEventHandler(handler)

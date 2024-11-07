@@ -10,8 +10,10 @@ API / info / usage
 */
 
 /*!
-  class RDA_AutomationJAB
+  class: RDA_AutomationJABElement
     Automation configuration for java access bridge.
+
+  Extends: RDA_AutomationBaseElement
 */
 class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   ; static __Call := TooFewArguments(RDA_AutomationJABElement)
@@ -59,12 +61,12 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     this.vmId := vmId
     this.acId := acId
 
-    RDA_Assert(!this.jab, "invalid argument jab is empty")
-    RDA_Assert(!this.win, "invalid argument win is empty")
-    RDA_Assert(!this.win.hwnd, "invalid argument win.hwnd is empty")
-    RDA_Assert(!this.vmId, "invalid argument vmId is empty")
-    RDA_Assert(!this.acId, "invalid argument acId is empty")
-    RDA_Assert(!this.automation, "invalid argument jab is empty")
+    RDA_Assert(this.jab, "invalid argument jab is empty")
+    RDA_Assert(this.win, "invalid argument win is empty")
+    RDA_Assert(this.win.hwnd, "invalid argument win.hwnd is empty")
+    RDA_Assert(this.vmId, "invalid argument vmId is empty")
+    RDA_Assert(this.acId, "invalid argument acId is empty")
+    RDA_Assert(this.automation, "invalid argument jab is empty")
 
   }
   __Delete() {

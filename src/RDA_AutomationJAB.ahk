@@ -93,7 +93,7 @@ class RDA_AutomationJAB extends RDA_Base {
   */
   __New(automation) {
     this.automation := automation
-    RDA_Assert(!this.automation, "invalid argument automation is empty")
+    RDA_Assert(this.automation, "invalid argument automation is empty")
   }
   /*!
     Method: init
@@ -151,8 +151,8 @@ class RDA_AutomationJAB extends RDA_Base {
       }
     }
 
-    RDA_Assert(!this.dllName, "dllName not set")
-    RDA_Assert(!this.library, "Could not load WindowsAccessBridge dll")
+    RDA_Assert(this.dllName, "dllName not set")
+    RDA_Assert(this.library, "Could not load WindowsAccessBridge dll")
 
     ; initializeAccessBridge
     initialised := DllCall(this.dllName . "\Windows_run", "Cdecl Int")
@@ -161,7 +161,7 @@ class RDA_AutomationJAB extends RDA_Base {
     Sleep, 250
 
     RDA_Log_Debug(A_ThisFunc . " JABInitialised? = " . initialised . " @ " . this.dllName)
-    RDA_Assert(!initialised, "Could not load initialised WindowsAccessBridge dll")
+    RDA_Assert(initialised, "Could not load initialised WindowsAccessBridge dll")
   }
 
   __Delete() {

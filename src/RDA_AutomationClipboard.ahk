@@ -8,7 +8,7 @@ class RDA_AutomationClipboard extends RDA_Base {
   automation := 0
 
   __New(automation) {
-    RDA_Assert(!automation, A_ThisFunc . " automation is null")
+    RDA_Assert(automation, A_ThisFunc . " automation is null")
     this.automation := automation
   }
   /*!

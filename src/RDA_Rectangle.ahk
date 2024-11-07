@@ -10,7 +10,7 @@ class RDA_Rectangle extends RDA_Base {
   h := 0
 
   __New(automation, w, h) {
-    RDA_Assert(!automation, A_ThisFunc . " automation is null")
+    RDA_Assert(automation, A_ThisFunc . " automation is null")
     this.automation := automation
     this.w := w
     this.h := h

@@ -23,6 +23,7 @@ FileAppend, Test start!`n, *
 #include ..\src\RDA_AutomationJABElement.ahk
 #include ..\src\RDA_AutomationKeyboard.ahk
 #include ..\src\RDA_AutomationMouse.ahk
+#include ..\src\RDA_AutomationUIA.ahk
 #include ..\src\RDA_AutomationUIAElement.ahk
 #include ..\src\RDA_AutomationWindow.ahk
 #include ..\src\RDA_AutomationWindows.ahk
@@ -46,19 +47,18 @@ FileAppend, Test start!`n, *
 #SingleInstance
 #Warn All, StdOut ; Enable every type of warning, and displayed in a MsgBox
 
-;msgbox %A_ScriptDir%
-;Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Automation)
-;Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Region)
-;Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_AutomationWindows)
-;Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Keyboard)
-;Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Mouse)
-;Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Pixel)
-;Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Clipboard)
-;Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Image)
-;Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_UIA)
-;Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_XPath)
+Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Automation)
+Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Region)
+Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_AutomationWindows)
+Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Keyboard)
+Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Mouse)
+Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Pixel)
+Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Clipboard)
+Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Image)
+Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_UIA)
+Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_XPath)
 Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_JAB)
 
 ExitApp 0
 
-; F5::ExitApp
+F12::ExitApp

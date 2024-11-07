@@ -94,22 +94,40 @@ body {
  <div class="CBody"><p>Creates and returns a new string by concatenating all of the elements in an array separated by commas or a specified separator string</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">arr</td><td class="CDLDefinition"><p>object[] - array</p></td></tr><tr><td class="CDLEntry">separator</td><td class="CDLDefinition"><p>string - separator</p></td></tr></table><div class="CHeading">Returns</div><p>string</p></div>
 </div>
 
-<a name="RDA_IsArray"></a><a name="Topic249"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_IsArray"></a><a name="Topic35"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">RDA_IsArray</div>
- <div id="NDPrototype249" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">RDA_IsArray(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">anything</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Try to guess if the argument is an array.</p><div class="CHeading">Remarks</div><pre class="CCode">RDA_IsArray({}) <span class="SHComment">; True - An empty Object it's an array.</span><br />RDA_IsArray({<span class="SHNumber">1</span>:<span class="SHNumber">1</span>, <span class="SHNumber">2</span>:<span class="SHNumber">2</span>, <span class="SHNumber">3</span>:<span class="SHNumber">3</span>}) <span class="SHComment">; True - Looks like an array!</span><br />RDA_IsArray({<span class="SHNumber">1</span>:<span class="SHNumber">1</span>, <span class="SHNumber">2</span>:<span class="SHNumber">2</span>, <span class="SHNumber">3</span>:<span class="SHNumber">3</span>, x: <span class="SHNumber">0</span>}) <span class="SHComment">; False</span><br />RDA_IsArray({<span class="SHNumber">1</span>:<span class="SHNumber">1</span>, <span class="SHNumber">2</span>:<span class="SHNumber">2</span>, <span class="SHNumber">4</span>:<span class="SHNumber">3</span>}) <span class="SHComment">; False</span><br />x := {}<br />x.push(<span class="SHNumber">1</span>)<br />RDA_IsArray(x) <span class="SHComment">; True</span></pre><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">anything</td><td class="CDLDefinition"><p>any - anything you want to test</p></td></tr></table><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">boolean</td><td class="CDLDefinition"><p>is array?</p></td></tr></table></div>
+ <div id="NDPrototype35" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">RDA_IsArray(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">anything</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
+ <div class="CBody"><p>Try to guess if the argument is a dense array.</p><div class="CHeading">Remarks</div><pre class="CCode">RDA_IsArray({}) <span class="SHComment">; True - An empty Object it's an array.</span><br />RDA_IsArray({<span class="SHNumber">1</span>:<span class="SHNumber">1</span>, <span class="SHNumber">2</span>:<span class="SHNumber">2</span>, <span class="SHNumber">3</span>:<span class="SHNumber">3</span>}) <span class="SHComment">; True - Looks like an array!</span><br />RDA_IsArray({<span class="SHNumber">1</span>:<span class="SHNumber">1</span>, <span class="SHNumber">2</span>:<span class="SHNumber">2</span>, <span class="SHNumber">3</span>:<span class="SHNumber">3</span>, x: <span class="SHNumber">0</span>}) <span class="SHComment">; False</span><br />RDA_IsArray({<span class="SHNumber">1</span>:<span class="SHNumber">1</span>, <span class="SHNumber">2</span>:<span class="SHNumber">2</span>, <span class="SHNumber">4</span>:<span class="SHNumber">3</span>}) <span class="SHComment">; False, not dense</span><br />x := {}<br />x.push(<span class="SHNumber">1</span>)<br />RDA_IsArray(x) <span class="SHComment">; True</span></pre><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">anything</td><td class="CDLDefinition"><p>any - anything you want to test</p></td></tr></table><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">boolean</td><td class="CDLDefinition"><p>is array?</p></td></tr></table></div>
 </div>
 
-<a name="RDA_Exception"></a><a name="Topic250"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_Log_Error"></a><a name="Topic36"></a><div class="CTopic TFunction LAutoHotKey">
+ <div class="CTitle">RDA_Log_Error</div>
+ <div id="NDPrototype36" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">RDA_Log_Error(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">input</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
+ <div class="CBody"><p>Log an error (level 1)</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">input</td><td class="CDLDefinition"><p>any - input</p></td></tr></table></div>
+</div>
+
+<a name="RDA_Log_Info"></a><a name="Topic37"></a><div class="CTopic TFunction LAutoHotKey">
+ <div class="CTitle">RDA_Log_Info</div>
+ <div id="NDPrototype37" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">RDA_Log_Info(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">input</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
+ <div class="CBody"><p>Log an info (level 2)</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">input</td><td class="CDLDefinition"><p>any - input</p></td></tr></table></div>
+</div>
+
+<a name="RDA_Log_Debug"></a><a name="Topic38"></a><div class="CTopic TFunction LAutoHotKey">
+ <div class="CTitle">RDA_Log_Debug</div>
+ <div id="NDPrototype38" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">RDA_Log_Debug(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">input</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
+ <div class="CBody"><p>Log an debug (level 3)</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">input</td><td class="CDLDefinition"><p>any - input</p></td></tr></table></div>
+</div>
+
+<a name="RDA_Exception"></a><a name="Topic204"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">RDA_Exception</div>
- <div id="NDPrototype250" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/4/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/4/2">RDA_Exception(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">message,</div><div class="PName InFirstParameterColumn" data-WideGridArea="2/2/3/3" data-NarrowGridArea="3/1/4/2" style="grid-area:2/2/3/3">trace_offset</div><div class="PDefaultValueSeparator" data-WideGridArea="2/3/3/4" data-NarrowGridArea="3/2/4/3" style="grid-area:2/3/3/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="2/4/3/5" data-NarrowGridArea="3/3/4/4" style="grid-area:2/4/3/5"><span class="SHNumber">0</span>,</div><div class="PName InFirstParameterColumn" data-WideGridArea="3/2/4/3" data-NarrowGridArea="4/1/5/2" style="grid-area:3/2/4/3">What</div><div class="PDefaultValueSeparator" data-WideGridArea="3/3/4/4" data-NarrowGridArea="4/2/5/3" style="grid-area:3/3/4/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="3/4/4/5" data-NarrowGridArea="4/3/5/4" style="grid-area:3/4/4/5"><span class="SHString">&quot;&quot;</span></div><div class="PAfterParameters" data-WideGridArea="3/5/4/6" data-NarrowGridArea="5/1/6/5" style="grid-area:3/5/4/6">)</div></div></div></div>
- <div class="CBody"><p>Generates an exception</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">message</td><td class="CDLDefinition"><p>string - Exception message</p></td></tr><tr><td class="CDLEntry">trace_offset</td><td class="CDLDefinition"><p>number - Trace offset</p></td></tr><tr><td class="CDLEntry">What</td><td class="CDLDefinition"><p>any - User data</p></td></tr></table></div>
+ <div id="NDPrototype204" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/4/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/4/2">RDA_Exception(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">message,</div><div class="PName InFirstParameterColumn" data-WideGridArea="2/2/3/3" data-NarrowGridArea="3/1/4/2" style="grid-area:2/2/3/3">trace_offset</div><div class="PDefaultValueSeparator" data-WideGridArea="2/3/3/4" data-NarrowGridArea="3/2/4/3" style="grid-area:2/3/3/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="2/4/3/5" data-NarrowGridArea="3/3/4/4" style="grid-area:2/4/3/5"><span class="SHNumber">0</span>,</div><div class="PName InFirstParameterColumn" data-WideGridArea="3/2/4/3" data-NarrowGridArea="4/1/5/2" style="grid-area:3/2/4/3">What</div><div class="PDefaultValueSeparator" data-WideGridArea="3/3/4/4" data-NarrowGridArea="4/2/5/3" style="grid-area:3/3/4/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="3/4/4/5" data-NarrowGridArea="4/3/5/4" style="grid-area:3/4/4/5"><span class="SHString">&quot;&quot;</span></div><div class="PAfterParameters" data-WideGridArea="3/5/4/6" data-NarrowGridArea="5/1/6/5" style="grid-area:3/5/4/6">)</div></div></div></div>
+ <div class="CBody"><p>Generates an exception and log the stack trace.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">message</td><td class="CDLDefinition"><p>string - Exception message</p></td></tr><tr><td class="CDLEntry">trace_offset</td><td class="CDLDefinition"><p>number - Trace offset</p></td></tr><tr><td class="CDLEntry">What</td><td class="CDLDefinition"><p>any - User data</p></td></tr></table></div>
 </div>
 
-<a name="RDA_Assert"></a><a name="Topic251"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_Assert"></a><a name="Topic205"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">RDA_Assert</div>
- <div id="NDPrototype251" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/3/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/3/2">RDA_Assert(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">expr,</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="2/2/3/3" data-NarrowGridArea="3/1/4/2" style="grid-area:2/2/3/3">message</div><div class="PAfterParameters" data-WideGridArea="2/3/3/4" data-NarrowGridArea="4/1/5/3" style="grid-area:2/3/3/4">)</div></div></div></div>
- <div class="CBody"><p>Asserts (throw RDA_Exception) if given expression is true</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">expr</td><td class="CDLDefinition"><p>any - value</p></td></tr><tr><td class="CDLEntry">message</td><td class="CDLDefinition"><p>string - Exception message</p></td></tr></table><div class="CHeading">Throws</div><p>given message</p></div>
+ <div id="NDPrototype205" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/3/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/3/2">RDA_Assert(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">expr,</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="2/2/3/3" data-NarrowGridArea="3/1/4/2" style="grid-area:2/2/3/3">message</div><div class="PAfterParameters" data-WideGridArea="2/3/3/4" data-NarrowGridArea="4/1/5/3" style="grid-area:2/3/3/4">)</div></div></div></div>
+ <div class="CBody"><p>Asserts (throw RDA_Exception) if given expression is false</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">expr</td><td class="CDLDefinition"><p>any - value</p></td></tr><tr><td class="CDLEntry">message</td><td class="CDLDefinition"><p>string - Exception message</p></td></tr></table><div class="CHeading">Throws</div><p>given message</p></div>
 </div>
 
 <a name="RDA_RepeatWhileThrows"></a><a name="Topic252"></a><div class="CTopic TFunction LAutoHotKey">
@@ -309,10 +327,10 @@ body {
  <div class="CBody"><p>TODO</p></div>
 </div>
 
-<a name="RDA_xPathAction.RDA_xPath_Parse"></a><a name="Topic285"></a><div class="CTopic TFunction LAutoHotKey last">
+<a name="RDA_xPathAction.RDA_xPath_Parse"></a><a name="Topic121"></a><div class="CTopic TFunction LAutoHotKey last">
  <div class="CTitle">RDA_xPath_Parse</div>
- <div id="NDPrototype285" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">RDA_xPath_Parse(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">xpath</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Parses given xpath.</p><div class="CHeading">Remarks</div><p>It a reduced version. It supports * descendant search: // * children search: / * type (tagName) search * atribute search with and/or expressions.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">xpath</td><td class="CDLDefinition"><p>string - xpath like string</p></td></tr></table><div class="CHeading">Example</div><pre class="CCode"><span class="SHComment">; Returns all List with name xxx</span><br />x := RDA_xPath_Parse(<span class="SHString">&quot;//List[@name = 'xxx']&quot;</span>)<br /><span class="SHComment">; search all list and returns label children</span><br />x := RDA_xPath_Parse(<span class="SHString">&quot;//List/Label&quot;</span>)<br /><span class="SHComment">; Returns all nodes with type document or edit</span><br />x := RDA_xPath_Parse(<span class="SHString">&quot;//*[@type = 'Document' or @type = 'Edit']&quot;</span>)</pre><div class="CHeading">Returns</div><p>RDA_xPathAction[]</p></div>
+ <div id="NDPrototype121" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">RDA_xPath_Parse(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">xpath</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
+ <div class="CBody"><p>Parses given xpath.</p><div class="CHeading">Remarks</div><p>It a reduced version. It supports</p><ul><li><p>descendant search: //</p></li><li><p>children search: /</p></li><li><p>type (tagName) search</p></li><li><p>atribute search with and/or expressions.</p></li></ul><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">xpath</td><td class="CDLDefinition"><p>string - xpath like string</p></td></tr></table><div class="CHeading">Example</div><pre class="CCode"><span class="SHComment">; Returns all List with name xxx</span><br />x := RDA_xPath_Parse(<span class="SHString">&quot;//List[@name = 'xxx']&quot;</span>)<br /><span class="SHComment">; search all list and returns label children</span><br />x := RDA_xPath_Parse(<span class="SHString">&quot;//List/Label&quot;</span>)<br /><span class="SHComment">; Returns all nodes with type document or edit</span><br />x := RDA_xPath_Parse(<span class="SHString">&quot;//*[@type = 'Document' or @type = 'Edit']&quot;</span>)<br /><span class="SHComment">; Returns Labels under a list</span><br />x := RDA_xPath_Parse(<span class="SHString">&quot;//List/Label&quot;</span>)</pre><div class="CHeading">Returns</div><p>RDA_xPathAction[]</p></div>
 </div>
 
 </div><div class="page-break"></div>
@@ -362,7 +380,7 @@ body {
 
 <a name="RDA_Automation.UIA"></a><a name="Topic294"></a><div class="CTopic TProperty LAutoHotKey">
  <div class="CTitle">UIA</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">&lt;RDA_AutomationUIA&gt;</td><td class="CDLDefinition"><p>Microsoft UI Automation (lazy initialization)</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a href="#RDA_AutomationUIA" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,200);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIA</a></td><td class="CDLDefinition"><p>Microsoft UI Automation (lazy initialization)</p></td></tr></table></div>
 </div>
 
 <a name="RDA_Automation.JAB"></a><a name="Topic295"></a><div class="CTopic TProperty LAutoHotKey">
@@ -470,22 +488,22 @@ body {
  <div class="CBody"><p>Checks if current element implements given pattern</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">pattern</td><td class="CDLDefinition"><p>string - pattern</p></td></tr></table><div class="CHeading">Returns</div><p>bool</p></div>
 </div>
 
-<a name="RDA_AutomationBaseElement.find"></a><a name="Topic194"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationBaseElement.find"></a><a name="Topic207"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">find</div>
- <div id="NDPrototype194" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">find(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">query</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Retrieves all elements that match given query</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">query</td><td class="CDLDefinition"><p>string - xpath-ish</p></td></tr></table><div class="CHeading">Throws</div><p>Not found</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div id="NDPrototype207" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">find(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">query</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
+ <div class="CBody"><p>Retrieves all elements that match given query</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">query</td><td class="CDLDefinition"><p>string - xpath-ish</p></td></tr></table><div class="CHeading">Example</div><pre class="CCode"><span class="SHComment">; Returns all List with name xxx</span><br />elements := element.find(<span class="SHString">&quot;//List[@name = 'xxx']&quot;</span>)<br /><span class="SHComment">; search all list and returns label children</span><br />elements := element.find(<span class="SHString">&quot;//List/Label&quot;</span>)<br /><span class="SHComment">; Returns all nodes with type document or edit</span><br />elements := element.find(<span class="SHString">&quot;//*[@type = 'Document' or @type = 'Edit']&quot;</span>)<br /><span class="SHComment">; Returns Labels under a list</span><br />elements := element.find(<span class="SHString">&quot;//List/Label&quot;</span>)</pre><div class="CHeading">Throws</div><p>Not found</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationBaseElement.findOne"></a><a name="Topic195"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">findOne</div>
  <div id="NDPrototype195" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">findOne(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">query</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Retrieves the first element that match given query</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">query</td><td class="CDLDefinition"><p>string - xpath-ish</p></td></tr></table><div class="CHeading">Throws</div><p>Element not found Multiple elements found</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div class="CBody"><p>Retrieves the first element that match given query</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">query</td><td class="CDLDefinition"><p>string - xpath-ish</p></td></tr></table><div class="CHeading">Throws</div><p>Element not found Multiple elements found</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationBaseElement.waitOne"></a><a name="Topic196"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">waitOne</div>
  <div id="NDPrototype196" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/4/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/4/2">waitOne(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">query,</div><div class="PName InFirstParameterColumn" data-WideGridArea="2/2/3/3" data-NarrowGridArea="3/1/4/2" style="grid-area:2/2/3/3">timeout</div><div class="PDefaultValueSeparator" data-WideGridArea="2/3/3/4" data-NarrowGridArea="3/2/4/3" style="grid-area:2/3/3/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="2/4/3/5" data-NarrowGridArea="3/3/4/4" style="grid-area:2/4/3/5"><span class="SHNumber">-1</span>,</div><div class="PName InFirstParameterColumn" data-WideGridArea="3/2/4/3" data-NarrowGridArea="4/1/5/2" style="grid-area:3/2/4/3">delay</div><div class="PDefaultValueSeparator" data-WideGridArea="3/3/4/4" data-NarrowGridArea="4/2/5/3" style="grid-area:3/3/4/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="3/4/4/5" data-NarrowGridArea="4/3/5/4" style="grid-area:3/4/4/5"><span class="SHNumber">-1</span></div><div class="PAfterParameters NegativeLeftSpaceOnWide" data-WideGridArea="3/5/4/6" data-NarrowGridArea="5/1/6/5" style="grid-area:3/5/4/6">)</div></div></div></div>
- <div class="CBody"><p>Waits to appear an element that match given query</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">query</td><td class="CDLDefinition"><p>string - xpath-ish</p></td></tr><tr><td class="CDLEntry">timeout</td><td class="CDLDefinition"><p>number - timeout, in miliseconds</p></td></tr><tr><td class="CDLEntry">delay</td><td class="CDLDefinition"><p>number - delay, in miliseconds</p></td></tr></table><div class="CHeading">Throws</div><p>Timeout reached at ?: Control not found</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div class="CBody"><p>Waits to appear an element that match given query</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">query</td><td class="CDLDefinition"><p>string - xpath-ish</p></td></tr><tr><td class="CDLEntry">timeout</td><td class="CDLDefinition"><p>number - timeout, in miliseconds</p></td></tr><tr><td class="CDLEntry">delay</td><td class="CDLDefinition"><p>number - delay, in miliseconds</p></td></tr></table><div class="CHeading">Throws</div><p>Timeout reached at ?: Control not found</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationBaseElement.dumpXML"></a><a name="Topic197"></a><div class="CTopic TFunction LAutoHotKey last">
@@ -615,13 +633,13 @@ body {
 <a name="RDA_AutomationJAB.elementFromHandle"></a><a name="Topic184"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">elementFromHandle</div>
  <div id="NDPrototype184" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">elementFromHandle(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">hwnd</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Gets the Root element of given window handle or throws</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">hwnd</td><td class="CDLDefinition"><p>number - Window handler</p></td></tr></table><div class="CHeading">Throws</div><p>JavaAccessBridge is not initilizated, call RDA_AutomationJAB.init() isJavaWindow failed getAccessibleContextFromHWND failed</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,202);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
+ <div class="CBody"><p>Gets the Root element of given window handle or throws</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">hwnd</td><td class="CDLDefinition"><p>number - Window handler</p></td></tr></table><div class="CHeading">Throws</div><p>JavaAccessBridge is not initilizated, call RDA_AutomationJAB.init() isJavaWindow failed getAccessibleContextFromHWND failed</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationJAB.getFocusedElement"></a><a name="Topic185"></a><div class="CTopic TFunction LAutoHotKey last">
  <div class="CTitle">getFocusedElement</div>
  <div id="NDPrototype185" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">getFocusedElement(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">hwnd</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Get focused Element</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">hwnd</td><td class="CDLDefinition"><p>number - Window handler</p></td></tr></table><div class="CHeading">Throws</div><p>JavaAccessBridge is not initilizated, call RDA_AutomationJAB.init()</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,202);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
+ <div class="CBody"><p>Get focused Element</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">hwnd</td><td class="CDLDefinition"><p>number - Window handler</p></td></tr></table><div class="CHeading">Throws</div><p>JavaAccessBridge is not initilizated, call RDA_AutomationJAB.init()</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
 </div>
 
 </div><div class="page-break"></div>
@@ -730,280 +748,285 @@ body {
 
 <script type="text/javascript">var q = window.location.search;if (q.startsWith("?Theme=")){var t = q.slice(7);var e = t.indexOf(";");if (e != -1){  t = t.slice(0, e);  }document.documentElement.classList.add(t + "Theme")}</script>
 
-<a name="jab"></a><a name="Topic198"></a><div class="CTopic TProperty LAutoHotKey first">
+<a name="RDA_AutomationJABElement"></a><a name="Topic194"></a><div class="CTopic TClass LAutoHotKey first">
+ <div class="CTitle">RDA_AutomationJABElement</div>
+ <div class="CBody"><p>Automation configuration for java access bridge.</p><p>Extends: RDA_AutomationBaseElement</p></div>
+</div>
+
+<a name="RDA_AutomationJABElement.jab"></a><a name="Topic208"></a><div class="CTopic TProperty LAutoHotKey">
  <div class="CTitle">jab</div>
  <div class="CBody"><p><a href="#RDA_AutomationJAB" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,170);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJAB</a></p></div>
 </div>
 
-<a name="win"></a><a name="Topic199"></a><div class="CTopic TProperty LAutoHotKey">
+<a name="RDA_AutomationJABElement.win"></a><a name="Topic209"></a><div class="CTopic TProperty LAutoHotKey">
  <div class="CTitle">win</div>
  <div class="CBody"><p><a href="#RDA_AutomationWindow" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,79);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationWindow</a> Root Window,</p><div class="CHeading">Remarks</div><p>Inside JAB you can navigate to modals/popup/other windows this points to the windows used to create the first element</p></div>
 </div>
 
-<a name="vmId"></a><a name="Topic200"></a><div class="CTopic TProperty LAutoHotKey">
+<a name="RDA_AutomationJABElement.vmId"></a><a name="Topic210"></a><div class="CTopic TProperty LAutoHotKey">
  <div class="CTitle">vmId</div>
  <div class="CBody"><p>Virtual machine id</p></div>
 </div>
 
-<a name="acId"></a><a name="Topic201"></a><div class="CTopic TProperty LAutoHotKey">
+<a name="RDA_AutomationJABElement.acId"></a><a name="Topic211"></a><div class="CTopic TProperty LAutoHotKey">
  <div class="CTitle">acId</div>
  <div class="CBody"><p>Accessible context ID</p></div>
 </div>
 
-<a name="RDA_AutomationJABElement"></a><a name="Topic202"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.RDA_AutomationJABElement"></a><a name="Topic212"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">RDA_AutomationJABElement</div>
  <div class="CBody"><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">jab</td><td class="CDLDefinition"><p><a href="#RDA_AutomationJAB" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,170);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJAB</a> -</p></td></tr><tr><td class="CDLEntry">win</td><td class="CDLDefinition"><p><a href="#RDA_AutomationWindow" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,79);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationWindow</a> - Window</p></td></tr><tr><td class="CDLEntry">vmId</td><td class="CDLDefinition"><p>number - Virtual machine id</p></td></tr><tr><td class="CDLEntry">acId</td><td class="CDLDefinition"><p>number - Accessible context ID</p></td></tr></table></div>
 </div>
 
-<a name="toString"></a><a name="Topic203"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.toString"></a><a name="Topic213"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">toString</div>
- <div id="NDPrototype203" class="NDPrototype"><div class="PSection PPlainSection">toString()</div></div>
+ <div id="NDPrototype213" class="NDPrototype"><div class="PSection PPlainSection">toString()</div></div>
  <div class="CBody"><p>Dumps the object to a readable string</p></div>
 </div>
 
-<a name="getName"></a><a name="Topic204"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.getName"></a><a name="Topic214"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getName</div>
- <div id="NDPrototype204" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/2/2">getName(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">useCache</div><div class="PDefaultValueSeparator" data-WideGridArea="1/3/2/4" data-NarrowGridArea="2/2/3/3" style="grid-area:1/3/2/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="1/4/2/5" data-NarrowGridArea="2/3/3/4" style="grid-area:1/4/2/5"><span class="SHKeyword">true</span></div><div class="PAfterParameters" data-WideGridArea="1/5/2/6" data-NarrowGridArea="3/1/4/5" style="grid-area:1/5/2/6">)</div></div></div></div>
+ <div id="NDPrototype214" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/2/2">getName(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">useCache</div><div class="PDefaultValueSeparator" data-WideGridArea="1/3/2/4" data-NarrowGridArea="2/2/3/3" style="grid-area:1/3/2/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="1/4/2/5" data-NarrowGridArea="2/3/3/4" style="grid-area:1/4/2/5"><span class="SHKeyword">true</span></div><div class="PAfterParameters" data-WideGridArea="1/5/2/6" data-NarrowGridArea="3/1/4/5" style="grid-area:1/5/2/6">)</div></div></div></div>
  <div class="CBody"><p>Retrieves the element name</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">useCache</td><td class="CDLDefinition"><p>bool - use cached value (true) or fetch current value (false)</p></td></tr></table><div class="CHeading">Returns</div><p>string</p></div>
 </div>
 
-<a name="getDescription"></a><a name="Topic205"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.getDescription"></a><a name="Topic215"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getDescription</div>
- <div id="NDPrototype205" class="NDPrototype"><div class="PSection PPlainSection">getDescription()</div></div>
+ <div id="NDPrototype215" class="NDPrototype"><div class="PSection PPlainSection">getDescription()</div></div>
  <div class="CBody"><p>Retrieves the element description</p><div class="CHeading">Returns</div><p>string</p></div>
 </div>
 
-<a name="getType"></a><a name="Topic206"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.getType"></a><a name="Topic216"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getType</div>
- <div id="NDPrototype206" class="NDPrototype"><div class="PSection PPlainSection">getType()</div></div>
+ <div id="NDPrototype216" class="NDPrototype"><div class="PSection PPlainSection">getType()</div></div>
  <div class="CBody"><p>Retrieves the element type</p><div class="CHeading">Returns</div><p>string</p></div>
 </div>
 
-<a name="getPatterns"></a><a name="Topic207"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.getPatterns"></a><a name="Topic217"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getPatterns</div>
- <div id="NDPrototype207" class="NDPrototype"><div class="PSection PPlainSection">getPatterns()</div></div>
+ <div id="NDPrototype217" class="NDPrototype"><div class="PSection PPlainSection">getPatterns()</div></div>
  <div class="CBody"><p>Retrieves the list of patterns implemented by the element</p><div class="CHeading">Remarks</div><p>In use JAB states to fill the array</p><div class="CHeading">Returns</div><p>string[]</p></div>
 </div>
 
-<a name="getIndex"></a><a name="Topic208"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.getIndex"></a><a name="Topic218"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getIndex</div>
- <div id="NDPrototype208" class="NDPrototype"><div class="PSection PPlainSection">getIndex()</div></div>
+ <div id="NDPrototype218" class="NDPrototype"><div class="PSection PPlainSection">getIndex()</div></div>
  <div class="CBody"><p>Retrieves current index at the tree</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">number</td><td class="CDLDefinition"><p>the 1 index for the rest.</p></td></tr></table></div>
 </div>
 
-<a name="getChildElementCount"></a><a name="Topic209"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.getChildElementCount"></a><a name="Topic219"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getChildElementCount</div>
- <div id="NDPrototype209" class="NDPrototype"><div class="PSection PPlainSection">getChildElementCount()</div></div>
+ <div id="NDPrototype219" class="NDPrototype"><div class="PSection PPlainSection">getChildElementCount()</div></div>
  <div class="CBody"><p>Retrieves the children count</p><div class="CHeading">Returns</div><p>number</p></div>
 </div>
 
-<a name="getProperty"></a><a name="Topic210"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.getProperty"></a><a name="Topic220"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getProperty</div>
- <div id="NDPrototype210" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">getProperty(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">propName</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
+ <div id="NDPrototype220" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">getProperty(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">propName</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
  <div class="CBody"><p>Not used.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">propName</td><td class="CDLDefinition"><p>string - property name</p></td></tr></table><div class="CHeading">Throws</div><p>No apply</p><div class="CHeading">Returns</div><p>string</p></div>
 </div>
 
-<a name="isVisible"></a><a name="Topic211"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.isVisible"></a><a name="Topic221"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">isVisible</div>
- <div id="NDPrototype211" class="NDPrototype"><div class="PSection PPlainSection">isVisible()</div></div>
+ <div id="NDPrototype221" class="NDPrototype"><div class="PSection PPlainSection">isVisible()</div></div>
  <div class="CBody"><p>Retrieves if the control is visible.</p><div class="CHeading">Remarks</div><p>That's not means it's clickable! It can be occluded by other element.</p><div class="CHeading">Returns</div><p>boolean</p></div>
 </div>
 
-<a name="isSameElement"></a><a name="Topic212"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.isSameElement"></a><a name="Topic222"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">isSameElement</div>
- <div id="NDPrototype212" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">isSameElement(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">other</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Retrieves if given element represents the same UI element</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">other</td><td class="CDLDefinition"><p><a href="#RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,202);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a> - element</p></td></tr></table><div class="CHeading">Returns</div><p>boolean</p></div>
+ <div id="NDPrototype222" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">isSameElement(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">other</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
+ <div class="CBody"><p>Retrieves if given element represents the same UI element</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">other</td><td class="CDLDefinition"><p><a href="#RDA_AutomationJABElement.RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,212);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a> - element</p></td></tr></table><div class="CHeading">Returns</div><p>boolean</p></div>
 </div>
 
-<a name="highlight"></a><a name="Topic213"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.highlight"></a><a name="Topic223"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">highlight</div>
- <div id="NDPrototype213" class="NDPrototype"><div class="PSection PPlainSection">highlight()</div></div>
- <div class="CBody"><p>Highlights the element</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,202);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
+ <div id="NDPrototype223" class="NDPrototype"><div class="PSection PPlainSection">highlight()</div></div>
+ <div class="CBody"><p>Highlights the element</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement.RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,212);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
 </div>
 
-<a name="getRegion"></a><a name="Topic214"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.getRegion"></a><a name="Topic224"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getRegion</div>
- <div id="NDPrototype214" class="NDPrototype"><div class="PSection PPlainSection">getRegion()</div></div>
+ <div id="NDPrototype224" class="NDPrototype"><div class="PSection PPlainSection">getRegion()</div></div>
  <div class="CBody"><p>Retrieves screen region occupied by the element</p><div class="CHeading">Returns</div><p><a href="#RDA_ScreenRegion" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,132);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_ScreenRegion</a></p></div>
 </div>
 
-<a name="click"></a><a name="Topic215"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.click"></a><a name="Topic225"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">click</div>
- <div id="NDPrototype215" class="NDPrototype"><div class="PSection PPlainSection">click()</div></div>
- <div class="CBody"><p>&quot;Clicks&quot; on the element using JAB</p><div class="CHeading">Remarks</div><p>This do not honor <a href="#RDA_Automation" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,286);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_Automation</a> configuration at it uses JAB doAction It will try to do one of the following actions * click * hacer click * toogleexpand</p><div class="CHeading">Throws</div><p>Could not find a compatible action: click / hacer clic Action failed</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,202);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
+ <div id="NDPrototype225" class="NDPrototype"><div class="PSection PPlainSection">click()</div></div>
+ <div class="CBody"><p>&quot;Clicks&quot; on the element using JAB</p><div class="CHeading">Remarks</div><p>This do not honor <a href="#RDA_Automation" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,286);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_Automation</a> configuration at it uses JAB doAction It will try to do one of the following actions * click * hacer click * toogleexpand</p><div class="CHeading">Throws</div><p>Could not find a compatible action: click / hacer clic Action failed</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement.RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,212);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
 </div>
 
-<a name="osClick"></a><a name="Topic216"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.osClick"></a><a name="Topic226"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">osClick</div>
- <div id="NDPrototype216" class="NDPrototype"><div class="PSection PPlainSection">osClick()</div></div>
- <div class="CBody"><p>&quot;Clicks&quot; on the element at OS level</p><div class="CHeading">Remarks</div><p>This will honor <a href="#RDA_Automation" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,286);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_Automation</a> configuration.</p><div class="CHeading">Remarks</div><p>It will click at the element center position, note that other element could recieve the click if it's hover.</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,202);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
+ <div id="NDPrototype226" class="NDPrototype"><div class="PSection PPlainSection">osClick()</div></div>
+ <div class="CBody"><p>&quot;Clicks&quot; on the element at OS level</p><div class="CHeading">Remarks</div><p>This will honor <a href="#RDA_Automation" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,286);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_Automation</a> configuration.</p><div class="CHeading">Remarks</div><p>It will click at the element center position, note that other element could recieve the click if it's hover.</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement.RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,212);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
 </div>
 
-<a name="hover"></a><a name="Topic217"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.hover"></a><a name="Topic227"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">hover</div>
- <div id="NDPrototype217" class="NDPrototype"><div class="PSection PPlainSection">hover()</div></div>
- <div class="CBody"><p>Alias of &lt;RDA_AutomationJABElement.osHover&gt;, JAB do not have hover.</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,202);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
+ <div id="NDPrototype227" class="NDPrototype"><div class="PSection PPlainSection">hover()</div></div>
+ <div class="CBody"><p>Alias of <a href="#RDA_AutomationJABElement.osHover" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,228);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement.osHover</a>, JAB do not have hover.</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement.RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,212);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
 </div>
 
-<a name="osHover"></a><a name="Topic218"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.osHover"></a><a name="Topic228"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">osHover</div>
- <div id="NDPrototype218" class="NDPrototype"><div class="PSection PPlainSection">osHover()</div></div>
- <div class="CBody"><p>Hovers the element at OS level</p><div class="CHeading">Remarks</div><p>Hover an element at OS level. This functionallity is not available in JAB</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,202);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
+ <div id="NDPrototype228" class="NDPrototype"><div class="PSection PPlainSection">osHover()</div></div>
+ <div class="CBody"><p>Hovers the element at OS level</p><div class="CHeading">Remarks</div><p>Hover an element at OS level. This functionallity is not available in JAB</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement.RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,212);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
 </div>
 
-<a name="focus"></a><a name="Topic219"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.focus"></a><a name="Topic229"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">focus</div>
- <div id="NDPrototype219" class="NDPrototype"><div class="PSection PPlainSection">focus()</div></div>
- <div class="CBody"><p>Focuses control</p><div class="CHeading">Throws</div><p>focus failed</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,202);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
+ <div id="NDPrototype229" class="NDPrototype"><div class="PSection PPlainSection">focus()</div></div>
+ <div class="CBody"><p>Focuses control</p><div class="CHeading">Throws</div><p>focus failed</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement.RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,212);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
 </div>
 
-<a name="toggle"></a><a name="Topic220"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.toggle"></a><a name="Topic230"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">toggle</div>
- <div id="NDPrototype220" class="NDPrototype"><div class="PSection PPlainSection">toggle()</div></div>
- <div class="CBody"><p>Toggles the element, element must implement TogglePattern</p><div class="CHeading">Throws</div><p>TogglePattern not implemented Toggle called but no change</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,202);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
+ <div id="NDPrototype230" class="NDPrototype"><div class="PSection PPlainSection">toggle()</div></div>
+ <div class="CBody"><p>Toggles the element, element must implement TogglePattern</p><div class="CHeading">Throws</div><p>TogglePattern not implemented Toggle called but no change</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement.RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,212);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
 </div>
 
-<a name="isChecked"></a><a name="Topic221"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.isChecked"></a><a name="Topic231"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">isChecked</div>
- <div id="NDPrototype221" class="NDPrototype"><div class="PSection PPlainSection">isChecked()</div></div>
+ <div id="NDPrototype231" class="NDPrototype"><div class="PSection PPlainSection">isChecked()</div></div>
  <div class="CBody"><p>Retrieves if the element is checked, element must implement TogglePattern</p><div class="CHeading">Throws</div><p>TogglePattern not implemented</p><div class="CHeading">Returns</div><p>boolean</p></div>
 </div>
 
-<a name="ensureChecked"></a><a name="Topic222"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.ensureChecked"></a><a name="Topic232"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">ensureChecked</div>
- <div id="NDPrototype222" class="NDPrototype"><div class="PSection PPlainSection">ensureChecked()</div></div>
+ <div id="NDPrototype232" class="NDPrototype"><div class="PSection PPlainSection">ensureChecked()</div></div>
  <div class="CBody"><p>Checks the element only if it's unchecked, element must implement TogglePattern</p><div class="CHeading">Throws</div><p>Toggle failed, no change TogglePattern not implemented</p></div>
 </div>
 
-<a name="ensureUnChecked"></a><a name="Topic223"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.ensureUnChecked"></a><a name="Topic233"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">ensureUnChecked</div>
- <div id="NDPrototype223" class="NDPrototype"><div class="PSection PPlainSection">ensureUnChecked()</div></div>
+ <div id="NDPrototype233" class="NDPrototype"><div class="PSection PPlainSection">ensureUnChecked()</div></div>
  <div class="CBody"><p>Unchecks the element only if it's checked, element must implement TogglePattern</p><div class="CHeading">Throws</div><p>Toggle failed, no change TogglePattern not implemented</p></div>
 </div>
 
-<a name="select"></a><a name="Topic224"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.select"></a><a name="Topic234"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">select</div>
- <div id="NDPrototype224" class="NDPrototype"><div class="PSection PPlainSection">select()</div></div>
- <div class="CBody"><p>Selects the element, element must implement SelectionItemPattern</p><div class="CHeading">Throws</div><p>SelectionItemPattern not implemented select called but no change</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,202);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
+ <div id="NDPrototype234" class="NDPrototype"><div class="PSection PPlainSection">select()</div></div>
+ <div class="CBody"><p>Selects the element, element must implement SelectionItemPattern</p><div class="CHeading">Throws</div><p>SelectionItemPattern not implemented select called but no change</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement.RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,212);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
 </div>
 
-<a name="unselect"></a><a name="Topic225"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.unselect"></a><a name="Topic235"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">unselect</div>
- <div id="NDPrototype225" class="NDPrototype"><div class="PSection PPlainSection">unselect()</div></div>
- <div class="CBody"><p>Unselects the element, element must implement SelectionItemPattern</p><div class="CHeading">Throws</div><p>SelectionItemPattern not implemented unselect called but no change</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,202);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
+ <div id="NDPrototype235" class="NDPrototype"><div class="PSection PPlainSection">unselect()</div></div>
+ <div class="CBody"><p>Unselects the element, element must implement SelectionItemPattern</p><div class="CHeading">Throws</div><p>SelectionItemPattern not implemented unselect called but no change</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement.RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,212);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
 </div>
 
-<a name="isSelected"></a><a name="Topic226"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.isSelected"></a><a name="Topic236"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">isSelected</div>
- <div id="NDPrototype226" class="NDPrototype"><div class="PSection PPlainSection">isSelected()</div></div>
- <div class="CBody"><p>Retrieves if the element is selected, element must implement SelectionItemPattern</p><div class="CHeading">Throws</div><p>SelectionItemPattern not implemented</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,202);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
+ <div id="NDPrototype236" class="NDPrototype"><div class="PSection PPlainSection">isSelected()</div></div>
+ <div class="CBody"><p>Retrieves if the element is selected, element must implement SelectionItemPattern</p><div class="CHeading">Throws</div><p>SelectionItemPattern not implemented</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement.RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,212);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
 </div>
 
-<a name="getSelectedItems"></a><a name="Topic227"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.getSelectedItems"></a><a name="Topic237"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getSelectedItems</div>
- <div id="NDPrototype227" class="NDPrototype"><div class="PSection PPlainSection">getSelectedItems()</div></div>
+ <div id="NDPrototype237" class="NDPrototype"><div class="PSection PPlainSection">getSelectedItems()</div></div>
  <div class="CBody"><p>Retrieves the list of selected elements, element must implement SelectionPattern</p><div class="CHeading">Remarks</div><p>&quot;Selection returns an empty object&quot; means that most likely a ComboBox is not initialized or unselected so the selection is empty but java need one value.</p><div class="CHeading">Throws</div><p>SelectionPattern not implemented Selection returns an empty object</p><div class="CHeading">Returns</div><p>&lt;RDA_AutomationJABElement&gt;[]</p></div>
 </div>
 
-<a name="clearSelectedItems"></a><a name="Topic228"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.clearSelectedItems"></a><a name="Topic238"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">clearSelectedItems</div>
- <div id="NDPrototype228" class="NDPrototype"><div class="PSection PPlainSection">clearSelectedItems()</div></div>
- <div class="CBody"><p>Retrieves if the element has multiple selection, element must implement SelectionPattern</p><div class="CHeading">Remarks</div><p>it may not remove all if the app has some defaults</p><div class="CHeading">Throws</div><p>SelectionPattern not implemented</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div id="NDPrototype238" class="NDPrototype"><div class="PSection PPlainSection">clearSelectedItems()</div></div>
+ <div class="CBody"><p>Retrieves if the element has multiple selection, element must implement SelectionPattern</p><div class="CHeading">Remarks</div><p>it may not remove all if the app has some defaults</p><div class="CHeading">Throws</div><p>SelectionPattern not implemented</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
-<a name="canSelectMultiple"></a><a name="Topic229"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.canSelectMultiple"></a><a name="Topic239"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">canSelectMultiple</div>
- <div id="NDPrototype229" class="NDPrototype"><div class="PSection PPlainSection">canSelectMultiple()</div></div>
+ <div id="NDPrototype239" class="NDPrototype"><div class="PSection PPlainSection">canSelectMultiple()</div></div>
  <div class="CBody"><p>Retrieves if the element has multiple selection, element must implement SelectionPattern</p><div class="CHeading">Throws</div><p>SelectionPattern not implemented</p><div class="CHeading">Returns</div><p>boolean</p></div>
 </div>
 
-<a name="getSelectedText"></a><a name="Topic230"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.getSelectedText"></a><a name="Topic240"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getSelectedText</div>
- <div id="NDPrototype230" class="NDPrototype"><div class="PSection PPlainSection">getSelectedText()</div></div>
+ <div id="NDPrototype240" class="NDPrototype"><div class="PSection PPlainSection">getSelectedText()</div></div>
  <div class="CBody"><p>Retrieves the element selected text, element must implement TextPattern</p><div class="CHeading">Throws</div><p>TextPattern not implemented getSelectedText failed</p><div class="CHeading">Returns</div><p>string</p></div>
 </div>
 
-<a name="setValue"></a><a name="Topic231"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.setValue"></a><a name="Topic241"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">setValue</div>
- <div id="NDPrototype231" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">setValue(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">text</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Sets element value, element must implement ValuePattern</p><div class="CHeading">Remarks</div><p>This method can disclosure information, use <a href="#RDA_AutomationUIAElement.setPassword" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,70);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement.setPassword</a></p><div class="CHeading">Throws</div><p>setTextContents failed ValuePattern not implemented</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div id="NDPrototype241" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">setValue(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">text</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
+ <div class="CBody"><p>Sets element value, element must implement ValuePattern</p><div class="CHeading">Remarks</div><p>This method can disclosure information, use <a href="#RDA_AutomationUIAElement.setPassword" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,70);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement.setPassword</a></p><div class="CHeading">Throws</div><p>setTextContents failed ValuePattern not implemented</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
-<a name="setPassword"></a><a name="Topic232"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.setPassword"></a><a name="Topic242"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">setPassword</div>
- <div id="NDPrototype232" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">setPassword(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">text</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Sets element value discreetly, element must implement ValuePattern</p><div class="CHeading">Throws</div><p>setTextContents failed ValuePattern not implemented</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div id="NDPrototype242" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">setPassword(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">text</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
+ <div class="CBody"><p>Sets element value discreetly, element must implement ValuePattern</p><div class="CHeading">Throws</div><p>setTextContents failed ValuePattern not implemented</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
-<a name="getValue"></a><a name="Topic233"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.getValue"></a><a name="Topic243"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getValue</div>
- <div id="NDPrototype233" class="NDPrototype"><div class="PSection PPlainSection">getValue()</div></div>
- <div class="CBody"><p>Retrieves element value, element must implement ValuePattern</p><div class="CHeading">Remarks</div><p>This method can disclosure information, use <a href="#RDA_AutomationUIAElement.getPassword" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,72);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement.getPassword</a></p><div class="CHeading">Throws</div><p>Could not find a compatible action Action failed</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div id="NDPrototype243" class="NDPrototype"><div class="PSection PPlainSection">getValue()</div></div>
+ <div class="CBody"><p>Retrieves element value, element must implement ValuePattern</p><div class="CHeading">Remarks</div><p>This method can disclosure information, use <a href="#RDA_AutomationUIAElement.getPassword" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,72);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement.getPassword</a></p><div class="CHeading">Throws</div><p>Could not find a compatible action Action failed</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
-<a name="getPassword"></a><a name="Topic234"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.getPassword"></a><a name="Topic244"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getPassword</div>
- <div id="NDPrototype234" class="NDPrototype"><div class="PSection PPlainSection">getPassword()</div></div>
- <div class="CBody"><p>Retrieves element value discreetly, element must implement ValuePattern</p><div class="CHeading">Throws</div><p>Could not find a compatible action Action failed</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div id="NDPrototype244" class="NDPrototype"><div class="PSection PPlainSection">getPassword()</div></div>
+ <div class="CBody"><p>Retrieves element value discreetly, element must implement ValuePattern</p><div class="CHeading">Throws</div><p>Could not find a compatible action Action failed</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
-<a name="getChildren"></a><a name="Topic235"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.getChildren"></a><a name="Topic249"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getChildren</div>
- <div id="NDPrototype235" class="NDPrototype"><div class="PSection PPlainSection">getChildren()</div></div>
+ <div id="NDPrototype249" class="NDPrototype"><div class="PSection PPlainSection">getChildren()</div></div>
  <div class="CBody"><p>Retrieves all the element child elements</p><div class="CHeading">Returns</div><p>&lt;RDA_AutomationJABElement&gt;[]</p></div>
 </div>
 
-<a name="getChild"></a><a name="Topic236"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.getChild"></a><a name="Topic250"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getChild</div>
- <div id="NDPrototype236" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">getChild(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">index</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Retrieves a child by index</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">index</td><td class="CDLDefinition"><p>number - 1 Index</p></td></tr></table><div class="CHeading">Throws</div><p>Index out of bounds</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,202);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
+ <div id="NDPrototype250" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">getChild(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">index</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
+ <div class="CBody"><p>Retrieves a child by index</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">index</td><td class="CDLDefinition"><p>number - 1 Index</p></td></tr></table><div class="CHeading">Throws</div><p>Index out of bounds</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement.RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,212);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
 </div>
 
-<a name="getDescendants"></a><a name="Topic237"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.getDescendants"></a><a name="Topic251"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getDescendants</div>
- <div id="NDPrototype237" class="NDPrototype"><div class="PSection PPlainSection">getDescendants()</div></div>
+ <div id="NDPrototype251" class="NDPrototype"><div class="PSection PPlainSection">getDescendants()</div></div>
  <div class="CBody"><p>Retrieves all element descendants</p><div class="CHeading">Returns</div><p>&lt;RDA_AutomationJABElement&gt;[]</p></div>
 </div>
 
-<a name="getSiblings"></a><a name="Topic238"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.getSiblings"></a><a name="Topic285"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getSiblings</div>
- <div id="NDPrototype238" class="NDPrototype"><div class="PSection PPlainSection">getSiblings()</div></div>
+ <div id="NDPrototype285" class="NDPrototype"><div class="PSection PPlainSection">getSiblings()</div></div>
  <div class="CBody"><p>Retrieves the element siblings (including myself)</p><div class="CHeading">Throws</div><p>Could not get parent</p><div class="CHeading">Returns</div><p>&lt;RDA_AutomationJABElement&gt;[]</p></div>
 </div>
 
-<a name="getParent"></a><a name="Topic239"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.getParent"></a><a name="Topic358"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getParent</div>
- <div id="NDPrototype239" class="NDPrototype"><div class="PSection PPlainSection">getParent()</div></div>
+ <div id="NDPrototype358" class="NDPrototype"><div class="PSection PPlainSection">getParent()</div></div>
  <div class="CBody"><p>Retrieves the element parent / Traverses up the tree once.</p><div class="CHeading">Throws</div><p>Could not get parent</p><div class="CHeading">Returns</div><p>RDA_AutomationJABElement</p></div>
 </div>
 
-<a name="doActions"></a><a name="Topic240"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.doActions"></a><a name="Topic359"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">doActions</div>
- <div id="NDPrototype240" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">doActions(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">actions</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
+ <div id="NDPrototype359" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">doActions(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">actions</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
  <div class="CBody"><p>Requests the element to perform given actions</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">actions</td><td class="CDLDefinition"><p>string[] - action list</p></td></tr></table><div class="CHeading">Throws</div><p>Element do not implement ActionInterface Action failed: ?</p></div>
 </div>
 
-<a name="getActions"></a><a name="Topic241"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.getActions"></a><a name="Topic360"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getActions</div>
- <div id="NDPrototype241" class="NDPrototype"><div class="PSection PPlainSection">getActions()</div></div>
+ <div id="NDPrototype360" class="NDPrototype"><div class="PSection PPlainSection">getActions()</div></div>
  <div class="CBody"><p>Returns a list of actions that a component can perform.</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">string[]</td><td class="CDLDefinition"><p>list of actions</p></td></tr></table></div>
 </div>
 
-<a name="setValue2"></a><a name="Topic242"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.setValue2"></a><a name="Topic361"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">setValue2</div>
- <div id="NDPrototype242" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">setValue2(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">text</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Alternative method to <a href="#RDA_AutomationUIAElement.setValue" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,69);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement.setValue</a></p><div class="CHeading">Remarks</div><p>It uses the clipboard and <b>paste-from-clipboard</b> action</p><div class="CHeading">Throws</div><p>Could not find a compatible action: paste-from-clipboard Action failed</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div id="NDPrototype361" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">setValue2(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">text</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
+ <div class="CBody"><p>Alternative method to <a href="#RDA_AutomationUIAElement.setValue" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,69);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement.setValue</a></p><div class="CHeading">Remarks</div><p>It uses the clipboard and <b>paste-from-clipboard</b> action</p><div class="CHeading">Throws</div><p>Could not find a compatible action: paste-from-clipboard Action failed</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
-<a name="getValue2"></a><a name="Topic243"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationJABElement.getValue2"></a><a name="Topic362"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getValue2</div>
- <div id="NDPrototype243" class="NDPrototype"><div class="PSection PPlainSection">getValue2()</div></div>
+ <div id="NDPrototype362" class="NDPrototype"><div class="PSection PPlainSection">getValue2()</div></div>
  <div class="CBody"><p>Alternative method to <a href="#RDA_AutomationUIAElement.getValue" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,71);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement.getValue</a></p><div class="CHeading">Remarks</div><p>It use the clipboard and <b>select-all</b>, <b>copy-to-clipboard</b> actions.</p><div class="CHeading">Throws</div><p>Could not find a compatible action: select-all Could not find a compatible action: copy-to-clipboard Action failed</p><div class="CHeading">Returns</div><p>string</p></div>
 </div>
 
-<a name="getInfo"></a><a name="Topic244"></a><div class="CTopic TFunction LAutoHotKey last">
+<a name="RDA_AutomationJABElement.getInfo"></a><a name="Topic363"></a><div class="CTopic TFunction LAutoHotKey last">
  <div class="CTitle">getInfo</div>
- <div id="NDPrototype244" class="NDPrototype"><div class="PSection PPlainSection">getInfo()</div></div>
+ <div id="NDPrototype363" class="NDPrototype"><div class="PSection PPlainSection">getInfo()</div></div>
  <div class="CBody"><p>Retrieves element info</p><div class="CHeading">Throws</div><p>getAccessibleContextInfo failed</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABAccessibleContextInfo" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,151);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABAccessibleContextInfo</a></p></div>
 </div>
 
@@ -1017,28 +1040,28 @@ body {
  <div class="CBody"><p>Keyboard handling at OS level.</p><div class="CHeading">Remarks</div><p>type use Raw Mode</p></div>
 </div>
 
-<a name="RDA_AutomationKeyboard.type"></a><a name="Topic35"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationKeyboard.type"></a><a name="Topic198"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">type</div>
- <div id="NDPrototype35" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">type(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">text</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Sends given text (literally) as keystrokes</p><p>See: <a href="#RDA_KeyboardSendKeys" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,269);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_KeyboardSendKeys</a></p><div class="CHeading">Remarks</div><p>This method can disclosure information, use <a href="#RDA_AutomationKeyboard.sendPassword" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,38);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard.sendPassword</a></p><div class="CHeading">Remarks</div><p>use Raw mode: <a href="https://www.autohotkey.com/docs/v1/lib/Send.htm#Raw" target="_top">https://&#8203;www&#8203;.autohotkey&#8203;.com&#8203;/docs&#8203;/v1&#8203;/lib&#8203;/Send&#8203;.htm&#8203;#Raw</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">text</td><td class="CDLDefinition"><p>string - Text</p></td></tr></table><div class="CHeading">Throws</div><p>hwnd is required in background input mode</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationKeyboard" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,34);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard</a></p></div>
+ <div id="NDPrototype198" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/3/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/3/2">type(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">text,</div><div class="PName InFirstParameterColumn" data-WideGridArea="2/2/3/3" data-NarrowGridArea="3/1/4/2" style="grid-area:2/2/3/3">hwnd</div><div class="PDefaultValueSeparator" data-WideGridArea="2/3/3/4" data-NarrowGridArea="3/2/4/3" style="grid-area:2/3/3/4">:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="2/4/3/5" data-NarrowGridArea="3/3/4/4" style="grid-area:2/4/3/5"><span class="SHNumber">0</span></div><div class="PAfterParameters" data-WideGridArea="2/5/3/6" data-NarrowGridArea="4/1/5/5" style="grid-area:2/5/3/6">)</div></div></div></div>
+ <div class="CBody"><p>Sends given text (literally) as keystrokes</p><p>See: <a href="#RDA_KeyboardSendKeys" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,269);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_KeyboardSendKeys</a></p><div class="CHeading">Remarks</div><p>This method can disclosure information, use <a href="#RDA_AutomationKeyboard.sendPassword" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,203);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard.sendPassword</a></p><div class="CHeading">Remarks</div><p>use Raw mode: <a href="https://www.autohotkey.com/docs/v1/lib/Send.htm#Raw" target="_top">https://&#8203;www&#8203;.autohotkey&#8203;.com&#8203;/docs&#8203;/v1&#8203;/lib&#8203;/Send&#8203;.htm&#8203;#Raw</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">text</td><td class="CDLDefinition"><p>string - Text</p></td></tr><tr><td class="CDLEntry">hwnd</td><td class="CDLDefinition"><p>number - Window handle</p></td></tr></table><div class="CHeading">Throws</div><p>hwnd is required in background input mode</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationKeyboard" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,34);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard</a></p></div>
 </div>
 
-<a name="RDA_AutomationKeyboard.typePassword"></a><a name="Topic36"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationKeyboard.typePassword"></a><a name="Topic199"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">typePassword</div>
- <div id="NDPrototype36" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">typePassword(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">password</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Sends given password (literally) as keystrokes</p><p>See: <a href="#RDA_KeyboardSendKeys" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,269);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_KeyboardSendKeys</a></p><div class="CHeading">Remarks</div><p>This method can disclosure information, use <a href="#RDA_AutomationKeyboard.sendPassword" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,38);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard.sendPassword</a></p><div class="CHeading">Remarks</div><p>use Raw mode: <a href="https://www.autohotkey.com/docs/v1/lib/Send.htm#Raw" target="_top">https://&#8203;www&#8203;.autohotkey&#8203;.com&#8203;/docs&#8203;/v1&#8203;/lib&#8203;/Send&#8203;.htm&#8203;#Raw</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">text</td><td class="CDLDefinition"><p>string - Text</p></td></tr></table><div class="CHeading">Throws</div><p>hwnd is required in background input mode</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationKeyboard" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,34);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard</a></p></div>
+ <div id="NDPrototype199" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/3/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/3/2">typePassword(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">password,</div><div class="PName InFirstParameterColumn" data-WideGridArea="2/2/3/3" data-NarrowGridArea="3/1/4/2" style="grid-area:2/2/3/3">hwnd</div><div class="PDefaultValueSeparator" data-WideGridArea="2/3/3/4" data-NarrowGridArea="3/2/4/3" style="grid-area:2/3/3/4">:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="2/4/3/5" data-NarrowGridArea="3/3/4/4" style="grid-area:2/4/3/5"><span class="SHNumber">0</span></div><div class="PAfterParameters" data-WideGridArea="2/5/3/6" data-NarrowGridArea="4/1/5/5" style="grid-area:2/5/3/6">)</div></div></div></div>
+ <div class="CBody"><p>Sends given password (literally) as keystrokes</p><p>See: <a href="#RDA_KeyboardSendKeys" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,269);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_KeyboardSendKeys</a></p><div class="CHeading">Remarks</div><p>This method can disclosure information, use <a href="#RDA_AutomationKeyboard.sendPassword" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,203);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard.sendPassword</a></p><div class="CHeading">Remarks</div><p>use Raw mode: <a href="https://www.autohotkey.com/docs/v1/lib/Send.htm#Raw" target="_top">https://&#8203;www&#8203;.autohotkey&#8203;.com&#8203;/docs&#8203;/v1&#8203;/lib&#8203;/Send&#8203;.htm&#8203;#Raw</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">text</td><td class="CDLDefinition"><p>string - Text</p></td></tr><tr><td class="CDLEntry">hwnd</td><td class="CDLDefinition"><p>number - Window handle</p></td></tr></table><div class="CHeading">Throws</div><p>hwnd is required in background input mode</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationKeyboard" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,34);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard</a></p></div>
 </div>
 
-<a name="RDA_AutomationKeyboard.sendKeys"></a><a name="Topic37"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationKeyboard.sendKeys"></a><a name="Topic202"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">sendKeys</div>
- <div id="NDPrototype37" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">sendKeys(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">keys</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Sends simulated keystrokes</p><p>See: <a href="#RDA_KeyboardSendKeys" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,269);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_KeyboardSendKeys</a></p><div class="CHeading">Remarks</div><p>This method can disclosure information, use <a href="#RDA_AutomationKeyboard.sendPassword" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,38);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard.sendPassword</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">keys</td><td class="CDLDefinition"><p>string of keys</p></td></tr></table><div class="CHeading">Throws</div><p>hwnd is required in background input mode</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationKeyboard" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,34);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard</a></p></div>
+ <div id="NDPrototype202" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/3/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/3/2">sendKeys(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">keys,</div><div class="PName InFirstParameterColumn" data-WideGridArea="2/2/3/3" data-NarrowGridArea="3/1/4/2" style="grid-area:2/2/3/3">hwnd</div><div class="PDefaultValueSeparator" data-WideGridArea="2/3/3/4" data-NarrowGridArea="3/2/4/3" style="grid-area:2/3/3/4">:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="2/4/3/5" data-NarrowGridArea="3/3/4/4" style="grid-area:2/4/3/5"><span class="SHNumber">0</span></div><div class="PAfterParameters" data-WideGridArea="2/5/3/6" data-NarrowGridArea="4/1/5/5" style="grid-area:2/5/3/6">)</div></div></div></div>
+ <div class="CBody"><p>Sends simulated keystrokes</p><p>See: <a href="#RDA_KeyboardSendKeys" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,269);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_KeyboardSendKeys</a></p><div class="CHeading">Remarks</div><p>This method can disclosure information, use <a href="#RDA_AutomationKeyboard.sendPassword" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,203);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard.sendPassword</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">keys</td><td class="CDLDefinition"><p>string of keys</p></td></tr><tr><td class="CDLEntry">hwnd</td><td class="CDLDefinition"><p>number - Window handle</p></td></tr></table><div class="CHeading">Throws</div><p>hwnd is required in background input mode</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationKeyboard" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,34);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard</a></p></div>
 </div>
 
-<a name="RDA_AutomationKeyboard.sendPassword"></a><a name="Topic38"></a><div class="CTopic TFunction LAutoHotKey last">
+<a name="RDA_AutomationKeyboard.sendPassword"></a><a name="Topic203"></a><div class="CTopic TFunction LAutoHotKey last">
  <div class="CTitle">sendPassword</div>
- <div id="NDPrototype38" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">sendPassword(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">password</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>It's an alias of <a href="#RDA_AutomationKeyboard.sendKeys" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,37);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard.sendKeys</a> but just log the length</p><p>See: <a href="#RDA_KeyboardSendKeys" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,269);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_KeyboardSendKeys</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">password</td><td class="CDLDefinition"><p>password string</p></td></tr></table><div class="CHeading">Throws</div><p>hwnd is required in background input mode</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationKeyboard" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,34);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard</a></p></div>
+ <div id="NDPrototype203" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/3/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/3/2">sendPassword(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">password,</div><div class="PName InFirstParameterColumn" data-WideGridArea="2/2/3/3" data-NarrowGridArea="3/1/4/2" style="grid-area:2/2/3/3">hwnd</div><div class="PDefaultValueSeparator" data-WideGridArea="2/3/3/4" data-NarrowGridArea="3/2/4/3" style="grid-area:2/3/3/4">:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="2/4/3/5" data-NarrowGridArea="3/3/4/4" style="grid-area:2/4/3/5"><span class="SHNumber">0</span></div><div class="PAfterParameters" data-WideGridArea="2/5/3/6" data-NarrowGridArea="4/1/5/5" style="grid-area:2/5/3/6">)</div></div></div></div>
+ <div class="CBody"><p>It's an alias of <a href="#RDA_AutomationKeyboard.sendKeys" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,202);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard.sendKeys</a> but just log the length</p><p>See: <a href="#RDA_KeyboardSendKeys" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,269);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_KeyboardSendKeys</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">password</td><td class="CDLDefinition"><p>password string</p></td></tr><tr><td class="CDLEntry">hwnd</td><td class="CDLDefinition"><p>number - Window handle</p></td></tr></table><div class="CHeading">Throws</div><p>hwnd is required in background input mode</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationKeyboard" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,34);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard</a></p></div>
 </div>
 
 </div><div class="page-break"></div>
@@ -1089,8 +1112,24 @@ body {
 
 <script type="text/javascript">var q = window.location.search;if (q.startsWith("?Theme=")){var t = q.slice(7);var e = t.indexOf(";");if (e != -1){  t = t.slice(0, e);  }document.documentElement.classList.add(t + "Theme")}</script>
 
-<a name="RDA_AutomationUIAElement"></a><a name="Topic39"></a><div class="CTopic TClass LAutoHotKey first">
+<a name="RDA_AutomationUIA"></a><a name="Topic200"></a><div class="CTopic TClass LAutoHotKey first">
+ <div class="CTitle">RDA_AutomationUIA</div>
+ <div class="CBody"><p>Fake class It's just an entry in the documentation but in reallity is the result of calling: UIA_Interface()</p><p>Check UIAutomation documentation for more information.</p></div>
+</div>
+
+<a name="RDA_AutomationUIA.RDA_AutomationUIA"></a><a name="Topic201"></a><div class="CTopic TFunction LAutoHotKey last">
+ <div class="CTitle">RDA_AutomationUIA</div>
+ <div class="CBody"><p>Internal, use <a href="#RDA_Automation.UIA" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,294);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_Automation.UIA</a></p></div>
+</div>
+
+</div><div class="page-break"></div>
+<div class="page">
+
+<script type="text/javascript">var q = window.location.search;if (q.startsWith("?Theme=")){var t = q.slice(7);var e = t.indexOf(";");if (e != -1){  t = t.slice(0, e);  }document.documentElement.classList.add(t + "Theme")}</script>
+
+<a name="RDA_AutomationUIAElement"></a><a name="Topic310"></a><div class="CTopic TClass LAutoHotKey first">
  <div class="CTitle">RDA_AutomationUIAElement</div>
+ <div class="CBody"><p>Automate applications using Microsoft UI Automation</p><p>Extends: RDA_AutomationBaseElement</p></div>
 </div>
 
 <a name="RDA_AutomationUIAElement.toString"></a><a name="Topic40"></a><div class="CTopic TFunction LAutoHotKey">
@@ -1156,7 +1195,7 @@ body {
 <a name="RDA_AutomationUIAElement.highlight"></a><a name="Topic50"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">highlight</div>
  <div id="NDPrototype50" class="NDPrototype"><div class="PSection PPlainSection">highlight()</div></div>
- <div class="CBody"><p>Highlights the element</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div class="CBody"><p>Highlights the element</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationUIAElement.getRegion"></a><a name="Topic51"></a><div class="CTopic TFunction LAutoHotKey">
@@ -1168,43 +1207,43 @@ body {
 <a name="RDA_AutomationUIAElement.click"></a><a name="Topic52"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">click</div>
  <div id="NDPrototype52" class="NDPrototype"><div class="PSection PPlainSection">click()</div></div>
- <div class="CBody"><p>&quot;Clicks&quot; on the element using UIA</p><div class="CHeading">Remarks</div><p>This do not honor <a href="#RDA_Automation" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,286);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_Automation</a> configuration at it uses UIA</p><p>It performs various things: * call Invoke: if InvokePattern is implemented * call Toggle: if TogglePattern is implemented * call Expand/Colapse: if ExpandCollapsePattern is implemented * call Select: if SelectItemPattern is implemented * call DoDefaultAction: if LegacyIAccessible is implemented</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div class="CBody"><p>&quot;Clicks&quot; on the element using UIA</p><div class="CHeading">Remarks</div><p>This do not honor <a href="#RDA_Automation" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,286);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_Automation</a> configuration at it uses UIA</p><p>It performs various things: * call Invoke: if InvokePattern is implemented * call Toggle: if TogglePattern is implemented * call Expand/Colapse: if ExpandCollapsePattern is implemented * call Select: if SelectItemPattern is implemented * call DoDefaultAction: if LegacyIAccessible is implemented</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationUIAElement.osClick"></a><a name="Topic53"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">osClick</div>
  <div id="NDPrototype53" class="NDPrototype"><div class="PSection PPlainSection">osClick()</div></div>
- <div class="CBody"><p>&quot;Clicks&quot; on the element at OS level</p><div class="CHeading">Remarks</div><p>This will honor <a href="#RDA_Automation" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,286);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_Automation</a> configuration</p><div class="CHeading">Remarks</div><p>It will click at the element center position, note that other element could recieve the click if it's hover.</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div class="CBody"><p>&quot;Clicks&quot; on the element at OS level</p><div class="CHeading">Remarks</div><p>This will honor <a href="#RDA_Automation" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,286);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_Automation</a> configuration</p><div class="CHeading">Remarks</div><p>It will click at the element center position, note that other element could recieve the click if it's hover.</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationUIAElement.hover"></a><a name="Topic54"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">hover</div>
  <div id="NDPrototype54" class="NDPrototype"><div class="PSection PPlainSection">hover()</div></div>
- <div class="CBody"><p>Alias of <a href="#RDA_AutomationUIAElement.osHover" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,55);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement.osHover</a></p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div class="CBody"><p>Alias of <a href="#RDA_AutomationUIAElement.osHover" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,55);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement.osHover</a></p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationUIAElement.osHover"></a><a name="Topic55"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">osHover</div>
  <div id="NDPrototype55" class="NDPrototype"><div class="PSection PPlainSection">osHover()</div></div>
- <div class="CBody"><p>Hovers the element at OS level</p><div class="CHeading">Remarks</div><p>Hover an element at OS level. This functionallity is not available in UIA</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div class="CBody"><p>Hovers the element at OS level</p><div class="CHeading">Remarks</div><p>Hover an element at OS level. This functionallity is not available in UIA</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationUIAElement.focus"></a><a name="Topic56"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">focus</div>
  <div id="NDPrototype56" class="NDPrototype"><div class="PSection PPlainSection">focus()</div></div>
- <div class="CBody"><p>Focuses control</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div class="CBody"><p>Focuses control</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationUIAElement.getFocusedControl"></a><a name="Topic57"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getFocusedControl</div>
  <div id="NDPrototype57" class="NDPrototype"><div class="PSection PPlainSection">getFocusedControl()</div></div>
- <div class="CBody"><p>Retrieves focused control</p><div class="CHeading">Throws</div><p>No element focused</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div class="CBody"><p>Retrieves focused control</p><div class="CHeading">Throws</div><p>No element focused</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationUIAElement.toggle"></a><a name="Topic58"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">toggle</div>
  <div id="NDPrototype58" class="NDPrototype"><div class="PSection PPlainSection">toggle()</div></div>
- <div class="CBody"><p>Toggles the element, element must implement TogglePattern</p><div class="CHeading">Throws</div><p>TogglePattern not implemented Toggle called but no change</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div class="CBody"><p>Toggles the element, element must implement TogglePattern</p><div class="CHeading">Throws</div><p>TogglePattern not implemented Toggle called but no change</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationUIAElement.isChecked"></a><a name="Topic59"></a><div class="CTopic TFunction LAutoHotKey">
@@ -1228,19 +1267,19 @@ body {
 <a name="RDA_AutomationUIAElement.select"></a><a name="Topic62"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">select</div>
  <div id="NDPrototype62" class="NDPrototype"><div class="PSection PPlainSection">select()</div></div>
- <div class="CBody"><p>Selects the element, element must implement SelectionItemPattern</p><div class="CHeading">Throws</div><p>SelectionItemPattern not implemented select called but no change</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div class="CBody"><p>Selects the element, element must implement SelectionItemPattern</p><div class="CHeading">Throws</div><p>SelectionItemPattern not implemented select called but no change</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationUIAElement.unselect"></a><a name="Topic63"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">unselect</div>
  <div id="NDPrototype63" class="NDPrototype"><div class="PSection PPlainSection">unselect()</div></div>
- <div class="CBody"><p>Unselects the element, element must implement SelectionItemPattern</p><div class="CHeading">Throws</div><p>SelectionItemPattern not implemented select called but no change</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div class="CBody"><p>Unselects the element, element must implement SelectionItemPattern</p><div class="CHeading">Throws</div><p>SelectionItemPattern not implemented select called but no change</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationUIAElement.isSelected"></a><a name="Topic64"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">isSelected</div>
  <div id="NDPrototype64" class="NDPrototype"><div class="PSection PPlainSection">isSelected()</div></div>
- <div class="CBody"><p>Retrieves if the element is selected, element must implement SelectionItemPattern</p><div class="CHeading">Throws</div><p>SelectionItemPattern not implemented</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div class="CBody"><p>Retrieves if the element is selected, element must implement SelectionItemPattern</p><div class="CHeading">Throws</div><p>SelectionItemPattern not implemented</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationUIAElement.getSelectedItems"></a><a name="Topic65"></a><div class="CTopic TFunction LAutoHotKey">
@@ -1252,7 +1291,7 @@ body {
 <a name="RDA_AutomationUIAElement.clearSelectedItems"></a><a name="Topic66"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">clearSelectedItems</div>
  <div id="NDPrototype66" class="NDPrototype"><div class="PSection PPlainSection">clearSelectedItems()</div></div>
- <div class="CBody"><p>Retrieves if the element has multiple selection, element must implement SelectionPattern</p><div class="CHeading">Remarks</div><p>It will loop the selected items an unselects, it may not remove the last one and throw</p><div class="CHeading">Throws</div><p>SelectionPattern not implemented</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div class="CBody"><p>Retrieves if the element has multiple selection, element must implement SelectionPattern</p><div class="CHeading">Remarks</div><p>It will loop the selected items an unselects, it may not remove the last one and throw</p><div class="CHeading">Throws</div><p>SelectionPattern not implemented</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationUIAElement.canSelectMultiple"></a><a name="Topic67"></a><div class="CTopic TFunction LAutoHotKey">
@@ -1270,25 +1309,25 @@ body {
 <a name="RDA_AutomationUIAElement.setValue"></a><a name="Topic69"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">setValue</div>
  <div id="NDPrototype69" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">setValue(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">text</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Sets element value, element must implement ValuePattern</p><div class="CHeading">Remarks</div><p>This method can disclosure information, use <a href="#RDA_AutomationUIAElement.setPassword" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,70);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement.setPassword</a></p><div class="CHeading">Throws</div><p>ValuePattern not implemented</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div class="CBody"><p>Sets element value, element must implement ValuePattern</p><div class="CHeading">Remarks</div><p>This method can disclosure information, use <a href="#RDA_AutomationUIAElement.setPassword" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,70);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement.setPassword</a></p><div class="CHeading">Throws</div><p>ValuePattern not implemented</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationUIAElement.setPassword"></a><a name="Topic70"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">setPassword</div>
  <div id="NDPrototype70" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">setPassword(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">text</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Sets element value discreetly, element must implement ValuePattern</p><div class="CHeading">Throws</div><p>ValuePattern not implemented</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div class="CBody"><p>Sets element value discreetly, element must implement ValuePattern</p><div class="CHeading">Throws</div><p>ValuePattern not implemented</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationUIAElement.getValue"></a><a name="Topic71"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getValue</div>
  <div id="NDPrototype71" class="NDPrototype"><div class="PSection PPlainSection">getValue()</div></div>
- <div class="CBody"><p>Retrieves element value, element must implement ValuePattern</p><div class="CHeading">Remarks</div><p>This method can disclosure information, use <a href="#RDA_AutomationUIAElement.getPassword" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,72);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement.getPassword</a></p><div class="CHeading">Throws</div><p>ValuePattern not implemented</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div class="CBody"><p>Retrieves element value, element must implement ValuePattern</p><div class="CHeading">Remarks</div><p>This method can disclosure information, use <a href="#RDA_AutomationUIAElement.getPassword" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,72);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement.getPassword</a></p><div class="CHeading">Throws</div><p>ValuePattern not implemented</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationUIAElement.getPassword"></a><a name="Topic72"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getPassword</div>
  <div id="NDPrototype72" class="NDPrototype"><div class="PSection PPlainSection">getPassword()</div></div>
- <div class="CBody"><p>Retrieves element value discreetly, element must implement ValuePattern</p><div class="CHeading">Throws</div><p>getValue failed ValuePattern not implemented</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div class="CBody"><p>Retrieves element value discreetly, element must implement ValuePattern</p><div class="CHeading">Throws</div><p>getValue failed ValuePattern not implemented</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationUIAElement.getChildren"></a><a name="Topic73"></a><div class="CTopic TFunction LAutoHotKey">
@@ -1300,7 +1339,7 @@ body {
 <a name="RDA_AutomationUIAElement.getChild"></a><a name="Topic74"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getChild</div>
  <div id="NDPrototype74" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">getChild(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">index</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Retrieves a child by index</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">index</td><td class="CDLDefinition"><p>number - Index</p></td></tr></table><div class="CHeading">Throws</div><p>Index out of bounds</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div class="CBody"><p>Retrieves a child by index</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">index</td><td class="CDLDefinition"><p>number - Index</p></td></tr></table><div class="CHeading">Throws</div><p>Index out of bounds</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationUIAElement.getDescendants"></a><a name="Topic75"></a><div class="CTopic TFunction LAutoHotKey">
@@ -1318,7 +1357,7 @@ body {
 <a name="RDA_AutomationUIAElement.getParent"></a><a name="Topic77"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getParent</div>
  <div id="NDPrototype77" class="NDPrototype"><div class="PSection PPlainSection">getParent()</div></div>
- <div class="CBody"><p>Retrieves the element parent / Traverses up the tree once.</p><div class="CHeading">Throws</div><p>Could not get parent</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div class="CBody"><p>Retrieves the element parent / Traverses up the tree once.</p><div class="CHeading">Throws</div><p>Could not get parent</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationUIAElement.dumpXML"></a><a name="Topic78"></a><div class="CTopic TFunction LAutoHotKey last">
@@ -1481,25 +1520,25 @@ body {
 <a name="RDA_AutomationWindow.type"></a><a name="Topic105"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">type</div>
  <div id="NDPrototype105" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">type(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">text</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Shortcut: <a href="#RDA_AutomationWindow.activate" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,112);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationWindow.activate</a> + <a href="#RDA_AutomationKeyboard.type" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,35);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard.type</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">text</td><td class="CDLDefinition"><p>string - Text</p></td></tr></table><div class="CHeading">Returns</div><p><a href="#RDA_AutomationWindow.RDA_AutomationWindow" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,86);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationWindow</a></p></div>
+ <div class="CBody"><p>Shortcut: <a href="#RDA_AutomationWindow.activate" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,112);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationWindow.activate</a> + <a href="#RDA_AutomationKeyboard.type" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,198);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard.type</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">text</td><td class="CDLDefinition"><p>string - Text</p></td></tr></table><div class="CHeading">Returns</div><p><a href="#RDA_AutomationWindow.RDA_AutomationWindow" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,86);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationWindow</a></p></div>
 </div>
 
 <a name="RDA_AutomationWindow.typePassword"></a><a name="Topic106"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">typePassword</div>
  <div id="NDPrototype106" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">typePassword(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">password</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Shortcut: <a href="#RDA_AutomationWindow.activate" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,112);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationWindow.activate</a> + <a href="#RDA_AutomationKeyboard.typePassword" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,36);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard.typePassword</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">password</td><td class="CDLDefinition"><p>string - Text</p></td></tr></table><div class="CHeading">Returns</div><p><a href="#RDA_AutomationWindow.RDA_AutomationWindow" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,86);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationWindow</a></p></div>
+ <div class="CBody"><p>Shortcut: <a href="#RDA_AutomationWindow.activate" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,112);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationWindow.activate</a> + <a href="#RDA_AutomationKeyboard.typePassword" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,199);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard.typePassword</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">password</td><td class="CDLDefinition"><p>string - Text</p></td></tr></table><div class="CHeading">Returns</div><p><a href="#RDA_AutomationWindow.RDA_AutomationWindow" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,86);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationWindow</a></p></div>
 </div>
 
 <a name="RDA_AutomationWindow.sendKeys"></a><a name="Topic107"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">sendKeys</div>
  <div id="NDPrototype107" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">sendKeys(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">keys</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Shortcut: <a href="#RDA_AutomationWindow.activate" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,112);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationWindow.activate</a> + <a href="#RDA_AutomationKeyboard.sendKeys" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,37);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard.sendKeys</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">keys</td><td class="CDLDefinition"><p>string - Keys</p></td></tr></table><div class="CHeading">Returns</div><p><a href="#RDA_AutomationWindow.RDA_AutomationWindow" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,86);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationWindow</a></p></div>
+ <div class="CBody"><p>Shortcut: <a href="#RDA_AutomationWindow.activate" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,112);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationWindow.activate</a> + <a href="#RDA_AutomationKeyboard.sendKeys" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,202);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard.sendKeys</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">keys</td><td class="CDLDefinition"><p>string - Keys</p></td></tr></table><div class="CHeading">Returns</div><p><a href="#RDA_AutomationWindow.RDA_AutomationWindow" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,86);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationWindow</a></p></div>
 </div>
 
 <a name="RDA_AutomationWindow.sendPassword"></a><a name="Topic108"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">sendPassword</div>
  <div id="NDPrototype108" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">sendPassword(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">password</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Shortcut: <a href="#RDA_AutomationWindow.activate" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,112);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationWindow.activate</a> + <a href="#RDA_AutomationKeyboard.sendPassword" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,38);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard.sendPassword</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">password</td><td class="CDLDefinition"><p>password string</p></td></tr></table><div class="CHeading">Returns</div><p><a href="#RDA_AutomationWindow.RDA_AutomationWindow" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,86);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationWindow</a></p></div>
+ <div class="CBody"><p>Shortcut: <a href="#RDA_AutomationWindow.activate" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,112);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationWindow.activate</a> + <a href="#RDA_AutomationKeyboard.sendPassword" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,203);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationKeyboard.sendPassword</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">password</td><td class="CDLDefinition"><p>password string</p></td></tr></table><div class="CHeading">Returns</div><p><a href="#RDA_AutomationWindow.RDA_AutomationWindow" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,86);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationWindow</a></p></div>
 </div>
 
 <a name="RDA_AutomationWindow.getChildren"></a><a name="Topic109"></a><div class="CTopic TFunction LAutoHotKey">
@@ -1570,10 +1609,10 @@ body {
  <div class="CBody"><p>Retrieves the color of the pixel at the specified screen position. (<a href="#RDA_PixelGetColor" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,276);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_PixelGetColor</a>)</p><div class="CHeading">Remarks</div><p>0xFFFFFFFF is the actual value returned when Workstation is locked</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">number</td><td class="CDLDefinition"><p>RGB color</p></td></tr></table></div>
 </div>
 
-<a name="RDA_AutomationWindow.searchColor"></a><a name="Topic121"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationWindow.searchColor"></a><a name="Topic39"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">searchColor</div>
- <div id="NDPrototype121" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/3/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/3/2">searchColor(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">color,</div><div class="PName InFirstParameterColumn" data-WideGridArea="2/2/3/3" data-NarrowGridArea="3/1/4/2" style="grid-area:2/2/3/3">variation</div><div class="PDefaultValueSeparator" data-WideGridArea="2/3/3/4" data-NarrowGridArea="3/2/4/3" style="grid-area:2/3/3/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="2/4/3/5" data-NarrowGridArea="3/3/4/4" style="grid-area:2/4/3/5"><span class="SHString">&quot;&quot;</span></div><div class="PAfterParameters" data-WideGridArea="2/5/3/6" data-NarrowGridArea="4/1/5/5" style="grid-area:2/5/3/6">)</div></div></div></div>
- <div class="CBody"><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">color</td><td class="CDLDefinition"><p>number - RGB color</p></td></tr><tr><td class="CDLEntry">variation</td><td class="CDLDefinition"><p>number - Number of shades of variation. See: <a href="https://www.autohotkey.com/docs/v1/lib/PixelSearch.htm#Parameters" target="_top">https://&#8203;www&#8203;.autohotkey&#8203;.com&#8203;/docs&#8203;/v1&#8203;/lib&#8203;/PixelSearch&#8203;.htm&#8203;#Parameters</a></p></td></tr></table><div class="CHeading">Throws</div><p>Color not found</p><div class="CHeading">Returns</div><p><a href="#RDA_ScreenPosition" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,12);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_ScreenPosition</a></p></div>
+ <div id="NDPrototype39" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/3/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/3/2">searchColor(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">color,</div><div class="PName InFirstParameterColumn" data-WideGridArea="2/2/3/3" data-NarrowGridArea="3/1/4/2" style="grid-area:2/2/3/3">variation</div><div class="PDefaultValueSeparator" data-WideGridArea="2/3/3/4" data-NarrowGridArea="3/2/4/3" style="grid-area:2/3/3/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="2/4/3/5" data-NarrowGridArea="3/3/4/4" style="grid-area:2/4/3/5"><span class="SHString">&quot;&quot;</span></div><div class="PAfterParameters" data-WideGridArea="2/5/3/6" data-NarrowGridArea="4/1/5/5" style="grid-area:2/5/3/6">)</div></div></div></div>
+ <div class="CBody"><p>Searches a region of the screen for a pixel of the specified color.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">color</td><td class="CDLDefinition"><p>number - RGB color</p></td></tr><tr><td class="CDLEntry">variation</td><td class="CDLDefinition"><p>number - Number of shades of variation. See: <a href="https://www.autohotkey.com/docs/v1/lib/PixelSearch.htm#Parameters" target="_top">https://&#8203;www&#8203;.autohotkey&#8203;.com&#8203;/docs&#8203;/v1&#8203;/lib&#8203;/PixelSearch&#8203;.htm&#8203;#Parameters</a></p></td></tr></table><div class="CHeading">Throws</div><p>Color not found</p><div class="CHeading">Returns</div><p><a href="#RDA_ScreenPosition" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,12);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_ScreenPosition</a></p></div>
 </div>
 
 <a name="RDA_AutomationWindow.searchImage"></a><a name="Topic122"></a><div class="CTopic TFunction LAutoHotKey">
@@ -1594,16 +1633,16 @@ body {
  <div class="CBody"><p>Searches a region of the screen for first image until it appears and return its position</p><div class="CHeading">Remarks</div><p>It set current window to opaque (non-transparent)</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">imagePaths</td><td class="CDLDefinition"><p>string|string[] - Absolute image path</p></td></tr><tr><td class="CDLEntry">sensibility</td><td class="CDLDefinition"><p>number - Color-variant sensibility. A number from 0 to 255, 0 means exact match</p></td></tr></table><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">number</td><td class="CDLDefinition"><p>Index of the image not found (1 if a string was sent)</p></td></tr></table></div>
 </div>
 
-<a name="RDA_AutomationWindow.setOpaque"></a><a name="Topic125"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationWindow.setOpaque"></a><a name="Topic311"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">setOpaque</div>
- <div id="NDPrototype125" class="NDPrototype"><div class="PSection PPlainSection">setOpaque()</div></div>
- <div class="CBody"><p>Enables windows transparency</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationWindow.RDA_AutomationWindow" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,86);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationWindow</a></p></div>
+ <div id="NDPrototype311" class="NDPrototype"><div class="PSection PPlainSection">setOpaque()</div></div>
+ <div class="CBody"><p>Disable windows transparency</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationWindow.RDA_AutomationWindow" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,86);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationWindow</a></p></div>
 </div>
 
-<a name="RDA_AutomationWindow.setTransparent"></a><a name="Topic126"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationWindow.setTransparent"></a><a name="Topic312"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">setTransparent</div>
- <div id="NDPrototype126" class="NDPrototype"><div class="PSection PPlainSection">setTransparent()</div></div>
- <div class="CBody"><p>Hides the window.</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationWindow.RDA_AutomationWindow" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,86);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationWindow</a></p></div>
+ <div id="NDPrototype312" class="NDPrototype"><div class="PSection PPlainSection">setTransparent()</div></div>
+ <div class="CBody"><p>Enables windows transparency</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationWindow.RDA_AutomationWindow" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,86);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationWindow</a></p></div>
 </div>
 
 <a name="RDA_AutomationWindow.screenshot"></a><a name="Topic127"></a><div class="CTopic TFunction LAutoHotKey">
@@ -1624,15 +1663,16 @@ body {
  <div class="CBody"><p>Alias of <a href="#RDA_AutomationClipboard.copy" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,190);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationClipboard.copy</a> but activate current window before.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">keys</td><td class="CDLDefinition"><p>string - Copy command by default CTRL+C</p></td></tr><tr><td class="CDLEntry">timeout</td><td class="CDLDefinition"><p>number - timeout, in miliseconds</p></td></tr><tr><td class="CDLEntry">delay</td><td class="CDLDefinition"><p>number - retry delay, in miliseconds</p></td></tr></table><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">string</td><td class="CDLDefinition"><p>Clipboard contents</p></td></tr></table></div>
 </div>
 
-<a name="RDA_AutomationWindow.asUIAElement"></a><a name="Topic130"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_AutomationWindow.asUIAElement"></a><a name="Topic313"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">asUIAElement</div>
- <div id="NDPrototype130" class="NDPrototype"><div class="PSection PPlainSection">asUIAElement()</div></div>
- <div class="CBody"><p>Retrieves current windows as RDA_AutomationUIAElement</p><div class="CHeading">Throws</div><p>Not found</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
+ <div id="NDPrototype313" class="NDPrototype"><div class="PSection PPlainSection">asUIAElement()</div></div>
+ <div class="CBody"><p>Retrieves current windows as RDA_AutomationUIAElement</p><div class="CHeading">Example</div><pre class="CCode">automation := <span class="SHKeyword">new</span> RDA_Automation()<br />windows := automation.windows()<br />win := windows.waitOne({process: <span class="SHString">&quot;notepad.exe&quot;</span>})<br />element := win.asUIAElement()</pre><div class="CHeading">Throws</div><p>Not found</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationUIAElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,310);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationUIAElement</a></p></div>
 </div>
 
-<a name="RDA_AutomationWindow.asUIAElement(2)"></a><a name="Topic131"></a><div class="CTopic TFunction LAutoHotKey last">
- <div class="CTitle">asUIAElement</div>
- <div class="CBody"><p>Retrieves current windows as RDA_AutomationJABElement</p><div class="CHeading">Throws</div><p>Not found</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,202);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
+<a name="RDA_AutomationWindow.asJABElement"></a><a name="Topic314"></a><div class="CTopic TFunction LAutoHotKey last">
+ <div class="CTitle">asJABElement</div>
+ <div id="NDPrototype314" class="NDPrototype"><div class="PSection PPlainSection">asJABElement()</div></div>
+ <div class="CBody"><p>Retrieves current windows as RDA_AutomationJABElement</p><div class="CHeading">Example</div><pre class="CCode">automation := <span class="SHKeyword">new</span> RDA_Automation()<br />windows := automation.windows()<br />win := windows.waitOne({process: <span class="SHString">&quot;java.exe&quot;</span>})<br />element := win.asJABElement()</pre><div class="CHeading">Throws</div><p>Not found</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,194);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >RDA_AutomationJABElement</a></p></div>
 </div>
 
 </div><div class="page-break"></div>

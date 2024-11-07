@@ -13,7 +13,7 @@ class RDA_AutomationMouse extends RDA_Base {
       automation - <RDA_Automation>
   */
   __New(automation) {
-    RDA_Assert(!automation, A_ThisFunc . " automation is null")
+    RDA_Assert(automation, A_ThisFunc . " automation is null")
     this.automation := automation
   }
   /*!

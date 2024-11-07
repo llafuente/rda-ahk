@@ -187,6 +187,18 @@ class RDA_AutomationBaseElement extends RDA_Base {
     Parameters:
       query - string - xpath-ish
 
+  Example:
+    ======= AutoHotKey =======
+    ; Returns all List with name xxx
+    elements := element.find("//List[@name = 'xxx']")
+    ; search all list and returns label children
+    elements := element.find("//List/Label")
+    ; Returns all nodes with type document or edit
+    elements := element.find("//*[@type = 'Document' or @type = 'Edit']")
+    ; Returns Labels under a list
+    elements := element.find("//List/Label")
+    ==========================
+
     Throws:
       Not found
 

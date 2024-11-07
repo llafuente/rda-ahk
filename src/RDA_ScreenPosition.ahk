@@ -30,7 +30,7 @@ class RDA_ScreenPosition extends RDA_Base {
       y - number - screen position y
   */
   __New(automation, x, y) {
-    RDA_Assert(!automation, A_ThisFunc . " automation is null")
+    RDA_Assert(automation, A_ThisFunc . " automation is null")
     this.automation := automation
     this.x := x
     this.y := y
