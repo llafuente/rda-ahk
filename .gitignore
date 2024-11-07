@@ -1,3 +1,9 @@
 # generated
 Natural_Docs_2.3.zip
-Natural_Docs
+Natural Docs/
+
+docs/html/
+docs/Working Data/
+
+src/*.bak
+test/*.bak
