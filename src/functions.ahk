@@ -1217,17 +1217,13 @@ _RDA_Screenshot_CaptureMouse(hDC, nL, nT) {
   If hBMColor
     DllCall("DeleteObject", "ptr", hBMColor)
 }
-/*
-    __convert("C:\image.bmp", "C:\image.jpg")
-    __convert("C:\image.bmp", "C:\image.jpg", 95)
-    __convert(0, "C:\clip.png")   ; Save the bitmap in the clipboard to sFileTo if sFileFr is "" or 0.
-*/
-_RDA_Screenshot_Convert(sFileFr := "", sFileTo := "", nQuality := "") {
+
+_RDA_Screenshot_Convert(sFileFr, sFileTo, nQuality) {
   local offset, sDirTo, sExtTo, sNameTo, hGdiPlus, az, offset, hBitmap, pi
   local struct_size, nSize, pParam, pImage, pToken, hBM, nCount, pCodec, si, ci
 
-  If (sFileTo == "")
-    sFileTo := A_ScriptDir . "\screen.bmp"
+  RDA_Log_Debug(A_ThisFunc . "(" . sFileFr . ", " . sFileTo . ", " . nQuality . ")")
+
   SplitPath, sFileTo, , sDirTo, sExtTo, sNameTo
 
   If Not hGdiPlus := DllCall("LoadLibrary", "str", "gdiplus.dll", "ptr")
@@ -1237,18 +1233,7 @@ _RDA_Screenshot_Convert(sFileFr := "", sFileTo := "", nQuality := "") {
   DllCall("gdiplus\GdiplusStartup", "UintP", pToken, "ptr", &si, "ptr", 0)
 
   pImage := 0
-  If !sFileFr
-  {
-    DllCall("OpenClipboard", "ptr", 0)
-    If (DllCall("IsClipboardFormatAvailable", "Uint", 2) && (hBM:=DllCall("GetClipboardData", "Uint", 2, "ptr"))) {
-      DllCall("gdiplus\GdipCreateBitmapFromHBITMAP", "ptr", hBM, "ptr", 0, "ptr*", pImage)
-    }
-    DllCall("CloseClipboard")
-  } else if (RegExMatch(sFileFr, "^(\+|-)*[0-9]+$")) {
-    DllCall("gdiplus\GdipCreateBitmapFromHBITMAP", "ptr", sFileFr, "ptr", 0, "ptr*", pImage)
-  } else {
-    DllCall("gdiplus\GdipLoadImageFromFile", "wstr", sFileFr, "ptr*", pImage)
-  }
+  DllCall("gdiplus\GdipCreateBitmapFromHBITMAP", "ptr", sFileFr, "ptr", 0, "ptr*", pImage)
   nSize := nCount:= 0
   DllCall("gdiplus\GdipGetImageEncodersSize", "UintP", nCount, "UintP", nSize)
   VarSetCapacity(ci,nSize,0)
@@ -1272,9 +1257,12 @@ _RDA_Screenshot_Convert(sFileFr := "", sFileTo := "", nQuality := "") {
       }
   }
 
-  If pImage {
-    pParam := 0
-    pCodec < &ci + nSize  ? DllCall("gdiplus\GdipSaveImageToFile", "ptr", pImage, "wstr", sFileTo, "ptr", pCodec, "ptr", pParam) : DllCall("gdiplus\GdipCreateHBITMAPFromBitmap", "ptr", pImage, "ptr*", hBitmap, "Uint", 0) . _RDA_Screenshot_SetClipboardData(hBitmap), DllCall("gdiplus\GdipDisposeImage", "ptr", pImage)
+  if (pCodec < &ci + nSize) {
+    DllCall("gdiplus\GdipSaveImageToFile", "ptr", pImage, "wstr", sFileTo, "ptr", pCodec, "ptr", 0)
+  } else {
+    DllCall("gdiplus\GdipCreateHBITMAPFromBitmap", "ptr", pImage, "ptr*", hBitmap, "Uint", 0)
+    _RDA_Screenshot_SetClipboardData(hBitmap)
+    DllCall("gdiplus\GdipDisposeImage", "ptr", pImage)
   }
 
   DllCall("gdiplus\GdiplusShutdown" , "Uint", pToken)
