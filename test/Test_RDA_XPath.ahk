@@ -34,7 +34,7 @@ class Test_RDA_XPath {
     } catch e {
       lastException := e
     }
-    Yunit.assert(lastException.message == "Query shall start with slash", "Query shall start with slash 1")
+    Yunit.assert(lastException.message == "Query shall start with slash or dot", "Query shall start with slash 1")
 
     lastException := 0
     try {
@@ -42,7 +42,7 @@ class Test_RDA_XPath {
     } catch e {
       lastException := e
     }
-    Yunit.assert(lastException.message == "Query shall start with slash", "Query shall start with slash 2")
+    Yunit.assert(lastException.message == "Query shall start with slash or dot", "Query shall start with slash 2")
 
     lastException := 0
     try {
@@ -108,7 +108,7 @@ class Test_RDA_XPath {
     } catch e {
       lastException := e
     }
-    Yunit.assert(lastException.message == "Query shall start with slash", "Query shall start with slash 3")
+    Yunit.assert(lastException.message == "Query shall start with slash or dot", "Query shall start with slash 3")
 
 
 
@@ -175,6 +175,33 @@ class Test_RDA_XPath {
 
       actions := _RDA_xPath_Parse(tokens)
     }
+
+    ;actions := RDA_xPath_Parse("//Label/..")
+    actions := RDA_xPath_Parse("./*[@value=""xxx""]")
+    Yunit.assert(actions.length() == 2, "1 actions 1")
+    Yunit.assert(actions[1].action == "getCurrent", "./ 1st action")
+    Yunit.assert(actions[2].action == "xpathFilterMatch", "./ 2nd action")
+
+    actions := RDA_xPath_Parse(".//")
+
+    actions := RDA_xPath_Parse(".//")
+    Yunit.assert(actions[1].action == "getDescendants", ".// -> getDescendants")
+    actions := RDA_xPath_Parse("./")
+    Yunit.assert(actions[1].action == "getCurrent", "./ -> getCurrent")
+    actions := RDA_xPath_Parse("/")
+    Yunit.assert(actions[1].action == "getChildren", "/ -> getChildren")
+    actions := RDA_xPath_Parse("//")
+    Yunit.assert(actions[1].action == "getDescendants", ".// -> getDescendants")
+    actions := RDA_xPath_Parse("/..")
+    Yunit.assert(actions[1].action == "getParent", "/.. -> getParent")
+    actions := RDA_xPath_Parse("./..")
+    Yunit.assert(actions[1].action == "getCurrent", "./..[1] -> getParent")
+    Yunit.assert(actions[2].action == "getParent", "./..[2] -> getParent")
+
+    actions := RDA_xPath_Parse("./*[@value=""xxx""]/..")
+    Yunit.assert(actions.length() == 3, "3 actions")
+    Yunit.assert(actions[3].action == "getParent", "./ 2nd action")
+    RDA_Log_Debug(actions)
 
 ;
 ;  xpath := "//Button[matches(@Name, ""\d+"")]/Text"

@@ -1374,7 +1374,7 @@ _RDA_xPath_Tokenize(xpath) {
     }
 
     ; token
-    if (c == "/" || c == "[" || c == "]" || c == "=" || c == "!") {
+    if (c == "/" || c == "[" || c == "]" || c == "=" || c == "!" || c == ".") {
       if (StrLen(identifier)) {
         _RDA_xPath_AddIdentifier(tokenize, identifier)
         identifier := ""
@@ -1540,9 +1540,11 @@ _RDA_xPath_ParseExpr(stack, nodes) {
 _RDA_xPath_Parse(tokens) {
   local
 
-  if (tokens[1].type != "operator" || tokens[1].operator != "/") {
-    throw RDA_Exception("Query shall start with slash")
-  }
+  ;if (tokens[1].type != "operator") {
+    if (tokens[1].operator != "/" && tokens[1].operator != ".") {
+      throw RDA_Exception("Query shall start with slash or dot")
+    }
+  ;}
 
   nodes := []
 
@@ -1557,10 +1559,41 @@ _RDA_xPath_Parse(tokens) {
     switch (tokens[pos].type) {
       case "operator": {
         switch (tokens[pos].operator) {
+          case ".": {
+            ; start ?
+            if (!nodes.length()) {
+              ; subquery
+              if (tokens[pos + 1].operator != "/") {
+                throw RDA_Exception("expected slash after dot ""./""")
+              }
+              ; .//
+              if (tokens[pos + 1].operator == "/" && tokens[pos + 2].operator == "/") {
+                pos += 2
+                nodes.push({ "action": "getDescendants" })
+              ; ./
+              } else if (tokens[pos + 1].operator == "/") {
+                pos += 1
+                nodes.push({ "action": "getCurrent" })
+              }
+            } else {
+              ; ignore just one
+              ; two -> getParent
+              if (tokens[pos + 1].operator == ".") {
+                pos += 1
+                nodes.push({ "action": "getParent" })
+              }
+            }
+          }
           case "/": {
+            ; /
+            ; //
+            ; /..
             if (tokens[pos + 1].operator == "/") {
               pos += 1
               nodes.push({ "action": "getDescendants" })
+            } else if (tokens[pos + 1].operator == "." && tokens[pos + 2].operator == ".") {
+              pos += 2
+              nodes.push({ "action": "getParent" })
             } else {
               nodes.push({ "action": "getChildren" })
             }

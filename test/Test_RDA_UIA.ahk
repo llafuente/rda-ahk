@@ -71,6 +71,8 @@ class Test_RDA_UIA {
 
     fileMenuItem := uiaWin.findOne("//MenuItem[@Name=""File""]")
     Yunit.assert(fileMenuItem.getName() == "File", "First MenuItem is File")
+    Yunit.assert(fileMenuItem.findOne("./..").isSameElement(fileMenuItem.getParent()), "Check xpath parent == getParent")
+
 
     elements2 := uiaWin.find("//*[@Type = ""MenuItem"" and @Name=""File""]")
     Yunit.assert(elements2.length() == 1, "2. Single MenuItem@File")

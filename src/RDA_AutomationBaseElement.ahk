@@ -117,6 +117,10 @@ class RDA_AutomationBaseElement extends RDA_Base {
     RDA_Log_Debug(A_ThisFunc . "(" . RDA_JSON_stringify(action) ", " . item.toString() . ")")
 
     switch (action.action) {
+      case "getParent":
+        return [item.getParent()]
+      case "getCurrent":
+        return [this]
       case "getDescendants":
         return item.getDescendants()
       case "getChildren":
