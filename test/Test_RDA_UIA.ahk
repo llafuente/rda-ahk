@@ -238,6 +238,40 @@ class Test_RDA_UIA {
     Yunit.assert(win.isAlive() == false, "notepad is alive")
   }
 
+  sendKeysAsync(win, text) {
+    win.type(text)
+  }
+
+  Test_Automation_UIA_value_change() {
+    local
+    global RDA_Automation, Yunit
+
+    RDA_Log_Debug(A_ThisFunc)
+
+    automation := new RDA_Automation()
+    ;automation.setActionDelay(50)
+    windows := automation.windows()
+    mouse := automation.mouse()
+    wins := windows.get()
+    Yunit.assert(wins.Length() > 0, "Return some windows")
+
+    Run notepad.exe
+    win := windows.waitOne({process: "notepad.exe"})
+    uiaWin := win.asUIAElement()
+    RDA_Log_Debug(uiaWin.dumpXML())
+
+    bound := ObjBindMethod(this, "sendKeysAsync", win, "hello world")
+
+    SetTimer, % bound, -2000
+
+    textarea := uiaWin.waitOne("//*[@Type=""Document"" and @value=""hello world""]")
+
+    uiaWin.findOne("//MenuItem[@Name='File']").click()
+    uiaWin.waitOne("//MenuItem[@Name='Exit']").click()
+    uiaWin.waitOne("//Button[@Name=""Don't Save""]").click()
+
+  }
+
   End() {
   }
 }

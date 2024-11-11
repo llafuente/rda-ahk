@@ -26,6 +26,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
   ;
   ; internal
   xpathGetValue(access) {
+    local
     RDA_Log_Debug(A_ThisFunc . "(" . RDA_JSON_stringify(access) . ")")
 
     switch (access.type) {
@@ -34,6 +35,14 @@ class RDA_AutomationBaseElement extends RDA_Base {
       }
       case "identifier": {
         switch (Format("{:U}", access.identifier)) {
+          case "@VALUE":
+            if (this.hasPattern("Value")) {
+              try {
+                return this.getValue()
+              } catch e {
+              }
+            }
+            return ""
           case "@DESCRIPTION":
             return this.getDescription()
           case "@TYPE":
@@ -290,9 +299,9 @@ class RDA_AutomationBaseElement extends RDA_Base {
       if (A_TickCount >= startTime + timeout) {
         RDA_Log_Error(A_ThisFunc " timeout(" . timeout . ") reached")
         if (elements.length() == 0) {
-          throw RDA_Exception("Timeout reached at " . A_ThisFunc . ": Control not found: " . xpath)
+          throw RDA_Exception("Timeout reached at " . A_ThisFunc . ": Control not found: " . query)
         }
-        throw RDA_Exception("Timeout reached at " . A_ThisFunc . ": Multiple elements found: " . xpath)
+        throw RDA_Exception("Timeout reached at " . A_ThisFunc . ": Multiple elements found: " . query)
       }
 
       sleep % delay
@@ -315,10 +324,19 @@ class RDA_AutomationBaseElement extends RDA_Base {
   */
   dumpXML() {
     local
+    global RDA_Log_Level
     RDA_Log_Debug(A_ThisFunc)
 
-    root := this.__dumpTree()
-    r := this.__dumpNodeTree(root[1])
+    RDA_Log_Level := 2
+
+    try {
+      root := this.__dumpTree()
+      r := this.__dumpNodeTree(root[1])
+    } catch e {
+      RDA_Log_Error(A_ThisFunc . " " . e.message)
+    }
+
+    RDA_Log_Level := 3
 
     return r
   }
