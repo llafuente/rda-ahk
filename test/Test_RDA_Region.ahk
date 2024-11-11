@@ -62,6 +62,20 @@ class Test_RDA_Region {
     Yunit.assert(region.rect.h == 0, "closed window rect.h")
   }
 
+  Test_Automation_Region2() {
+    local
+    global RDA_Automation, Yunit
+    automation := new RDA_Automation()
+    region := automation.region(0, 0, 50, 50)
+
+    Yunit.assert(region.toString() == "RDA_ScreenRegion{x: 0, y: 0, w: 50, h: 50}")
+    Yunit.assert(region.getCenter().toString() == "RDA_ScreenPosition{x: 25, y: 25}")
+    Yunit.assert(region.getTopLeft().toString() == "RDA_ScreenPosition{x: 0, y: 0}")
+    Yunit.assert(region.getTopRight().toString() == "RDA_ScreenPosition{x: 50, y: 0}")
+    Yunit.assert(region.getBottomLeft().toString() == "RDA_ScreenPosition{x: 0, y: 50}")
+    Yunit.assert(region.getBottomRight().toString() == "RDA_ScreenPosition{x: 50, y: 50}")
+  }
+
 
   End() {
   }

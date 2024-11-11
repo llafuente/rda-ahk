@@ -23,6 +23,6 @@ class RDA_Rectangle extends RDA_Base {
       string - debug info
   */
   toString() {
-    return "RDA_Rectangle {w: " . this.w . ", h: " . this.h . "}"
+    return "RDA_Rectangle{w: " . this.w . ", h: " . this.h . "}"
   }
 }

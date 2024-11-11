@@ -17,8 +17,9 @@ class RDA_ScreenRegion extends RDA_Base {
       Creates a <RDA_ScreenRegion> from points
 
     Parameters:
-      x - number - x amount
-      y - number - y amount
+      automation - <RDA_Automation> - automation
+      x - number - x coordinate
+      y - number - y coordinate
       w - number - width (default means same as window)
       h - number - height (default means same as window)
   */
@@ -33,14 +34,14 @@ class RDA_ScreenRegion extends RDA_Base {
       string - debug info
   */
   toString() {
-    return "RDA_ScreenRegion {x: " . this.origin.x . ", y: " . this.origin.y . ", w: " . this.rect.w . ", h: " . this.rect.h . "}"
+    return "RDA_ScreenRegion{x: " . this.origin.x . ", y: " . this.origin.y . ", w: " . this.rect.w . ", h: " . this.rect.h . "}"
   }
   /*!
     Method: getCenter
       Calculates the center of the region
 
     Returns:
-      boolean - RDA_ScreenPosition
+      <RDA_ScreenPosition>
   */
   getCenter() {
     local x := this.origin.x + (this.rect.w // 2)
@@ -49,7 +50,62 @@ class RDA_ScreenRegion extends RDA_Base {
     RDA_Log_Debug(A_ThisFunc . "(" . x . ", "  . y . ")")
     return new RDA_ScreenPosition(this.origin.automation, x, y)
   }
+  /*!
+    Method: getTopLeft
+      Retrieves the screen position of the top left corner
 
+    Returns:
+      <RDA_ScreenPosition>
+  */
+  getTopLeft() {
+    local x := this.origin.x
+    local y := this.origin.y
+
+    RDA_Log_Debug(A_ThisFunc . "(" . x . ", "  . y . ")")
+    return new RDA_ScreenPosition(this.origin.automation, x, y)
+  }
+  /*!
+    Method: getTopRight
+      Retrieves the screen position of the top right corner
+
+    Returns:
+      <RDA_ScreenPosition>
+  */
+  getTopRight() {
+    local x := this.origin.x + this.rect.w
+    local y := this.origin.y
+
+    RDA_Log_Debug(A_ThisFunc . "(" . x . ", "  . y . ")")
+    return new RDA_ScreenPosition(this.origin.automation, x, y)
+  }
+  /*!
+    Method: getBottomLeft
+      Retrieves the screen position of the bottom left corner
+
+    Returns:
+      <RDA_ScreenPosition>
+  */
+  getBottomLeft() {
+    local x := this.origin.x
+    local y := this.origin.y + this.rect.h
+
+    RDA_Log_Debug(A_ThisFunc . "(" . x . ", "  . y . ")")
+    return new RDA_ScreenPosition(this.origin.automation, x, y)
+  }
+  /*!
+    Method: getBottomRight
+      Retrieves the screen position of the bottom right corner
+
+    Returns:
+      <RDA_ScreenPosition>
+  */
+  getBottomRight() {
+    local x := this.origin.x + this.rect.w
+    local y := this.origin.y + this.rect.h
+
+    RDA_Log_Debug(A_ThisFunc . "(" . x . ", "  . y . ")")
+    return new RDA_ScreenPosition(this.origin.automation, x, y)
+  }
   /*!
     Method: click
       Clicks at region center, Alias of <RDA_AutomationMouse.click>

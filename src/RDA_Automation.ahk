@@ -167,7 +167,7 @@ class RDA_Automation extends RDA_Base {
       string
   */
   toString() {
-    return "RDA_Automation{ inputMode: " . this.inputMode . ", actionDelay: " . this.actionDelay . ", keyDelay: " . this.keyDelay . ", pressDuration: " . this.pressDuration . ", sendMode: " . this.sendMode . ", mouseDelay: " . this.mouseDelay . ", mouseSpeed: " . this.mouseSpeed ", UIA: " . (this.UIA ? "yes" : "no")
+    return "RDA_Automation{inputMode: " . this.inputMode . ", actionDelay: " . this.actionDelay . ", keyDelay: " . this.keyDelay . ", pressDuration: " . this.pressDuration . ", sendMode: " . this.sendMode . ", mouseDelay: " . this.mouseDelay . ", mouseSpeed: " . this.mouseSpeed ", UIA: " . (this.UIA ? "yes" : "no") . "}"
   }
   /*!
     Method: setKeyDelay
@@ -328,5 +328,22 @@ class RDA_Automation extends RDA_Base {
       throw RDA_Exception("Not implemented")
     }
     return RDA_ScreenRegion.fromPoints(this, 0, 0, A_ScreenWidth, A_ScreenHeight)
+  }
+
+  /*!
+    Method: region
+      Creates a region
+
+    Parameter:
+      x - number - x coordinate
+      y - number - y coordinate
+      w - number - width (default means same as window)
+      h - number - height (default means same as window)
+
+    Returns:
+      <RDA_ScreenRegion>
+  */
+  region(x, y, width, height) {
+    return RDA_ScreenRegion.fromPoints(this, x, y, width, height)
   }
 }

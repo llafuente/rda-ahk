@@ -66,7 +66,7 @@ class Test_RDA_Image {
       FileDelete % A_ScriptDir . "\test-mspaint.png"
     } catch e {
     }
-    win.screenshot(A_ScriptDir . "\..\test\test-mspaint.png", true)
+    win.screenshot(A_ScriptDir . "\test-mspaint.png", true)
 
     Yunit.assert(fileExist(A_ScriptDir . "\test-mspaint.png"), "Image found at 216!")
 
