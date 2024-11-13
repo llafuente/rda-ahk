@@ -5,7 +5,7 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "dist": "echo TODO",
+    "dist": "powershell.exe -noprofile -executionpolicy bypass -file .\\dist.ps1",
     "docs": "powershell.exe -noprofile -executionpolicy bypass -file .\\docs.ps1",
     "test": "cd test && AutoHotkeyU32.exe /ErrorStdOut \"dev.ahk\""
   }

@@ -105,6 +105,14 @@ To generate the distribution file use:
 npm run dist
 ```
 
+* It will append all source files into one
+* Include all dependencies
+* Remove comments / empty lines
+
+The *default* dist file will *include* our log system.
+
+You can disable the log by using: *RDA_Functions_NoLog.ahk* or implement your own see [RDA_Functions_Log.ahk](./src/RDA_Functions_NoLog.ahk)
+
 # Documentation
 
 [rda-ahk API documentation](./docs/index.html)
