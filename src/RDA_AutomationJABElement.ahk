@@ -1075,7 +1075,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
         offset:= 4 + (A_Index - 1) * 2 + RDA_AutomationJAB.SHORT_STRING_SIZE * 2 * index
         ch := SubStr(action, A_Index, 1)
         chv := Asc(ch)
-        RDA_Log_Debug("offset: " . offset . " val " . chv . " char " . ch)
+        ; RDA_Log_Debug("offset: " . offset . " val " . chv . " char " . ch)
         NumPut(chv, &buff, offset, "UChar")
         ;offset += 2
       }

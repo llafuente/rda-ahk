@@ -11,7 +11,8 @@ FileAppend, Test start!`n, *
 #include ..\JSON\JSON.ahk
 
 ; RDA library
-#include ..\src\functions.ahk
+#include ..\src\RDA_Functions.ahk
+#include ..\src\RDA_Functions_Log.ahk
 #include ..\src\RDA_Base.ahk
 
 
