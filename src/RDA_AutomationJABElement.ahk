@@ -411,7 +411,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
 
     if (!DllCall(this.jab.dllName "\requestFocus", "Int"
       , this.vmId, this.jab.acType, this.acId, "Cdecl Int")) {
-      throw new RuntimeException("focus failed")
+      throw RDA_Exception("focus failed")
     }
 
     return this
@@ -976,29 +976,22 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     Method: getDescendants
       Retrieves all element descendants
 
+    Parameters:
+      limits - <RDA_SearchLimits> - Configure limits for descendant discovery.
+
     Returns:
       <RDA_AutomationJABElement>[]
   */
-  getDescendants() {
+  getDescendants(limits := 0) {
     local
-    global Log
+    global Log, RDA_ElementTreeNode
 
-    RDA_Log_Debug(A_ThisFunc)
+    RDA_Log_Debug(A_ThisFunc . "(" . limits ? limits.toString() : "no" . ")")
 
-    stack := this.getChildren()
-    ret := RDA_Array_Concat([], stack)
+    list := RDA_ElementTreeNode.flatternToElements(this._getDescendantsTree(limits))
 
-    while (stack.Length()) {
-      element := stack.pop()
-
-      elements := element.getChildren()
-
-      stack := RDA_Array_Concat(stack, elements)
-      ret := RDA_Array_Concat(ret, elements)
-    }
-
-    RDA_Log_Debug(A_ThisFunc . " Found " . ret.length() . " items")
-    return ret
+    RDA_Log_Debug(A_ThisFunc . " Found " . list.length() . " items")
+    return list
   }
   /*!
     Method: getSiblings
@@ -1232,10 +1225,10 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     if (!DllCall(this.jab.dllName . "\getAccessibleContextInfo"
       , "Int", this.vmId, this.jab.acType, this.acId, "Ptr", &Info
       , "Cdecl " . this.jab.acType)) {
-      throw new RuntimeException("getAccessibleContextInfo failed")
+      throw RDA_Exception("getAccessibleContextInfo failed")
     }
-    ; TODO this can be a strget right ?
 
+    ; https://github.com/openjdk/jdk/blob/master/src/jdk.accessibility/windows/native/include/bridge/AccessBridgePackages.h#L651
     offset := 0
     ; wchar_t name[MAX_STRING_SIZE];          // the AccessibleName of the object
     this._info.name := StrGet(&Info, RDA_AutomationJAB.MAX_STRING_SIZE, "UTF-16")

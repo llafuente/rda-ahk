@@ -32,6 +32,7 @@ FileAppend, Test start!`n, *
 #include ..\src\RDA_Rectangle.ahk
 #include ..\src\RDA_ScreenPosition.ahk
 #include ..\src\RDA_ScreenRegion.ahk
+#include ..\src\RDA_SearchLimits.ahk
 
 #Include Test_RDA_Automation.ahk
 #Include Test_RDA_Region.ahk

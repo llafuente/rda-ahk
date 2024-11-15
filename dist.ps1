@@ -17,6 +17,7 @@ $files = @(
   ".\src\RDA_Base.ahk",
   ".\src\RDA_Automation.ahk",
   ".\src\RDA_AutomationBaseElement.ahk",
+  ".\src\RDA_ElementTreeNode.ahk",
   ".\src\RDA_AutomationClipboard.ahk",
   ".\src\RDA_AutomationJAB.ahk",
   ".\src\RDA_AutomationJABAccessibleContextInfo.ahk",
@@ -31,6 +32,7 @@ $files = @(
   ".\src\RDA_Rectangle.ahk",
   ".\src\RDA_ScreenPosition.ahk",
   ".\src\RDA_ScreenRegion.ahk"
+  ".\src\RDA_SearchLimits.ahk"
 )
 $contents = ""
 foreach ($file in $files) {

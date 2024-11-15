@@ -131,7 +131,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       case "getCurrent":
         return [this]
       case "getDescendants":
-        return item.getDescendants()
+        return item.getDescendants(this.automation.limits)
       case "getChildren":
         return item.getChildren()
       case "xpathLogicalAnd":
@@ -165,7 +165,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
     global RDA_Log_Level
 
     ; startTime := A_TickCount
-    RDA_Log_Level := 2
+    RDA_Log_Level := 3
     stack := [this]
     try {
       loop % actions.length() {
@@ -196,6 +196,9 @@ class RDA_AutomationBaseElement extends RDA_Base {
   /*!
     Method: find
       Retrieves all elements that match given query
+
+    Remarks:
+      It will honor <RDA_Automation.limits>
 
     Parameters:
       query - string - xpath-ish
@@ -238,6 +241,9 @@ class RDA_AutomationBaseElement extends RDA_Base {
     Method: findOne
       Retrieves the first element that match given query
 
+    Remarks:
+      It will honor <RDA_Automation.limits>
+
     Parameters:
       query - string - xpath-ish
 
@@ -270,10 +276,14 @@ class RDA_AutomationBaseElement extends RDA_Base {
     Method: waitOne
       Waits to appear an element that match given query
 
+    Remarks:
+      It will honor <RDA_Automation.limits>
+
     Parameters:
       query - string - xpath-ish
       timeout - number - timeout, in miliseconds
       delay - number - delay, in miliseconds
+
 
     Throws:
       Timeout reached at ?: Control not found
@@ -316,13 +326,108 @@ class RDA_AutomationBaseElement extends RDA_Base {
   ; query
   ;
   /*!
+    Method: getDescendantsTree
+      Retrieves all descendants elements as tree
+
+    Parameters:
+      limits - <RDA_SearchLimits> - Configure limits for descendant discovery.
+
+  Example:
+    ======= AutoHotKey =======
+    ; with default limits
+    rootNode := element.getDescendantsTree(automation.limits)
+    ; without limits
+    rootNode := element.getDescendantsTree()
+    ; you can flattern the tree if needed :)
+    arr := RDA_ElementTreeNode.flattern(rootNode)
+    ==========================
+
+    Returns:
+      <RDA_AutomationJABElement>[]
+  */
+  getDescendantsTree(limits := 0) {
+    local
+
+    RDA_Log_Debug(A_ThisFunc . "(" . limits ? limits.toString() : "no" . ")")
+
+    return this._getDescendantsTree(limits)
+  }
+
+  _getDescendantsTree(limits) {
+    local
+    limits := this.automation.limits
+    dump := []
+    elements := []
+
+    elements.push({depth: 1, index: "", element: this, target: dump, path: ""})
+    elementCount := 0
+    while(elements.length() > 0) {
+      treeNode := elements.pop()
+      elementCount += 1
+
+      try {
+        dumpNode := {element: treeNode.element
+          , depth: treeNode.depth
+          , children: []
+          , path: !treeNode.index ? "" :  (treeNode.path . "/" . treeNode.index) }
+
+        treeNode.target.push(dumpNode)
+
+        ; exceed maxElements? -> skip children
+        if (elementCount >= limits.maxElements) {
+          continue
+        }
+
+        ; exceed maxDepth? -> skip children
+        if (treeNode.depth >= limits.maxDepth) {
+          continue
+        }
+
+        ; is blacklisted? -> skip children
+        if (RDA_Array_IndexOf(limits.skipChildrenOfTypes, treeNode.element.getType())) {
+          RDA_Log_Debug("skip an element by type: " . treeNode.element.getType())
+          continue
+        }
+
+        childElementCount := treeNode.element.getChildElementCount()
+        ; exceed maxChildren? -> skip children
+        if (childElementCount > limits.maxChildren) {
+          RDA_Log_Debug("skip an element with " . childElementCount . " children")
+          continue
+        }
+
+        children := treeNode.element.getChildren()
+
+        loop % children.length() {
+          elements.InsertAt(1, {depth: treeNode.depth + 1
+            , index: A_Index
+            , path: dumpNode.path
+            , element: children[A_Index]
+            , target: dumpNode.children})
+        }
+      } catch e {
+        RDA_Log_Debug(A_ThisFunc . " " . e.message)
+      }
+    }
+
+    ; RDA_Log_Debug(RDA_JSON_stringify(dump, , "  "))
+    return dump[1]
+  }
+  /*!
     Method: dumpXML
       Dumps element tree as XML
+
+    Remarks:
+      It will honor <RDA_Automation.limits>
+
+    Parameters:
+      value - boolean - Include value attribute (can disclosure information!)
+      selected - boolean - Include selected attribute
 
     Returns:
       string - the dump
   */
-  dumpXML() {
+  dumpXML(value := false, selected := false) {
     local
     global RDA_Log_Level
     RDA_Log_Debug(A_ThisFunc)
@@ -330,8 +435,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
     RDA_Log_Level := 2
 
     try {
-      root := this.__dumpTree()
-      r := this.__dumpNodeTree(root[1])
+      r := this.__dumpNodeTree(this.getDescendantsTree(this.automation.limits), value, selected)
     } catch e {
       RDA_Log_Error(A_ThisFunc . " " . e.message)
     }
@@ -341,74 +445,21 @@ class RDA_AutomationBaseElement extends RDA_Base {
     return r
   }
   ; internal
-  __dumpTree() {
-    local
-
-    RDA_Log_Debug(A_ThisFunc)
-
-    dump := []
-    elements := []
-
-    elements.push({offset: 1, index: "", node: this, target: dump, path: ""})
-
-    while(elements.length() > 0) {
-      element := elements.pop()
-
-      try {
-        dumpNode := {name: element.node.getName()
-          , type: element.node.getType()
-          , patterns: RDA_Array_Join(element.node.getPatterns(), ",")
-          , children: []
-          , path: !element.index ? "" :  (element.path . "/" . element.index) }
-
-        ; TODO how to check in UIA that there is description!?
-        try {
-          dumpNode.description := element.node.getDescription()
-        } catch e {
-          ;RDA_Log_Error(A_ThisFunc . " getDescription -> " . e.message)
-        }
-        if (element.node.hasPattern("SelectionItem")) {
-          dumpNode.selected := element.node.isSelected()
-        }
-        if (element.node.hasPattern("Value")) {
-          dumpNode.value := element.node.getValue()
-          RDA_Log_Debug("value" . dumpNode.value)
-        }
-
-        element.target.push(dumpNode)
-        children := element.node.getChildren()
-
-        loop % children.length() {
-          elements.InsertAt(1, {offset: element.offset + 1
-            , index: A_Index
-            , path: dumpNode.path
-            , node: children[A_Index]
-            , target: dumpNode.children})
-        }
-      } catch e {
-        RDA_Log_Debug(A_ThisFunc . " " . e.message)
-      }
-    }
-
-    ; RDA_Log_Debug(RDA_JSON_stringify(dump, , "  "))
-    return dump
-  }
-  ; internal
-  __dumpNodeTree(node, padding := "") {
+  __dumpNodeTree(node, value, selected, padding := "") {
     local
 
     text := ""
     ; name, type, patterns, children, path
-    text .= padding . "<" . node.type . " name=" . RDA_JSON_stringify(node.name) . " patterns=" . RDA_JSON_stringify(node.patterns) . " path=" . RDA_JSON_stringify(node.path) . " description=" . RDA_JSON_stringify(node.description)
-    if (node.haskey("value")) {
-      text .= " value=" . RDA_JSON_stringify(node.value)
+    text .= padding . "<" . node.element.getType() . " name=" . RDA_JSON_stringify(node.element.getName()) . " patterns=" . RDA_JSON_stringify(node.patterns) . " path=" . RDA_JSON_stringify(node.path) . " description=" . RDA_JSON_stringify(node.element.getDescription())
+    if (value && node.element.hasPattern("Value")) {
+      text .= " value=" . RDA_JSON_stringify(node.element.getValue())
     }
-    if (node.haskey("selected")) {
-      text .= " selected=" . (node.selected ? """yes""" : """no""")
+    if (selected && node.element.hasPattern("SelectionItem")) {
+      text .= " selected=" . (node.isSelected() ? """yes""" : """no""")
     }
     text .= ">`n"
     loop % node.children.length() {
-      text .= this.__dumpNodeTree(node.children[A_Index], padding . "  ")
+      text .= this.__dumpNodeTree(node.children[A_Index], value, selected, padding . "  ")
     }
     text .= padding .  "</" . node.type . ">`n"
 

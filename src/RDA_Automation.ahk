@@ -127,6 +127,12 @@ class RDA_Automation extends RDA_Base {
   }
 
   /*!
+    Property: limits
+      <RDA_SearchLimits> - Define Search/Dump limits
+  */
+  limits := new RDA_SearchLimits()
+
+  /*!
     Constructor:
       Sets the delay that will occur after each keystroke sent by Send or ControlSend.
 

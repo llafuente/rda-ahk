@@ -5,7 +5,7 @@ class Test_RDA_JAB {
 
   Test_16_Automation_JAB() {
     local
-    global RDA_Automation, Yunit, RDA_AutomationJABElement, RDA_AutomationJAB
+    global RDA_Automation, Yunit, RDA_AutomationJABElement, RDA_AutomationJAB, RDA_ElementTreeNode
 
     RDA_Log_Debug(A_ThisFunc)
 
@@ -40,7 +40,7 @@ class Test_RDA_JAB {
     winElement := win.asJABElement()
     Yunit.assert(winElement, "Window element created")
 
-/*
+
     ; **************************************************************************
     winElement.findOne("//ToggleButton[@description=""JInternalFrame demo""]").click()
     RDA_Log_Debug(winElement.dumpXML())
@@ -259,7 +259,7 @@ class Test_RDA_JAB {
     winElement.findOne("//Label[@name=""Jazz""]").click()
     winElement.findOne("//Label[@name=""Rock""]").click()
     winElement.findOne("//Label[@name=""Rock""]").osClick()
-    sleep 5000
+    win.sendKeys("{F2}")
     win.type("Rock And Roll Baby!")
     win.sendKeys("{Enter}")
 
@@ -325,10 +325,51 @@ class Test_RDA_JAB {
     checkBox3 := panel.findOne("//CheckBox[@name=""Three""]")
     checkBox3.ensureChecked()
     Yunit.assert(checkBox3.isChecked(), "Checkbox Three checked")
-*/
+
 
     winElement.findOne("//ToggleButton[@description=""JScrollPane demo""]").click()
     RDA_Log_Debug(winElement.dumpXML())
+
+    winElement.findOne("//ToggleButton[@description=""JTable demo""]").click()
+    RDA_Log_Debug(winElement.dumpXML())
+
+    before := winElement.getDescendants(automation.limits).length()
+    automation.limits.skipChildrenOfTypes.push("Table")
+    after := winElement.getDescendants(automation.limits).length()
+
+    Yunit.assert(before == 421, "Table - before 421")
+    Yunit.assert(after == 145, "Table - after 145")
+
+    automation.limits.maxChildren := 7
+    after := winElement.getDescendants(automation.limits).length()
+    Yunit.assert(after == 115, "Table + maxChildren = 7 -> 115")
+
+    automation.limits.maxElements := 54
+    after := winElement.getDescendants(automation.limits).length()
+    Yunit.assert(after == 54, "Table + maxChildren = 7 + maxElements = 50 -> 54")
+
+    automation.limits.maxDepth := 3
+    ;after := winElement.getDescendants(automation.limits).length()
+    ;Yunit.assert(after == 54, "Table + maxChildren = 7 + maxElements = 50 -> 54")
+
+    rootNode := winElement.getDescendantsTree(automation.limits)
+
+    list := RDA_ElementTreeNode.flattern(rootNode)
+    Yunit.assert(list.length() == 4, "Table + maxChildren = 7 + maxElements = 50 + maxDepth = 3 -> 4")
+
+
+    RDA_Log_Debug(winElement.dumpXML())
+
+    lastException := 0
+    try {
+      winElement.findOne("//ToggleButton[@description=""JTable demo""]").click()
+    } catch e {
+      lastException := e
+    }
+    Yunit.assert(lastException.message == "Not found: //ToggleButton[@description=""JTable demo""]", "(limited search) Element not found")
+
+    automation.limit.reset()
+    winElement.findOne("//ToggleButton[@description=""JTable demo""]").click()
 
     ;uiaWin := win.asUIAElement()
     ;RDA_Log_Debug(uiaWin.dumpXML())

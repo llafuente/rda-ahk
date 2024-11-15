@@ -160,7 +160,7 @@ RDA_Exception(message, trace_offset := 0, What := "") {
     RDA_Log_Debug(e.file ":" e.Line " @ " e.What)
   }
 
-  return Exception(message, trace_offset, What)
+  return Exception(message, trace_offset - 1, What)
 }
 
 /*!
