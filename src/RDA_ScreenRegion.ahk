@@ -4,9 +4,52 @@
 */
 class RDA_ScreenRegion extends RDA_Base {
   ;static __Call := TooFewArguments(RDA_ScreenRegion)
-
+  /*!
+    Property: origin
+      RDA_ScreenPosition - origin of the region
+  */
   origin := 0
+  /*!
+    Property: rect
+      RDA_Rectangle - size of the region
+  */
   rect := 0
+  /*!
+    Property: x
+      number - Getter shortcut to origin.x
+  */
+  x[] {
+    get {
+      return this.origin.x
+    }
+  }
+  /*!
+    Property: y
+      number - Getter shortcut to origin.y
+  */
+  y[] {
+    get {
+      return this.origin.y
+    }
+  }
+  /*!
+    Property: w
+      number - Getter shortcut to rect.w
+  */
+  w[] {
+    get {
+      return this.rect.w
+    }
+  }
+  /*!
+    Property: h
+      number - Getter shortcut to rect.w
+  */
+  h[] {
+    get {
+      return this.rect.h
+    }
+  }
 
   __New(origin, rect) {
     this.origin := origin
@@ -22,9 +65,31 @@ class RDA_ScreenRegion extends RDA_Base {
       y - number - y coordinate
       w - number - width (default means same as window)
       h - number - height (default means same as window)
+
+    Returns:
+      <RDA_ScreenRegion>
   */
   fromPoints(automation, x, y, w, h) {
     return new RDA_ScreenRegion(new RDA_ScreenPosition(automation, x, y), new RDA_Rectangle(automation, w, h))
+  }
+  /*
+    Static: fromWin32Rect
+      Creates a <RDA_ScreenRegion> from a Win32 RECT pointer
+
+    Parameters:
+      automation - <RDA_Automation> - automation
+      ptr - pointer - Memory address
+      offset - number - Offset
+
+    Returns:
+      <RDA_ScreenRegion>
+  */
+  fromWin32Rect(automation, ptr, offset := 0) {
+    return RDA_ScreenRegion.fromPoints(automation
+      , NumGet(ptr + 0, 0 + offset, "Int")
+      , NumGet(ptr + 0, 4 + offset, "Int")
+      , NumGet(ptr + 0, 8 + offset, "Int")
+      , NumGet(ptr + 0, 12 + offset, "Int"))
   }
   /*!
     Method: toString
