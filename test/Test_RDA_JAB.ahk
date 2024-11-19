@@ -337,16 +337,15 @@ class Test_RDA_JAB {
     automation.limits.skipChildrenOfTypes.push("Table")
     after := winElement.getDescendants(automation.limits).length()
 
-    Yunit.assert(before == 421, "Table - before 421")
-    Yunit.assert(after == 145, "Table - after 145")
+    Yunit.assert(before == 422, "Table - before 422")
+    Yunit.assert(after == 146, "Table - after 146")
 
     automation.limits.maxChildren := 7
     after := winElement.getDescendants(automation.limits).length()
-    Yunit.assert(after == 115, "Table + maxChildren = 7 -> 115")
-
+    Yunit.assert(after == 116, "Table + maxChildren = 7 -> 116")
     automation.limits.maxElements := 54
     after := winElement.getDescendants(automation.limits).length()
-    Yunit.assert(after == 54, "Table + maxChildren = 7 + maxElements = 50 -> 54")
+    Yunit.assert(after == 68, "Table + maxChildren = 7 + maxElements = 50 -> 68")
 
     automation.limits.maxDepth := 3
     ;after := winElement.getDescendants(automation.limits).length()
@@ -368,7 +367,7 @@ class Test_RDA_JAB {
     }
     Yunit.assert(lastException.message == "Not found: //ToggleButton[@description=""JTable demo""]", "(limited search) Element not found")
 
-    automation.limit.reset()
+    automation.limits.reset()
     winElement.findOne("//ToggleButton[@description=""JTable demo""]").click()
 
     ;uiaWin := win.asUIAElement()

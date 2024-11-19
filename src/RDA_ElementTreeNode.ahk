@@ -28,9 +28,10 @@ class RDA_ElementTreeNode {
       Flatterns the tree
 
     Parameters:
-      node - <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
+      node - <RDA_ElementTreeNode>
+
     Returns:
-      <RDA_AutomationJABElement>[] | <RDA_AutomationUIAElement>[]
+      <RDA_ElementTreeNode>[]
   */
   flattern(node, ret := 0) {
     if (!ret) {
@@ -41,6 +42,28 @@ class RDA_ElementTreeNode {
 
     loop % node.children.length() {
       RDA_ElementTreeNode.flattern(node.children[A_Index], ret)
+    }
+
+    return ret
+  }
+  /*!
+    static: flatternToElements
+      Flatterns the tree into a list of elements
+
+    Parameters:
+      node - <RDA_ElementTreeNode>
+    Returns:
+      <RDA_AutomationJABElement>[] | <RDA_AutomationUIAElement>[]
+  */
+  flatternToElements(node, ret := 0) {
+    if (!ret) {
+      ret := []
+    }
+
+    ret.push(node.element)
+
+    loop % node.children.length() {
+      RDA_ElementTreeNode.flatternToElements(node.children[A_Index], ret)
     }
 
     return ret
