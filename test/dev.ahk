@@ -18,6 +18,7 @@ FileAppend, Test start!`n, *
 
 #include ..\src\RDA_Automation.ahk
 #include ..\src\RDA_AutomationBaseElement.ahk
+#include ..\src\RDA_ElementTreeNode.ahk
 #include ..\src\RDA_AutomationClipboard.ahk
 #include ..\src\RDA_AutomationJAB.ahk
 #include ..\src\RDA_AutomationJABAccessibleContextInfo.ahk
@@ -33,6 +34,7 @@ FileAppend, Test start!`n, *
 #include ..\src\RDA_ScreenPosition.ahk
 #include ..\src\RDA_ScreenRegion.ahk
 #include ..\src\RDA_SearchLimits.ahk
+#include ..\src\RDA_Monitors.ahk
 
 #Include Test_RDA_Automation.ahk
 #Include Test_RDA_Region.ahk
@@ -45,6 +47,7 @@ FileAppend, Test start!`n, *
 #Include Test_RDA_UIA.ahk
 #Include Test_RDA_XPath.ahk
 #Include Test_RDA_JAB.ahk
+#Include Test_RDA_Monitors.ahk
 
 #SingleInstance
 #Warn All, StdOut ; Enable every type of warning, and displayed in a MsgBox
@@ -60,6 +63,7 @@ Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Image)
 Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_UIA)
 Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_XPath)
 Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_JAB)
+Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Monitors)
 
 ExitApp 0
 

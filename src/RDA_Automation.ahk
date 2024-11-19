@@ -352,4 +352,15 @@ class RDA_Automation extends RDA_Base {
   region(x, y, width, height) {
     return RDA_ScreenRegion.fromPoints(this, x, y, width, height)
   }
+
+  /*!
+    Method: monitors
+      Creates <RDA_Monitors>
+
+    Returns:
+      <RDA_Monitors>
+  */
+  monitors() {
+    return new RDA_Monitors(this)
+  }
 }
