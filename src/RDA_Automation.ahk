@@ -363,4 +363,14 @@ class RDA_Automation extends RDA_Base {
   monitors() {
     return new RDA_Monitors(this)
   }
+  /*!
+    Method: virtualDesktops
+      Creates <RDA_VirtualDesktops>
+
+    Returns:
+      <RDA_VirtualDesktops>
+  */
+  virtualDesktops() {
+    return new RDA_VirtualDesktops(this)
+  }
 }

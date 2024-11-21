@@ -36,6 +36,19 @@ class RDA_AutomationWindow extends RDA_Base {
       string - window's class name
   */
   classNN := 0
+
+  monitor [] {
+    get {
+      return this.automation.monitors().fromWindow(this.hwnd)
+    }
+  }
+
+  vdesktop [] {
+    get {
+      return this.automation.virtualDesktops().fromWindow(this.hwnd)
+    }
+  }
+
   /*!
     Constructor: RDA_AutomationWindow
 
@@ -48,9 +61,6 @@ class RDA_AutomationWindow extends RDA_Base {
     global Log
 
     this.automation := automation
-    ; TODO REVIEW!
-    rootHwnd := DllCall("user32\GetAncestor", "Ptr", hwnd, "UInt", 2, Ptr) ;GA_ROOT := 2
-    this.hwnd := rootHwnd
 
     this.hwnd := hwnd
 
@@ -83,6 +93,17 @@ class RDA_AutomationWindow extends RDA_Base {
   */
   toString() {
     return "AutomationWindow { hwnd: " . this.hwnd . ", title: " . this.title . ", pid: " . this.pid . ",process: " . this.process . ", path: " . this.path . ", classNN: " . this.classNN . "}"
+  }
+  /*!
+    Method: getTopLevelHWND
+      Retrieves the root window by walking the chain of parent windows.
+
+    Returns:
+      number
+  */
+  getTopLevelHWND() {
+    ; https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getancestor
+    return DllCall("user32\GetAncestor", "Ptr", this.hwnd, "UInt", 2, Ptr) ;GA_ROOT := 2
   }
   /*!
     Method: isMatch
@@ -574,6 +595,9 @@ class RDA_AutomationWindow extends RDA_Base {
   /*!
     Method: activate
       Activates / Bring to front / foreground window
+
+    Remarks:
+      It switch to virtual desktop if needed.
 
     Returns:
       <RDA_AutomationWindow>

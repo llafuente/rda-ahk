@@ -17,6 +17,22 @@ RDA_JSON_stringify(obj, replacer:="", space:="") {
 }
 
 /*!
+  Function: RDA_VTable
+    Retrieves the pointer to a vtable element
+
+  Parameters:
+    p - pointer
+    n - number - offset
+
+  Returns:
+    pointer
+*/
+RDA_VTable(p, n) {
+  local
+  return NumGet(NumGet(p+0,"ptr")+n*A_PtrSize,"ptr")
+}
+
+/*!
   Function: RDA_Array_IndexOf
     Returns the first index at which a given element can be found in the array, or -1 if it is not present
 

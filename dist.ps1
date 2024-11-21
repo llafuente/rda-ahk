@@ -31,8 +31,10 @@ $files = @(
   ".\src\RDA_AutomationWindowSearch.ahk",
   ".\src\RDA_Rectangle.ahk",
   ".\src\RDA_ScreenPosition.ahk",
-  ".\src\RDA_ScreenRegion.ahk"
-  ".\src\RDA_SearchLimits.ahk"
+  ".\src\RDA_ScreenRegion.ahk",
+  ".\src\RDA_SearchLimits.ahk",
+  ".\src\RDA_Monitors.ahk",
+  ".\src\RDA_VirtualDesktops.ahk"
 )
 $contents = ""
 foreach ($file in $files) {
