@@ -79,6 +79,11 @@ class RDA_Automation extends RDA_Base {
   */
   sendMode := "Event"
   /*!
+    Constant: sendModes
+      string[] - List of all valid <RDA_Automation.sendMode>
+  */
+  static sendModes := ["Event", "Input", "InputThenPlay", "Play"]
+  /*!
     Property: actionDelay
       number - Delay after each action performed by the library.
 
@@ -226,11 +231,16 @@ class RDA_Automation extends RDA_Base {
   */
   setSendMode(sendMode) {
     RDA_Log_Debug(A_ThisFunc . "(" . sendMode . ")")
+    /*
     if (sendMode == "InputThenPlay") {
       throw RDA_Exception("Invalid mode: InputThenPlay is forbidden")
     }
     if (sendMode == "Play") {
       throw RDA_Exception("Invalid mode: Play is forbidden")
+    }
+    */
+    if (!RDA_Array_IndexOf(RDA_Automation.sendModes, sendMode)) {
+      throw RDA_Exception("Invalid mode: " . sendMode)
     }
     this.sendMode := sendMode
   }

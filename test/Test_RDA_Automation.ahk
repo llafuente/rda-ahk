@@ -41,7 +41,17 @@ class Test_RDA_Automation {
     Yunit.assert(automation.actionDelay != 0, "actionDelay set")
     Yunit.assert(automation.mouseSpeed != 0, "mouseSpeed set")
     Yunit.assert(automation.inputMode != "", "inputMode set")
-    Yunit.assert(automation.sendMode != "", "sendMode set")
+    Yunit.assert(automation.sendMode == "Event", "default sendMode is event")
+    automation.setSendMode("Play")
+    Yunit.assert(automation.sendMode == "Play", "sendMode changes")
+
+    lastException := 0
+    try {
+      automation.setSendMode("xxx")
+    } catch e {
+      lastException := e
+    }
+    Yunit.assert(lastException.message == "Invalid mode: xxx", "Multiple windows found error")
   }
 
   End() {
