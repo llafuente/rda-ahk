@@ -51,7 +51,7 @@ class RDA_SearchLimits {
       string - debug info
   */
   toString() {
-    return "RDA_ScreenRegion{maxChildren: " . this.maxChildren . ", maxElements: " . this.maxElements . ", maxDepth: " . this.maxDepth . ", skipChildrenOfTypes: " . RDA_JSON_stringify(this.skipChildrenOfTypes) . "}"
+    return "RDA_SearchLimits{maxChildren: " . this.maxChildren . ", maxElements: " . this.maxElements . ", maxDepth: " . this.maxDepth . ", skipChildrenOfTypes: " . RDA_JSON_stringify(this.skipChildrenOfTypes) . "}"
   }
 
   /*!

@@ -156,10 +156,15 @@ class RDA_Automation extends RDA_Base {
   }
 
   __Delete() {
+    local
     RDA_Log_Info(A_ThisFunc)
     if (this._UIA) {
       RDA_Log_Debug(A_ThisFunc . " RemoveAllEventHandlers()")
-      this._UIA.RemoveAllEventHandlers()
+      try {
+        this._UIA.RemoveAllEventHandlers()
+      } catch e {
+        RDA_Log_Error(A_ThisFunc . " " . e.message)
+      }
     }
 
     this._UIA := 0

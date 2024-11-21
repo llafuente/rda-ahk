@@ -10,7 +10,7 @@ class Test_RDA_UIA {
     RDA_Log_Debug(A_ThisFunc)
 
     automation := new RDA_Automation()
-    ;automation.setActionDelay(50)
+    automation.setActionDelay(500)
     windows := automation.windows()
     mouse := automation.mouse()
     wins := windows.get()
@@ -94,14 +94,14 @@ class Test_RDA_UIA {
       Yunit.assert(element.getName() == "Text Editor", "check /1 name")
       element.hover()
       position := mouse.get()
-      Yunit.assert(position.move(-370, -300).getLength() < 2, "mouse center at Text Editor")
+      Yunit.assert(position.move(-370, -300).getLength() < 2, "1 mouse center at Text Editor")
     }
     {
       element := uiaWin.findOne("/2/1")
       Yunit.assert(element.getName() == "Vertical", "check /1/1 name")
       element.hover()
       position := mouse.get()
-      Yunit.assert(position.move(-673, -291).getLength() < 2, "mouse center at Text Editor")
+      Yunit.assert(position.move(-673, -291).getLength() < 2, "2 mouse center at Text Editor")
     }
     {
       element := uiaWin.findOne("/2/2")

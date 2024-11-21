@@ -430,10 +430,10 @@ class RDA_AutomationBaseElement extends RDA_Base {
   dumpXML(value := false, selected := false) {
     local
     global RDA_Log_Level
-    RDA_Log_Debug(A_ThisFunc)
+    RDA_Log_Debug(A_ThisFunc . "(" . value . ", " . selected . ")")
 
     RDA_Log_Level := 2
-
+    r := ""
     try {
       r := this.__dumpNodeTree(this.getDescendantsTree(this.automation.limits), value, selected)
     } catch e {

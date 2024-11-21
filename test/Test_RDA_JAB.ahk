@@ -373,6 +373,8 @@ class Test_RDA_JAB {
     ;uiaWin := win.asUIAElement()
     ;RDA_Log_Debug(uiaWin.dumpXML())
 
+    win.close()
+
     ; do not stop javaswitch
     if (!full_reload) {
       RDA_AutomationJAB.JABSWITCH_ENABLED := 10

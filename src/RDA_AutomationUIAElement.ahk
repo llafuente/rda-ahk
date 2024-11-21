@@ -62,8 +62,13 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
       string
   */
   getDescription() {
+    local
+
     if (!this.cachedDescription) {
-      this.cachedDescription := this.uiaHandle.CurrentDescription
+      try {
+        this.cachedDescription := this.uiaHandle.CurrentDescription
+      } catch e {
+      }
     }
 
     RDA_Log_Debug(A_ThisFunc . "=" . this.cachedDescription)
@@ -77,6 +82,8 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
       string
   */
   getType() {
+    local
+    global UIA_Enum
     if (!this.cachedType) {
       this.cachedType := UIA_Enum.UIA_ControlTypeId(this.uiaHandle.CurrentControlType)
     }
@@ -143,8 +150,12 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
       number
   */
   getChildElementCount() {
-    ; TODO
-    throw RDA_Exception("TODO")
+    local
+
+    count := this.uiaHandle.GetChildren(0x2).length()
+    RDA_Log_Debug(A_ThisFunc . "() = " . count)
+
+    return count
   }
   /*!
     Method: getProperty
