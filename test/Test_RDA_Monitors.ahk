@@ -32,6 +32,8 @@ class Test_RDA_Monitors {
     win := windows.get()[1]
     monitor := monitors.fromWindow(win.hwnd)
     Yunit.assert(StrLen(monitor.name) > 0, "first monitor has height")
+    ; getter
+    Yunit.assert(StrLen(win.monitor.name) > 0, "first monitor has height")
   }
 
   End() {

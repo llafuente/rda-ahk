@@ -95,7 +95,7 @@ class RDA_Monitors extends RDA_Base {
     return list.length()
   }
   /*!
-    Method: fromWindow
+    Method: get
       Retrieves all monitors
 
     Returns:
@@ -142,6 +142,8 @@ class RDA_Monitors extends RDA_Base {
 
     monitor := RDA_GetMonitorInfo(this.automation, hMonitor)
     RDA_Log_Debug(A_ThisFunc . "(" . hwnd . ", " . dwFlags . ") = " . monitor.name)
+
+    return monitor
   }
 
   /*!
@@ -153,7 +155,7 @@ class RDA_Monitors extends RDA_Base {
   */
   getPrimaryMonitor() {
     local
-    monitors := this.getAll()
+    monitors := this.get()
     loop monitors.Length() {
       if (monitors[A_Index].primary) {
         return monitors[A_Index]
