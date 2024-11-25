@@ -96,6 +96,38 @@ class RDA_ScreenPosition extends RDA_Base {
     return this
   }
   /*!
+    Method: add
+      Adds given screen position
+
+    Parameters:
+      screenPos - <RDA_ScreenPosition> - screen position
+
+    Returns:
+      <RDA_ScreenPosition>
+  */
+  add(screenPos) {
+    this.x += screenPos.x
+    this.y += screenPos.y
+
+    return this
+  }
+  /*!
+    Method: subtract
+      Subtracts given screen position
+
+    Parameters:
+      screenPos - <RDA_ScreenPosition> - screen position
+
+    Returns:
+      <RDA_ScreenPosition>
+  */
+  subtract(screenPos) {
+    this.x -= screenPos.x
+    this.y -= screenPos.y
+
+    return this
+  }
+  /*!
     Method: mouseMove
       Alias of <RDA_MouseMove>
 
@@ -103,7 +135,7 @@ class RDA_ScreenPosition extends RDA_Base {
       <RDA_ScreenPosition>
   */
   mouseMove() {
-    RDA_MouseMove(this.automation, this.x, this.y)
+    RDA_MouseMove(this.automation, 0, this.x, this.y)
 
     return this
   }

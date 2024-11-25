@@ -90,7 +90,7 @@ class RDA_AutomationMouse extends RDA_Base {
       <RDA_AutomationMouse>
   */
   moveTo(x, y) {
-    RDA_MouseMove(this.automation, x, y)
+    RDA_MouseMove(this.automation, 0, x, y)
 
     return this
   }

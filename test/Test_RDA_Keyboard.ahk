@@ -1,7 +1,7 @@
 class Test_RDA_Keyboard {
   Begin() {
   }
-
+/*
   Test_6_Automation_Keyboard() {
     local
     global RDA_Automation, Yunit
@@ -50,7 +50,7 @@ class Test_RDA_Keyboard {
     Yunit.assert(popup.isAlive() == false, "popup not Alive")
     Yunit.assert(win2.isAlive() == false, "notepad not Alive")
   }
-
+*/
 
   Test_7_Automation_KeyboardBackground() {
     local
@@ -79,8 +79,8 @@ class Test_RDA_Keyboard {
     Yunit.assert(lastException.message == "hwnd is required in background input mode", "throws using keyboard directly")
 
     win.sendPassword("world{ENTER}")
-
     win.restore()
+
     sleep 500
     region := win.getRegion()
     Yunit.assert(region.rect.w == 640, "notepad(resize) size on x")

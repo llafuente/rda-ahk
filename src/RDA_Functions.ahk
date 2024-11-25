@@ -386,12 +386,8 @@ RDA_MouseClick(automation, hwnd, button, clickCount, x := 9999, y := 9999) {
   SendMode % automation.sendMode
 
   if (automation.inputMode == "interactive") {
-    if (hwnd) {
-      RDA_Window_Activate(hwnd, RDA_Automation.TIMEOUT, RDA_Automation.DELAY)
-    }
-
     if (x != 9999 && y != 9999) {
-      RDA_MouseMove(automation, x, y)
+      RDA_MouseMove(automation, hwnd, x, y)
     }
 
     BlockInput On
@@ -492,14 +488,19 @@ RDA_MouseClickDrag(automation, hwnd, x, y, dragX, dragY, button) {
 
   Parameters:
     automation - <RDA_Automation>
+    hwnd - number - window handle
     x - number - x coordinate
     y - number - y coordinate
 */
-RDA_MouseMove(automation, x, y) {
+RDA_MouseMove(automation, hwnd, x, y) {
   RDA_Log_Debug(A_ThisFunc . "(x = " . x . " , y = " . y . ") " . automation.toString())
 
   SetMouseDelay % automation.mouseDelay
   SendMode % automation.sendMode
+
+  if (automation.inputMode == "interactive" and hwnd) {
+    RDA_Window_Activate(hwnd, RDA_Automation.TIMEOUT, RDA_Automation.DELAY)
+  }
 
   BlockInput On
   CoordMode Mouse, Screen
@@ -673,10 +674,23 @@ RDA_Window_Activate(hwnd, timeout, delay) {
     automation - <RDA_Automation>
     hwnd - control/window identifier (optional)
     password - password string
+    control - string - Control parameter from ControlSend.
+      Values:
+
+        * blank: The target window's topmost control will be used
+
+        * ahk_parent: The keystrokes will be sent directly to the target window
+
+        * ClassNN: The keystrokes will be send directly to the control
+
+        * control text: The keystrokes will be send directly to the control
+
+  Throws:
+    hwnd is required in background input mode
 */
-RDA_KeyboardSendKeys(automation, hwnd, keys) {
-  RDA_Log_Debug(A_ThisFunc . "(" . hwnd . ")")
-  RDA_Log_Debug(A_ThisFunc . "(" . keys . ")")
+RDA_KeyboardSendKeys(automation, hwnd, keys, control) {
+  local
+  RDA_Log_Debug(A_ThisFunc . "(hwnd = " . hwnd . ", keys.length = " . StrLen(keys) . ", control = " . control . ") " . automation.toString())
 
   ; we do not honor Play mode
   DetectHiddenWindows, On
@@ -700,14 +714,35 @@ RDA_KeyboardSendKeys(automation, hwnd, keys) {
     SetBatchLines -1
     SetTitleMatchMode 2
 
-    PostMessage, 0x0006, 1, 0, , ahk_id %hwnd% ; WM_ACTIVATE := 0x0006
-    sleep 250
+    ; log error but don't stop
+    try {
+      PostMessage, 0x0006, 1, 0, , ahk_id %hwnd% ; WM_ACTIVATE := 0x0006
+      sleep 250
+    } catch e {
+      if (e.message == 1) {
+        RDA_Log_Error(A_ThisFunc . " PostMessage - activate failed (probably hwnd don't exist)")
+      }
+    }
 
-    ControlSend, ahk_parent, %keys%, ahk_id %hwnd%
 
-    PostMessage, 0x0006, 0, 0, , ahk_id %hwnd% ; WM_ACTIVATE := 0x0006
-    if (ErrorLevel == 1) {
-      RDA_Log_Error(A_ThisFunc . " ControlSend failed")
+    try {
+      ControlSend, %control%, %keys%, ahk_id %hwnd%
+    } catch e {
+      if (e.message == 1) {
+        throw RDA_Exception("ControlSend failed (probably hwnd don't exist)")
+      }
+      ; unreachable? but how knows.
+      throw e
+    }
+
+
+    ; log error but don't stop
+    try {
+      PostMessage, 0x0006, 0, 0, , ahk_id %hwnd% ; WM_ACTIVATE := 0x0006
+    } catch e {
+      if (e.message == 1) {
+        RDA_Log_Error(A_ThisFunc . " PostMessage - deactivate failed (probably hwnd don't exist)")
+      }
     }
   }
 

@@ -29,6 +29,7 @@ class RDA_AutomationKeyboard extends RDA_Base {
     Parameters:
       text - string - Text
       hwnd - number - Window handle
+      backgroundControl - string - Control parameter from ControlSend. See <RDA_KeyboardSendKeys>
 
     Throws:
       hwnd is required in background input mode
@@ -36,10 +37,10 @@ class RDA_AutomationKeyboard extends RDA_Base {
     Returns:
       <RDA_AutomationKeyboard>
   */
-  type(text, hwnd := 0) {
+  type(text, hwnd := 0, backgroundControl := "") {
     RDA_Log_Debug(A_ThisFunc . "(text = " . text . ") " . this.automation.toString())
 
-    RDA_KeyboardSendKeys(this.automation, hwnd, "{Raw}" . text)
+    RDA_KeyboardSendKeys(this.automation, hwnd, "{Raw}" . text, backgroundControl)
 
     return this
   }
@@ -58,6 +59,7 @@ class RDA_AutomationKeyboard extends RDA_Base {
     Parameters:
       text - string - Text
       hwnd - number - Window handle
+      backgroundControl - string - Control parameter from ControlSend. See <RDA_KeyboardSendKeys>
 
     Throws:
       hwnd is required in background input mode
@@ -65,10 +67,10 @@ class RDA_AutomationKeyboard extends RDA_Base {
     Returns:
       <RDA_AutomationKeyboard>
   */
-  typePassword(password, hwnd := 0) {
+  typePassword(password, hwnd := 0, backgroundControl := "") {
     RDA_Log_Debug(A_ThisFunc . "(password.length = " . StrLen(password) . ") " . this.automation.toString())
 
-    RDA_KeyboardSendKeys(this.automation, hwnd, "{Raw}" . password)
+    RDA_KeyboardSendKeys(this.automation, hwnd, "{Raw}" . password, backgroundControl)
 
     return this
   }
@@ -84,6 +86,7 @@ class RDA_AutomationKeyboard extends RDA_Base {
     Parameters:
       keys - string of keys
       hwnd - number - Window handle
+      backgroundControl - string - Control parameter from ControlSend. See <RDA_KeyboardSendKeys>
 
     Throws:
       hwnd is required in background input mode
@@ -91,10 +94,10 @@ class RDA_AutomationKeyboard extends RDA_Base {
     Returns:
       <RDA_AutomationKeyboard>
   */
-  sendKeys(keys, hwnd := 0) {
+  sendKeys(keys, hwnd := 0, backgroundControl := "") {
     RDA_Log_Debug(A_ThisFunc . "(keys = " . keys . ") " . this.automation.toString())
 
-    RDA_KeyboardSendKeys(this.automation, hwnd, keys)
+    RDA_KeyboardSendKeys(this.automation, hwnd, keys, backgroundControl)
 
     return this
   }
@@ -107,6 +110,7 @@ class RDA_AutomationKeyboard extends RDA_Base {
     Parameters:
       password - password string
       hwnd - number - Window handle
+      backgroundControl - string - Control parameter from ControlSend. See <RDA_KeyboardSendKeys>
 
     Throws:
       hwnd is required in background input mode
@@ -114,10 +118,10 @@ class RDA_AutomationKeyboard extends RDA_Base {
     Returns:
       <RDA_AutomationKeyboard>
   */
-  sendPassword(password, hwnd := 0) {
+  sendPassword(password, hwnd := 0, backgroundControl := "") {
     RDA_Log_Debug(A_ThisFunc . "(password.length = " . StrLen(password) . ") " . this.automation.toString())
 
-    RDA_KeyboardSendKeys(this.automation, hwnd, password)
+    RDA_KeyboardSendKeys(this.automation, hwnd, password, backgroundControl)
 
     return this
   }

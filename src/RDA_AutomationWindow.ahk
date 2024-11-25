@@ -53,6 +53,15 @@ class RDA_AutomationWindow extends RDA_Base {
   }
 
   /*!
+    Property: defaultBackgroundControl
+      string - Control parameter from ControlSend. See <RDA_KeyboardSendKeys>
+
+    Remarks:
+      Only apply when <RDA_Automation.inputMode> is background
+  */
+  defaultBackgroundControl := ""
+
+  /*!
     Constructor: RDA_AutomationWindow
 
     Parameters:
@@ -410,7 +419,7 @@ class RDA_AutomationWindow extends RDA_Base {
   */
   mouseMoveTo(x, y) {
     local pos := this.getPosition()
-    RDA_MouseMove(this.automation, x + pos.x, y + pos.y)
+    RDA_MouseMove(this.automation, this.hwnd, x + pos.x, y + pos.y)
 
     return this
   }
@@ -431,7 +440,7 @@ class RDA_AutomationWindow extends RDA_Base {
   type(text) {
     RDA_Log_Debug(A_ThisFunc . "(text = " . text . ") " . this.automation.toString())
 
-    this.automation.keyboard().type(text, this.hwnd)
+    this.automation.keyboard().type(text, this.hwnd, this.defaultBackgroundControl)
 
     return this
   }
@@ -448,7 +457,7 @@ class RDA_AutomationWindow extends RDA_Base {
   typePassword(password) {
     RDA_Log_Debug(A_ThisFunc . "(password.length = " . StrLen(password) . ") " . this.automation.toString())
 
-    this.automation.keyboard().typePassword(password, this.hwnd)
+    this.automation.keyboard().typePassword(password, this.hwnd, this.defaultBackgroundControl)
 
     return this
   }
@@ -465,7 +474,7 @@ class RDA_AutomationWindow extends RDA_Base {
   sendKeys(keys) {
     RDA_Log_Debug(A_ThisFunc . "(keys = " . keys . ") " . this.automation.toString())
 
-    this.automation.keyboard().sendKeys(keys, this.hwnd)
+    this.automation.keyboard().sendKeys(keys, this.hwnd, this.defaultBackgroundControl)
 
     return this
   }
@@ -482,7 +491,7 @@ class RDA_AutomationWindow extends RDA_Base {
   sendPassword(password) {
     RDA_Log_Debug(A_ThisFunc . "(password.length = " . StrLen(password) . ") " . this.automation.toString())
 
-    this.automation.keyboard().sendPassword(password, this.hwnd)
+    this.automation.keyboard().sendPassword(password, this.hwnd, this.defaultBackgroundControl)
 
     return this
   }
