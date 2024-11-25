@@ -62,11 +62,11 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     this.acId := acId
 
     RDA_Assert(this.jab, "invalid argument jab is empty")
+    RDA_Assert(this.automation, "invalid argument jab is empty")
     RDA_Assert(this.win, "invalid argument win is empty")
     RDA_Assert(this.win.hwnd, "invalid argument win.hwnd is empty")
     RDA_Assert(this.vmId, "invalid argument vmId is empty")
     RDA_Assert(this.acId, "invalid argument acId is empty")
-    RDA_Assert(this.automation, "invalid argument jab is empty")
 
   }
   __Delete() {

@@ -5,7 +5,20 @@
   Extends: RDA_AutomationBaseElement
 */
 class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
+  /*!
+    Property: automation
+      <RDA_Automation> - Automation config
+  */
   automation := 0
+  /*!
+    Property: automation
+      <RDA_AutomationWindow> - Window
+  */
+  win := 0
+  /*!
+    Property: uiaHandle
+      number - UI Automation Handle
+  */
   uiaHandle := 0
 
   ; internal
@@ -15,13 +28,17 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
   cachedPatterns := 0
   cachedDescription := 0
 
-  __New(automation, uiaHandle) {
-    RDA_Assert(automation, A_ThisFunc . " automation is null")
-    RDA_Assert(uiaHandle, A_ThisFunc . " uiaHandle is null")
-
+  __New(automation, win, uiaHandle) {
     this.uiaHandle := uiaHandle
     this.automation := automation
+    this.win := win
+
     ; RDA_Log_Debug(A_ThisFunc . " " . this.toString())
+
+    RDA_Assert(this.automation, A_ThisFunc . " automation is null")
+    RDA_Assert(this.uiaHandle, A_ThisFunc . " uiaHandle is null")
+    RDA_Assert(this.win, "invalid argument win is empty")
+    RDA_Assert(this.win.hwnd, "invalid argument win.hwnd is empty")
   }
   /*!
     Method: toString
@@ -323,7 +340,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
     local v := this.automation.UIA.GetFocusedElement()
     if (IsObject(v)) {
       RDA_Log_Debug(A_ThisFunc)
-      return new RDA_AutomationUIAElement(this.automation, v)
+      return new RDA_AutomationUIAElement(this.automation, this.win, v)
     }
 
     RDA_Log_Error(A_ThisFunc . " No element focused")
@@ -837,7 +854,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
       throw RDA_Exception("Index out of bounds")
     }
 
-    return new RDA_AutomationUIAElement(this.automation, elements[1])
+    return new RDA_AutomationUIAElement(this.automation, this.win, elements[1])
   }
   /*!
     Method: getDescendants
@@ -898,7 +915,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
 
     if (IsObject(v)) {
       RDA_Log_Debug(A_ThisFunc)
-      return new RDA_AutomationUIAElement(this.automation, v)
+      return new RDA_AutomationUIAElement(this.automation, this.win, v)
     }
 
     RDA_Log_Debug("Parent not found at " . this.toString())
@@ -908,7 +925,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
   _wrapList(list) {
     wrapList := []
     loop % list.length() {
-      wrapList.push(new RDA_AutomationUIAElement(this.automation, list[A_Index]))
+      wrapList.push(new RDA_AutomationUIAElement(this.automation, this.win, list[A_Index]))
     }
 
     return wrapList

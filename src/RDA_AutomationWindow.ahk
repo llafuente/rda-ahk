@@ -4,7 +4,10 @@
 */
 class RDA_AutomationWindow extends RDA_Base {
   ;static __Call := TooFewArguments(RDA_AutomationWindow)
-
+  /*!
+    Property: automation
+      <RDA_Automation> - Automation config
+  */
   automation := 0
   /*!
     Property: hwnd
@@ -901,7 +904,7 @@ class RDA_AutomationWindow extends RDA_Base {
   asUIAElement() {
     RDA_Log_Debug(A_ThisFunc)
 
-    return new RDA_AutomationUIAElement(this.automation, this.automation.UIA.elementFromHandle(this.hwnd))
+    return new RDA_AutomationUIAElement(this.automation, this, this.automation.UIA.elementFromHandle(this.hwnd))
   }
   /*!
     Method: asJABElement
