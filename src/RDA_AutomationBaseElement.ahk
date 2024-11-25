@@ -4,6 +4,49 @@
 */
 class RDA_AutomationBaseElement extends RDA_Base {
   /*!
+    Method: osClick
+      "Clicks" on the element at OS level
+
+    Remarks:
+      This will honor <RDA_Automation> configuration.
+
+    Remarks:
+      It will click at the element center position, note that other element
+      could recieve the click if it's hover.
+
+    Returns:
+      <RDA_AutomationJABElement>
+  */
+  osClick() {
+    local
+    RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
+
+    position := this.getRegion().getCenter().subtract(this.win.getRegion().getTopLeft())
+    this.win.click(position.x, position.y)
+
+    return this
+  }
+
+  /*!
+    Method: osHover
+      Hovers the element at OS level
+
+    Remarks:
+      Hover an element at OS level. This functionallity is not available in JAB
+
+    Returns:
+      <RDA_AutomationJABElement>
+  */
+  osHover() {
+    RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
+
+    position := this.getRegion().getCenter().subtract(this.win.getRegion().getTopLeft())
+    this.win.mouseMoveTo(position.x, position.y)
+
+    return this
+  }
+
+  /*!
     Method: hasPattern
       Checks if current element implements given pattern
 

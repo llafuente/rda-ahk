@@ -267,49 +267,14 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
     return this
   }
   /*!
-    Method: osClick
-      "Clicks" on the element at OS level
-
-    Remarks:
-      This will honor <RDA_Automation> configuration
-
-    Remarks:
-      It will click at the element center position, note that other element
-      could recieve the click if it's hover.
-
-    Returns:
-      <RDA_AutomationUIAElement>
-  */
-  osClick() {
-    this.getRegion().getCenter().click()
-
-    return this
-  }
-  /*!
     Method: hover
-      Alias of <RDA_AutomationUIAElement.osHover>
+      Alias of <RDA_AutomationBaseElement.osHover>
 
     Returns:
       <RDA_AutomationUIAElement>
   */
   hover() {
     return this.osHover()
-  }
-  /*!
-    Method: osHover
-      Hovers the element at OS level
-
-    Remarks:
-      Hover an element at OS level. This functionallity is not available in UIA
-
-    Returns:
-      <RDA_AutomationUIAElement>
-  */
-  osHover() {
-    RDA_Log_Debug(A_ThisFunc)
-    this.getRegion().getCenter().mouseMove()
-
-    return this
   }
   /*!
     Method: focus

@@ -347,54 +347,14 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     return this
   }
   /*!
-    Method: osClick
-      "Clicks" on the element at OS level
-
-    Remarks:
-      This will honor <RDA_Automation> configuration.
-
-    Remarks:
-      It will click at the element center position, note that other element
-      could recieve the click if it's hover.
-
-    Returns:
-      <RDA_AutomationJABElement>
-  */
-  osClick() {
-    RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
-
-    this.win.activate()
-    this.getRegion().getCenter().click()
-
-    return this
-  }
-  /*!
     Method: hover
-      Alias of <RDA_AutomationJABElement.osHover>, JAB do not have hover.
+      Alias of <RDA_AutomationBaseElement.osHover>, JAB do not have hover.
 
     Returns:
       <RDA_AutomationJABElement>
   */
   hover() {
     return this.osHover()
-  }
-  /*!
-    Method: osHover
-      Hovers the element at OS level
-
-    Remarks:
-      Hover an element at OS level. This functionallity is not available in JAB
-
-    Returns:
-      <RDA_AutomationJABElement>
-  */
-  osHover() {
-    RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
-
-    this.win.activate()
-    this.getRegion().getCenter().mouseMove()
-
-    return this
   }
   /*!
     Method: focus
