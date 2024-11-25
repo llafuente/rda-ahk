@@ -382,14 +382,18 @@ RDA_Window_GetSizeAndPosition(automation, hwnd) {
 RDA_MouseClick(automation, hwnd, button, clickCount, x := 9999, y := 9999) {
   RDA_Log_Debug(A_ThisFunc . "(button = " . button . ", clickCount = " . clickCount . ", " . x . ", " . y . ") " . automation.toString())
 
-  if (x != 9999 && y != 9999) {
-    RDA_MouseMove(automation, x, y)
-  }
-
   SetMouseDelay % automation.mouseDelay
   SendMode % automation.sendMode
 
   if (automation.inputMode == "interactive") {
+    if (hwnd) {
+      RDA_Window_Activate(hwnd, RDA_Automation.TIMEOUT, RDA_Automation.DELAY)
+    }
+
+    if (x != 9999 && y != 9999) {
+      RDA_MouseMove(automation, x, y)
+    }
+
     BlockInput On
     Click %button%, %clickCount%
     BlockInput Off
@@ -397,7 +401,11 @@ RDA_MouseClick(automation, hwnd, button, clickCount, x := 9999, y := 9999) {
     if (!hwnd) {
       throw RDA_Exception("background mode require hwnd")
     }
-
+    ; mimic mouse move event
+    PostMessage, 0x200, 0, % (x & 0xFFFF)|(y << 16), , % "ahk_id " hwnd ;WM_MOUSEMOVE := 0x200
+    ;PostMessage, 0x201, 0, % (vPosX & 0xFFFF)|(vPosY<<16),, % "ahk_id " hWnd ;WM_LBUTTONDOWN := 0x201
+    ;PostMessage, 0x202, 0, % (vPosX & 0xFFFF)|(vPosY<<16),, % "ahk_id " hWnd ;WM_LBUTTONUP := 0x202
+    sleep 250 ; give some time the app to "hover"
     if (x != 9999) {
       ControlClick, , ahk_id %hwnd%,, %button%, %clickCount%, NA x%x% y%y%
     } else {
@@ -668,8 +676,10 @@ RDA_Window_Activate(hwnd, timeout, delay) {
 */
 RDA_KeyboardSendKeys(automation, hwnd, keys) {
   RDA_Log_Debug(A_ThisFunc . "(" . hwnd . ")")
+  RDA_Log_Debug(A_ThisFunc . "(" . keys . ")")
 
   ; we do not honor Play mode
+  DetectHiddenWindows, On
   SetKeyDelay % automation.keyDelay, % automation.pressDuration
   SendMode % automation.sendMode
 
@@ -690,7 +700,15 @@ RDA_KeyboardSendKeys(automation, hwnd, keys) {
     SetBatchLines -1
     SetTitleMatchMode 2
 
-    ControlSend, , %keys%, ahk_id %hwnd%
+    PostMessage, 0x0006, 1, 0, , ahk_id %hwnd% ; WM_ACTIVATE := 0x0006
+    sleep 250
+
+    ControlSend, ahk_parent, %keys%, ahk_id %hwnd%
+
+    PostMessage, 0x0006, 0, 0, , ahk_id %hwnd% ; WM_ACTIVATE := 0x0006
+    if (ErrorLevel == 1) {
+      RDA_Log_Error(A_ThisFunc . " ControlSend failed")
+    }
   }
 
   sleep % automation.actionDelay

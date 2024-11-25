@@ -343,7 +343,7 @@ class RDA_AutomationWindow extends RDA_Base {
     if (y != 9999) {
       pos.y += y
     }
-    this.activate()
+
     RDA_MouseClick(this.automation, this.hwnd, "LEFT", 1, pos.x, pos.y)
 
     return this
@@ -369,7 +369,7 @@ class RDA_AutomationWindow extends RDA_Base {
     if (y != 9999) {
       pos.y += y
     }
-    this.activate()
+
     RDA_MouseClick(this.automation, this.hwnd, "RIGHT", 1, pos.x, pos.y)
 
     return this
@@ -395,7 +395,7 @@ class RDA_AutomationWindow extends RDA_Base {
     if (y != 9999) {
       pos.y += y
     }
-    this.activate()
+
     RDA_MouseClick(this.automation, this.hwnd, "LEFT", 2, pos.x, pos.y)
 
     return this
@@ -420,7 +420,7 @@ class RDA_AutomationWindow extends RDA_Base {
   ;
   /*!
     Method: type
-      Shortcut: <RDA_AutomationWindow.activate> + <RDA_AutomationKeyboard.type>
+      Shortcut: <RDA_AutomationKeyboard.type>
 
     Parameters:
       text - string - Text
@@ -431,14 +431,13 @@ class RDA_AutomationWindow extends RDA_Base {
   type(text) {
     RDA_Log_Debug(A_ThisFunc . "(text = " . text . ") " . this.automation.toString())
 
-    this.activate()
     this.automation.keyboard().type(text, this.hwnd)
 
     return this
   }
   /*!
     Method: typePassword
-      Shortcut: <RDA_AutomationWindow.activate> + <RDA_AutomationKeyboard.typePassword>
+      Shortcut:<RDA_AutomationKeyboard.typePassword>
 
     Parameters:
       password - string - Text
@@ -449,14 +448,13 @@ class RDA_AutomationWindow extends RDA_Base {
   typePassword(password) {
     RDA_Log_Debug(A_ThisFunc . "(password.length = " . StrLen(password) . ") " . this.automation.toString())
 
-    this.activate()
     this.automation.keyboard().typePassword(password, this.hwnd)
 
     return this
   }
   /*!
     Method: sendKeys
-      Shortcut: <RDA_AutomationWindow.activate> + <RDA_AutomationKeyboard.sendKeys>
+      Shortcut: <RDA_AutomationKeyboard.sendKeys>
 
     Parameters:
       keys - string - Keys
@@ -467,14 +465,13 @@ class RDA_AutomationWindow extends RDA_Base {
   sendKeys(keys) {
     RDA_Log_Debug(A_ThisFunc . "(keys = " . keys . ") " . this.automation.toString())
 
-    this.activate()
     this.automation.keyboard().sendKeys(keys, this.hwnd)
 
     return this
   }
   /*!
     Method: sendPassword
-      Shortcut: <RDA_AutomationWindow.activate> + <RDA_AutomationKeyboard.sendPassword>
+      Shortcut: <RDA_AutomationKeyboard.sendPassword>
 
     Parameters:
       password - password string
@@ -485,9 +482,7 @@ class RDA_AutomationWindow extends RDA_Base {
   sendPassword(password) {
     RDA_Log_Debug(A_ThisFunc . "(password.length = " . StrLen(password) . ") " . this.automation.toString())
 
-    this.activate()
     this.automation.keyboard().sendPassword(password, this.hwnd)
-
 
     return this
   }
@@ -878,7 +873,7 @@ class RDA_AutomationWindow extends RDA_Base {
   */
   copyToClipboard(keys := "{Ctrl down}c{Ctrl up}", timeout := -1, delay := -1) {
     this.activate()
-    return this.automation.clipboard().copy()
+    return this.automation.clipboard().copy(keys, timeout, delay)
   }
   ;
   ; UIAutomation
