@@ -538,8 +538,9 @@ class RDA_AutomationBaseElement extends RDA_Base {
     local
 
     text := ""
+    type := node.element.getType()
     ; name, type, patterns, children, path
-    text .= padding . "<" . node.element.getType() . " name=" . RDA_JSON_stringify(node.element.getName()) . " patterns=" . RDA_JSON_stringify(node.patterns) . " path=" . RDA_JSON_stringify(node.path) . " description=" . RDA_JSON_stringify(node.element.getDescription())
+    text .= padding . "<" . type . " name=" . RDA_JSON_stringify(node.element.getName()) . " patterns=" . RDA_JSON_stringify(node.patterns) . " path=" . RDA_JSON_stringify(node.path) . " description=" . RDA_JSON_stringify(node.element.getDescription())
     if (value && node.element.hasPattern("Value")) {
       text .= " value=" . RDA_JSON_stringify(node.element.getValue())
     }
@@ -550,7 +551,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
     loop % node.children.length() {
       text .= this.__dumpNodeTree(node.children[A_Index], value, selected, padding . "  ")
     }
-    text .= padding .  "</" . node.type . ">`n"
+    text .= padding .  "</" . type . ">`n"
 
     return text
   }
