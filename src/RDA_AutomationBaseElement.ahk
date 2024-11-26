@@ -26,6 +26,52 @@ class RDA_AutomationBaseElement extends RDA_Base {
 
     return this
   }
+  /*!
+    Method: osRightClick
+      Right "Clicks" on the element at OS level
+
+    Remarks:
+      This will honor <RDA_Automation> configuration.
+
+    Remarks:
+      It will click at the element center position, note that other element
+      could recieve the click if it's hover.
+
+    Returns:
+      <RDA_AutomationJABElement>
+  */
+  osRightClick() {
+    local
+    RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
+
+    position := this.getRegion().getCenter().subtract(this.win.getRegion().getTopLeft())
+    this.win.rightClick(position.x, position.y)
+
+    return this
+  }
+  /*!
+    Method: osDoubleClick
+      Double "Clicks" on the element at OS level
+
+    Remarks:
+      This will honor <RDA_Automation> configuration.
+
+    Remarks:
+      It will click at the element center position, note that other element
+      could recieve the click if it's hover.
+
+    Returns:
+      <RDA_AutomationJABElement>
+  */
+  osDoubleClick() {
+    local
+    RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
+
+    position := this.getRegion().getCenter().subtract(this.win.getRegion().getTopLeft())
+    this.win.doubleClick(position.x, position.y)
+
+    return this
+  }
 
   /*!
     Method: osHover
