@@ -2,6 +2,33 @@ class Test_RDA_Mouse {
   Begin() {
   }
 
+  Test_4_Automation_WindowsMouse2() {
+    local
+    global RDA_Automation, Yunit
+
+    RDA_Log_Debug(A_ThisFunc)
+
+    automation := new RDA_Automation()
+    windows := automation.windows()
+    mouse := automation.mouse()
+
+    mouse.moveTo(0, 0)
+    sleep 250
+
+    position := mouse.get()
+    Yunit.assert(position.x == 0, "check mouse x at origin")
+    Yunit.assert(position.y == 0, "check mouse y at origin")
+
+    loop 5 {
+      mouse.move(50, 25)
+      sleep 250
+
+      position := mouse.get()
+      Yunit.assert(position.x == A_index * 50, A_index . " check mouse x at origin")
+      Yunit.assert(position.y == A_index * 25, A_index . " check mouse y at origin")
+    }
+  }
+
   Test_4_Automation_WindowsMouse() {
     local
     global RDA_Automation, Yunit

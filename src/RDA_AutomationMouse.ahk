@@ -20,17 +20,17 @@ class RDA_AutomationMouse extends RDA_Base {
     Method: click
       Performs a left click at given position.
 
-      See <RDA_MouseClick>
+      See <RDA_Mouse_ScreenClick>
 
     Parameters:
-      x - number - x position (9999 will click current position)
-      y - number - y position (9999 will click current position)
+      x - number - x screen position (9999 will click current position)
+      y - number - y screen position (9999 will click current position)
 
     Returns:
       <RDA_AutomationMouse>
   */
   click(x := 9999, y := 9999) {
-    RDA_MouseClick(this.automation, 0, "LEFT", 1, x, y)
+    RDA_Mouse_ScreenClick(this.automation, "LEFT", 1, x, y)
 
     return this
   }
@@ -38,17 +38,17 @@ class RDA_AutomationMouse extends RDA_Base {
     Method: rightClick
       Performs a right click at given position.
 
-      See <RDA_MouseClick>
+      See <RDA_Mouse_ScreenClick>
 
     Parameters:
-      x - number - x position (9999 will click current position)
-      y - number - y position (9999 will click current position)
+      x - number - x screen position (9999 will click current position)
+      y - number - y screen position (9999 will click current position)
 
     Returns:
       <RDA_AutomationMouse>
   */
   rightClick(x := 9999, y := 9999) {
-    RDA_MouseClick(this.automation, 0, "RIGHT", 1, x, y)
+    RDA_Mouse_ScreenClick(this.automation, "RIGHT", 1, x, y)
 
     return this
   }
@@ -56,17 +56,17 @@ class RDA_AutomationMouse extends RDA_Base {
     Method: rightClick
       Performs a lft double click at given position.
 
-      See <RDA_MouseClick>
+      See <RDA_Mouse_ScreenClick>
 
     Parameters:
-      x - number - x position (9999 will click current position)
-      y - number - y position (9999 will click current position)
+      x - number - x screen position (9999 will click current position)
+      y - number - y screen position (9999 will click current position)
 
     Returns:
       <RDA_AutomationMouse>
   */
   doubleClick(x := 9999, y := 9999) {
-    RDA_MouseClick(this.automation, 0, "LEFT", 2, x, y)
+    RDA_Mouse_ScreenClick(this.automation, "LEFT", 2, x, y)
 
     return this
   }

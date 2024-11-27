@@ -336,24 +336,16 @@ class RDA_AutomationWindow extends RDA_Base {
     Method: click
       Performs a left click at given position.
 
-      See <RDA_MouseClick>
+      See <RDA_Mouse_WindowClick>
 
     Parameters:
-      x - number - x position (9999 will click current position)
-      y - number - y position (9999 will click current position)
+      x - number - x position relative to window (default value will click current position)
+      y - number - y position relative to window (default value will click current position)
 
       <RDA_AutomationWindow>
   */
   click(x := 9999, y := 9999) {
-    local pos := this.getPosition()
-    if (x != 9999) {
-      pos.x += x
-    }
-    if (y != 9999) {
-      pos.y += y
-    }
-
-    RDA_MouseClick(this.automation, this.hwnd, "LEFT", 1, pos.x, pos.y)
+    RDA_Mouse_WindowClick(this.automation, this.hwnd, "LEFT", 1, x, y)
 
     return this
   }
@@ -361,25 +353,17 @@ class RDA_AutomationWindow extends RDA_Base {
     Method: rightClick
       Performs a right click at given position.
 
-      See <RDA_MouseClick>
+      See <RDA_Mouse_WindowClick>
 
     Parameters:
-      x - number - x position (9999 will click current position)
-      y - number - y position (9999 will click current position)
+      x - number - x position relative to window (default value will click current position)
+      y - number - y position relative to window (default value will click current position)
 
     Returns:
       <RDA_AutomationWindow>
   */
   rightClick(x := 9999, y := 9999) {
-    local pos := this.getPosition()
-    if (x != 9999) {
-      pos.x += x
-    }
-    if (y != 9999) {
-      pos.y += y
-    }
-
-    RDA_MouseClick(this.automation, this.hwnd, "RIGHT", 1, pos.x, pos.y)
+    RDA_Mouse_WindowClick(this.automation, this.hwnd, "RIGHT", 1, x, y)
 
     return this
   }
@@ -387,25 +371,17 @@ class RDA_AutomationWindow extends RDA_Base {
     Method: rightClick
       Performs a lft double click at given position.
 
-      See <RDA_MouseClick>
+      See <RDA_Mouse_WindowClick>
 
     Parameters:
-      x - number - x position (9999 will click current position)
-      y - number - y position (9999 will click current position)
+      x - number - x position relative to window (default value will click current position)
+      y - number - y position relative to window (default value will click current position)
 
     Returns:
       <RDA_AutomationWindow>
   */
   doubleClick(x := 9999, y := 9999) {
-    local pos := this.getPosition()
-    if (x != 9999) {
-      pos.x += x
-    }
-    if (y != 9999) {
-      pos.y += y
-    }
-
-    RDA_MouseClick(this.automation, this.hwnd, "LEFT", 2, pos.x, pos.y)
+    RDA_Mouse_WindowClick(this.automation, this.hwnd, "LEFT", 2, x, y)
 
     return this
   }
@@ -413,6 +389,9 @@ class RDA_AutomationWindow extends RDA_Base {
     Method: mouseMoveTo
       See <RDA_MouseMove>
 
+    Parameters:
+      x - number - x position relative to window
+      y - number - y position relative to window
 
     Returns:
       <RDA_AutomationWindow>
@@ -932,5 +911,23 @@ class RDA_AutomationWindow extends RDA_Base {
     RDA_Log_Debug(A_ThisFunc)
 
     return this.automation.jab.elementFromHandle(this.hwnd)
+  }
+  /*!
+    Method: moveToVirtualDesktop
+      Moves current window to given virtual desktop
+
+    Parameters:
+      vdesk - <RDA_VirtualDesktop> - target virtual desktop
+
+    Returns:
+      <RDA_AutomationWindow>
+  */
+  moveToVirtualDesktop(vdesk) {
+    local
+
+    this.automation.virtualDesktops().MoveTo(this.hwnd, vdesk)
+
+    return this
+
   }
 }

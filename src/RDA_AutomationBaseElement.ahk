@@ -254,7 +254,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
     global RDA_Log_Level
 
     ; startTime := A_TickCount
-    RDA_Log_Level := 3
+    RDA_Log_Level := 2
     stack := [this]
     try {
       loop % actions.length() {

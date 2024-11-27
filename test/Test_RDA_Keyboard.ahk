@@ -1,8 +1,8 @@
 class Test_RDA_Keyboard {
   Begin() {
   }
-/*
-  Test_6_Automation_Keyboard() {
+
+  Test_Keyboard() {
     local
     global RDA_Automation, Yunit
 
@@ -50,9 +50,9 @@ class Test_RDA_Keyboard {
     Yunit.assert(popup.isAlive() == false, "popup not Alive")
     Yunit.assert(win2.isAlive() == false, "notepad not Alive")
   }
-*/
 
-  Test_7_Automation_KeyboardBackground() {
+
+  Test_Keyboard_Background() {
     local
     global RDA_Automation, Yunit
 
@@ -110,6 +110,80 @@ class Test_RDA_Keyboard {
 
     Yunit.assert(popup.isAlive() == false, "popup not Alive")
     Yunit.assert(win.isAlive() == false, "notepad not Alive")
+  }
+
+  Test_Keyboard_Background_and_VirtualDesktop() {
+    local
+    global RDA_Automation, Yunit
+
+    RDA_Log_Debug(A_ThisFunc)
+
+    automation := new RDA_Automation()
+    automation.setActionDelay(500)
+    windows := automation.windows()
+    mouse := automation.mouse()
+    vdesk := automation.virtualDesktops()
+
+    try {
+      win := windows.findOne({process: "notepad.exe"})
+    } catch e {
+      Run notepad.exe
+      win := windows.waitOne({process: "notepad.exe"})
+    }
+
+    ; virtualDesktop mess! we can't get position, size, region
+    ; win.move(50, 75)
+
+    desktops := vdesk.get()
+    win.moveToVirtualDesktop(desktops[1])
+    ; move and resize do not work on "another" virtual desktop
+    win.move(0, 0)
+    win.resize(640, 480)
+
+    region := win.getRegion()
+    Yunit.assert(region.x == 0, "region.x of a window in current desktop")
+    Yunit.assert(region.y == 0, "region.y of a window in current desktop")
+    Yunit.assert(region.w > 0, "region.w of a window in current desktop")
+    Yunit.assert(region.h > 0, "region.h of a window in current desktop")
+
+    win.moveToVirtualDesktop(desktops[2])
+
+    region := win.getRegion()
+    Yunit.assert(region.x == 0, "region.x of a window in a virtual desk")
+    Yunit.assert(region.y == 0, "region.y of a window in a virtual desk")
+    Yunit.assert(region.w == 0, "region.w of a window in a virtual desk")
+    Yunit.assert(region.h == 0, "region.h of a window in a virtual desk")
+
+
+    automation.setInputMode("background")
+/*
+    ; notepad "background" 0,0 starts at Edit1 position
+    ; win.mouseMoveTo(100, 100)
+    ;sleep 250
+    ;win.rightClick()
+    sleep 1000
+    ;win.rightClick(100, 100)
+*/
+    loop 10 {
+      win.sendKeys("012345678901234567890123456789012345678901234567890123456789{Enter}")
+    }
+    win.click(100, 100)
+    win.sendKeys("{LShift DOWN}{LControl DOWN}{HOME}{LControl UP}{LShift UP}")
+    ;win.sendKeys("{LControl DOWN}c{LControl UP}{LShift UP}")
+    win.sendKeys("{LControl DOWN}{vk43}{LControl UP}{LShift UP}")
+
+    Yunit.assert(Clipboard == "012345678901234567890123456789012345678901234567890123456789`r`n012345678901234567890123456789012345678901234567890123456789`r`n012345678901234567890123456789012345678901234567890123456789`r`n012345678901234567890123456789012345678901234567890123456789`r`n012345678901234567890123456789012345678901234567890123456789`r`n012345678901", "check clipboard")
+
+    Clipboard := ""
+
+    ; TODO CLOSE IT!!
+    win.close(0)
+    popup := win.getChild({classNN: "#32770"}, true)
+    popup.defaultBackgroundControl := ""
+    popup.sendKeys("n")
+    sleep 1000
+    Yunit.assert(popup.isAlive() == false, "popup is not alive")
+    Yunit.assert(win.isAlive() == false, "notepad is not alive")
   }
 
 

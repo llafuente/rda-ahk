@@ -356,21 +356,17 @@ RDA_Window_GetSizeAndPosition(automation, hwnd) {
 }
 
 /*!
-  Function: RDA_MouseClick
-    Perform a click into given coords.
-
-    If x,y are sent it will move the mouse first, then click
+  Function: RDA_Mouse_ScreenClick
+    Perform a click into given coords
 
   Remarks:
-    * *interactive*: Activate window and then [Click](https://www.autohotkey.com/docs/commands/Click.htm)
+    Asume interactive mode regardless automation configuration sent.
 
-      It does not use MouseClick because user can swap Left/Right
-
-    * *background*: Activate window and then [ControlClick](https://www.autohotkey.com/docs/commands/ControlClick.htm)
+  Remarks:
+    Use [Click](https://www.autohotkey.com/docs/commands/Click.htm)
 
   Parameters:
     automation - <RDA_Automation>
-    automation - hwnd
     button - string - LEFT|RIGHT|MIDDLE|X1|X2
     clickCount - number - The number of times to click the mouse
     x - number - screen x position, 9999 means that the mouse will not move
@@ -379,15 +375,73 @@ RDA_Window_GetSizeAndPosition(automation, hwnd) {
   Throws:
     background mode require hwnd
 */
-RDA_MouseClick(automation, hwnd, button, clickCount, x := 9999, y := 9999) {
+RDA_Mouse_ScreenClick(automation, button, clickCount, x := 9999, y := 9999) {
   RDA_Log_Debug(A_ThisFunc . "(button = " . button . ", clickCount = " . clickCount . ", " . x . ", " . y . ") " . automation.toString())
+
+  SetMouseDelay % automation.mouseDelay
+  SendMode % automation.sendMode
+
+  if (x != 9999 && y != 9999) {
+    RDA_MouseMove(automation, 0, x, y)
+  }
+
+  BlockInput On
+  Click %button%, %clickCount%
+  BlockInput Off
+
+  sleep % automation.actionDelay
+}
+/*!
+  Function: RDA_Mouse_WindowClick
+    Perform a click into given windows relative position.
+
+    If x,y are sent it will move the mouse first, then click
+
+  Remarks:
+    * *interactive*:
+
+      * Activate window
+
+      * Mouse move if x,y non default
+
+      * [Click](https://www.autohotkey.com/docs/commands/Click.htm) (It does not use MouseClick because user can swap Left/Right)
+
+    * *background*:
+
+      * PostMessage: WM_MOUSEMOVE
+
+      * [ControlClick](https://www.autohotkey.com/docs/commands/ControlClick.htm), if x,y is default it will click at the center
+
+  Parameters:
+    automation - <RDA_Automation>
+    hwnd - number - window handle
+    button - string - LEFT|RIGHT|MIDDLE|X1|X2
+    clickCount - number - The number of times to click the mouse
+    x - number - screen x position, 9999 means that the mouse will not move
+    y - number - screen y position, 9999 means that the mouse will not move
+
+  Throws:
+    background mode require hwnd
+*/
+RDA_Mouse_WindowClick(automation, hwnd, button, clickCount, x := 9999, y := 9999) {
+  options := "NA"
+  if (x != 9999) {
+    options .= " x" . x
+  }
+  if (x != 9999) {
+    options .= " y" . y
+  }
+
+  RDA_Log_Debug(A_ThisFunc . "(hwnd = " . hwnd . ", button = " . button . ", clickCount = " . clickCount . ", " . options . ") " . automation.toString())
 
   SetMouseDelay % automation.mouseDelay
   SendMode % automation.sendMode
 
   if (automation.inputMode == "interactive") {
     if (x != 9999 && y != 9999) {
-      RDA_MouseMove(automation, hwnd, x, y)
+      winPos := RDA_Window_GetSizeAndPosition(automation, hwnd).origin
+
+      RDA_MouseMove(automation, hwnd, winPos.x + x, winPos.y + y)
     }
 
     BlockInput On
@@ -399,20 +453,20 @@ RDA_MouseClick(automation, hwnd, button, clickCount, x := 9999, y := 9999) {
     }
     ; mimic mouse move event
     PostMessage, 0x200, 0, % (x & 0xFFFF)|(y << 16), , % "ahk_id " hwnd ;WM_MOUSEMOVE := 0x200
-    ;PostMessage, 0x201, 0, % (vPosX & 0xFFFF)|(vPosY<<16),, % "ahk_id " hWnd ;WM_LBUTTONDOWN := 0x201
-    ;PostMessage, 0x202, 0, % (vPosX & 0xFFFF)|(vPosY<<16),, % "ahk_id " hWnd ;WM_LBUTTONUP := 0x202
+
+    ;PostMessage, 0x201, 0, % (x & 0xFFFF)|(y<<16),, % "ahk_id " hWnd ;WM_LBUTTONDOWN := 0x201
+    ;PostMessage, 0x202, 0, % (x & 0xFFFF)|(y<<16),, % "ahk_id " hWnd ;WM_LBUTTONUP := 0x202
+
     sleep 250 ; give some time the app to "hover"
-    if (x != 9999) {
-      ControlClick, , ahk_id %hwnd%,, %button%, %clickCount%, NA x%x% y%y%
-    } else {
-      ControlClick, , ahk_id %hwnd%,, %button%, %clickCount%,
-    }
+
+
+    ControlClick, , ahk_id %hwnd%,, %button%, %clickCount%, %options%
   }
 
   sleep % automation.actionDelay
 }
 /*!
-  Function: RDA_MouseClickDrag
+  Function: RDA_Mouse_ScreenClickDrag
     Performs a mouse down, move and mouse up.
 
   Remarks:
@@ -444,7 +498,7 @@ RDA_MouseClick(automation, hwnd, button, clickCount, x := 9999, y := 9999) {
   Throws:
     background mode require hwnd
 */
-RDA_MouseClickDrag(automation, hwnd, x, y, dragX, dragY, button) {
+RDA_Mouse_ScreenClickDrag(automation, hwnd, x, y, dragX, dragY, button) {
   local wParam, end_x, end_y
 
   RDA_Log_Debug(A_ThisFunc . "(" . hwnd . ", button = " . button . ", " . x . ", " . y . ", " . dragX . ", " . dragY . ") " . automation.toString())
@@ -489,8 +543,8 @@ RDA_MouseClickDrag(automation, hwnd, x, y, dragX, dragY, button) {
   Parameters:
     automation - <RDA_Automation>
     hwnd - number - window handle
-    x - number - x coordinate
-    y - number - y coordinate
+    x - number - x screen coordinate
+    y - number - y screen coordinate
 */
 RDA_MouseMove(automation, hwnd, x, y) {
   RDA_Log_Debug(A_ThisFunc . "(x = " . x . " , y = " . y . ") " . automation.toString())
@@ -555,11 +609,15 @@ RDA_MouseRelativeMove(automation, hwnd, x, y) {
     <RDA_ScreenPosition>
 */
 RDA_MouseGetPosition(automation) {
-  local x, y
+  local
+  global RDA_ScreenPosition
 
   MouseGetPos x, y
+  p := new RDA_ScreenPosition(automation, x, y)
 
-  return new RDA_ScreenPosition(automation, x, y)
+  RDA_Log_Debug(A_ThisFunc . " " . p.toString())
+
+  return p
 }
 /*!
   Function: RDA_Window_Opaque
@@ -690,6 +748,7 @@ RDA_Window_Activate(hwnd, timeout, delay) {
 */
 RDA_KeyboardSendKeys(automation, hwnd, keys, control) {
   local
+  global RDA_Automation
   RDA_Log_Debug(A_ThisFunc . "(hwnd = " . hwnd . ", keys.length = " . StrLen(keys) . ", control = " . control . ") " . automation.toString())
 
   ; we do not honor Play mode

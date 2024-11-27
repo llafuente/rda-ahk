@@ -7,6 +7,17 @@
 /*!
   class: RDA_VirtualDesktop
     VirtualDesktop
+
+  Remarks:
+    Virtual desktop mess with many window funcionality like:
+
+    * <RDA_AutomationWindow.getPosition>
+
+    * <RDA_AutomationWindow.getSize>
+
+    * <RDA_AutomationWindow.getRegion>
+
+    It's recommended to move the window to the origin before move.
 */
 class RDA_VirtualDesktop extends RDA_Base {
   /*!
