@@ -354,6 +354,19 @@ RDA_Window_GetSizeAndPosition(automation, hwnd) {
 
   return region
 }
+/*!
+  Function: RDA_BlockInput
+    Wrapper for BlockInput
+
+  Remarks:
+    It may require admin priviledges!
+
+  Parameters:
+    value - On|Off
+*/
+RDA_BlockInput(value) {
+  BlockInput % value
+}
 
 /*!
   Function: RDA_Mouse_ScreenClick
@@ -371,11 +384,10 @@ RDA_Window_GetSizeAndPosition(automation, hwnd) {
     clickCount - number - The number of times to click the mouse
     x - number - screen x position, 9999 means that the mouse will not move
     y - number - screen y position, 9999 means that the mouse will not move
-
-  Throws:
-    background mode require hwnd
 */
 RDA_Mouse_ScreenClick(automation, button, clickCount, x := 9999, y := 9999) {
+  local
+
   RDA_Log_Debug(A_ThisFunc . "(button = " . button . ", clickCount = " . clickCount . ", " . x . ", " . y . ") " . automation.toString())
 
   SetMouseDelay % automation.mouseDelay
@@ -385,9 +397,10 @@ RDA_Mouse_ScreenClick(automation, button, clickCount, x := 9999, y := 9999) {
     RDA_MouseMove(automation, 0, x, y)
   }
 
-  BlockInput On
+  automation.requestBlockInput(false)
+  ; click has no ErrorLevel/exceptions -> no try
   Click %button%, %clickCount%
-  BlockInput Off
+  automation.releaseBlockInput(false)
 
   sleep % automation.actionDelay
 }
@@ -424,6 +437,8 @@ RDA_Mouse_ScreenClick(automation, button, clickCount, x := 9999, y := 9999) {
     background mode require hwnd
 */
 RDA_Mouse_WindowClick(automation, hwnd, button, clickCount, x := 9999, y := 9999) {
+  local
+
   options := "NA"
   if (x != 9999) {
     options .= " x" . x
@@ -444,9 +459,11 @@ RDA_Mouse_WindowClick(automation, hwnd, button, clickCount, x := 9999, y := 9999
       RDA_MouseMove(automation, hwnd, winPos.x + x, winPos.y + y)
     }
 
-    BlockInput On
+    automation.requestBlockInput()
+    ; click has no ErrorLevel/exceptions -> no try
     Click %button%, %clickCount%
-    BlockInput Off
+    automation.releaseBlockInput()
+
   } else {
     if (!hwnd) {
       throw RDA_Exception("background mode require hwnd")
@@ -459,83 +476,27 @@ RDA_Mouse_WindowClick(automation, hwnd, button, clickCount, x := 9999, y := 9999
 
     sleep 250 ; give some time the app to "hover"
 
-
-    ControlClick, , ahk_id %hwnd%,, %button%, %clickCount%, %options%
-  }
-
-  sleep % automation.actionDelay
-}
-/*!
-  Function: RDA_Mouse_ScreenClickDrag
-    Performs a mouse down, move and mouse up.
-
-  Remarks:
-    x = 100 y = 100 dragX = 100 dragY = 100 means:
-
-    Start at (100,100) and move another (100,100), so the mouse will end at (200,200)
-
-  Remarks:
-    * *interactive*: it will activate window and then use [SendEvent](https://www.autohotkey.com/docs/v1/lib/Send.htm#Send_variants)
-
-    * *background*: There is no drag and drop operation in background mode, it emulated the following way:
-
-      Use: [ControlClick](https://www.autohotkey.com/docs/commands/ControlClick.htm) for mouse down/up
-
-      SendMessage to simulate mouse move.
-
-      This is unreliable (preferred mode is interactive) because some application may read mouse position from windows,
-      at all times, and we just SendMessage once.
-
-  Parameters:
-    automation - <RDA_Automation>
-    hwnd - number - Control/window identifier
-    x - number - x position
-    y - number - y position
-    dragX - number - Movement amount in X coordinate
-    dragY - number - Movement amount in Y coordinate
-    button - string - LEFT|RIGHT|MIDDLE
-
-  Throws:
-    background mode require hwnd
-*/
-RDA_Mouse_ScreenClickDrag(automation, hwnd, x, y, dragX, dragY, button) {
-  local wParam, end_x, end_y
-
-  RDA_Log_Debug(A_ThisFunc . "(" . hwnd . ", button = " . button . ", " . x . ", " . y . ", " . dragX . ", " . dragY . ") " . automation.toString())
-
-  SetMouseDelay % automation.mouseDelay
-  SendMode % automation.sendMode
-  SetKeyDelay % automation.keyDelay, % automation.pressDuration
-
-  if (overrideInputMode == 1) {
-    BlockInput On
-    ; MouseClickDrag, % button, 0, 0, % dragX, % dragY, % automation.mouseSpeed , R
-    SendEvent % "{Click " . x . " " . y . " Down}{Click " . (x + dragX) . " " . (y + dragY) . " Up}"
-    BlockInput Off
-  } else {
-    if (!hwnd) {
-      throw RDA_Exception("background mode require hwnd")
+    automation.requestBlockInput()
+    try {
+      ControlClick, , ahk_id %hwnd%,, %button%, %clickCount%, %options%
+    } catch e {
+      err := e
+    } finally {
+      automation.releaseBlockInput()
     }
 
-    end_x := x + dragX
-    end_y := y + dragY
-    ControlClick, % "X" . x . " Y" . y, % "ahk_id " . hwnd,,,, D
-    sleep 10
-
-    wParam := 0x1
-    ; shift: 0x4
-    ; ctrl: 0x8
-    PostMessage, 0x200, wParam, (end_x & 0xFFFF) | ((end_y & 0xFFFF)<<16),, % "ahk_id " . hwnd
-    sleep 10
-
-    ControlClick, % "X" . end_x . " Y" . end_y, % "ahk_id " . hwnd,,,, D
+    if (err) {
+      RDA_Log_Error(A_ThisFunc . " ControlClick failed: " . e.message)
+      throw RDA_Exception("Control click failed with error: " . e.message)
+    }
   }
 
   sleep % automation.actionDelay
 }
+
 /*!
   Function: RDA_MouseMove
-    Moves the mouse cursor.to an absolute position in the screen
+    Moves the mouse cursor.to given screen position
 
   Remarks:
     There is no mouse move in *background* mode.
@@ -549,17 +510,18 @@ RDA_Mouse_ScreenClickDrag(automation, hwnd, x, y, dragX, dragY, button) {
 RDA_MouseMove(automation, hwnd, x, y) {
   RDA_Log_Debug(A_ThisFunc . "(x = " . x . " , y = " . y . ") " . automation.toString())
 
-  SetMouseDelay % automation.mouseDelay
-  SendMode % automation.sendMode
-
   if (automation.inputMode == "interactive" and hwnd) {
     RDA_Window_Activate(hwnd, RDA_Automation.TIMEOUT, RDA_Automation.DELAY)
   }
 
-  BlockInput On
+  SetMouseDelay % automation.mouseDelay
+  SendMode % automation.sendMode
   CoordMode Mouse, Screen
+
+  automation.requestBlockInput(false)
+  ; MouseMove has no ErrorLevel/exceptions -> no try
   MouseMove, % x, % y, % automation.mouseSpeed
-  BlockInput Off
+  automation.releaseBlockInput(false)
 
   sleep % automation.actionDelay
 }
@@ -574,29 +536,20 @@ RDA_MouseMove(automation, hwnd, x, y) {
     x - number - x coordinate
     y - number - y coordinate
 */
-RDA_MouseRelativeMove(automation, hwnd, x, y) {
-  RDA_Log_Debug(A_ThisFunc . "(" . hwnd . ", x = " . x . " , y = " . y . ") " . automation.toString())
+RDA_MouseRelativeMove(automation, x, y) {
+  RDA_Log_Debug(A_ThisFunc . "(x = " . x . " , y = " . y . ") " . automation.toString())
 
   SetMouseDelay % automation.mouseDelay
   SendMode % automation.sendMode
+  CoordMode Mouse, Screen
 
-  if (hwnd == 0) {
-    BlockInput On
-    MouseMove, % x, % y, % automation.mouseSpeed, R
-    BlockInput Off
-  } else {
-    RDA_Window_Activate(hwnd, RDA_Automation.TIMEOUT, RDA_Automation.DELAY)
-
-    BlockInput On
-    CoordMode Mouse, Relative
-    MouseMove, % x, % y, % automation.mouseSpeed
-    BlockInput Off
-  }
+  automation.requestBlockInput(false)
+  ; MouseMove has no ErrorLevel/exceptions -> no try
+  MouseMove, % x, % y, % automation.mouseSpeed, R
+  automation.releaseBlockInput(false)
 
   sleep % automation.actionDelay
 }
-
-
 
 /*!
   Function: RDA_MouseGetPosition
@@ -619,6 +572,7 @@ RDA_MouseGetPosition(automation) {
 
   return p
 }
+
 /*!
   Function: RDA_Window_Opaque
     Disables windows transparency
@@ -762,9 +716,11 @@ RDA_KeyboardSendKeys(automation, hwnd, keys, control) {
       RDA_Window_Activate(hwnd, RDA_Automation.TIMEOUT, RDA_Automation.DELAY)
     }
 
-    BlockInput On
+    automation.requestBlockInput()
+    ; Send has no ErrorLevel/exceptions -> no try
     Send, %keys%
-    BlockInput Off
+    automation.releaseBlockInput()
+
   } else {
     if (!hwnd) {
       throw RDA_Exception("hwnd is required in background input mode")
@@ -783,15 +739,21 @@ RDA_KeyboardSendKeys(automation, hwnd, keys, control) {
       }
     }
 
-
+    automation.requestBlockInput()
+    err := 0
     try {
       ControlSend, %control%, %keys%, ahk_id %hwnd%
     } catch e {
-      if (e.message == 1) {
+      err := e
+    } finally {
+      automation.releaseBlockInput()
+    }
+    if (err) {
+      if (err.message == 1) {
         throw RDA_Exception("ControlSend failed (probably hwnd don't exist)")
       }
       ; unreachable? but how knows.
-      throw e
+      throw err
     }
 
 

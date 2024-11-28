@@ -98,6 +98,17 @@ class RDA_Automation extends RDA_Base {
       See: https://www.autohotkey.com/docs/v1/lib/MouseMove.htm
   */
   mouseSpeed := 2
+  /*!
+    Property: blockInputInteractive
+      boolean - Blocks user input on interactive inputMode ?
+  */
+  blockInputInteractive := true
+  /*!
+    Property: blockInputBackground
+      boolean - Blocks user input on background inputMode ?
+  */
+  blockInputBackground := false
+
   ; internal
   _UIA := 0
   /*!
@@ -277,6 +288,18 @@ class RDA_Automation extends RDA_Base {
     RDA_Log_Debug(A_ThisFunc . "(" . mouseSpeed . ")")
     this.mouseSpeed := mouseSpeed
   }
+  /*!
+    Method: setBlockInput
+      Confifures BlockInput per inputMode
+
+    Parameters:
+      mouseSpeed - number - see <RDA_Automation.mouseSpeed>
+  */
+  setBlockInput(interactive, background) {
+    RDA_Log_Debug(A_ThisFunc . "(" . (interactive ? "yes" : "no") . ", " . (background ? "yes" : "no") . ")")
+    this.blockInputInteractive := !!interactive
+    this.blockInputBackground := !!background
+  }
 
   /*!
     Method: windows
@@ -387,5 +410,48 @@ class RDA_Automation extends RDA_Base {
   */
   virtualDesktops() {
     return new RDA_VirtualDesktops(this)
+  }
+  /*!
+    Method: requestBlockInput
+      Request to block user input
+
+    Parameters:
+      honorInputMode - boolean - Honor input mode or just block
+
+    Returns:
+      <RDA_Automation>
+  */
+  requestBlockInput(honorInputMode := true) {
+    if ((!honorInputMode)
+        || (this.inputMode == "interactive" && this.blockInputInteractive)
+        || (this.inputMode == "background" && this.blockInputBackground)) {
+
+      if (!A_IsAdmin) {
+        RDA_Log_Debug(A_ThisFunc . " user is not admin, it may not work")
+      } else {
+        RDA_Log_Debug(A_ThisFunc)
+      }
+      RDA_BlockInput("On")
+    }
+
+    return this
+  }
+  /*!
+    Method: releaseBlockInput
+      Release user input blockage
+
+    Parameters:
+      honorInputMode - boolean - Honor input mode or just block
+
+    Returns:
+      <RDA_Automation>
+  */
+  releaseBlockInput(honorInputMode := true) {
+    if ((!honorInputMode)
+        || (this.inputMode == "interactive" && this.blockInputInteractive)
+        || (this.inputMode == "background" && this.blockInputBackground)) {
+      RDA_Log_Debug(A_ThisFunc)
+      RDA_BlockInput("Off")
+    }
   }
 }

@@ -48,6 +48,13 @@ winElement.findOne("//PushButton[@name=""Login""]")
   .click()
 ```
 
+# Features
+
+* Automate interactively and in background (Mouse and keyboard)
+* Automate by image, pixel colors
+* Seamless automation with UI Automation / Java access bridge
+* Manage windows, monitor, virtual desktops
+
 # API Terminology / decisions
 
 There are various decisions around how we name things.
@@ -138,7 +145,7 @@ do not have code coverage capabilities.
 
 There is no plan.
 
-Neverdeless as future proof all AutoHotKey APIs (commands) are encapsulated inside functions so the work should be easy.
+Nevertheless as future proof all AutoHotKey APIs (commands) are encapsulated inside functions so the work should be easy.
 
 Dependencies:
 
