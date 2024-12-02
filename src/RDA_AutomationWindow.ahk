@@ -706,7 +706,8 @@ class RDA_AutomationWindow extends RDA_Base {
   */
   getColor(x, y) {
     local pos := this.getPosition()
-    this.activate()
+    this.setOpaque().activate()
+
     return RDA_PixelGetColor(pos.x + x, pos.y + y)
   }
   /*!
@@ -725,7 +726,7 @@ class RDA_AutomationWindow extends RDA_Base {
   */
   searchColor(color, variation := "") {
     local region := this.getRegion()
-    this.activate()
+    this.setOpaque().activate()
 
     ; TODO: normalize to relative ?
     return RDA_PixelSearchColor(this.automation, color, region.origin.x, region.origin.y, region.rect.w, region.rect.h)
@@ -750,7 +751,7 @@ class RDA_AutomationWindow extends RDA_Base {
       <RDA_ScreenRegion>
   */
   searchImage(imagePath, sensibility) {
-    this.setOpaque()
+    this.setOpaque().activate()
     return this.getRegion().searchImage(imagePath, sensibility)
   }
   /*!
@@ -768,7 +769,7 @@ class RDA_AutomationWindow extends RDA_Base {
       <RDA_ScreenRegion>
   */
   waitAppearImage(imagePaths, sensibility, timeout := -1, delay := -1) {
-    this.setOpaque()
+    this.setOpaque().activate()
     return this.getRegion().waitAppearImage(imagePaths, sensibility, timeout, delay)
   }
   /*!
@@ -786,7 +787,7 @@ class RDA_AutomationWindow extends RDA_Base {
       number - Index of the image not found (1 if a string was sent)
   */
   waitDisappearImage(imagePaths, sensibility, timeout := -1, delay := -1) {
-    this.setOpaque()
+    this.setOpaque().activate()
     return this.getRegion().waitDisappearImage(imagePaths, sensibility, timeout, delay)
   }
 
@@ -814,7 +815,6 @@ class RDA_AutomationWindow extends RDA_Base {
 
     return this
   }
-
   /*!
     Method: screenshot
       Takes a screenshot of current region
