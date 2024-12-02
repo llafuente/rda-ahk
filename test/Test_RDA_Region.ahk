@@ -43,6 +43,14 @@ class Test_RDA_Region {
     region2.origin.x := 101
     Yunit.assert(region2.origin.x == 101, "cloned changed")
     Yunit.assert(region.origin.x == 100, "original region not changed")
+    ; region2.highlight()
+    region2.expandOut(10)
+    Yunit.assert(region2.origin.x == 91, "cloned and expanded region.x")
+    Yunit.assert(region2.origin.y == 90, "cloned and expanded region.y")
+    Yunit.assert(region2.rect.w == 660, "cloned and expanded rect.w")
+    Yunit.assert(region2.rect.h == 500, "cloned and expanded rect.h")
+    ; region2.highlight()
+
 
     pos := region.getCenter()
     Yunit.assert(pos.x == 420, "Region center x")

@@ -182,6 +182,86 @@ class RDA_ScreenRegion extends RDA_Base {
     return new RDA_ScreenPosition(this.origin.automation, x, y)
   }
   /*!
+    Method: expandLeft
+      Expands region to the left
+
+    Parameters:
+      value - number - value
+
+    Returns:
+      <RDA_ScreenRegion>
+  */
+  expandLeft(value) {
+    RDA_Log_Debug(A_ThisFunc . "(" . value . ")")
+    this.origin.x -= value
+    return this
+  }
+  /*!
+    Method: expandUp
+      Expands region upwards
+
+    Parameters:
+      value - number - value
+
+    Returns:
+      <RDA_ScreenRegion>
+  */
+  expandUp(value) {
+    RDA_Log_Debug(A_ThisFunc . "(" . value . ")")
+    this.origin.y -= value
+    return this
+  }
+  /*!
+    Method: expandRight
+      Expands region to the right
+
+    Parameters:
+      value - number - value
+
+    Returns:
+      <RDA_ScreenRegion>
+  */
+  expandRight(value) {
+    RDA_Log_Debug(A_ThisFunc . "(" . value . ")")
+    this.rect.w += value
+    return this
+  }
+  /*!
+    Method: expandRight
+      Expands region downwards
+
+    Parameters:
+      value - number - value
+
+    Returns:
+      <RDA_ScreenRegion>
+  */
+  expandDown(value) {
+    RDA_Log_Debug(A_ThisFunc . "(" . value . ")")
+    this.rect.h += value
+    return this
+  }
+  /*!
+    Method: expandOut
+      Expands region outwards
+
+    Parameters:
+      value - number - value
+
+    Returns:
+      <RDA_ScreenRegion>
+  */
+  expandOut(value) {
+    RDA_Log_Debug(A_ThisFunc . "(" . value . ")")
+
+    this.origin.x -= value
+    this.origin.y -= value
+    this.rect.w += value * 2
+    this.rect.h += value * 2
+
+    return this
+  }
+  /*!
     Method: click
       Clicks at region center, Alias of <RDA_AutomationMouse.click>
   */
