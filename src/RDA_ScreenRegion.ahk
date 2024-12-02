@@ -6,12 +6,12 @@ class RDA_ScreenRegion extends RDA_Base {
   ;static __Call := TooFewArguments(RDA_ScreenRegion)
   /*!
     Property: origin
-      RDA_ScreenPosition - origin of the region
+      <RDA_ScreenPosition> - origin of the region
   */
   origin := 0
   /*!
     Property: rect
-      RDA_Rectangle - size of the region
+      <RDA_Rectangle> - size of the region
   */
   rect := 0
   /*!
@@ -100,6 +100,16 @@ class RDA_ScreenRegion extends RDA_Base {
   */
   toString() {
     return "RDA_ScreenRegion{x: " . this.origin.x . ", y: " . this.origin.y . ", w: " . this.rect.w . ", h: " . this.rect.h . "}"
+  }
+  /*!
+    Method: clone
+      Duplicates region
+
+    Returns:
+      <RDA_ScreenRegion>
+  */
+  clone() {
+    return new RDA_ScreenRegion(this.origin.clone(), this.rect.clone())
   }
   /*!
     Method: getCenter
@@ -298,7 +308,6 @@ class RDA_ScreenRegion extends RDA_Base {
   */
   highlight(displayTime:=2000, color:="Red", d:=4) {
     local
-    global Log
 
     RDA_Log_Debug(A_ThisFunc)
 

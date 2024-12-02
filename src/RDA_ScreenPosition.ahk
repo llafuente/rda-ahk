@@ -46,6 +46,16 @@ class RDA_ScreenPosition extends RDA_Base {
     return "RDA_ScreenPosition{x: " . this.x . ", y: " . this.y . "}"
   }
   /*!
+    Method: clone
+      Duplicates screen position
+
+    Returns:
+      <RDA_ScreenRegion>
+  */
+  clone() {
+    return new RDA_ScreenPosition(this.automation, this.x, this.y)
+  }
+  /*!
     Method: getLength
       Calculates the length to origin
 
