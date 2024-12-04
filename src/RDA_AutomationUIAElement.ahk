@@ -22,11 +22,11 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
   uiaHandle := 0
 
   ; internal
-  cachedName := 0
-  cachedType := 0
-  cachedIndex := 0
-  cachedPatterns := 0
-  cachedDescription := 0
+  cachedName := ""
+  cachedType := ""
+  cachedIndex := ""
+  cachedPatterns := ""
+  cachedDescription := ""
 
   __New(automation, win, uiaHandle) {
     this.uiaHandle := uiaHandle

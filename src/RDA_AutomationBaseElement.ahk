@@ -540,7 +540,11 @@ class RDA_AutomationBaseElement extends RDA_Base {
     text := ""
     type := node.element.getType()
     ; name, type, patterns, children, path
-    text .= padding . "<" . type . " name=" . RDA_JSON_stringify(node.element.getName()) . " patterns=" . RDA_JSON_stringify(node.patterns) . " path=" . RDA_JSON_stringify(node.path) . " description=" . RDA_JSON_stringify(node.element.getDescription())
+    text .= padding . "<" . type
+    text .= " name=" . RDA_JSON_stringify(node.element.getName())
+    text .= " patterns=" . RDA_JSON_stringify(RDA_Array_Join(node.element.getPatterns(), ","))
+    text .= " path=" . RDA_JSON_stringify(node.path)
+    text .= " description=" . RDA_JSON_stringify(node.element.getDescription())
     if (value && node.element.hasPattern("Value")) {
       text .= " value=" . RDA_JSON_stringify(node.element.getValue())
     }
