@@ -312,6 +312,8 @@ class RDA_ScreenRegion extends RDA_Base {
     Parameters:
       imagePath - string - Absolute image path
       sensibility - number - Color-variant sensibility. A number from 0 to 255, 0 means exact match
+      timeout - number - Timeouts, in miliseconds
+      delay - number - Retries delay, in miliseconds
 
     Returns:
       <RDA_ScreenPosition>
@@ -329,6 +331,8 @@ class RDA_ScreenRegion extends RDA_Base {
     Parameters:
       imagePaths - string|string[] - Absolute image path
       sensibility - number - Color-variant sensibility. A number from 0 to 255, 0 means exact match
+      timeout - number - Timeouts, in miliseconds
+      delay - number - Retries delay, in miliseconds
 
     Returns:
       <RDA_ScreenPosition>
@@ -380,11 +384,15 @@ class RDA_ScreenRegion extends RDA_Base {
 
   /*!
     Method: highlight
-      highlights current region
+      Highlights current region
 
     Parameters:
-      file - string - File path
-      captureCursor - boolean - Add cursor to capture ?
+      displayTime - number - miliseconds
+      color - string - color
+      d - number - outline width
+
+    Returns:
+      <RDA_ScreenRegion>
   */
   highlight(displayTime:=2000, color:="Red", d:=4) {
     local
@@ -410,6 +418,7 @@ class RDA_ScreenRegion extends RDA_Base {
     Sleep, %displayTime%
     Loop 4
       Gui, Range_%A_Index%: Destroy
+
     return this
   }
 

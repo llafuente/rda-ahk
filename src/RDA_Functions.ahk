@@ -17,6 +17,23 @@ RDA_JSON_stringify(obj, replacer:="", space:="") {
 }
 
 /*!
+  Function: RDA_JSON_parse
+    Decodes given json string
+
+  Parameters:
+    jsonStr - any - object to encode
+    reciever - Func -
+
+  Returns:
+    object
+*/
+RDA_JSON_parse(jsonStr, reciever := "") {
+  global JSON
+
+  return JSON.load(jsonStr, reciever)
+}
+
+/*!
   Function: RDA_VTable
     Retrieves the pointer to a vtable element
 

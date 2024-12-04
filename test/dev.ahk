@@ -36,6 +36,7 @@ FileAppend, Test start!`n, *
 #include ..\src\RDA_SearchLimits.ahk
 #include ..\src\RDA_Monitors.ahk
 #include ..\src\RDA_VirtualDesktops.ahk
+#include ..\src\RDA_AutomationLayout.ahk
 
 #Include Test_RDA_Automation.ahk
 #Include Test_RDA_Region.ahk
@@ -50,6 +51,7 @@ FileAppend, Test start!`n, *
 #Include Test_RDA_JAB.ahk
 #Include Test_RDA_Monitors.ahk
 #Include Test_RDA_VirtualDesktops.ahk
+#Include Test_RDA_AutomationLayout.ahk
 
 #SingleInstance
 #Warn All, StdOut ; Enable every type of warning, and displayed in a MsgBox
@@ -67,6 +69,7 @@ Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_XPath)
 Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_JAB)
 Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Monitors)
 Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_VirtualDesktops)
+Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_AutomationLayout)
 
 ExitApp 0
 

@@ -1,0 +1,26 @@
+{
+  "offset": {"x": 0, "y": 0},
+  "elements": [{
+    "name": "Paste",
+    "region": {"x": 18, "y": 60, "w": 38, "h": 50},
+    "type": "Button"
+  },{
+    "name": "Cut",
+    "region": {"x": 65, "y": 60, "w": 40, "h": 20},
+    "type": "Button"
+  },{
+    "name": "Copy",
+    "region": {"x": 65, "y": 85, "w": 40, "h": 20},
+    "type": "Button"
+  },{
+    "name": "Type",
+    "region": {"x": 290, "y": 67, "w": 20, "h": 20},
+    "type": "Button"
+  },{
+    "name": "Font",
+    "region": {"x": 128, "y": 67, "w": 120, "h": 20},
+    "enterKeys": "{BackSpace}",
+    "exitKeys": "{Enter}",
+    "type": "AutoDropdown"
+  }]
+}
