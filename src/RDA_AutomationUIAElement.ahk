@@ -1,5 +1,5 @@
 /*!
-  class: RDA_AutomationUIAElement
+  Class: RDA_AutomationUIAElement
     Automate applications using Microsoft UI Automation
 
   Extends: RDA_AutomationBaseElement
@@ -896,97 +896,6 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
     return wrapList
   }
 
-  /*!
-    Method: dumpXML
-      Dumps element tree as XML
-
-    Returns:
-      string - the dump
-
-  dumpXML() {
-    return this.__dumpNodeTree(this.__dumpTree()[1])
-  }
-  ; internal
-  __dumpNodeTree(node, padding := "") {
-    local
-
-    text := ""
-    ; name, type, patterns, children, path
-    text .= padding . "<" . node.type . " name=" . RDA_JSON_stringify(node.name) . " patterns=" . RDA_JSON_stringify(node.patterns) . " path=" . RDA_JSON_stringify(node.path)
-    if (node.haskey("value")) {
-      text .= " value=" . RDA_JSON_stringify(node.value)
-    }
-    if (node.haskey("isSelected")) {
-      text .= " isSelected=" . RDA_JSON_stringify(node.isSelected)
-    }
-    text .= ">`n"
-    loop % node.children.length() {
-      text .= this.__dumpNodeTree(node.children[A_Index], padding . "  ")
-    }
-    text .= padding .  "</" . node.type . ">`n"
-
-    return text
-  }
-  ; internal
-  __dumpTree() {
-    local
-    global Log, UIA_Enum
-
-    dump := []
-    elements := []
-
-    elements.push({offset: 1, index: "", node: this.uiaHandle, target: dump, path: ""})
-
-    while(elements.length() > 0) {
-      root := elements.pop()
-      try {
-        dumpNode := {name: root.node.CurrentName
-          ;, type: root.node.CurrentLocalizedControlType
-          , type: UIA_Enum.UIA_ControlTypeId(root.node.CurrentControlType)
-          , description: ""
-          ; none seems to have help text, so remove it
-          ;, text: root.node.CurrentHelpText
-          , patterns: RDA_Array_Join(root.node.GetSupportedPatterns(), ",")
-          , children: []
-          , path: !root.index ? "" :  (root.path . "/" . root.index) }
-        ; everyone is UIA_Element7 - check patterns!
-        try {
-          if (root.node.GetCurrentPropertyValue(UIA_Enum.UIA_IsSelectionItemPatternAvailablePropertyId)) {
-            selectionPattern := root.node.GetCurrentPatternAs("SelectionItem")
-            dumpNode.isSelected := selectionPattern.CurrentIsSelected ? true : false
-          }
-        } catch e {
-          RDA_Log_Error(A_ThisFunc . " selectionPattern -> " . e.message)
-        }
-
-        try {
-          if (root.node.GetCurrentPropertyValue(UIA_Enum.UIA_IsValuePatternAvailablePropertyId)) {
-            ValuePattern := root.node.GetCurrentPatternAs("Value")
-            dumpNode.value := ValuePattern.CurrentValue
-          }
-        } catch e {
-          RDA_Log_Error(A_ThisFunc . " ValuePattern -> " . e.message)
-        }
-
-        root.target.push(dumpNode)
-        children := root.node.GetChildren()
-        ; RDA_Log_Debug("children: " . children.length())
-        loop % children.length() {
-          elements.InsertAt(1, {offset: root.offset + 1
-            , index: A_Index
-            , path: dumpNode.path
-            , node: children[A_Index]
-            , target: dumpNode.children})
-        }
-      } catch e {
-        RDA_Log_Debug(A_ThisFunc . " " . e.message)
-      }
-    }
-
-    ; RDA_Log_Debug(RDA_JSON_stringify(dump, , "  "))
-    return dump
-  }
-  */
   /*
   ;
   ; Event handler, removed as its not reliable!

@@ -1,16 +1,16 @@
 /*!
-  class: RDA_Automation
-    Automation configuration and entry point.
+  Class: RDA_Automation
+    Automation configuration and the library entry point.
 */
 class RDA_Automation extends RDA_Base {
   /*!
-    static: TIMEOUT
+    Constant: TIMEOUT
       Default timeout, in miliseconds
   */
   static TIMEOUT := 60000
 
   /*!
-    static: DELAY
+    Constant: DELAY
       Default delay, in miliseconds
   */
   static DELAY := 250

@@ -6,6 +6,9 @@ const package = require("../package.json");
 filesPath = __dirname + "\\html\\files";
 homePath = __dirname + "\\html\\other\\home.html";
 
+let mainCSSFile = fs.readFileSync(__dirname + "\\html\\styles\\main.css", {"encoding": "utf8"});
+let DefaultCSSFile = fs.readFileSync(__dirname + "\\html\\styles\\Default\\Default.css", {"encoding": "utf8"});
+
 function readdirSyncRecursive(filesPath) {
   let list = fs.readdirSync(filesPath, {withFileTypes: true});
   for (const file of list) {
@@ -24,8 +27,12 @@ list = list.map(x => x.name).filter((x) => x.indexOf(".html") !== -1)
 
 fs.writeFileSync(__dirname + "/index.html", `<html>
 <head>
-  <link rel="stylesheet" type="text/css" href="html/styles/main.css" />
-  <link rel="stylesheet" type="text/css" href="html/styles/Default/Default.css" />
+  <style>
+  ${mainCSSFile}
+  </style>
+  <style>
+  ${DefaultCSSFile}
+  </style>
   <style>
 body {
   padding: 2rem;

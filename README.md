@@ -7,6 +7,10 @@ Automate desktop applications (attended an unattended) in AutoHotKey v1 using:
 * Images (It requires an interactive desktop)
 * (OS) Mouse / Keyboard / Screen / Clipboard
 
+# API
+
+[rda-ahk API](https://htmlpreview.github.io/?https://github.com/llafuente/rda-ahk/blob/main/docs/index.html)
+
 # Examples
 
 Wait a mspaint, write a pixel (click), and close.

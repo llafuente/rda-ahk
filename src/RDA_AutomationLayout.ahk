@@ -446,6 +446,7 @@ class RDA_LayoutAutocompleteDropdown extends RDA_LayoutElement {
 /*!
   Class: RDA_LayoutCheckbox
     Checkbox
+
   Extends: RDA_LayoutElement
 */
 class RDA_LayoutCheckbox extends RDA_LayoutElement {

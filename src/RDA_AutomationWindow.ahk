@@ -65,8 +65,8 @@ class RDA_AutomationWindow extends RDA_Base {
     Constructor: RDA_AutomationWindow
 
     Parameters:
-      automation - <RDA_Automation>
-      hwnd - hwnd identifier
+      automation - <RDA_Automation> - Automation config
+      hwnd - number - hwnd identifier
   */
   __New(automation, hwnd) {
     local
