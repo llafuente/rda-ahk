@@ -108,6 +108,11 @@ class RDA_Automation extends RDA_Base {
       boolean - Blocks user input on background inputMode ?
   */
   blockInputBackground := false
+  /*!
+    Property: imageSearchSensibility
+      number - Default image search sensibility. See "*n (variation)" at https://www.autohotkey.com/docs/v1/lib/ImageSearch.htm#Parameters
+  */
+  imageSearchSensibility := 4
 
   ; internal
   _UIA := 0
@@ -194,7 +199,7 @@ class RDA_Automation extends RDA_Base {
       string
   */
   toString() {
-    return "RDA_Automation{inputMode: " . this.inputMode . ", actionDelay: " . this.actionDelay . ", keyDelay: " . this.keyDelay . ", pressDuration: " . this.pressDuration . ", sendMode: " . this.sendMode . ", mouseDelay: " . this.mouseDelay . ", mouseSpeed: " . this.mouseSpeed ", UIA: " . (this.UIA ? "yes" : "no") . "}"
+    return "RDA_Automation{inputMode: " . this.inputMode . ", actionDelay: " . this.actionDelay . ", keyDelay: " . this.keyDelay . ", pressDuration: " . this.pressDuration . ", sendMode: " . this.sendMode . ", mouseDelay: " . this.mouseDelay . ", mouseSpeed: " . this.mouseSpeed ", UIA: " . (this.UIA ? "yes" : "no") . ", imageSearchSensibility: " . this.imageSearchSensibility . "}"
   }
   /*!
     Method: setKeyDelay
@@ -299,6 +304,16 @@ class RDA_Automation extends RDA_Base {
     RDA_Log_Debug(A_ThisFunc . "(" . (interactive ? "yes" : "no") . ", " . (background ? "yes" : "no") . ")")
     this.blockInputInteractive := !!interactive
     this.blockInputBackground := !!background
+  }
+  /*!
+    Method: setImageSearchSensibility
+      Confifures default image search sensibility
+
+    Parameters:
+      imageSearchSensibility - number - see <RDA_Automation.imageSearchSensibility>
+  */
+  setImageSearchSensibility(imageSearchSensibility) {
+    this.imageSearchSensibility := imageSearchSensibility
   }
 
   /*!

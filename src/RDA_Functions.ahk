@@ -1051,6 +1051,8 @@ RDA_PixelSearchColor(automation, color, x, y, w, h, variation := "") {
 RDA_ImageSearch(automation, imagePath, sensibility, screenRegion, options := "") {
   local x1, x2, y1, y2, err, FoundX, FoundY
 
+  sensibility := sensibility == -1 ? automation.imageSearchSensibility : sensibility
+
   if (!FileExist(imagePath)) {
     throw RDA_Exception("File not found: " . imagePath)
   }
@@ -1116,6 +1118,8 @@ RDA_ImageSearch(automation, imagePath, sensibility, screenRegion, options := "")
 */
 RDA_ImagesWaitAppear(automation, imagePathList, sensibility, screenRegion, options, timeout, delay) {
   local startTime := A_TickCount, pos, e
+
+  sensibility := sensibility == -1 ? automation.imageSearchSensibility : sensibility
   RDA_Log_Debug(A_ThisFunc . "(images = " . RDA_JSON_stringify(imagePathList) . ", sensibility = " . sensibility . ", options = " . options . ", timeout = " . timeout . ", timeout = " . delay . ")")
 
   loop {
@@ -1165,7 +1169,10 @@ RDA_ImagesWaitAppear(automation, imagePathList, sensibility, screenRegion, optio
 */
 RDA_ImagesWaitDisappear(automation, imagePathList, sensibility, screenRegion, options, timeout, delay) {
   local startTime := A_TickCount, pos, e
+
+  sensibility := sensibility == -1 ? automation.imageSearchSensibility : sensibility
   RDA_Log_Debug(A_ThisFunc . "(images = " . RDA_JSON_stringify(imagePathList) . ", sensibility = " . sensibility . ", options = " . options . ", timeout = " . timeout . ", timeout = " . delay . ")")
+
 
   loop {
     loop % imagePathList.length() {
