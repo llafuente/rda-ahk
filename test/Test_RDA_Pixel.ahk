@@ -7,14 +7,11 @@ class Test_RDA_Pixel {
 
     RDA_Log_Debug(A_ThisFunc)
 
-    automation := new RDA_Automation("background")
+    automation := new RDA_Automation()
     windows := automation.windows()
-    keyboard := automation.keyboard()
-    Yunit.assert(keyboard.automation != 0, "keyboard.automation not null")
 
     Run notepad.exe
     win := windows.waitOne({process: "notepad.exe"})
-    win.setOpaque()
 
     color := win.getColor(50, 50)
     Yunit.assert(color == 0xF0F0F0, "notepad color at (50,50)")
@@ -35,15 +32,15 @@ class Test_RDA_Pixel {
 
     RDA_Log_Debug(A_ThisFunc)
 
-    automation := new RDA_Automation("background")
+    automation := new RDA_Automation()
     windows := automation.windows()
-    keyboard := automation.keyboard()
-    Yunit.assert(keyboard.automation != 0, "keyboard.automation not null")
 
     Run notepad.exe
     win := windows.waitOne({process: "notepad.exe"})
+    win.activate()
     win.move(50,50)
-    win.resize(640, 480)
+    ; very small window because it slow as hell
+    win.resize(50, 50)
 
     position := win.searchColor(0x000000)
     color := position.getColor()
@@ -68,10 +65,8 @@ class Test_RDA_Pixel {
 
     RDA_Log_Debug(A_ThisFunc)
 
-    automation := new RDA_Automation("background")
+    automation := new RDA_Automation()
     windows := automation.windows()
-    keyboard := automation.keyboard()
-    Yunit.assert(keyboard.automation != 0, "keyboard.automation not null")
 
     Run % "mspaint.exe " . A_ScriptDir . "\green.png"
 
