@@ -19,6 +19,8 @@ class Test_RDA_AutomationLayout {
       win := windows.waitOne({process: "mspaint.exe"})
     }
     win.activate()
+    win.move(50,50)
+    win.resize(1024, 768)
 
     winElement := win.asUIAElement()
     RDA_Log_Debug(winElement.dumpXML())
