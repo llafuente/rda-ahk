@@ -1,6 +1,11 @@
 {
   "offset": {"x": 0, "y": 0},
   "elements": [{
+    "name": "Header",
+    "region": {"x": 8, "y": 0, "w": 200, "h": 14},
+    "type": "Image",
+    "image": "paint-header.png"
+  },{
     "name": "Paste",
     "region": {"x": 18, "y": 60, "w": 38, "h": 50},
     "type": "Button"
@@ -16,6 +21,11 @@
     "name": "Type",
     "region": {"x": 290, "y": 67, "w": 20, "h": 20},
     "type": "Button"
+  },{
+    "name": "Bucket",
+    "region": {"x": 241, "y": 67, "w": 23, "h": 22},
+    "type": "Button",
+    "image": "paint-bucket.png"
   },{
     "name": "Font",
     "region": {"x": 128, "y": 67, "w": 120, "h": 20},

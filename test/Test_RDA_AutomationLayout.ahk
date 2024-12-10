@@ -11,6 +11,7 @@ class Test_RDA_AutomationLayout {
 
     automation := new RDA_Automation("interactive", 500)
     windows := automation.windows()
+    mouse := automation.mouse()
     try {
       win := windows.findOne({process: "mspaint.exe"})
     } catch e {
@@ -26,6 +27,9 @@ class Test_RDA_AutomationLayout {
     layout.fromJsonFile(A_ScriptDir . "\paint.json")
     Yunit.assert(layout.elements.length() > 0, "there are elements parsed")
 
+    layout.element("Header").updateImage()
+    layout.waitAppear()
+
     ; everyone has a name/type/region
     loop % layout.elements.length() {
       el := layout.elements[A_Index]
@@ -33,6 +37,10 @@ class Test_RDA_AutomationLayout {
       Yunit.assert(StrLen(el.type), "item[" . A_Index . "] has type")
       Yunit.assert(el.region != 0, "item[" . A_Index . "] has region")
     }
+
+    layout.element("Bucket").click()
+    mouse.moveTo(0, 0)
+    Yunit.assert(layout.element("Bucket").waitEnabled() == true, "clicked")
 
     layout.element("Type").click()
     ; there is no way to know if is "selected/pressed"

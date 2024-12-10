@@ -160,14 +160,14 @@ class RDA_LayoutElement {
 }
 
 /*!
-  Class: RDA_LayoutHeader
+  Class: RDA_LayoutImage
     Static header
 
   Extends: RDA_LayoutElement
 */
-class RDA_LayoutHeader extends RDA_LayoutElement {
+class RDA_LayoutImage extends RDA_LayoutElement {
   /*!
-    Constructor: RDA_LayoutHeader
+    Constructor: RDA_LayoutImage
 
     Parameters:
       layout - <RDA_Layout> - layout
@@ -179,20 +179,23 @@ class RDA_LayoutHeader extends RDA_LayoutElement {
     this._parseCommonProperties(obj)
 
     ; optional
-    this.image := A_ScriptDir . "\" . obj.image
+    if (obj.HasKey("image")) {
+      this.image := A_ScriptDir . "\" . obj.image
+    }
     RDA_Assert(this.image, "invalid property image is required")
   }
   /*!
-    Method: screenshot
-      Takes a screenshot of current element region
+    Method: updateImage
+      Takes a screenshot of current element region and save to image
 
     Returns:
       <RDA_LayoutEdit>
   */
-  screenshot() {
+  updateImage() {
     local
     RDA_Log_Debug(A_ThisFunc)
 
+    this.layout.win.setOpaque()
     r := this.region.clone()
     r.origin.add(this.layout.offset).add(this.layout.win.getPosition())
     r.screenshot(this.image)
@@ -209,9 +212,9 @@ class RDA_LayoutHeader extends RDA_LayoutElement {
       delay - number - Retries delay, in miliseconds
 
     Returns:
-      <RDA_LayoutHeader>
+      <RDA_LayoutImage>
   */
-  appear(sensibility, timeout := -1, delay := -1) {
+  appear(sensibility := -1, timeout := -1, delay := -1) {
     local
     RDA_Log_Debug(A_ThisFunc)
 
@@ -230,9 +233,9 @@ class RDA_LayoutHeader extends RDA_LayoutElement {
       delay - number - Retries delay, in miliseconds
 
     Returns:
-      <RDA_LayoutHeader>
+      <RDA_LayoutImage>
   */
-  dissapear(sensibility, timeout := -1, delay := -1) {
+  dissapear(sensibility := -1, timeout := -1, delay := -1) {
     local
     RDA_Log_Debug(A_ThisFunc)
 
@@ -251,6 +254,20 @@ class RDA_LayoutHeader extends RDA_LayoutElement {
 */
 class RDA_LayoutEdit extends RDA_LayoutElement {
   /*!
+    Property: clearKeys
+      Keys that need to be pressed to clear input value
+
+      * {HOME}{LShift Down}{RIGHT}{LShift Up}{BackSpace}
+
+      * {HOME}{Delete 100}
+  */
+  clearKeys := "{LCtrl Down}{a}{LCtrl Up}{BackSpace}"
+  /*!
+    Property: enterKeys
+      Keys that need to be pressed to set the value
+  */
+  exitKeys := "{ENTER}"
+  /*!
     Constructor: RDA_LayoutEdit
 
     Parameters:
@@ -261,6 +278,14 @@ class RDA_LayoutEdit extends RDA_LayoutElement {
     this.layout := layout
     RDA_Assert(this.layout, "invalid parameters layout is required")
     this._parseCommonProperties(obj)
+
+    if (obj.HasKey("clearKeys")) {
+      this.clearKeys := obj.clearKeys
+    }
+    if (obj.HasKey("exitKeys")) {
+      this.exitKeys := obj.exitKeys
+    }
+
   }
   /*!
     Method: setValue
@@ -296,11 +321,17 @@ class RDA_LayoutEdit extends RDA_LayoutElement {
   ; internal
   _setValue(value) {
     this.click()
-    if (value) {
-      this.layout.win.typePassword(value).sendKeys("{ENTER}")
+    if (StrLen(value)) {
+      this.layout.win.typePassword(value)
+      if (StrLen(this.exitKeys)) {
+        this.layout.win.sendKeys(this.exitKeys)
+      }
     } else {
-      ; TODO test ?
-      this.layout.win.sendKeys("{LCtrl Down}{a}{LCtrl Up}{BackSpace}")
+      if (StrLen(this.clearKeys)) {
+        this.layout.win.sendKeys(this.clearKeys)
+      } else {
+        RDA_Log_Debug(A_ThisFunc . " request to clear value but there is no clearKeys defined")
+      }
     }
 
     return this
@@ -410,7 +441,6 @@ class RDA_LayoutAutocompleteDropdown extends RDA_LayoutElement {
     if (obj.HasKey("exitKeys")) {
       this.exitKeys := obj.exitKeys
     }
-
   }
   /*!
     Method: selectByValue
@@ -433,7 +463,7 @@ class RDA_LayoutAutocompleteDropdown extends RDA_LayoutElement {
     if (StrLen(this.enterKeys)) {
       this.layout.win.sendKeys(this.enterKeys)
     }
-    this.layout.win.typePassword(value).sendKeys("{ENTER}")
+    this.layout.win.typePassword(value)
     if (StrLen(this.exitKeys)) {
       this.layout.win.sendKeys(this.exitKeys)
     }
@@ -481,14 +511,9 @@ class RDA_LayoutCheckbox extends RDA_LayoutElement {
   Class: RDA_LayoutButton
     A button is something that just recieve clicks, can be enabled/disabled.
 
-  Extends: RDA_LayoutElement
+  Extends: RDA_LayoutImage
 */
-class RDA_LayoutButton extends RDA_LayoutElement {
-  /*!
-    property: disabledImage
-      string - image path for the button in disabled style
-  */
-  disabledImage := ""
+class RDA_LayoutButton extends RDA_LayoutImage {
   /*!
     Constructor: RDA_LayoutButton
 
@@ -500,12 +525,42 @@ class RDA_LayoutButton extends RDA_LayoutElement {
     this.layout := layout
     this._parseCommonProperties(obj)
 
-    this.disabledImage := obj.disabledImage
+    if (obj.HasKey("image")) {
+      this.image := A_ScriptDir . "\" . obj.image
+    }
     ; it's optional
   }
   /*!
     method: isDisabled
-      Searches <RDA_LayoutButton.disabledImage> if found returns true
+      Searches <RDA_LayoutButton.image> if found returns false
+
+    Parameters:
+      sensibility - number - Color-variant sensibility. A number from 0 to 255, 0 means exact match
+
+    Throws:
+      image is required
+
+    Returns:
+      boolean
+  */
+  isDisabled(sensibility := -1) {
+    local
+
+    if (!this.image) {
+      throw RDA_Exception("image is required")
+    }
+
+    try {
+    ; TODO search only in given region ?
+      this.layout.win.searchImage([this.image], sensibility)
+      return false
+    } catch e {
+      return true
+    }
+  }
+  /*!
+    method: waitEnabled
+      Waits button to be enabled
 
     Parameters:
       sensibility - number - Color-variant sensibility. A number from 0 to 255, 0 means exact match
@@ -513,25 +568,15 @@ class RDA_LayoutButton extends RDA_LayoutElement {
       delay - number - Retries delay, in miliseconds
 
     Throws:
-      disabledImage is required
+      image is required
 
     Returns:
       boolean
   */
-  isDisabled(sensibility, timeout := -1, delay := -1) {
+  waitEnabled(sensibility := -1, timeout := -1, delay := -1) {
     local
 
-    if (!this.disabledImage) {
-      throw RDA_Exception("disabledImage is required")
-    }
-
-    try {
-    ; TODO search only in given region ?
-      this.layout.win.searchImage([this.disabledImage], sensibility, timeout, delay)
-      return true
-    } catch e {
-      return false
-    }
+    return this.appear(sensibility, timeout, delay)
   }
 }
 
@@ -585,12 +630,12 @@ class RDA_Layout extends RDA_Base {
     constant: types
       string[] - List of valid values for type
   */
-  static types := ["Header","Input", "Dropdown", "AutoDropdown", "Checkbox", "Button"]
+  static types := ["Image","Input", "Dropdown", "AutoDropdown", "Checkbox", "Button"]
   /*!
     constant: classes
       string[] - List of factory classes
   */
-  static classes := [RDA_LayoutHeader, RDA_LayoutEdit, RDA_LayoutStaticDropdown, RDA_LayoutAutocompleteDropdown, RDA_LayoutCheckbox, RDA_LayoutButton]
+  static classes := [RDA_LayoutImage, RDA_LayoutEdit, RDA_LayoutStaticDropdown, RDA_LayoutAutocompleteDropdown, RDA_LayoutCheckbox, RDA_LayoutButton]
   /*!
     property: region
       <RDA_ScreenRegion> - region
@@ -692,6 +737,7 @@ class RDA_Layout extends RDA_Base {
       Waits all headers images to appear
 
     Parameters:
+      type - string - Layout element type of wait
       sensibility - number - Color-variant sensibility. A number from 0 to 255, 0 means exact match
       timeout - number - Timeouts, in miliseconds
       delay - number - Retries delay, in miliseconds
@@ -699,19 +745,19 @@ class RDA_Layout extends RDA_Base {
     Returns:
       <RDA_Layout>
   */
-  waitAppear(sensibility := 0, timeout := -1, delay := -1) {
+  waitAppear(type := "Image", sensibility := -1, timeout := -1, delay := -1) {
     local
     RDA_Log_Debug(A_ThisFunc)
 
     loop % this.elements.length() {
       element := this.elements[A_Index]
-      if (element.type == "Header") {
+      if (element.type == "Image") {
         if (!element.image) {
-          throw RDA_Exception("header type defined but no image found")
+          throw RDA_Exception("element found with type[" . type . "] but no image defined")
         }
 
         if (!FileExist(element.image)) {
-          throw RDA_Exception("image not found at header: " . element.name)
+          throw RDA_Exception("image not found: " . element.name)
         }
 
         this.win.waitAppearImage([element.image], sensibility, timeout, delay)
@@ -725,6 +771,7 @@ class RDA_Layout extends RDA_Base {
       Waits all headers images to disappear
 
     Parameters:
+      type - string - Layout element type of wait
       sensibility - number - Color-variant sensibility. A number from 0 to 255, 0 means exact match
       timeout - number - Timeouts, in miliseconds
       delay - number - Retries delay, in miliseconds
@@ -732,22 +779,22 @@ class RDA_Layout extends RDA_Base {
     Returns:
       <RDA_Layout>
   */
-  waitDisappear(sensibility := 0, timeout := -1, delay := -1) {
+  waitDisappear(type := "Image", sensibility := -1, timeout := -1, delay := -1) {
     local
     RDA_Log_Debug(A_ThisFunc)
 
     loop % this.elements.length() {
       element := this.elements[A_Index]
-      if (element.type == "Header") {
+      if (element.type == type) {
         if (!element.image) {
-          throw RDA_Exception("header type defined but no image found")
+          throw RDA_Exception("element found with type[" . type . "] but no image defined")
         }
 
         if (!FileExist(element.image)) {
-          throw RDA_Exception("image not found at header: " . element.name)
+          throw RDA_Exception("image not found: " . element.name)
         }
 
-        this.win.waitDisappearImage(this, [element.image], sensibility, timeout, delay)
+        this.win.waitDisappearImage([element.image], sensibility, timeout, delay)
       }
     }
 
