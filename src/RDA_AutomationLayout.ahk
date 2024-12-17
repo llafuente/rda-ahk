@@ -167,6 +167,11 @@ class RDA_LayoutElement {
 */
 class RDA_LayoutImage extends RDA_LayoutElement {
   /*!
+    Property: image
+      string - Path to image
+  */
+  image := ""
+  /*!
     Constructor: RDA_LayoutImage
 
     Parameters:
@@ -180,7 +185,7 @@ class RDA_LayoutImage extends RDA_LayoutElement {
 
     ; optional
     if (obj.HasKey("image")) {
-      this.image := A_ScriptDir . "\" . obj.image
+      this.image := A_WorkingDir . "\" . obj.image
     }
     RDA_Assert(this.image, "invalid property image is required")
   }
@@ -195,16 +200,24 @@ class RDA_LayoutImage extends RDA_LayoutElement {
     local
     RDA_Log_Debug(A_ThisFunc)
 
+    if (!StrLen(this.image)) {
+      throw RDA_Exception("image not defined")
+    }
+
+    return this._updateImage(this.image)
+  }
+  ; internal
+  _updateImage(filepath) {
     this.layout.win.setOpaque()
     r := this.region.clone()
     r.origin.add(this.layout.offset).add(this.layout.win.getPosition())
-    r.screenshot(this.image)
+    r.screenshot(filepath)
 
     return this
   }
   /*!
-    Method: appear
-      Searches a region of the screen for first image until it appears
+    Method: waitAppear
+      Searches a region of the screen for image until it appears
 
     Parameters:
       sensibility - number - Color-variant sensibility. A number from 0 to 255, 0 means exact match
@@ -214,7 +227,7 @@ class RDA_LayoutImage extends RDA_LayoutElement {
     Returns:
       <RDA_LayoutImage>
   */
-  appear(sensibility := -1, timeout := -1, delay := -1) {
+  waitAppear(sensibility := -1, timeout := -1, delay := -1) {
     local
     RDA_Log_Debug(A_ThisFunc)
 
@@ -224,8 +237,8 @@ class RDA_LayoutImage extends RDA_LayoutElement {
     return this
   }
   /*!
-    Method: dissapear
-      Searches a region of the screen for first image until it appears
+    Method: waitDisappear
+      Searches a region of the screen for image until it disappear
 
     Parameters:
       sensibility - number - Color-variant sensibility. A number from 0 to 255, 0 means exact match
@@ -235,7 +248,7 @@ class RDA_LayoutImage extends RDA_LayoutElement {
     Returns:
       <RDA_LayoutImage>
   */
-  dissapear(sensibility := -1, timeout := -1, delay := -1) {
+  waitDisappear(sensibility := -1, timeout := -1, delay := -1) {
     local
     RDA_Log_Debug(A_ThisFunc)
 
@@ -266,7 +279,7 @@ class RDA_LayoutEdit extends RDA_LayoutElement {
     Property: enterKeys
       Keys that need to be pressed to set the value
   */
-  exitKeys := "{ENTER}"
+  exitKeys := ""
   /*!
     Constructor: RDA_LayoutEdit
 
@@ -512,8 +525,20 @@ class RDA_LayoutCheckbox extends RDA_LayoutElement {
     A button is something that just recieve clicks, can be enabled/disabled.
 
   Extends: RDA_LayoutImage
+
+  Remarks:
+    image is the enabled button
+
+    disabledImage is the disabled button
+
+    At least one shall be define to use isDisabled
 */
 class RDA_LayoutButton extends RDA_LayoutImage {
+  /*!
+    Property: disabledImage
+      string - Path to disabledImage
+  */
+  disabledImage := ""
   /*!
     Constructor: RDA_LayoutButton
 
@@ -526,9 +551,29 @@ class RDA_LayoutButton extends RDA_LayoutImage {
     this._parseCommonProperties(obj)
 
     if (obj.HasKey("image")) {
-      this.image := A_ScriptDir . "\" . obj.image
+      this.image := A_WorkingDir . "\" . obj.image
+    }
+    if (obj.HasKey("disabledImage")) {
+      this.disabledImage := A_WorkingDir . "\" . obj.disabledImage
     }
     ; it's optional
+  }
+  /*!
+    Method: updateImage
+      Takes a screenshot of current element region and save to image
+
+    Returns:
+      <RDA_LayoutEdit>
+  */
+  updateDisabledImage() {
+    local
+    RDA_Log_Debug(A_ThisFunc)
+
+    if (!StrLen(this.disabledImage)) {
+      throw RDA_Exception("disabledImage not defined")
+    }
+
+    return this._updateImage(this.disabledImage)
   }
   /*!
     method: isDisabled
@@ -546,17 +591,27 @@ class RDA_LayoutButton extends RDA_LayoutImage {
   isDisabled(sensibility := -1) {
     local
 
-    if (!this.image) {
-      throw RDA_Exception("image is required")
+    if (this.image) {
+      try {
+      ; TODO search only in given region ?
+        this.layout.win.searchImage([this.image], sensibility)
+        return false
+      } catch e {
+        return true
+      }
     }
 
-    try {
-    ; TODO search only in given region ?
-      this.layout.win.searchImage([this.image], sensibility)
-      return false
-    } catch e {
-      return true
+    if (this.disabledImage) {
+      try {
+      ; TODO search only in given region ?
+        this.layout.win.searchImage([this.disabledImage], sensibility)
+        return true
+      } catch e {
+        return false
+      }
     }
+    throw RDA_Exception("image or disabledImage is required")
+
   }
   /*!
     method: waitEnabled
@@ -576,7 +631,33 @@ class RDA_LayoutButton extends RDA_LayoutImage {
   waitEnabled(sensibility := -1, timeout := -1, delay := -1) {
     local
 
-    return this.appear(sensibility, timeout, delay)
+    RDA_Assert(this.image, "image is required")
+
+    return this.waitAppear(sensibility, timeout, delay)
+  }
+  /*!
+    method: waitDisabled
+      Waits button to be disabled
+
+    Parameters:
+      sensibility - number - Color-variant sensibility. A number from 0 to 255, 0 means exact match
+      timeout - number - Timeouts, in miliseconds
+      delay - number - Retries delay, in miliseconds
+
+    Throws:
+      image is required
+
+    Returns:
+      boolean
+  */
+  waitDisabled(sensibility := -1, timeout := -1, delay := -1) {
+    local
+
+    RDA_Assert(this.disabledImage, "disabledImage is required")
+
+    pos := this.layout.win.waitAppearImage([this.disabledImage], sensibility, timeout, delay)
+
+    return this
   }
 }
 
@@ -615,7 +696,7 @@ class RDA_LayoutButton extends RDA_LayoutImage {
     RDA_Layout.classes.push(MyInputClass)
 
     layout := new RDA_Layout(win)
-    layout.fromJsonFile(A_ScriptDir . "\app-form-01.json")
+    layout.fromJsonFile(A_WorkingDir . "\app-form-01.json")
     layout.waitAppear()
     layout.element("username").setValue("user")
     layout.element("password").setPassword("nomoresecrets")
@@ -752,13 +833,9 @@ class RDA_Layout extends RDA_Base {
     loop % this.elements.length() {
       element := this.elements[A_Index]
       if (element.type == "Image") {
-        if (!element.image) {
-          throw RDA_Exception("element found with type[" . type . "] but no image defined")
-        }
 
-        if (!FileExist(element.image)) {
-          throw RDA_Exception("image not found: " . element.name)
-        }
+        RDA_Assert(element.image, "element found with type[" . type . "] but no image defined")
+        RDA_Assert(FileExist(element.image), "image not found: " . element.name)
 
         this.win.waitAppearImage([element.image], sensibility, timeout, delay)
       }
@@ -786,13 +863,9 @@ class RDA_Layout extends RDA_Base {
     loop % this.elements.length() {
       element := this.elements[A_Index]
       if (element.type == type) {
-        if (!element.image) {
-          throw RDA_Exception("element found with type[" . type . "] but no image defined")
-        }
 
-        if (!FileExist(element.image)) {
-          throw RDA_Exception("image not found: " . element.name)
-        }
+        RDA_Assert(element.image, "element found with type[" . type . "] but no image defined")
+        RDA_Assert(FileExist(element.image), "image not found: " . element.name)
 
         this.win.waitDisappearImage([element.image], sensibility, timeout, delay)
       }
