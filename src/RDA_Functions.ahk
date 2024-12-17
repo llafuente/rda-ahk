@@ -263,6 +263,9 @@ RDA_RepeatWhileThrows(fn, timeout, delay) {
     hwnd - number - windows identifier
     timeout - number - Timeout, in miliseconds
 
+  Throws:
+    Window still alive
+
   Returns:
     boolean - If the window exists after waiting to close
 */
@@ -272,7 +275,9 @@ RDA_Window_WaitClose(hwnd, timeout) {
   timeout /= 1000
   WinWaitClose ahk_id %hwnd%, 0, %timeout%
 
-  return RDA_Window_Exist(hwnd)
+  if (RDA_Window_Exist(hwnd)) {
+    throw RDA_Exception("Window still alive")
+  }
 }
 
 /*!
@@ -494,6 +499,7 @@ RDA_Mouse_WindowClick(automation, hwnd, button, clickCount, x := 9999, y := 9999
     sleep 250 ; give some time the app to "hover"
 
     automation.requestBlockInput()
+    err := 0
     try {
       ControlClick, , ahk_id %hwnd%,, %button%, %clickCount%, %options%
     } catch e {

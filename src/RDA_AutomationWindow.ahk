@@ -838,6 +838,9 @@ class RDA_AutomationWindow extends RDA_Base {
     Parameters:
       timeout - number - Timeout, in miliseconds
 
+    Throws:
+      Window still alive
+
     Returns:
       <RDA_AutomationWindow>
   */
