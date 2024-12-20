@@ -7,7 +7,7 @@ class RDA_AutomationMouse extends RDA_Base {
   automation := 0
 
   /*!
-    Constructor:
+    Constructor: RDA_AutomationMouse
 
     Parameters:
       automation - <RDA_Automation>
@@ -53,7 +53,7 @@ class RDA_AutomationMouse extends RDA_Base {
     return this
   }
   /*!
-    Method: rightClick
+    Method: doubleClick
       Performs a lft double click at given position.
 
       See <RDA_Mouse_ScreenClick>
@@ -83,7 +83,7 @@ class RDA_AutomationMouse extends RDA_Base {
     return this
   }
   /*!
-    Method: move
+    Method: moveTo
       See <RDA_MouseMove>
 
     Returns:
@@ -95,7 +95,7 @@ class RDA_AutomationMouse extends RDA_Base {
     return this
   }
   /*!
-    Method: move
+    Method: get
       See <RDA_MouseGetPosition>
 
     Returns:
