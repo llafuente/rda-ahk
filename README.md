@@ -127,7 +127,7 @@ npm run dist
 
 The *default* dist file will *include* our log system.
 
-You can disable the log by using: *RDA_Functions_NoLog.ahk* or implement your own see [RDA_Functions_Log.ahk](./src/RDA_Functions_Log.ahk)
+You can disable the log swapping files: *RDA_Functions_Log.ahk* -> *RDA_Functions_NoLog.ahk* at [./dist.ps1](./dist.ps1) or implement your own see [./src/RDA_Functions_NoLog.ahk](./src/RDA_Functions_NoLog.ahk)
 
 ## Documentation
 
@@ -147,7 +147,7 @@ Some information about the project.
 
 ### Unit test
 
-The project is almost 100% unit tested I can't be sure because AutoHotKey
+The project is almost 100% unit tested We can't be sure because AutoHotKey
 do not have code coverage capabilities.
 
 ### Porting to AutoHotKey v2 ?
@@ -158,11 +158,11 @@ Nevertheless as future proof all AutoHotKey APIs (commands) are encapsulated ins
 
 Dependencies:
 
-* UIAutomation has a port but I don't know if the API is the same.
+* UIAutomation has a port but We don't know if the API is the same.
 * JSON, author says it works
 * YUnit, author says it works
 
-I accept volunteers to keep the port runnig.
+We accept volunteers to keep the port runnig.
 
 
 ### Java access bridge
