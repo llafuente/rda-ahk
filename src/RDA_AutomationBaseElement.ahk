@@ -152,7 +152,8 @@ class RDA_AutomationBaseElement extends RDA_Base {
   }
   ; internal
   xpathLogicalAnd(left, right) {
-    local r, l, ret := []
+    local
+
     RDA_Log_Debug(A_ThisFunc)
     l := this.xPathExecuteAction(left, this)
     r := this.xPathExecuteAction(right, this)
@@ -172,7 +173,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
   }
   ; internal
   xpathLogicalOr(left, right) {
-    local r, l, ret := [], found
+    local
     RDA_Log_Debug(A_ThisFunc)
     l := this.xPathExecuteAction(left, this)
     r := this.xPathExecuteAction(right, this)

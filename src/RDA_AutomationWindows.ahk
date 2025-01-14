@@ -1,11 +1,10 @@
 /*!
   Class: RDA_AutomationWindows
+    Query OS for windows
 */
 class RDA_AutomationWindows extends RDA_Base {
-  ;static __Call := TooFewArguments(RDA_AutomationWindows)
-
   /*!
-    Constructor:
+    Constructor: RDA_AutomationWindows
 
     Parameters:
       automation - <RDA_Automation>
@@ -18,6 +17,18 @@ class RDA_AutomationWindows extends RDA_Base {
   /*!
     Method: get
       Retrieves all windows
+
+    Example:
+      ======= AutoHotKey =======
+      ; searches an application wich title Notepad
+      automation := RDA_Automation()
+      windows := automation.windows()
+      wins := windows.get()
+      ; print all windows!
+      loop % wins.length() {
+        msgbox % wins[A_Index].toString()
+      }
+      ==========================
 
     Parameters:
       hidden - boolean - Include hidden windows?
@@ -48,18 +59,19 @@ class RDA_AutomationWindows extends RDA_Base {
     return r
   }
   /*!
-    Method: getWindow
+    Method: find
       Searches windows that match given object properties
 
     Example:
       ======= AutoHotKey =======
       ; searches an application wich title Notepad
-      windows := RDA_Automation().windows()
-      win := windows.find({title: "Notepad"})
+      automation := RDA_Automation()
+      windows := automation.windows()
+      win := windows.find({"title": "Notepad"})
       ; searches an application wich process name is notepad.exe
-      win := windows.find({process: "notepad.exe"})
+      win := windows.find({"process": "notepad.exe"})
       ; searches an application wich title start with Word (regex) and process name is word.exe
-      win := windows.find({$title: "Word.*", process: "word.exe"})
+      win := windows.find({"$title": "Word.*", "process": "word.exe"})
       ==========================
 
     Parameters:
@@ -93,9 +105,10 @@ class RDA_AutomationWindows extends RDA_Base {
 
     Example:
       ======= AutoHotKey =======
-      windows := RDA_Automation().windows()
+      automation := RDA_Automation()
+      windows := automation.windows()
       Run notepad.exe
-      sleep 30000 ; <-- this shall not be used
+      sleep 3000 ; wait because it's a "find" example
       win := windows.findOne({process: "notepad.exe"})
       ==========================
 
@@ -167,22 +180,25 @@ class RDA_AutomationWindows extends RDA_Base {
     Example:
       ======= AutoHotKey =======
       ; get previous windows
-      windows := AutomationOS.getAllWindows(windows, title)
+      automation := RDA_Automation()
+      windows := automation.windows()
+      previousWindows := windows.get()
       ; run your application
-      notepadPr := Process.runAsync("notepad.exe", Configuration.rootDir)
+      Run notepad.exe
+      Run notepad.exe
 
-      sleep 2000
+      sleep 2000 ; wait because it's a "find" example
       ; get your application
-      notepadWin := AutomationOS.getNewWindow(windows, "Notepad")
+      notepadWins := windows.findNew({"process": "notepad.exe"}, previousWindows)
       ==========================
 
     Parameters:
       searchObject - <RDA_AutomationWindowSearch> - search object
-      previousWindows - <AutomationWindow[]> - Black list, result of calling <AutomationOS.getAllWindows> before running your program
+      previousWindows - <RDA_AutomationWindow[]> - Black list, result of calling <RDA_AutomationWindows.get>
       hidden - boolean - search hidden windows?
 
     Returns:
-      <AutomationWindow>[]
+      RDA_AutomationWindow[]
   */
   findNew(searchObject, previousWindows, hidden := false) {
     local rwins := [], wins, win, found
@@ -217,14 +233,16 @@ class RDA_AutomationWindows extends RDA_Base {
 
     Example:
       ======= AutoHotKey =======
-      windows := RDA_Automation().windows()
+      automation := RDA_Automation()
+      windows := automation.windows()
       ; run notepad
       Run notepad.exe
-      sleep 10000
+      notepad1 := windows.waitOne({process: "notepad.exe"})
+
       ; run another notepad
       previousWindows := windows.get()
       Run notepad.exe
-      sleep 10000
+      sleep 10000 ; wait because it's a "find" example
       ; win will be the second one!
       win := windows.findOneNew({process: "notepad.exe"}, previousWindows)
       ==========================
@@ -267,11 +285,14 @@ class RDA_AutomationWindows extends RDA_Base {
       timeout - number - timeout, in miliseconds
       delay - number - delay, in miliseconds
 
+    Example:
       ======= AutoHotKey =======
-      windows := RDA_Automation().windows()
+      automation := RDA_Automation()
+      windows := automation.windows()
+      previousWindows := windows.get()
       Run notepad.exe
-      ; wait 30s to notepad to open
-      win := windows.waitOne({process: "notepad.exe"}, false, 30000)
+      ; wait a new notepad to open
+      win := windows.waitOneNew({process: "notepad.exe"}, previousWindows)
       ==========================
 
     Throws:

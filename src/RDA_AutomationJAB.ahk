@@ -106,7 +106,7 @@ class RDA_AutomationJAB extends RDA_Base {
   */
   init(java_path) {
     local
-    global Log, RDA_AutomationJAB
+    global RDA_AutomationJAB
 
     RDA_Log_Debug(A_ThisFunc . "(" . java_path . ")")
     this.javaPath := java_path

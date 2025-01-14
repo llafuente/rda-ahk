@@ -130,7 +130,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
       number - -1 for root, the 1 index for the rest.
   */
   getIndex() {
-    local p, children
+    local
 
     if (!this.cachedIndex) {
       try {
@@ -327,7 +327,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
       <RDA_AutomationUIAElement>
   */
   toggle() {
-    local pattern, e
+    local
 
     RDA_Log_Debug(A_ThisFunc . "@" . this.toString())
 
@@ -480,7 +480,6 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
   */
   select() {
     local
-    global Log
     RDA_Log_Debug(A_ThisFunc . "@" . this.toString())
 
     try {
@@ -505,7 +504,6 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
   */
   unselect() {
     local
-    global Log
     RDA_Log_Debug(A_ThisFunc . "@" . this.toString())
 
     try {
@@ -561,7 +559,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
       <RDA_AutomationUIAElement>[]
   */
   getSelectedItems() {
-    local pattern, e
+    local
 
     RDA_Log_Debug(A_ThisFunc . "@" . this.toString())
 
@@ -599,7 +597,6 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
   */
   clearSelectedItems() {
     local
-    global Log
     RDA_Log_Debug(A_ThisFunc)
 
     selection := this.getSelectedItems()
@@ -658,7 +655,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
   */
   getSelectedText() {
     local
-    global Log, UIA_Enum
+    global UIA_Enum
     try {
       if (this.uiaHandle.GetCurrentPropertyValue(UIA_Enum.UIA_IsTextPatternAvailablePropertyId)) {
         pattern := this.uiaHandle.GetCurrentPatternAs("Text") ; UIA_TextPattern
@@ -681,7 +678,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
   ; internal
   _setValue(text) {
     local
-    global Log, UIA_Enum
+    global UIA_Enum
     try {
       if (this.uiaHandle.GetCurrentPropertyValue(UIA_Enum.UIA_IsValuePatternAvailablePropertyId)) {
         pattern := this.uiaHandle.GetCurrentPatternAs("Value")
@@ -735,7 +732,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
   ; internal
   _getValue() {
     local
-    global Log, UIA_Enum
+    global UIA_Enum
 
     try {
       if (this.uiaHandle.GetCurrentPropertyValue(UIA_Enum.UIA_IsValuePatternAvailablePropertyId)) {
@@ -830,7 +827,6 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
   */
   getDescendants() {
     local
-    global Log
 
     RDA_Log_Debug(A_ThisFunc)
     /*
@@ -902,7 +898,6 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
   ;
   onFocusChange(funcName) {
     local
-    global Log
 
     RDA_Log_Debug(A_ThisFunc . "(" . funcName . ")")
 

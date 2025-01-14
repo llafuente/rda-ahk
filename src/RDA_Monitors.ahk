@@ -1,3 +1,4 @@
+; internal
 RDA_EnumDisplayMonitors(hMonitor, HDC, PRECT, userdata) {
   local
 
@@ -12,7 +13,7 @@ RDA_EnumDisplayMonitors(hMonitor, HDC, PRECT, userdata) {
 
   Return true
 }
-
+; internal
 RDA_GetMonitorInfo(automation, hMonitor) {
   local
   global RDA_ScreenRegion, RDA_Monitor
@@ -167,7 +168,7 @@ class RDA_Monitors extends RDA_Base {
 
 /*!
   class: RDA_Monitor
-    Represents a rectangle (w,h)
+    OS monitor
 */
 class RDA_Monitor {
   /*!

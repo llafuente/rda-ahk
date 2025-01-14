@@ -3,7 +3,6 @@
     Automation a window
 */
 class RDA_AutomationWindow extends RDA_Base {
-  ;static __Call := TooFewArguments(RDA_AutomationWindow)
   /*!
     Property: automation
       <RDA_Automation> - Automation config
@@ -19,33 +18,74 @@ class RDA_AutomationWindow extends RDA_Base {
       string - Title
   */
   title := 0
+
+  ; internal
+  _pid := 0
   /*!
     Property: pid
       number - Process identifier
   */
-  pid := 0
+  pid [] {
+    get {
+      local
+      if (!this._pid) {
+        hwnd := this.hwnd
+        WinGet, thePID, PID, ahk_id %hwnd%
+        this._pid := thePID
+      }
+      return this._pid
+    }
+  }
+  _process := 0
   /*!
     Property: process
       string - The name of the process that owns the window
   */
-  process := 0
+  process [] {
+    get {
+      local
+      if (!this._process) {
+        hwnd := this.hwnd
+        WinGet, theProcess , ProcessName, ahk_id %hwnd%
+        this._process := theProcess
+      }
+      return this._process
+    }
+  }
+  _path := 0
   /*!
     Property: path
       string - Full path and name of the process that owns the window
   */
-  path := 0
+  path [] {
+    get {
+      local
+      if (!this._path) {
+        hwnd := this.hwnd
+        WinGet, theProcessPath , ProcessPath, ahk_id %hwnd%
+        this.path := theProcessPath
+      }
+      return this._path
+    }
+  }
   /*!
     Property: classNN
       string - window's class name
   */
   classNN := 0
-
+  /*!
+    Property: monitor
+      <RDA_Monitor> - Retrieve current monitor
+  */
   monitor [] {
     get {
       return this.automation.monitors().fromWindow(this.hwnd)
     }
   }
-
+  /*!
+    Property: vdesktop
+      <RDA_VirtualDesktop> - Retrieve current virtual desktop
+  */
   vdesktop [] {
     get {
       return this.automation.virtualDesktops().fromWindow(this.hwnd)
@@ -82,17 +122,8 @@ class RDA_AutomationWindow extends RDA_Base {
     WinGetTitle title, ahk_id %hwnd%
     this.title := title
 
-    WinGet, thePID, PID, ahk_id %hwnd%
-    this.pid := thePID
-
-    WinGet, theProcess , ProcessName, ahk_id %hwnd%
-    this.process := theProcess
-
-    WinGet, theProcessPath , ProcessPath, ahk_id %hwnd%
-    this.path := theProcessPath
-
     WinGetClass, theProcessClassNN, ahk_id %hwnd%
-    this.classNN := theProcessClassNN
+    this.c := theProcessClassNN
 
     ; RDA_Log_Debug(A_ThisFunc . " " . this.toString())
   }
@@ -138,8 +169,10 @@ class RDA_AutomationWindow extends RDA_Base {
       boolean - If all properties match
   */
   isMatch(searchObject) {
-    local properties := ["title", "process", "path", "classNN", "pid"]
-    local allMatch := true
+    local
+
+    properties := ["title", "process", "path", "classNN", "pid"]
+    allMatch := true
 
     loop % properties.Length() {
       p := properties[A_Index]
@@ -317,7 +350,9 @@ class RDA_AutomationWindow extends RDA_Base {
       <RDA_ScreenRegion>
   */
   getRegion(x := 0, y := 0, w := 0, h := 0) {
-    local region := RDA_Window_GetSizeAndPosition(this.automation, this.hwnd)
+    local
+
+    region := RDA_Window_GetSizeAndPosition(this.automation, this.hwnd)
     region.origin.move(x, y)
     if (w) {
       region.rect.w := w
@@ -397,7 +432,9 @@ class RDA_AutomationWindow extends RDA_Base {
       <RDA_AutomationWindow>
   */
   mouseMoveTo(x, y) {
-    local pos := this.getPosition()
+    local
+
+    pos := this.getPosition()
     RDA_MouseMove(this.automation, this.hwnd, x + pos.x, y + pos.y)
 
     return this
@@ -497,9 +534,11 @@ class RDA_AutomationWindow extends RDA_Base {
       <RDA_AutomationWindow>[]
   */
   getChildren(searchObject := 0, hidden := false) {
-    local wins := this.automation.windows().find({"pid" : this.pid}, hidden)
-    local rwins := []
+    local
     RDA_Log_Debug(A_ThisFunc . "(" . RDA_JSON_stringify(searchObject) . ", hidden? " . (hidden ? "yes" : "no") . ")")
+
+    wins := this.automation.windows().find({"pid" : this.pid}, hidden)
+    rwins := []
 
     loop % wins.length() {
       win := wins[A_Index]
@@ -534,7 +573,7 @@ class RDA_AutomationWindow extends RDA_Base {
       <RDA_AutomationWindow>[]
   */
   getChild(searchObject, hidden := false) {
-    local rwins
+    local
     RDA_Log_Debug(A_ThisFunc . "(" . RDA_JSON_stringify(searchObject) . ", hidden? " . (hidden ? "yes" : "no") . ")")
 
     rwins := this.getChildren(searchObject, hidden)
@@ -565,7 +604,7 @@ class RDA_AutomationWindow extends RDA_Base {
       <RDA_AutomationWindow>[]
   */
   waitChild(searchObject, hidden := false, timeout := -1, delay := -1) {
-    local bound
+    local
     timeout := timeout == -1 ? RDA_Automation.TIMEOUT : timeout
     delay := delay == -1 ? RDA_Automation.DELAY : delay
     RDA_Log_Debug(A_ThisFunc . "(" . RDA_JSON_stringify(searchObject) . ", hidden? " . (hidden ? "yes" : "no") . " timeout = " . timeout . ", delay = " . delay . ")")
@@ -689,7 +728,9 @@ class RDA_AutomationWindow extends RDA_Base {
       <RDA_ScreenPosition> - screen position
   */
   pixel(x, y) {
-    local pos := this.getPosition()
+    local
+
+    pos := this.getPosition()
     pos.move(x, y)
     return pos
   }
@@ -705,7 +746,9 @@ class RDA_AutomationWindow extends RDA_Base {
       number - RGB color
   */
   getColor(x, y) {
-    local pos := this.getPosition()
+    local
+
+    pos := this.getPosition()
     this.setOpaque().activate()
 
     return RDA_PixelGetColor(pos.x + x, pos.y + y)
@@ -725,7 +768,9 @@ class RDA_AutomationWindow extends RDA_Base {
       <RDA_ScreenPosition>
   */
   searchColor(color, variation := "") {
-    local region := this.getRegion()
+    local
+
+    region := this.getRegion()
     this.setOpaque().activate()
 
     ; TODO: normalize to relative ?

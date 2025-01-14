@@ -147,7 +147,6 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   */
   getPatterns() {
     local
-    global Log
 
     ret := []
     this.__cacheInfo()
@@ -292,7 +291,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   */
   getRegion() {
     local
-    global Log, RDA_ScreenRegion, RDA_ScreenPosition, RDA_Rectangle
+    global RDA_ScreenRegion, RDA_ScreenPosition, RDA_Rectangle
 
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
     this.__cacheInfo()
@@ -395,7 +394,6 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   */
   toggle() {
     local
-    global Log
 
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
     before := this.isChecked()
@@ -424,7 +422,6 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   */
   isChecked() {
     local
-    global Log
 
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
     this.__cacheInfo(true)
@@ -438,7 +435,6 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   ; internal
   _ensureCheck(state) {
     local
-    global Log
 
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
 
@@ -496,7 +492,6 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   */
   select() {
     local
-    global Log
 
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
     this.__cacheInfo()
@@ -527,7 +522,6 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   */
   unselect() {
     local
-    global Log
 
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
     this.__cacheInfo()
@@ -557,7 +551,6 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   */
   isSelected() {
     local
-    global Log
 
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
     this.__cacheInfo(true)
@@ -586,7 +579,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   */
   getSelectedItems() {
     local
-    global Log, RDA_AutomationJABElement
+    global RDA_AutomationJABElement
 
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
 
@@ -625,8 +618,6 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
       <RDA_AutomationUIAElement>
   */
   clearSelectedItems() {
-    global Log
-
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
 
     ; void ClearAccessibleSelectionFromContext(long vmID, AccessibleSelection as)
@@ -669,7 +660,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   */
   getSelectedText() {
     local
-    global Log, UIA_Enum
+    global UIA_Enum
     try {
       if (this.uiaHandle.GetCurrentPropertyValue(UIA_Enum.UIA_IsTextPatternAvailablePropertyId)) {
         pattern := this.uiaHandle.GetCurrentPatternAs("Text") ; UIA_TextPattern
@@ -692,7 +683,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   ; internal
   _setValue(text) {
     local
-    global Log, UIA_Enum
+    global UIA_Enum
 
     this.__cacheInfo()
 
@@ -756,7 +747,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   ; internal
   _getValue() {
     local
-    global Log, RDA_AutomationJAB
+    global RDA_AutomationJAB
     RDA_Log_Debug(A_ThisFunc)
 
     if (this._info.accessibleTextInterface) {
@@ -893,7 +884,6 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   */
   getChildren() {
     local
-    global Log
 
     ret := []
     loop % this.getChildElementCount() {
@@ -918,7 +908,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   */
   getChild(index) {
     local
-    global Log, RDA_AutomationJABElement
+    global RDA_AutomationJABElement
 
     RDA_Log_Debug(A_ThisFunc . "(" . this.toString() . ", " . index . ")")
 
@@ -944,7 +934,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   */
   getDescendants(limits := 0) {
     local
-    global Log, RDA_ElementTreeNode
+    global RDA_ElementTreeNode
 
     RDA_Log_Debug(A_ThisFunc . "(" . limits ? limits.toString() : "no" . ")")
 
@@ -978,7 +968,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   */
   getParent() {
     local
-    global Log, RDA_AutomationJABElement
+    global RDA_AutomationJABElement
 
     RDA_Log_Debug(A_ThisFunc . "(" . this.toString() . ")")
 
@@ -1008,7 +998,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   */
   doActions(actions) {
     local
-    global Log, RDA_AutomationJAB
+    global RDA_AutomationJAB
 
     RDA_Log_Debug(A_ThisFunc . "(" . this.toString() . ", " . RDA_JSON_stringify(actions) . ")")
 
@@ -1062,7 +1052,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   */
   getActions() {
     local
-    global Log, RDA_AutomationJAB
+    global RDA_AutomationJAB
 
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
     list := []
@@ -1176,7 +1166,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   */
   getInfo() {
     local
-    global Log, RDA_AutomationJABAccessibleContextInfo, RDA_AutomationJAB
+    global RDA_AutomationJABAccessibleContextInfo, RDA_AutomationJAB
 
     RDA_Log_Debug(A_ThisFunc)
 
