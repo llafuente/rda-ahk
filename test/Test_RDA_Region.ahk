@@ -2,7 +2,7 @@ class Test_RDA_Region {
   Begin() {
   }
 
-  Test_5_Automation_Region() {
+  Test_RDA_Region_Window() {
     local
     global RDA_Automation, Yunit
 
@@ -43,21 +43,24 @@ class Test_RDA_Region {
     region2.origin.x := 101
     Yunit.assert(region2.origin.x == 101, "cloned changed")
     Yunit.assert(region.origin.x == 100, "original region not changed")
-    ; region2.highlight()
+    region2.highlight(250)
+
     region2.expandOut(10)
     Yunit.assert(region2.origin.x == 91, "cloned and expanded region.x")
     Yunit.assert(region2.origin.y == 90, "cloned and expanded region.y")
     Yunit.assert(region2.rect.w == 660, "cloned and expanded rect.w")
     Yunit.assert(region2.rect.h == 500, "cloned and expanded rect.h")
-    ; region2.highlight()
+    region2.highlight(250)
 
-
+    ; check center
     pos := region.getCenter()
     Yunit.assert(pos.x == 420, "Region center x")
     Yunit.assert(pos.y == 340, "Region center y")
 
+    region.highlight(250)
     region.click()
 
+    ; final mouse position should be the center!
     pos := mouse.get()
     Yunit.assert(pos.x == 420, "Region center x")
     Yunit.assert(pos.y == 340, "Region center y")
@@ -70,6 +73,7 @@ class Test_RDA_Region {
     Yunit.assert(popup.isAlive() == false, "popup not Alive")
     Yunit.assert(win.isAlive() == false, "mspaint not Alive")
 
+    ; check closed window region
     region := win.getRegion()
     Yunit.assert(region.origin.automation != 0, "region.origin.automation")
     Yunit.assert(region.origin.x == 0, "closed window region.x")
@@ -79,7 +83,7 @@ class Test_RDA_Region {
     Yunit.assert(region.rect.h == 0, "closed window rect.h")
   }
 
-  Test_Automation_Region2() {
+  Test_RDA_Region_Class() {
     local
     global RDA_Automation, Yunit
     automation := new RDA_Automation()

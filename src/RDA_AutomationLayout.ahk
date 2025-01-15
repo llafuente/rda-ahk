@@ -198,7 +198,7 @@ class RDA_LayoutImage extends RDA_LayoutElement {
   */
   updateImage() {
     local
-    RDA_Log_Debug(A_ThisFunc)
+    RDA_Log_Debug(A_ThisFunc . "(" . this.image . ")")
 
     if (!StrLen(this.image)) {
       throw RDA_Exception("image not defined")
@@ -828,7 +828,7 @@ class RDA_Layout extends RDA_Base {
   */
   waitAppear(type := "Image", sensibility := -1, timeout := -1, delay := -1) {
     local
-    RDA_Log_Debug(A_ThisFunc)
+    RDA_Log_Debug(A_ThisFunc . "(" . type . ")")
 
     loop % this.elements.length() {
       element := this.elements[A_Index]

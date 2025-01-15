@@ -190,7 +190,6 @@ class RDA_AutomationJAB extends RDA_Base {
   ; internal
   __jabswitch(java_path, state) {
     local
-    global Log
 
     shell := ComObjCreate("WScript.Shell")
     shell.CurrentDirectory := java_path

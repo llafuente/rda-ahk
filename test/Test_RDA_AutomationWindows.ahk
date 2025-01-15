@@ -27,7 +27,11 @@ class Test_RDA_AutomationWindows {
     win := windows.waitOne({process: "notepad.exe"})
 
     Yunit.assert(win != 0, "Window exist")
-    Yunit.assert(win.process == "notepad.exe", "Found notepad!")
+    Yunit.assert(win.process == "notepad.exe", "test process")
+    Yunit.assert(win.path == "C:\Windows\SysWOW64\notepad.exe", "test path")
+    ; this is "os-locale" dependant
+    Yunit.assert(win.title == "Untitled - Notepad", "test title")
+    Yunit.assert(win.classNN == "Notepad", "test classNN")
 
     Yunit.assert(win.isClosed() == false, "notepad not closed")
     Yunit.assert(win.isAlive() == true, "notepad isAlive")

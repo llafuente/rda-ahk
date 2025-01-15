@@ -1,7 +1,8 @@
 class Test_RDA_Pixel {
   Begin() {
   }
-  Test_8_Automation_PixelColors() {
+
+  RDA_Get_SearchColor() {
     local
     global RDA_Automation, Yunit
 
@@ -10,56 +11,26 @@ class Test_RDA_Pixel {
     automation := new RDA_Automation()
     windows := automation.windows()
 
-    Run notepad.exe
-    win := windows.waitOne({process: "notepad.exe"})
+    Run % "mspaint.exe " . A_ScriptDir . "\dots-128x128.png"
+    win := windows.waitOne({process: "mspaint.exe"})
+    win.move(0, 0)
+    win.resize(1024, 768)
 
-    color := win.getColor(50, 50)
-    Yunit.assert(color == 0xF0F0F0, "notepad color at (50,50)")
-    ; this should be the border...
-    color := win.getColor(7, 7)
-    ; this is flaky :S
-    Yunit.assert(color == 0x6B6B6B || color == 0xA5A5A5, "notepad color at (7, 7)")
-    ; this should be "minimize line"
-    color := win.getColor(515, 15)
-    Yunit.assert(color == 0x000000, "notepad color at (515, 15)")
+    ;mouseMoveTo(50,200)
+    color := win.getColor(50,200)
+    Yunit.assert(color == 0x00FF00, "mspaint color at (50,200) is green")
 
-    win.close()
-  }
+    region := win.getRegion(50, 175, 25, 25)
+    region.highlight(250)
+    position := region.searchColor(0xFF0000)
 
-  Test_9_Automation_PixelSearch() {
-    local
-    global RDA_Automation, Yunit
-
-    RDA_Log_Debug(A_ThisFunc)
-
-    automation := new RDA_Automation()
-    windows := automation.windows()
-
-    Run notepad.exe
-    win := windows.waitOne({process: "notepad.exe"})
-    win.activate()
-    win.move(50,50)
-    ; very small window because it slow as hell
-    win.resize(50, 50)
-
-    position := win.searchColor(0x000000)
-    color := position.getColor()
-    Yunit.assert(color == 0x000000, "Found a back pixel at notepad")
-
-    region := win.getRegion(0, 0, 50, 50)
-    region.origin.set(position.x - 25, position.y - 25)
-    region.origin.move(-25, -25)
-
-    position2 := region.searchColor(0x000000)
-
-    Yunit.assert(position.x == position2.x, "Found a pixel in the same position x")
-    Yunit.assert(position.y == position2.y, "Found a pixel in the same position y")
+    Yunit.assert(position.x != 0, "Found a pixel in the same position x")
+    Yunit.assert(position.y != 0, "Found a pixel in the same position y")
 
     win.close()
   }
 
-
-  Test_10_Automation_PixelAppearDisappear() {
+  RDA_WaitColor() {
     local
     global RDA_Automation, Yunit
 

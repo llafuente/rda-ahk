@@ -30,6 +30,7 @@ class Test_RDA_AutomationLayout {
     Yunit.assert(layout.elements.length() > 0, "there are elements parsed")
 
     layout.element("Header").updateImage()
+
     layout.waitAppear()
 
     ; everyone has a name/type/region
@@ -42,12 +43,13 @@ class Test_RDA_AutomationLayout {
 
     layout.element("Bucket").click()
     mouse.moveTo(0, 0)
-    Yunit.assert(layout.element("Bucket").waitEnabled() == true, "clicked")
+    layout.element("Bucket").updateImage()
+    Yunit.assert(layout.element("Bucket").waitEnabled(), "clicked and found")
 
-    layout.element("Type").click()
+    layout.element("Type").highlight().click()
     ; there is no way to know if is "selected/pressed"
     ; Yunit.assert(winElement.findOne("//Button[@name=""Text""]") ??? , "Pressed?")
-    layout.win.click(20, 165)
+    layout.win.mouseMoveTo(20, 165).click(20, 165)
 
     layout.element("Font").selectByValue("Arial")
     Yunit.assert(winElement.findOne("//ComboBox[@name=""Font family""]").getValue() == "Arial", "Arial font set")

@@ -64,7 +64,7 @@ RDA_VTable(p, n) {
     number - 1 index if found, 0 otherwise
 */
 RDA_Array_IndexOf(arr, avalue, fromIndex := 1) {
-  local index, value
+  local
   for index, value in arr {
     if (index < fromIndex) {
       Continue
@@ -98,7 +98,7 @@ RDA_Array_IndexOf(arr, avalue, fromIndex := 1) {
     any[] - Concatenated array of things
 */
 RDA_Array_Concat(arr, arr2) {
-  local out
+  local
   out := []
   loop % arr.Length() {
     out.push(arr[A_Index])
@@ -122,7 +122,7 @@ RDA_Array_Concat(arr, arr2) {
     string
 */
 RDA_Array_Join(arr, separator := ",") {
-  local out, k, v
+  local
   out := ""
   for k, v in arr {
     out .= separator . v
@@ -229,7 +229,7 @@ RDA_Assert(expr, message) {
     any - Result from the given function
 */
 RDA_RepeatWhileThrows(fn, timeout, delay) {
-  local lastException, startTime, e, r
+  local
 
   lastException := 0
   startTime := A_TickCount
@@ -316,7 +316,7 @@ RDA_Window_Close(hwnd, timeout) {
     boolean - If the window exists after waiting to close
 */
 RDA_Window_Exist(hwnd) {
-  local result
+  local
 
   result := (WinExist("ahk_id " . hwnd) != 0)
 
@@ -367,7 +367,8 @@ RDA_Window_Resize(hwnd, w, h) {
     <RDA_ScreenRegion>
 */
 RDA_Window_GetSizeAndPosition(automation, hwnd) {
-  local winX, winY, winW, winH, region
+  local
+  global RDA_Rectangle, RDA_ScreenRegion, RDA_ScreenPosition
 
   WinGetPos, winX, winY, winW, winH, ahk_id %hwnd%
 
@@ -604,7 +605,7 @@ RDA_MouseGetPosition(automation) {
     hwnd - number - window identifier
 */
 RDA_Window_Opaque(hwnd) {
-  local e
+  local
   try {
     WinSet, Transparent, Off, ahk_id %hwnd%
   } catch e {
@@ -620,7 +621,7 @@ RDA_Window_Opaque(hwnd) {
     hwnd - number - window identifier
 */
 RDA_Window_Transparent(hwnd) {
-  local e
+  local
   try {
     WinSet, Transparent, On, ahk_id %hwnd%
   } catch e {
@@ -668,7 +669,7 @@ RDA_Window_Show(hwnd) {
     delay - number - delay, in miliseconds
 */
 RDA_Window_Activate(hwnd, timeout, delay) {
-  local v, winHwnd, hwnd2, startTime
+  local
 
   winHwnd := DllCall("user32\GetAncestor", "Ptr", hwnd, "UInt", 2, "Ptr") ;GA_ROOT := 2
   RDA_Log_Debug(A_ThisFunc . "(" . hwnd . " / " . winHwnd . ")")
@@ -850,7 +851,7 @@ RDA_Window_Maximize(hwnd) {
     boolean - Is minimized
 */
 RDA_Window_IsMinimized(hwnd) {
-  local v
+  local
   RDA_Log_Debug(A_ThisFunc . "(" . hwnd . ")")
 
   WinGet, v, MinMax, ahk_id %hwnd%
@@ -867,7 +868,7 @@ RDA_Window_IsMinimized(hwnd) {
     boolean - Is maximized
 */
 RDA_Window_IsMaximized(hwnd) {
-  local v
+  local
   RDA_Log_Debug(A_ThisFunc . "(" . hwnd . ")")
 
   WinGet, v, MinMax, ahk_id %hwnd%
@@ -886,7 +887,7 @@ RDA_Window_IsMaximized(hwnd) {
     boolean - Is restored
 */
 RDA_Window_IsRestored(hwnd) {
-  local v
+  local
   RDA_Log_Debug(A_ThisFunc . "(" . hwnd . ")")
 
   WinGet, v, MinMax, ahk_id %hwnd%
@@ -920,7 +921,8 @@ RDA_PixelGetColor(x, y) {
     Timeout reached at RDA_PixelWaitAppearColor: Color not changed
 */
 RDA_PixelWaitAppearColor(color, x, y, timeout, delay) {
-  local startTime := A_TickCount, scolor
+  local
+  startTime := A_TickCount
 
   RDA_Log_Debug(A_ThisFunc "(" . color . ", (" . x . "," . y . "), " . timeout . ", " . delay . ")")
 
@@ -951,7 +953,8 @@ RDA_PixelWaitAppearColor(color, x, y, timeout, delay) {
     Timeout reached at RDA_PixelWaitDisappearColor: Color not changed
 */
 RDA_PixelWaitDisappearColor(color, x, y, timeout, delay) {
-  local startTime := A_TickCount, scolor
+  local
+  startTime := A_TickCount
 
   RDA_Log_Debug(A_ThisFunc "(" . color . ", (" . x . "," . y . "), " . timeout . ", " . delay . ")")
 
@@ -1004,10 +1007,14 @@ RDA_PixelWaitDisappearColor(color, x, y, timeout, delay) {
     <RDA_ScreenPosition>
 */
 RDA_PixelSearchColor(automation, color, x, y, w, h, variation := "") {
-  local ox, oy, x2 := x + w, y2:= y + h, p
+  local
+  global RDA_ScreenPosition
+
   RDA_Assert(automation, A_ThisFunc . " automation is null")
 
   RDA_Log_Debug(A_ThisFunc . "(color = " color . ", (" . x . ", "  . y . "), (" . w . ", "  . h . "), "  . variation . ")")
+  x2 := x + w
+  y2:= y + h
 
   CoordMode Pixel
   CoordMode, Mouse, Screen
@@ -1055,7 +1062,8 @@ RDA_PixelSearchColor(automation, color, x, y, w, h, variation := "") {
     <RDA_ScreenPosition>
 */
 RDA_ImageSearch(automation, imagePath, sensibility, screenRegion, options := "") {
-  local x1, x2, y1, y2, err, FoundX, FoundY
+  local
+  global RDA_ScreenPosition
 
   sensibility := sensibility == -1 ? automation.imageSearchSensibility : sensibility
 
@@ -1123,7 +1131,8 @@ RDA_ImageSearch(automation, imagePath, sensibility, screenRegion, options := "")
 
 */
 RDA_ImagesWaitAppear(automation, imagePathList, sensibility, screenRegion, options, timeout, delay) {
-  local startTime := A_TickCount, pos, e
+  local
+  startTime := A_TickCount
 
   sensibility := sensibility == -1 ? automation.imageSearchSensibility : sensibility
   RDA_Log_Debug(A_ThisFunc . "(images = " . RDA_JSON_stringify(imagePathList) . ", sensibility = " . sensibility . ", options = " . options . ", timeout = " . timeout . ", timeout = " . delay . ")")
@@ -1174,8 +1183,8 @@ RDA_ImagesWaitAppear(automation, imagePathList, sensibility, screenRegion, optio
 
 */
 RDA_ImagesWaitDisappear(automation, imagePathList, sensibility, screenRegion, options, timeout, delay) {
-  local startTime := A_TickCount, pos, e
-
+  local
+  startTime := A_TickCount
   sensibility := sensibility == -1 ? automation.imageSearchSensibility : sensibility
   RDA_Log_Debug(A_ThisFunc . "(images = " . RDA_JSON_stringify(imagePathList) . ", sensibility = " . sensibility . ", options = " . options . ", timeout = " . timeout . ", timeout = " . delay . ")")
 
@@ -1221,7 +1230,7 @@ RDA_ImagesWaitDisappear(automation, imagePathList, sensibility, screenRegion, op
     boolean - If screenshot is successfully
 */
 RDA_Screenshot(nL, nT, nW, nH, file := 0, captureCursor :=  false) {
-  local mDC, hBM, oBM, hDC,
+  local
   RDA_Log_Debug(A_ThisFunc . "(" . nL . ", " . nT . ", " . nW . ", " . nH . ", " . file . ", " . captureCursor . ")")
   try {
     mDC := DllCall("CreateCompatibleDC", "ptr", 0, "ptr")
@@ -1252,7 +1261,7 @@ RDA_Screenshot(nL, nT, nW, nH, file := 0, captureCursor :=  false) {
 
 ; internal
 _RDA_Screenshot_CaptureMouse(hDC, nL, nT) {
-  local mi, bShow, hCursor, xCursor, yCursor, xHotspot, yHotspot, hBMMask, hBMColor
+  local
   RDA_Log_Debug(A_ThisFunc . "(" . !!hDC . ", " . nL . ", " . nT . ")")
 
   VarSetCapacity(mi, 32, 0), Numput(16+A_PtrSize, mi, 0, "uint")
@@ -1277,8 +1286,7 @@ _RDA_Screenshot_CaptureMouse(hDC, nL, nT) {
 }
 
 _RDA_Screenshot_Convert(sFileFr, sFileTo, nQuality) {
-  local offset, sDirTo, sExtTo, sNameTo, hGdiPlus, az, offset, hBitmap, pi
-  local struct_size, nSize, pParam, pImage, pToken, hBM, nCount, pCodec, si, ci
+  local
 
   RDA_Log_Debug(A_ThisFunc . "(" . sFileFr . ", " . sFileTo . ", " . nQuality . ")")
 
@@ -1328,7 +1336,7 @@ _RDA_Screenshot_Convert(sFileFr, sFileTo, nQuality) {
 }
 
 _RDA_Screenshot_SaveHBITMAPToFile(hBitmap, sFile) {
-  local oi, fObj
+  local
 
   VarSetCapacity(oi,104,0)
   DllCall("GetObject", "ptr", hBitmap, "int", 64+5*A_PtrSize, "ptr", &oi)
@@ -1354,7 +1362,7 @@ _RDA_Screenshot_CreateDIBSection(hDC, nW, nH, bpp := 32, ByRef pBits := "") {
 }
 
 _RDA_Screenshot_SetClipboardData(hBitmap) {
-  local oi, sz, hDIB, pDIB
+  local
   VarSetCapacity(oi,104,0)
   DllCall("GetObject", "ptr", hBitmap, "int", 64+5*A_PtrSize, "ptr", &oi)
   sz := NumGet(oi,36+2*A_PtrSize,"uint")

@@ -22,7 +22,7 @@ class RDA_ScreenPosition extends RDA_Base {
   */
   y := 0
   /*!
-    Constructor:
+    Constructor: RDA_ScreenPosition
 
     Parameters:
       automation - <RDA_Automation>
@@ -100,8 +100,8 @@ class RDA_ScreenPosition extends RDA_Base {
   set(x, y) {
     RDA_Log_Debug(A_ThisFunc . "(" . x . "," . y . ")")
 
-    this.x += x
-    this.y += y
+    this.x := x
+    this.y := y
 
     return this
   }
@@ -194,7 +194,8 @@ class RDA_ScreenPosition extends RDA_Base {
 
     Example:
       ======= AutoHotKey =======
-      new RDA_ScreenPosition(50, 50).getColor()
+      automation := RDA_Automation()
+      new RDA_ScreenPosition(automation, 50, 50).getColor()
       ==========================
 
     Returns:
@@ -213,6 +214,7 @@ class RDA_ScreenPosition extends RDA_Base {
     Example:
       ======= AutoHotKey =======
       ; when 50,50 is red it will continue.
+      automation := RDA_Automation()
       new RDA_ScreenPosition(automation, 50, 50).waitAppearColor(0xFF0000)
       ==========================
 
@@ -231,7 +233,7 @@ class RDA_ScreenPosition extends RDA_Base {
     return this
   }
   /*!
-    Method: waitAppearColor
+    Method: waitDisappearColor
       Waits the current pixel color to change to the given one (any or given one)
 
     Parameters:
@@ -240,7 +242,8 @@ class RDA_ScreenPosition extends RDA_Base {
     Example:
       ======= AutoHotKey =======
       ; when 50,50 is red it will continue.
-      new RDA_ScreenPosition(automation, 50, 50).waitAppearColor(0xFF0000)
+      automation := RDA_Automation()
+      new RDA_ScreenPosition(automation, 50, 50).waitDisappearColor(0xFF0000)
       ==========================
 
     Throws:

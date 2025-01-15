@@ -135,6 +135,8 @@ class Test_RDA_Keyboard {
     ; win.move(50, 75)
 
     desktops := vdesk.get()
+    Yunit.assert(desktops.length() > 1, "test require at least two virtual desktops!")
+
     win.moveToVirtualDesktop(desktops[1])
     ; move and resize do not work on "another" virtual desktop
     win.move(0, 0)

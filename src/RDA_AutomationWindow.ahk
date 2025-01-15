@@ -13,12 +13,23 @@ class RDA_AutomationWindow extends RDA_Base {
       number - hwnd identifier
   */
   hwnd := 0
+  ; internal
+  _title := 0
   /*!
     Property: title
-      string - Title
+      string - Title, cached first time
   */
-  title := 0
-
+  title {
+    get {
+      local
+      if (!this._title) {
+        hwnd := this.hwnd
+        WinGetTitle title, ahk_id %hwnd%
+        this._title := title
+      }
+      return this._title
+    }
+  }
   ; internal
   _pid := 0
   /*!
@@ -36,6 +47,7 @@ class RDA_AutomationWindow extends RDA_Base {
       return this._pid
     }
   }
+  ; internal
   _process := 0
   /*!
     Property: process
@@ -52,6 +64,7 @@ class RDA_AutomationWindow extends RDA_Base {
       return this._process
     }
   }
+  ; internal
   _path := 0
   /*!
     Property: path
@@ -68,11 +81,24 @@ class RDA_AutomationWindow extends RDA_Base {
       return this._path
     }
   }
+  ; internal
+  _classNN := 0
   /*!
     Property: classNN
       string - window's class name
   */
-  classNN := 0
+  classNN {
+    get {
+      local
+      if (!this._classNN) {
+        hwnd := this.hwnd
+        WinGetClass, theProcessClassNN, ahk_id %hwnd%
+        this._classNN := theProcessClassNN
+      }
+      return this._classNN
+
+    }
+  }
   /*!
     Property: monitor
       <RDA_Monitor> - Retrieve current monitor
@@ -110,7 +136,6 @@ class RDA_AutomationWindow extends RDA_Base {
   */
   __New(automation, hwnd) {
     local
-    global Log
 
     this.automation := automation
 
@@ -118,13 +143,6 @@ class RDA_AutomationWindow extends RDA_Base {
 
     RDA_Assert(this.automation, A_ThisFunc . " automation is null")
     RDA_Assert(this.hwnd, A_ThisFunc . " hwnd is null")
-
-    WinGetTitle title, ahk_id %hwnd%
-    this.title := title
-
-    WinGetClass, theProcessClassNN, ahk_id %hwnd%
-    this.c := theProcessClassNN
-
     ; RDA_Log_Debug(A_ThisFunc . " " . this.toString())
   }
   /*!
@@ -230,6 +248,8 @@ class RDA_AutomationWindow extends RDA_Base {
       boolean - If the window exists after waiting to close
   */
   close(timeout := -1) {
+    local
+    global RDA_Automation
     timeout := (timeout == -1 ? RDA_Automation.TIMEOUT : timeout)
 
     return RDA_Window_Close(this.hwnd, timeout)
@@ -403,8 +423,8 @@ class RDA_AutomationWindow extends RDA_Base {
     return this
   }
   /*!
-    Method: rightClick
-      Performs a lft double click at given position.
+    Method: doubleClick
+      Performs a left double click at given position.
 
       See <RDA_Mouse_WindowClick>
 
@@ -605,6 +625,7 @@ class RDA_AutomationWindow extends RDA_Base {
   */
   waitChild(searchObject, hidden := false, timeout := -1, delay := -1) {
     local
+    global RDA_Automation
     timeout := timeout == -1 ? RDA_Automation.TIMEOUT : timeout
     delay := delay == -1 ? RDA_Automation.DELAY : delay
     RDA_Log_Debug(A_ThisFunc . "(" . RDA_JSON_stringify(searchObject) . ", hidden? " . (hidden ? "yes" : "no") . " timeout = " . timeout . ", delay = " . delay . ")")
@@ -628,6 +649,7 @@ class RDA_AutomationWindow extends RDA_Base {
       <RDA_AutomationWindow>
   */
   activate() {
+    global RDA_Automation
     RDA_Window_Activate(this.hwnd, RDA_Automation.TIMEOUT, RDA_Automation.DELAY)
 
     return this
@@ -773,7 +795,6 @@ class RDA_AutomationWindow extends RDA_Base {
     region := this.getRegion()
     this.setOpaque().activate()
 
-    ; TODO: normalize to relative ?
     return RDA_PixelSearchColor(this.automation, color, region.origin.x, region.origin.y, region.rect.w, region.rect.h)
   }
 
@@ -890,6 +911,8 @@ class RDA_AutomationWindow extends RDA_Base {
       <RDA_AutomationWindow>
   */
   waitClose(timeout := -1) {
+    local
+    global RDA_Automation
     timeout := (timeout == -1 ? RDA_Automation.TIMEOUT : timeout)
     RDA_Window_WaitClose(this.hwnd, timeout)
 

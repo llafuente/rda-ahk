@@ -233,11 +233,14 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
       <RDA_ScreenRegion>
   */
   getRegion() {
-    local br := this.uiaHandle.CurrentBoundingRectangle
-    local x := br.l
-    local y := br.t
-    local w := br.r-br.l
-    local h := br.b-br.t
+    local
+    global RDA_ScreenRegion, RDA_ScreenPosition, RDA_Rectangle
+
+    br := this.uiaHandle.CurrentBoundingRectangle
+    x := br.l
+    y := br.t
+    w := br.r-br.l
+    h := br.b-br.t
 
     RDA_Log_Debug(A_ThisFunc . "(" . x . ", "  . y . ", " . w . ", " . h . ")")
 
@@ -302,7 +305,11 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
       <RDA_AutomationUIAElement>
   */
   getFocusedControl() {
-    local v := this.automation.UIA.GetFocusedElement()
+    local
+    global RDA_AutomationUIAElement
+
+    v := this.automation.UIA.GetFocusedElement()
+
     if (IsObject(v)) {
       RDA_Log_Debug(A_ThisFunc)
       return new RDA_AutomationUIAElement(this.automation, this.win, v)
@@ -328,6 +335,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
   */
   toggle() {
     local
+    global UIA_Enum
 
     RDA_Log_Debug(A_ThisFunc . "@" . this.toString())
 
@@ -366,7 +374,8 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
       boolean
   */
   isChecked() {
-    local pattern, e, v
+    local
+    global UIA_Enum
 
     RDA_Log_Debug(A_ThisFunc . "@" . this.toString())
 
@@ -390,7 +399,8 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
   }
   ; internal
   _ensureCheck(state) {
-    local pattern, e
+    local
+    global UIA_Enum
     try {
       if (this.uiaHandle.GetCurrentPropertyValue(UIA_Enum.UIA_IsTogglePatternAvailablePropertyId)) {
         pattern := this.uiaHandle.GetCurrentPatternAs("Toggle")
@@ -526,7 +536,8 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
       <RDA_AutomationUIAElement>
   */
   isSelected() {
-    local pattern, v, e
+    local
+    global UIA_Enum
 
     RDA_Log_Debug(A_ThisFunc . "@" . this.toString())
 
@@ -560,6 +571,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
   */
   getSelectedItems() {
     local
+    global UIA_Enum
 
     RDA_Log_Debug(A_ThisFunc . "@" . this.toString())
 
@@ -617,7 +629,8 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
       boolean
   */
   canSelectMultiple() {
-    local pattern, v, e
+    local
+    global UIA_Enum
 
     RDA_Log_Debug(A_ThisFunc . "@" . this.toString())
 
@@ -810,7 +823,11 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
       <RDA_AutomationUIAElement>
   */
   getChild(index) {
-    local elements := this.uiaHandle.GetChildren(0x2)
+    local
+    global RDA_AutomationUIAElement
+
+    elements := this.uiaHandle.GetChildren(0x2)
+
     if (index < 1 || index > elements.length()) {
       RDA_Log_Debug("Index out of bounds at " . this.toString())
       throw RDA_Exception("Index out of bounds")
@@ -872,7 +889,10 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
       <RDA_AutomationUIAElement>
   */
   getParent() {
-    local v := this.uiaHandle.TreeWalkerTrue.GetParentElement(this.uiaHandle)
+    local
+    global RDA_AutomationUIAElement
+
+    v := this.uiaHandle.TreeWalkerTrue.GetParentElement(this.uiaHandle)
 
     if (IsObject(v)) {
       RDA_Log_Debug(A_ThisFunc)
@@ -884,6 +904,9 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
   }
   ; internal
   _wrapList(list) {
+    local
+    global RDA_AutomationUIAElement
+
     wrapList := []
     loop % list.length() {
       wrapList.push(new RDA_AutomationUIAElement(this.automation, this.win, list[A_Index]))

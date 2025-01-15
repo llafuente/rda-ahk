@@ -16,7 +16,7 @@ class Test_RDA_Image {
 
     win := windows.waitOne({process: "mspaint.exe"})
     win.move(50,50)
-    win.resize(640, 480)
+    win.resize(1024, 768)
 
     pos := win.searchImage(A_ScriptDir . "\item.png", 4)
     Yunit.assert(pos.x == 90, "Image found at 90!")
@@ -60,7 +60,7 @@ class Test_RDA_Image {
 
     win := windows.waitOne({process: "mspaint.exe"})
     win.move(50,50)
-    win.resize(640, 480)
+    win.resize(1024, 768)
     win.mouseMoveTo(150, 105)
     try {
       FileDelete % A_ScriptDir . "\test-mspaint.png"
