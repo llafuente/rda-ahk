@@ -112,6 +112,13 @@ list.forEach((x, idx) => {
   //contents = contents.replace(/href\=\"(.*?)\/index\.html#File\:(.*?)\:(.*?)\"/g, "href=\"#$3\"");
   contents = contents.replace(/href\=\"([^\"]*)\/index\.html#File\:([^\"]*)\:([^\"]*)\"/g, "href=\"#$3\"");
 
+  // clear unused HTML
+  //<a name="Topic250"></a>
+  contents = contents.replace(/\<a name="Topic\d+"><\/a>/g, "");
+  contents = contents.replace(/onmouseover="([^\"]*)"/g, "");
+  contents = contents.replace(/onmouseout="([^\"]*)"/g, "");
+  contents = contents.replace(/id="NDPrototype\d+"/g, "");
+
   contents = contents.split("\n");
   // remove unwanted
   contents = contents.slice(9, contents.length - 1);
@@ -122,6 +129,7 @@ list.forEach((x, idx) => {
   if (idx > 0) {
     contents.unshift(`<div class="page-break"></div>`);
   }
+
 
   contents = contents.join("\n");
   fs.appendFileSync(__dirname + "/index.html", contents, {"encoding": "utf8"});
