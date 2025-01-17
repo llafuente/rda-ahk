@@ -1,39 +1,34 @@
 /*!
-  class: RDA_ScreenPosition
-    Represents a position (x,y) in the screen
+  Class: RDA_WindowPosition
+    Represents a position (x,y) relative to a window
 
   Remarks:
-    It not bound to a window so any operation made here won't change any
-    window.
-*/
-class RDA_ScreenPosition extends RDA_Base {
-  ;static __Call := TooFewArguments(RDA_ScreenPosition)
+    If the windows gets destroyed all method will throw.
 
-  ; internal
+  Returns:
+    <RDA_WindowPosition>
+*/
+class RDA_WindowPosition {
   automation := 0
-  /*!
-    Property: x
-      number - x
-  */
+  window := 0
   x := 0
-  /*!
-    Property: y
-      number - y
-  */
   y := 0
+
   /*!
-    Constructor: RDA_ScreenPosition
+    Constructor: RDA_WindowPosition
 
     Parameters:
       automation - <RDA_Automation>
       x - number - screen position x
       y - number - screen position y
   */
-  __New(automation, x, y) {
+  __New(automation, window, x, y) {
     RDA_Assert(automation, A_ThisFunc . " automation is null")
     this.automation := automation
+    this.window := window
     this.x := x
     this.y := y
+    RDA_Log_Debug(A_ThisFunc)
   }
   /*!
     Method: toString
@@ -43,7 +38,7 @@ class RDA_ScreenPosition extends RDA_Base {
       string
   */
   toString() {
-    return "RDA_ScreenPosition{x: " . this.x . ", y: " . this.y . "}"
+    return "RDA_WindowPosition{win: " . this.window.toString() . ", x: " . this.x . ", y: " . this.y . "}"
   }
   /*!
     Method: clone
@@ -53,8 +48,49 @@ class RDA_ScreenPosition extends RDA_Base {
       <RDA_ScreenRegion>
   */
   clone() {
-    return new RDA_ScreenPosition(this.automation, this.x, this.y)
+    return new RDA_WindowPosition(this.automation, this.window, this.x, this.y)
   }
+  ; internal
+  _checkValidWindow() {
+    RDA_Assert(this.window.isAlive(), "Window is closed")
+    RDA_Assert(this.window.isHidden(), "Window is hidden")
+
+    ; it's valid, active!
+    this.window.activate()
+  }
+  /*!
+    Method: toScreen
+      Changes current relative position to screen position
+
+    Parameters:
+      win - RDA_Window -window
+
+    Example:
+      ======= AutoHotKey =======
+      automation := RDA_Automation()
+      windows := automation.windows()
+      win := windows.findOne({"process": "xxx.exe"})
+      winPos := new RDA_ScreenPosition(automation, 50, 50).relativeTo(win)
+      screenPos := winPos.toScreen()
+      ==========================
+
+    Returns:
+      <RDA_ScreenPosition>
+  */
+  toScreen() {
+    local
+    global RDA_ScreenPosition
+
+    this._checkValidWindow()
+    winPos := this.window.getPosition()
+
+    return new RDA_ScreenPosition(this.automation, this.x + winPos.x, this.y + winPos.y)
+  }
+
+
+  ;
+  ;
+  ;
   /*!
     Method: getLength
       Calculates the length to origin
@@ -63,7 +99,13 @@ class RDA_ScreenPosition extends RDA_Base {
       number
   */
   getLength() {
-    local v := Sqrt(this.x * this.x + this.y * this.y)
+    local
+
+    winPos := this.window.getPosition()
+    screenX := this.x + winPos.x
+    screenY := this.y + winPos.y
+
+    v := Sqrt(screenX * screenX + screenY * screenY)
     RDA_Log_Debug(A_ThisFunc . " = " . v)
     return v
   }
@@ -88,11 +130,11 @@ class RDA_ScreenPosition extends RDA_Base {
   }
   /*!
     Method: set
-      Sets current screen position
+      Sets current window position
 
     Parameters:
-      x - number - x amount
-      y - number - y amount
+      x - number - x coordinate
+      y - number - y coordinate
 
     Returns:
       <RDA_ScreenPosition>
@@ -107,10 +149,10 @@ class RDA_ScreenPosition extends RDA_Base {
   }
   /*!
     Method: add
-      Adds given screen position
+      Adds given position
 
     Parameters:
-      screenPos - <RDA_ScreenPosition> - screen position
+      screenPos - <RDA_ScreenPosition>|<RDA_WindowPosition> - position
 
     Returns:
       <RDA_ScreenPosition>
@@ -123,10 +165,10 @@ class RDA_ScreenPosition extends RDA_Base {
   }
   /*!
     Method: subtract
-      Subtracts given screen position
+      Subtracts given position
 
     Parameters:
-      screenPos - <RDA_ScreenPosition> - screen position
+      screenPos - <RDA_ScreenPosition>|<RDA_WindowPosition> - position
 
     Returns:
       <RDA_ScreenPosition>
@@ -145,7 +187,14 @@ class RDA_ScreenPosition extends RDA_Base {
       <RDA_ScreenPosition>
   */
   mouseMove() {
-    RDA_MouseMove(this.automation, 0, this.x, this.y)
+    local
+
+    this._checkValidWindow()
+    winPos := this.window.getPosition()
+    screenX := this.x + winPos.x
+    screenY := this.y + winPos.y
+
+    RDA_MouseMove(this.automation, 0, screenX, screenY)
 
     return this
   }
@@ -157,7 +206,14 @@ class RDA_ScreenPosition extends RDA_Base {
       <RDA_ScreenPosition>
   */
   click() {
-    this.automation.mouse().click(this.x, this.y)
+    local
+
+    this._checkValidWindow()
+    winPos := this.window.getPosition()
+    screenX := this.x + winPos.x
+    screenY := this.y + winPos.y
+
+    this.automation.mouse().click(screenX, screenY)
 
     return this
   }
@@ -169,7 +225,14 @@ class RDA_ScreenPosition extends RDA_Base {
       <RDA_ScreenPosition>
   */
   rightClick() {
-    this.automation.mouse().rightClick(this.x, this.y)
+    local
+
+    this._checkValidWindow()
+    winPos := this.window.getPosition()
+    screenX := this.x + winPos.x
+    screenY := this.y + winPos.y
+
+    this.automation.mouse().rightClick(screenX, screenY)
 
     return this
   }
@@ -181,7 +244,14 @@ class RDA_ScreenPosition extends RDA_Base {
       <RDA_ScreenPosition>
   */
   doubleClick() {
-    this.automation.mouse().doubleClick(this.x, this.y)
+    local
+
+    this._checkValidWindow()
+    winPos := this.window.getPosition()
+    screenX := this.x + winPos.x
+    screenY := this.y + winPos.y
+
+    this.automation.mouse().doubleClick(screenX, screenY)
 
     return this
   }
@@ -202,7 +272,14 @@ class RDA_ScreenPosition extends RDA_Base {
       number - RGB color
   */
   getColor() {
-    return RDA_PixelGetColor(this.x, this.y)
+    local
+
+    this._checkValidWindow()
+    winPos := this.window.getPosition()
+    screenX := this.x + winPos.x
+    screenY := this.y + winPos.y
+
+    return RDA_PixelGetColor(screenX, screenY)
   }
   /*!
     Method: waitAppearColor
@@ -230,10 +307,15 @@ class RDA_ScreenPosition extends RDA_Base {
     local
     global RDA_Automation
 
+    this._checkValidWindow()
+    winPos := this.window.getPosition()
+    screenX := this.x + winPos.x
+    screenY := this.y + winPos.y
+
     timeout := (timeout == -1 ? RDA_Automation.TIMEOUT : timeout)
     delay := (delay == -1 ? RDA_Automation.DELAY : delay)
 
-    RDA_PixelWaitAppearColor(color, this.x, this.y, timeout, delay)
+    RDA_PixelWaitAppearColor(color, screenX, screenY, timeout, delay)
 
     return this
   }
@@ -263,49 +345,17 @@ class RDA_ScreenPosition extends RDA_Base {
     local
     global RDA_Automation
 
+    this._checkValidWindow()
+    winPos := this.window.getPosition()
+    screenX := this.x + winPos.x
+    screenY := this.y + winPos.y
+
     timeout := (timeout == -1 ? RDA_Automation.TIMEOUT : timeout)
     delay := (delay == -1 ? RDA_Automation.DELAY : delay)
 
-    RDA_PixelWaitDisappearColor(color, this.x, this.y, timeout, delay)
+    RDA_PixelWaitDisappearColor(color, screenX, screenY, timeout, delay)
 
     return this
   }
 
-  /*!
-    Method: relativeTo
-      Changes current screen position to relative position
-
-    Parameters:
-      win - RDA_Window -window
-
-    Example:
-      ======= AutoHotKey =======
-      automation := RDA_Automation()
-      windows := automation.windows()
-      win := windows.findOne({"process": "xxx.exe"})
-      winPos := new RDA_ScreenPosition(automation, 50, 50).relativeTo(win)
-      ==========================
-
-    Returns:
-      <RDA_WindowPosition>
-  */
-  relativeTo(win) {
-    local
-    global RDA_WindowPosition
-
-    origin := win.getPosition()
-
-    return new RDA_WindowPosition(this.automation, win, this.x - origin.x, this.y - origin.y)
-  }
-  /*!
-    Method: toWindow
-      Alias of <RDA_ScreenPosition.relativeTo>
-
-    Returns:
-      <RDA_WindowPosition>
-  */
-  toWindow(win) {
-    return this.relativeTo(win)
-  }
 }
-

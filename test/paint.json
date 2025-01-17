@@ -19,7 +19,7 @@
     "type": "Button"
   },{
     "name": "Type",
-    "region": {"x": 290, "y": 67, "w": 20, "h": 20},
+    "region": {"x": 268, "y": 67, "w": 20, "h": 20},
     "type": "Button"
   },{
     "name": "Bucket",

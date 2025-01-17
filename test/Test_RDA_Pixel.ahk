@@ -54,10 +54,24 @@ class Test_RDA_Pixel {
     pixel.waitDisappearColor(bgColor, 2000)
     SetTimer % hide, Off
 
+    ; window is in an invalid state
+    lastException := 0
+    try {
+      pixel.waitAppearColor(bgColor, 2000)
+    } catch e {
+      lastException := e
+    }
+    Yunit.assert(lastException.message == "Window is hidden", "Check invalid window")
+
+    ; show, transform to screen, and try again!
+    win.show()
+    screenPixel := pixel.toScreen()
+    win.hide()
+
 
     show := ObjBindMethod(win, "show")
     SetTimer % show, 1000
-    pixel.waitAppearColor(bgColor, 2000)
+    screenPixel.waitAppearColor(bgColor, 2000)
     SetTimer % show, Off
 
     ;pixel.mouseMove()

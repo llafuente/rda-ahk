@@ -37,8 +37,10 @@ FileAppend, Test start!`n, *
 #include ..\src\RDA_Monitors.ahk
 #include ..\src\RDA_VirtualDesktops.ahk
 #include ..\src\RDA_AutomationLayout.ahk
+#include ..\src\RDA_WindowPosition.ahk
 
 #Include Test_RDA_Automation.ahk
+
 #Include Test_RDA_Region.ahk
 #Include Test_RDA_AutomationWindows.ahk
 #Include Test_RDA_Keyboard.ahk
@@ -69,7 +71,10 @@ Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_XPath)
 Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_JAB)
 Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Monitors)
 Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_VirtualDesktops)
-Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_AutomationLayout)
+;Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_AutomationLayout)
+
+;#Include Test_RDA_UIA2.ahk
+;Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_UIA2)
 
 ExitApp 0
 

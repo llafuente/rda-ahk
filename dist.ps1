@@ -10,7 +10,7 @@ $files = @(
   ".\UIAutomation\Lib\UIA_Interface.ahk",
 
   ".\src\RDA_Functions.ahk",
-  # choose one!
+  # CONFIG: choose one or use your own
   ".\src\RDA_Functions_Log.ahk",
   #".\src\RDA_Functions_NoLog.ahk",
 
@@ -36,6 +36,7 @@ $files = @(
   ".\src\RDA_Monitors.ahk",
   ".\src\RDA_VirtualDesktops.ahk",
   ".\src\RDA_AutomationLayout.ahk"
+  ".\src\RDA_WindowPosition.ahk"
 )
 $contents = ""
 foreach ($file in $files) {

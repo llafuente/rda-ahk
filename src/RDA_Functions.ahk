@@ -304,7 +304,7 @@ RDA_Window_Close(hwnd, timeout) {
 }
 /*!
   Function: RDA_Window_Exist
-    Checks if the specified window exists.
+    Checks if the specified window exists, window can be hidden
 
   Parameters:
     hwnd - number - windows identifier.
@@ -318,6 +318,7 @@ RDA_Window_Close(hwnd, timeout) {
 RDA_Window_Exist(hwnd) {
   local
 
+  DetectHiddenWindows On
   result := (WinExist("ahk_id " . hwnd) != 0)
 
   RDA_Log_Debug(A_ThisFunc . " hwnd = " . hwnd . " result = " . (result ? "yes" : "no"))

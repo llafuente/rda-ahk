@@ -76,7 +76,7 @@ class RDA_AutomationWindow extends RDA_Base {
       if (!this._path) {
         hwnd := this.hwnd
         WinGet, theProcessPath , ProcessPath, ahk_id %hwnd%
-        this.path := theProcessPath
+        this._path := theProcessPath
       }
       return this._path
     }
@@ -619,6 +619,8 @@ class RDA_AutomationWindow extends RDA_Base {
     Parameters:
       searchObject - <RDA_AutomationWindowSearch> - search object
       hidden - boolean - Search hidden windows?
+      timeout - number - timeout, in miliseconds
+      delay - number - retry delay, in miliseconds
 
     Returns:
       <RDA_AutomationWindow>[]
@@ -653,6 +655,31 @@ class RDA_AutomationWindow extends RDA_Base {
     RDA_Window_Activate(this.hwnd, RDA_Automation.TIMEOUT, RDA_Automation.DELAY)
 
     return this
+  }
+
+  ; TODO this need study ?
+  ; what really means to be visible ?
+  ;isVisible() {
+  ;}
+  /*!
+    Method: isShown
+      Returns if the window is shown
+
+    Returns
+      boolean - Is shown
+  */
+  isShown() {
+    return !this.isHidden()
+  }
+  /*!
+    Method: isHidden
+      Returns if the window is hidden
+
+    Returns
+      boolean - Is hidden
+  */
+  isHidden() {
+    return !!DllCall("IsWindowVisible", "UInt", this.hwnd)
   }
 
   /*!
@@ -740,16 +767,34 @@ class RDA_AutomationWindow extends RDA_Base {
   }
   /*!
     Method: pixel
-      Points to given pixel of the window.
+      Creates a position relative to window
 
     Parameters:
-      x - number
-      y - number
+      x - number - x position relative to window
+      y - number - y position relative to window
+
+    Returns:
+      <RDA_WindowPosition> - window relative position
+  */
+  pixel(x, y) {
+    local
+    global RDA_WindowPosition
+    RDA_Log_Debug(A_ThisFunc . "(" . x . ", " . y . ")")
+
+    return new RDA_WindowPosition(this.automation, this, x, y)
+  }
+  /*!
+    Method: screenPixel
+      Creates a screen position
+
+    Parameters:
+      x - number - x position relative to window
+      y - number - y position relative to window
 
     Returns:
       <RDA_ScreenPosition> - screen position
   */
-  pixel(x, y) {
+  screenPixel(x, y) {
     local
 
     pos := this.getPosition()
@@ -759,10 +804,16 @@ class RDA_AutomationWindow extends RDA_Base {
 
   /*!
     Method: getColor
-      Retrieves the color of the pixel at the specified screen position. (<RDA_PixelGetColor>)
+      Retrieves the color of the pixel at the specified window position
+
+      See <RDA_PixelGetColor>
 
     Remarks:
       0xFFFFFFFF is the actual value returned when Workstation is locked
+
+    Parameters:
+      x - number - x position relative to window
+      y - number - y position relative to window
 
     Returns:
       number - RGB color
@@ -830,6 +881,8 @@ class RDA_AutomationWindow extends RDA_Base {
     Parameters:
       imagePaths - string|string[] - Absolute image path
       sensibility - number - Color-variant sensibility. A number from 0 to 255, 0 means exact match
+      timeout - number - timeout, in miliseconds
+      delay - number - retry delay, in miliseconds
 
     Returns:
       <RDA_ScreenRegion>
@@ -848,6 +901,8 @@ class RDA_AutomationWindow extends RDA_Base {
     Parameters:
       imagePaths - string|string[] - Absolute image path
       sensibility - number - Color-variant sensibility. A number from 0 to 255, 0 means exact match
+      timeout - number - timeout, in miliseconds
+      delay - number - retry delay, in miliseconds
 
     Returns:
       number - Index of the image not found (1 if a string was sent)
