@@ -1039,6 +1039,18 @@ class RDA_AutomationWindow extends RDA_Base {
     return this.automation.jab.elementFromHandle(this.hwnd)
   }
   /*!
+    Method: isOnCurrentVirtualDesktop
+      Retrieves if windows is on the current virtual desktop
+
+    Returns:
+      boolean
+  */
+  isOnCurrentVirtualDesktop() {
+    local
+
+    return this.automation.virtualDesktops().IsWindowOnCurrent(this.hwnd)
+  }
+  /*!
     Method: moveToVirtualDesktop
       Moves current window to given virtual desktop
 

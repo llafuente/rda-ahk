@@ -27,13 +27,15 @@ class Test_RDA_VirtualDesktops {
     RDA_Log_Debug(notepad.toString())
     RDA_Log_Debug(paint.toString())
 
-    Yunit.assert(vdesk.IsWindowOnCurrent(notepad.hwnd) == true, "1. notepad in current vdesk")
-    Yunit.assert(vdesk.IsWindowOnCurrent(paint.hwnd) == true, "1. paint in current vdesk")
+    Yunit.assert(vdesk.IsWindowOnCurrent(notepad.hwnd) == true, "1.A. notepad in current vdesk")
+    Yunit.assert(notepad.isOnCurrentVirtualDesktop() == true, "1.B. notepad in current vdesk")
+    Yunit.assert(vdesk.IsWindowOnCurrent(paint.hwnd) == true, "2.A. paint in current vdesk")
+    Yunit.assert(paint.isOnCurrentVirtualDesktop() == true, "2.B. paint in current vdesk")
 
     ;paint.activate()
     ;notepad.activate()
 
-    Yunit.assert(vdesk.count() == 2, "two virtual desktops!")
+    Yunit.assert(vdesk.count() > 1, "The test requires at least 2 virtual desktops!")
 
     desktops := vdesk.get()
     current := vdesk.current()
@@ -42,7 +44,7 @@ class Test_RDA_VirtualDesktops {
     RDA_Log_Debug(desktops[2].toString())
     RDA_Log_Debug(current.toString())
 
-    Yunit.assert(desktops.length() == 2, "two virtual desktops again!")
+    Yunit.assert(desktops.length() > 1, "at least two virtual desktops again!")
     Yunit.assert(current.index == 1)
 
     vdesk.switchTo(desktops[2])
