@@ -170,6 +170,8 @@ class RDA_AutomationWindow extends RDA_Base {
     Method: isMatch
       Tests if given object match the current window.
 
+      Match is case insensitive.
+
     Example:
       ======= AutoHotKey =======
       ; title equals "Notepad"
@@ -188,6 +190,9 @@ class RDA_AutomationWindow extends RDA_Base {
   */
   isMatch(searchObject) {
     local
+
+    old := A_StringCaseSense
+    StringCaseSense Off
 
     properties := ["title", "process", "path", "classNN", "pid"]
     allMatch := true
@@ -208,6 +213,8 @@ class RDA_AutomationWindow extends RDA_Base {
         }
       }
     }
+
+    StringCaseSense % old
 
     ;RDA_Log_Debug("allMatch " . allMatch)
 
