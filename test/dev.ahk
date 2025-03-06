@@ -39,6 +39,7 @@ FileAppend, Test start!`n, *
 #include ..\src\RDA_AutomationLayout.ahk
 #include ..\src\RDA_WindowPosition.ahk
 
+#Include Test_Utils.ahk
 #Include Test_RDA_Automation.ahk
 
 #Include Test_RDA_Region.ahk

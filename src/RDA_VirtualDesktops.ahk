@@ -17,7 +17,7 @@
 
     * <RDA_AutomationWindow.getRegion>
 
-    It's recommended to move the window to the origin before move.
+    Window need to be move/resize in the current virtual desktop
 */
 class RDA_VirtualDesktop extends RDA_Base {
   /*!
@@ -305,39 +305,49 @@ class RDA_VirtualDesktops extends RDA_Base {
 
   ; Fn to check if a window handle is valid.
   _IsValidWindow(hwnd) {
-      if (hwnd == 0)
-          return False ; not a valid ID.
+    if (hwnd == 0)
+        return false ; not a valid ID.
 
-      VarSetCapacity(cloaked,4, 0)
-      DllCall("dwmapi\DwmGetWindowAttribute" , "Ptr", hwnd ,"UInt", 14, "Ptr", &cloaked, "UInt", 4)
-      if ErrorLevel {
-          line := A_LineNumber - 2
-          MsgBox,,, Error in function '%A_ThisFunc%' on line %line%!`n`nError: '%A_LastError%'
-      }
-      val := NumGet(cloaked, "UInt") ; DWMWA_CLOAKED value.
-      if (val != 0) ; Needed for weeding out Windows10 Apps that are sleeping.
-          return False ; Window is Cloaked.
+    VarSetCapacity(cloaked,4, 0)
+    DllCall("dwmapi\DwmGetWindowAttribute" , "Ptr", hwnd ,"UInt", 14, "Ptr", &cloaked, "UInt", 4)
+    if (ErrorLevel) {
+      line := A_LineNumber - 2
+      RDA_Log_Error(A_ThisFunc . " Error: " . A_LastError)
+      return false
+    }
 
-      WinGet, stat, MinMax, ahk_id %hwnd%
-      if (stat == -1)
-          return False ; iconified so ignore.
+    val := NumGet(cloaked, "UInt") ; DWMWA_CLOAKED value.
+    if (val != 0) { ; Needed for weeding out Windows10 Apps that are sleeping.
+      return false ; Window is Cloaked.
+    }
 
-      WinGet, dwStyle, Style, ahk_id %hwnd%
-      if ((dwStyle&0x08000000) || !(dwStyle&0x10000000))
-          return False ; no activate or not-visible.
+    WinGet, stat, MinMax, ahk_id %hwnd%
+    if (stat == -1) {
+      return false ; iconified so ignore.
+    }
 
-      WinGet, dwExStyle, ExStyle, ahk_id %hwnd%
-      if (dwExStyle & 0x00000080)
-          return False ; Tool Window.
+    WinGet, dwStyle, Style, ahk_id %hwnd%
+    if ((dwStyle&0x08000000) || !(dwStyle&0x10000000)) {
+      return false ; no activate or not-visible.
+    }
 
-      WinGetClass, szClass, ahk_id %hwnd%
-      if ((szClass == "TApplication") || (szClass == "Windows.UI.Core.CoreWindow"))
-          return False ; Some delphi class window type.
+    WinGet, dwExStyle, ExStyle, ahk_id %hwnd%
+    if (dwExStyle & 0x00000080) {
+      return false ; Tool Window.
+    }
 
-      WinGetTitle, title, ahk_id %hwnd%
-      if not (title) ; No title so not valid.
-          return False
-      return True
+    WinGetClass, szClass, ahk_id %hwnd%
+    if ((szClass == "TApplication") || (szClass == "Windows.UI.Core.CoreWindow")) {
+      return false ; Some delphi class window type.
+    }
+
+    WinGetTitle, title, ahk_id %hwnd%
+    if not (title) {
+      ; No title so not valid.
+      return false
+    }
+
+    return true
   }
 
 
