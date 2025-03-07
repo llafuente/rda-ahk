@@ -1,7 +1,10 @@
 New-Item -Type Directory dist -Force
 
-if (Test-Path dist\rda.ahk -ne $null) {
-  Remove-Item dist\rda.ahk -Force
+$outputFile = ".\dist\rda.ahk"
+
+if (Test-Path $outputFile -ne $null) {
+  Write-Host "Previous hash: $((Get-FileHash $outputFile).Hash)"
+  Remove-Item $outputFile -Force
 }
 
 
@@ -48,4 +51,7 @@ foreach ($file in $files) {
 $contents = $contents -replace '(?sm)/\*.*?\*/', ""
 #$contents = $contents -replace "(?m)^\s*`r`n",''
 $contents = $contents -replace "(?m)^\s*`n",''
-$contents >> dist\rda.ahk
+
+
+Set-Content -Path $outputFile -Value $contents -Encoding UTF8
+Write-Host "Current hash: $((Get-FileHash $outputFile).Hash)"
