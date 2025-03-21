@@ -182,6 +182,25 @@ class RDA_ScreenRegion extends RDA_Base {
     return new RDA_ScreenPosition(this.origin.automation, x, y)
   }
   /*!
+    Method: getRandom
+      Retrieves a random screen position inside the region
+
+    Returns:
+      <RDA_ScreenPosition>
+  */
+  getRandom() {
+    local
+    global RDA_ScreenPosition
+    Random, wRand , 0, 10000
+    Random, hRand , 0, 10000
+
+    x := this.origin.x + (this.rect.w * wRand / 10000)
+    y := this.origin.y + (this.rect.h * hRand / 10000)
+
+    RDA_Log_Debug(A_ThisFunc . "(" . x . ", "  . y . ")")
+    return new RDA_ScreenPosition(this.origin.automation, x, y)
+  }
+  /*!
     Method: expandLeft
       Expands region to the left
 
