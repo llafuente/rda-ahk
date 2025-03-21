@@ -30,8 +30,8 @@ class RDA_Rectangle extends RDA_Base {
   __New(automation, w, h) {
     RDA_Assert(automation, A_ThisFunc . " automation is null")
     this.automation := automation
-    this.w := w
-    this.h := h
+    this.w := Format("{:d}", w) + 0
+    this.h := Format("{:d}", h) + 0
   }
   /*!
     Method: toString
