@@ -88,11 +88,41 @@ class RDA_Overlay {
     ; So this will position our gui at (0,0) with the Width and Height specified earlier
     UpdateLayeredWindow(this.hwnd, this.hdc, this.region.x, this.region.y, this.region.w, this.region.h)
   }
+  /*!
+    Method: drawImage
+      Draws a image into the overlay at given position
+  */
+  drawImage(imagePath, x := 0, y := 0, w := 0, h := 0) {
+    pBitmapFile := Gdip_CreateBitmapFromFile(imagePath)
+    RDA_Assert(pBitmapFile, "Gdip_CreateBitmapFromFile failed")
+
+    ; Get the width and height of the 1st bitmap
+    srcWidth := Gdip_GetImageWidth(pBitmapFile)
+    srcHeight := Gdip_GetImageHeight(pBitmapFile)
+    if (!w) {
+      w := srcWidth
+    }
+    if (!h) {
+      h := srcHeight
+    }
+
+    Gdip_DrawImage(this.G, pBitmapFile, x, y, w, h, 0, 0, srcWidth, srcHeight)
+    Gdip_DisposeImage(pBitmapFile)
+  }
 }
 
+/*!
+  Class: RDA_ScreenRegion
+    Creates a window overlay that do not interference with inputs but logs them.
+*/
 
 /*!
-  color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
+  Method: drawFill
+    Draws a colored rectangle
+
+  Parameters:
+    win - <RDA_Overlay> - overlay win
+    color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
 */
 RDA_GDI_ScreenRegion_drawFill(self, win, color) {
   local
@@ -103,7 +133,14 @@ RDA_GDI_ScreenRegion_drawFill(self, win, color) {
   Gdip_FillRectangle(win.G, pBrush, self.x, self.y, self.w, self.h)
   Gdip_DeleteBrush(pBrush)
 }
+/*!
+  Method: drawBorder
+    Draws a rectangle outline
 
+  Parameters:
+    win - <RDA_Overlay> - overlay win
+    color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
+*/
 RDA_GDI_ScreenRegion_drawBorder(self, win, color) {
   local
 
@@ -113,17 +150,15 @@ RDA_GDI_ScreenRegion_drawBorder(self, win, color) {
   Gdip_DrawRectangle(win.G, pPen, self.x, self.y, self.w, self.h)
   Gdip_DeletePen(pPen)
 }
+
 /*!
-  Class: RDA_ScreenRegion
-    Creates a window overlay that do not interference with inputs but logs them.
-*/
-/*!
-  Method: drawFill
+  Method: drawText
     Draw a rectangle
+
   Parameters:
     win - <RDA_Overlay> - overlay win
     text - string - text
-    color - number - RGB text color
+    color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
 */
 ; TODO RGB Color!
 RDA_GDI_ScreenRegion_drawText(self, win, text, color) {
@@ -148,6 +183,24 @@ RDA_GDI_ScreenRegion_drawText(self, win, text, color) {
   Gdip_DeletePen(pPen)
 }
 
+/*!
+  Method: drawImageInto
+    Draws an image into given region
+
+  Parameters:
+    win - <RDA_Overlay> - overlay win
+    text - string - text
+    color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
+*/
+; TODO RGB Color!
+RDA_GDI_ScreenRegion_drawImageInto(self, win, imagePath) {
+  local
+
+  win.drawImage(imagePath, self.x, self.y, self.w, self.h)
+}
+
+
 RDA_ScreenRegion.drawFill := Func("RDA_GDI_ScreenRegion_drawFill")
 RDA_ScreenRegion.drawBorder := Func("RDA_GDI_ScreenRegion_drawBorder")
 RDA_ScreenRegion.drawText := Func("RDA_GDI_ScreenRegion_drawText")
+RDA_ScreenRegion.drawImageInto := Func("RDA_GDI_ScreenRegion_drawImageInto")
