@@ -8,7 +8,7 @@
   Returns:
     <RDA_WindowPosition>
 */
-class RDA_WindowPosition {
+class RDA_WindowPosition extends RDA_Position {
   automation := 0
   window := 0
   x := 0
@@ -28,7 +28,7 @@ class RDA_WindowPosition {
     this.window := window
     this.x := x
     this.y := y
-    RDA_Log_Debug(A_ThisFunc)
+    RDA_Log_Debug(this.toString())
   }
   /*!
     Method: toString

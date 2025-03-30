@@ -1777,3 +1777,27 @@ RDA_Elements_getName(list) {
 
   return ret
 }
+
+
+RDA_Color_variantion(src, dst) {
+  RDA_Log_Debug(A_ThisFunc . "(" . src . ", " . dst . ")")
+
+  red := src >> 16
+  green := (src >> 8) & 0xff
+  blue := src & 0xff
+
+  RDA_Log_Debug(A_ThisFunc . "(" . red . ", " . green . ", " . blue . ")")
+
+  red2 := dst >> 16
+  green2 := (dst >> 8) & 0xff
+  blue2 := dst & 0xff
+
+  RDA_Log_Debug(A_ThisFunc . "(" . red2 . ", " . green2 . ", " . blue2 . ")")
+
+  r := (Abs(red - red2) + Abs(green - green2) + Abs(blue - blue2)) / 3
+
+  RDA_Log_Debug(A_ThisFunc . " = " . r)
+
+  return r
+
+}

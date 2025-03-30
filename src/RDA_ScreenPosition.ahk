@@ -6,7 +6,7 @@
     It not bound to a window so any operation made here won't change any
     window.
 */
-class RDA_ScreenPosition extends RDA_Base {
+class RDA_ScreenPosition extends RDA_Position {
   ;static __Call := TooFewArguments(RDA_ScreenPosition)
 
   ; internal
