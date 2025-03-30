@@ -7,7 +7,7 @@ class RDA_AutomationClipboard extends RDA_Base {
 
   automation := 0
   /*!
-    Constructor: RDA_AutomationJAB
+    Constructor: RDA_AutomationClipboard
       Internal, use <RDA_Automation.clipboard>
 
     Parameter:

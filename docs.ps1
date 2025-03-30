@@ -3,5 +3,7 @@ if (!(Test-Path ".\Natural Docs\Natural Docs\NaturalDocs.exe" -PathType Leaf)) {
   Expand-Archive -LiteralPath '.\Natural_Docs_2.3.zip' -DestinationPath 'Natural Docs'
 }
 
+New-Item -Type Directory .\docs\html
+
 . ".\\Natural Docs\\Natural Docs\\NaturalDocs.exe" -p .\docs -o html .\docs\html
 node docs/pdf.js
