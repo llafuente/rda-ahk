@@ -1,6 +1,8 @@
 /*!
-  class: RDA_ScreenPosition
+  Class: RDA_ScreenPosition
     Represents a position (x,y) in the screen
+
+  Extends: RDA_Position
 
   Remarks:
     It not bound to a window so any operation made here won't change any
@@ -54,88 +56,6 @@ class RDA_ScreenPosition extends RDA_Position {
   */
   clone() {
     return new RDA_ScreenPosition(this.automation, this.x, this.y)
-  }
-  /*!
-    Method: getLength
-      Calculates the length to origin
-
-    Returns:
-      number
-  */
-  getLength() {
-    local v := Sqrt(this.x * this.x + this.y * this.y)
-    RDA_Log_Debug(A_ThisFunc . " = " . v)
-    return v
-  }
-  /*!
-    Method: move
-      Moves (Adds) to current screen position
-
-    Parameters:
-      x - number - x amount
-      y - number - y amount
-
-    Returns:
-      <RDA_ScreenPosition>
-  */
-  move(x, y) {
-    RDA_Log_Debug(A_ThisFunc . "(" . x . "," . y . ")")
-
-    this.x += x
-    this.y += y
-
-    return this
-  }
-  /*!
-    Method: set
-      Sets current screen position
-
-    Parameters:
-      x - number - x amount
-      y - number - y amount
-
-    Returns:
-      <RDA_ScreenPosition>
-  */
-  set(x, y) {
-    RDA_Log_Debug(A_ThisFunc . "(" . x . "," . y . ")")
-
-    this.x := x
-    this.y := y
-
-    return this
-  }
-  /*!
-    Method: add
-      Adds given screen position
-
-    Parameters:
-      screenPos - <RDA_ScreenPosition> - screen position
-
-    Returns:
-      <RDA_ScreenPosition>
-  */
-  add(screenPos) {
-    this.x += screenPos.x
-    this.y += screenPos.y
-
-    return this
-  }
-  /*!
-    Method: subtract
-      Subtracts given screen position
-
-    Parameters:
-      screenPos - <RDA_ScreenPosition> - screen position
-
-    Returns:
-      <RDA_ScreenPosition>
-  */
-  subtract(screenPos) {
-    this.x -= screenPos.x
-    this.y -= screenPos.y
-
-    return this
   }
   /*!
     Method: mouseMove
@@ -273,7 +193,7 @@ class RDA_ScreenPosition extends RDA_Position {
 
   /*!
     Method: relativeTo
-      Changes current screen position to relative position
+      Changes current screen position to window position
 
     Parameters:
       win - RDA_Window -window

@@ -2,6 +2,8 @@
   Class: RDA_WindowPosition
     Represents a position (x,y) relative to a window
 
+  Extends: RDA_Position
+
   Remarks:
     If the windows gets destroyed all method will throw.
 
@@ -56,7 +58,10 @@ class RDA_WindowPosition extends RDA_Position {
     RDA_Assert(this.window.isHidden(), "Window is hidden")
 
     ; it's valid, active!
+    ; TODO handle background?!
     this.window.activate()
+
+    return this.window
   }
   /*!
     Method: toScreen
@@ -87,18 +92,17 @@ class RDA_WindowPosition extends RDA_Position {
     return new RDA_ScreenPosition(this.automation, this.x + winPos.x, this.y + winPos.y)
   }
 
-
   ;
   ;
   ;
   /*!
-    Method: getLength
+    Method: getOriginLength
       Calculates the length to origin
 
     Returns:
       number
   */
-  getLength() {
+  getOriginLength() {
     local
 
     winPos := this.window.getPosition()
@@ -109,76 +113,7 @@ class RDA_WindowPosition extends RDA_Position {
     RDA_Log_Debug(A_ThisFunc . " = " . v)
     return v
   }
-  /*!
-    Method: move
-      Moves (Adds) to current screen position
 
-    Parameters:
-      x - number - x amount
-      y - number - y amount
-
-    Returns:
-      <RDA_ScreenPosition>
-  */
-  move(x, y) {
-    RDA_Log_Debug(A_ThisFunc . "(" . x . "," . y . ")")
-
-    this.x += x
-    this.y += y
-
-    return this
-  }
-  /*!
-    Method: set
-      Sets current window position
-
-    Parameters:
-      x - number - x coordinate
-      y - number - y coordinate
-
-    Returns:
-      <RDA_ScreenPosition>
-  */
-  set(x, y) {
-    RDA_Log_Debug(A_ThisFunc . "(" . x . "," . y . ")")
-
-    this.x := x
-    this.y := y
-
-    return this
-  }
-  /*!
-    Method: add
-      Adds given position
-
-    Parameters:
-      screenPos - <RDA_ScreenPosition>|<RDA_WindowPosition> - position
-
-    Returns:
-      <RDA_ScreenPosition>
-  */
-  add(screenPos) {
-    this.x += screenPos.x
-    this.y += screenPos.y
-
-    return this
-  }
-  /*!
-    Method: subtract
-      Subtracts given position
-
-    Parameters:
-      screenPos - <RDA_ScreenPosition>|<RDA_WindowPosition> - position
-
-    Returns:
-      <RDA_ScreenPosition>
-  */
-  subtract(screenPos) {
-    this.x -= screenPos.x
-    this.y -= screenPos.y
-
-    return this
-  }
   /*!
     Method: mouseMove
       Alias of <RDA_MouseMove>
@@ -189,12 +124,7 @@ class RDA_WindowPosition extends RDA_Position {
   mouseMove() {
     local
 
-    this._checkValidWindow()
-    winPos := this.window.getPosition()
-    screenX := this.x + winPos.x
-    screenY := this.y + winPos.y
-
-    RDA_MouseMove(this.automation, 0, screenX, screenY)
+    this._checkValidWindow().mouseMoveTo(this.x, this.y)
 
     return this
   }
@@ -208,12 +138,7 @@ class RDA_WindowPosition extends RDA_Position {
   click() {
     local
 
-    this._checkValidWindow()
-    winPos := this.window.getPosition()
-    screenX := this.x + winPos.x
-    screenY := this.y + winPos.y
-
-    this.automation.mouse().click(screenX, screenY)
+    this._checkValidWindow().click(this.x, this.y)
 
     return this
   }
@@ -227,12 +152,7 @@ class RDA_WindowPosition extends RDA_Position {
   rightClick() {
     local
 
-    this._checkValidWindow()
-    winPos := this.window.getPosition()
-    screenX := this.x + winPos.x
-    screenY := this.y + winPos.y
-
-    this.automation.mouse().rightClick(screenX, screenY)
+    this._checkValidWindow().rightClick(this.x, this.y)
 
     return this
   }
@@ -246,12 +166,7 @@ class RDA_WindowPosition extends RDA_Position {
   doubleClick() {
     local
 
-    this._checkValidWindow()
-    winPos := this.window.getPosition()
-    screenX := this.x + winPos.x
-    screenY := this.y + winPos.y
-
-    this.automation.mouse().doubleClick(screenX, screenY)
+    this._checkValidWindow().doubleClick(this.x, this.y)
 
     return this
   }
@@ -265,7 +180,8 @@ class RDA_WindowPosition extends RDA_Position {
     Example:
       ======= AutoHotKey =======
       automation := RDA_Automation()
-      new RDA_ScreenPosition(automation, 50, 50).getColor()
+      win := automation.windows().find(...)
+      c := win.pixel(50, 50).getColor()
       ==========================
 
     Returns:
@@ -275,11 +191,7 @@ class RDA_WindowPosition extends RDA_Position {
     local
 
     this._checkValidWindow()
-    winPos := this.window.getPosition()
-    screenX := this.x + winPos.x
-    screenY := this.y + winPos.y
-
-    return RDA_PixelGetColor(screenX, screenY)
+    return this.toScreen().getColor()
   }
   /*!
     Method: waitAppearColor
@@ -294,7 +206,8 @@ class RDA_WindowPosition extends RDA_Position {
       ======= AutoHotKey =======
       ; when 50,50 is red it will continue.
       automation := RDA_Automation()
-      new RDA_ScreenPosition(automation, 50, 50).waitAppearColor(0xFF0000)
+      win := automation.windows().find(...)
+      win.pixel(50, 50).waitAppearColor(0xFF0000)
       ==========================
 
     Throws:
@@ -305,19 +218,9 @@ class RDA_WindowPosition extends RDA_Position {
   */
   waitAppearColor(color, timeout := -1, delay := -1) {
     local
-    global RDA_Automation
 
     this._checkValidWindow()
-    winPos := this.window.getPosition()
-    screenX := this.x + winPos.x
-    screenY := this.y + winPos.y
-
-    timeout := (timeout == -1 ? RDA_Automation.TIMEOUT : timeout)
-    delay := (delay == -1 ? RDA_Automation.DELAY : delay)
-
-    RDA_PixelWaitAppearColor(color, screenX, screenY, timeout, delay)
-
-    return this
+    return this.toScreen().waitAppearColor(color, timeout, delay)
   }
   /*!
     Method: waitDisappearColor
@@ -330,9 +233,9 @@ class RDA_WindowPosition extends RDA_Position {
 
     Example:
       ======= AutoHotKey =======
-      ; when 50,50 is red it will continue.
       automation := RDA_Automation()
-      new RDA_ScreenPosition(automation, 50, 50).waitDisappearColor(0xFF0000)
+      win := automation.windows().find(...)
+      win.pixel(50, 50).waitDisappearColor(0xFF0000)
       ==========================
 
     Throws:
@@ -343,19 +246,9 @@ class RDA_WindowPosition extends RDA_Position {
   */
   waitDisappearColor(color, timeout := -1, delay := -1) {
     local
-    global RDA_Automation
 
     this._checkValidWindow()
-    winPos := this.window.getPosition()
-    screenX := this.x + winPos.x
-    screenY := this.y + winPos.y
-
-    timeout := (timeout == -1 ? RDA_Automation.TIMEOUT : timeout)
-    delay := (delay == -1 ? RDA_Automation.DELAY : delay)
-
-    RDA_PixelWaitDisappearColor(color, screenX, screenY, timeout, delay)
-
-    return this
+    return this.toScreen().waitDisappearColor(color, timeout, delay)
   }
 
 }

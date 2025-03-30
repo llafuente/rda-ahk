@@ -1,5 +1,5 @@
 /*!
-  class: RDA_ScreenRegion
+  Class: RDA_ScreenRegion
     Represents a region (x,y,w,h) in the screen
 */
 class RDA_ScreenRegion extends RDA_Base {
