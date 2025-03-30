@@ -91,6 +91,21 @@ class RDA_ScreenRegion extends RDA_Base {
       , NumGet(ptr + 0, 8 + offset, "Int")
       , NumGet(ptr + 0, 12 + offset, "Int"))
   }
+  /*
+    Static: fromPrimaryScreen
+      Creates a <RDA_ScreenRegion> from primary screen
+
+    Parameters:
+      automation - <RDA_Automation> - automation
+
+    Returns:
+      <RDA_ScreenRegion>
+  */
+  fromPrimaryScreen(automation) {
+    RDA_Log_Debug(A_ThisFunc)
+
+    return new RDA_ScreenRegion(new RDA_ScreenPosition(automation, 0, 0), new RDA_Rectangle(automation, A_ScreenWidth, A_ScreenHeight))
+  }
   /*!
     Method: toString
       Dumps the object to a readable string
@@ -337,7 +352,7 @@ class RDA_ScreenRegion extends RDA_Base {
     Returns:
       <RDA_ScreenPosition>
   */
-  searchImage(imagePath, sensibility) {
+  searchImage(imagePath, sensibility := -1) {
     return RDA_ImageSearch(this.origin.automation, imagePath, sensibility, this, "")
   }
   /*!

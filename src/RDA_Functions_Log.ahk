@@ -4,8 +4,7 @@ RDA_Log_Level := 3
 OnExit("RDA_OnExit")
 RDA_OnExit(ExitReason, ExitCode) {
   global RDA_Log
-  RDA_Log.write("ExitReason = " . ExitReason)
-  RDA_Log.write("ExitCode = " . ExitCode)
+  RDA_Log.write("ExitReason = " . ExitReason . " ExitCode = " . ExitCode)
   RDA_Log.close()
 }
 /*!

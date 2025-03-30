@@ -6,7 +6,13 @@ class RDA_AutomationClipboard extends RDA_Base {
   ;static __Call := TooFewArguments(RDA_AutomationClipboard)
 
   automation := 0
+  /*!
+    Constructor: RDA_AutomationJAB
+      Internal, use <RDA_Automation.clipboard>
 
+    Parameter:
+      automation - <RDA_Automation> -
+  */
   __New(automation) {
     RDA_Assert(automation, A_ThisFunc . " automation is null")
     this.automation := automation
