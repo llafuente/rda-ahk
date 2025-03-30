@@ -874,7 +874,7 @@ class RDA_AutomationWindow extends RDA_Base {
     Returns:
       <RDA_ScreenRegion>
   */
-  searchImage(imagePath, sensibility) {
+  searchImage(imagePath, sensibility := -1) {
     this.setOpaque().activate()
     return this.getRegion().searchImage(imagePath, sensibility)
   }
@@ -894,7 +894,7 @@ class RDA_AutomationWindow extends RDA_Base {
     Returns:
       <RDA_ScreenRegion>
   */
-  waitAppearImage(imagePaths, sensibility, timeout := -1, delay := -1) {
+  waitAppearImage(imagePaths, sensibility := -1, timeout := -1, delay := -1) {
     this.setOpaque().activate()
     return this.getRegion().waitAppearImage(imagePaths, sensibility, timeout, delay)
   }
@@ -914,7 +914,7 @@ class RDA_AutomationWindow extends RDA_Base {
     Returns:
       number - Index of the image not found (1 if a string was sent)
   */
-  waitDisappearImage(imagePaths, sensibility, timeout := -1, delay := -1) {
+  waitDisappearImage(imagePaths, sensibility := -1, timeout := -1, delay := -1) {
     this.setOpaque().activate()
     return this.getRegion().waitDisappearImage(imagePaths, sensibility, timeout, delay)
   }

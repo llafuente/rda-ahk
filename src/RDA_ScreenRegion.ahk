@@ -371,7 +371,7 @@ class RDA_ScreenRegion extends RDA_Base {
     Returns:
       <RDA_ScreenPosition>
   */
-  waitAppearImage(imagePaths, sensibility, timeout := -1, delay := -1) {
+  waitAppearImage(imagePaths, sensibility := -1, timeout := -1, delay := -1) {
     if (!RDA_IsArray(imagePaths)) {
       imagePaths := [imagePaths]
     }
@@ -393,7 +393,7 @@ class RDA_ScreenRegion extends RDA_Base {
     Returns:
       number - Index of the image not found (1 if a string was sent)
   */
-  waitDisappearImage(imagePaths, sensibility, timeout := -1, delay := -1) {
+  waitDisappearImage(imagePaths, sensibility := -1, timeout := -1, delay := -1) {
     if (!RDA_IsArray(imagePaths)) {
       imagePaths := [imagePaths]
     }
