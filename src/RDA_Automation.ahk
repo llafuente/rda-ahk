@@ -327,6 +327,16 @@ class RDA_Automation extends RDA_Base {
     return new RDA_AutomationWindows(this)
   }
   /*!
+    Method: windownFromHWND
+      Creates an <RDA_AutomationWindow> given a window handle
+
+    Returns:
+      <RDA_AutomationWindows>
+  */
+  windownFromHWND(hwnd) {
+    return new RDA_AutomationWindow(this, hwnd)
+  }
+  /*!
     Method: mouse
       Get operations over Mouse at OS level
 
