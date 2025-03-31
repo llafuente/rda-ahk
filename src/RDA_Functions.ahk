@@ -212,6 +212,45 @@ RDA_Assert(expr, message) {
     throw RDA_Exception(message)
   }
 }
+/*!
+  Function: RDA_PostMessage
+    Wrapper around AHK PostMessage command
+
+  Parameters:
+    msgNumber - number - The message number to send. See: https://www.autohotkey.com/docs/v1/misc/SendMessageList.htm
+    wParam - number - first component of the message
+    lParam- number . second component of the message
+    hwnd - number - windows identifier
+*/
+RDA_PostMessage(msgNumber , wParam, lParam, hwnd) {
+  local
+
+  RDA_Log_Error(A_ThisFunc . "(" . msgNumber . ", " . wParam . ", " . lParam . ", " . hwnd . ")")
+
+  PostMessage, % msgNumber, % wParam, % lParam, , ahk_id %hwnd%
+}
+
+/*!
+  Function: RDA_PostMessage
+    Wrapper around AHK PostMessage command and eat exceptions
+
+  Parameters:
+    msgNumber - number - The message number to send. See: https://www.autohotkey.com/docs/v1/misc/SendMessageList.htm
+    wParam - number - first component of the message
+    lParam- number . second component of the message
+    hwnd - number - windows identifier
+*/
+RDA_TryPostMessage(msgNumber , wParam, lParam, hwnd) {
+  local
+
+  try {
+    RDA_PostMessage(msgNumber , wParam, lParam, hwnd)
+  } catch e {
+    if (e.message == 1) {
+      RDA_Log_Error(A_ThisFunc . " PostMessage (" . msgNumber . ") failed (probably hwnd don't exist) ErrorLevel = " . (ErrorLevel << 32 >> 32))
+    }
+  }
+}
 
 /*!
   Function: RDA_RepeatWhileThrows
@@ -439,7 +478,7 @@ RDA_Mouse_ScreenClick(automation, button, clickCount, x := 9999, y := 9999) {
 
       * Activate window
 
-      * Mouse move if x,y non default
+      * Mouse move if x,y is not the default
 
       * [Click](https://www.autohotkey.com/docs/commands/Click.htm) (It does not use MouseClick because user can swap Left/Right)
 
@@ -474,9 +513,10 @@ RDA_Mouse_WindowClick(automation, hwnd, button, clickCount, x := 9999, y := 9999
   RDA_Log_Debug(A_ThisFunc . "(hwnd = " . hwnd . ", button = " . button . ", clickCount = " . clickCount . ", " . options . ") " . automation.toString())
 
   SetMouseDelay % automation.mouseDelay
-  SendMode % automation.sendMode
 
   if (automation.inputMode == "interactive") {
+    SendMode % automation.sendMode
+
     if (x != 9999 && y != 9999) {
       winPos := RDA_Window_GetSizeAndPosition(automation, hwnd).origin
 
@@ -492,11 +532,13 @@ RDA_Mouse_WindowClick(automation, hwnd, button, clickCount, x := 9999, y := 9999
     if (!hwnd) {
       throw RDA_Exception("background mode require hwnd")
     }
+    ; this is required for windows at other virtual desktops
+    DetectHiddenWindows, On
     ; mimic mouse move event
-    PostMessage, 0x200, 0, % (x & 0xFFFF)|(y << 16), , % "ahk_id " hwnd ;WM_MOUSEMOVE := 0x200
+    RDA_TryPostMessage(WM_MOUSEMOVE := 0x200, 0, (x & 0xFFFF)|(y << 16), hwnd)
 
-    ;PostMessage, 0x201, 0, % (x & 0xFFFF)|(y<<16),, % "ahk_id " hWnd ;WM_LBUTTONDOWN := 0x201
-    ;PostMessage, 0x202, 0, % (x & 0xFFFF)|(y<<16),, % "ahk_id " hWnd ;WM_LBUTTONUP := 0x202
+    ;PostMessage, 0x201, 0, % (x & 0xFFFF)|(y<<16),, ahk_id %hwnd% ;WM_LBUTTONDOWN := 0x201
+    ;PostMessage, 0x202, 0, % (x & 0xFFFF)|(y<<16),, ahk_id %hwnd% ;WM_LBUTTONUP := 0x202
 
     sleep 250 ; give some time the app to "hover"
 
@@ -511,12 +553,18 @@ RDA_Mouse_WindowClick(automation, hwnd, button, clickCount, x := 9999, y := 9999
     }
 
     if (err) {
-      RDA_Log_Error(A_ThisFunc . " ControlClick failed: " . e.message)
-      throw RDA_Exception("Control click failed with error: " . e.message)
+      RDA_Log_Error(A_ThisFunc . " ControlClick failed: " . err.message)
+      throw RDA_Exception("Control click failed with error: " . err.message)
     }
   }
 
   sleep % automation.actionDelay
+}
+
+__RDA_IfInteractive_ActivateWindow(automation, hwnd) {
+  if (automation.inputMode == "interactive" and hwnd) {
+    RDA_Window_Activate(hwnd, RDA_Automation.TIMEOUT, RDA_Automation.DELAY)
+  }
 }
 
 /*!
@@ -525,6 +573,9 @@ RDA_Mouse_WindowClick(automation, hwnd, button, clickCount, x := 9999, y := 9999
 
   Remarks:
     There is no mouse move in *background* mode.
+
+    If background is set it will perform an interactive mouse move
+    but do not activeate the window.
 
   Parameters:
     automation - <RDA_Automation>
@@ -535,9 +586,7 @@ RDA_Mouse_WindowClick(automation, hwnd, button, clickCount, x := 9999, y := 9999
 RDA_MouseMove(automation, hwnd, x, y) {
   RDA_Log_Debug(A_ThisFunc . "(x = " . x . " , y = " . y . ") " . automation.toString())
 
-  if (automation.inputMode == "interactive" and hwnd) {
-    RDA_Window_Activate(hwnd, RDA_Automation.TIMEOUT, RDA_Automation.DELAY)
-  }
+  __RDA_IfInteractive_ActivateWindow(automation, hwnd)
 
   SetMouseDelay % automation.mouseDelay
   SendMode % automation.sendMode
@@ -563,6 +612,8 @@ RDA_MouseMove(automation, hwnd, x, y) {
 */
 RDA_MouseRelativeMove(automation, x, y) {
   RDA_Log_Debug(A_ThisFunc . "(x = " . x . " , y = " . y . ") " . automation.toString())
+
+  __RDA_IfInteractive_ActivateWindow(automation, hwnd)
 
   SetMouseDelay % automation.mouseDelay
   SendMode % automation.sendMode
@@ -733,9 +784,10 @@ RDA_KeyboardSendKeys(automation, hwnd, keys, control) {
   ; we do not honor Play mode
   DetectHiddenWindows, On
   SetKeyDelay % automation.keyDelay, % automation.pressDuration
-  SendMode % automation.sendMode
 
   if (automation.inputMode == "interactive") {
+    SendMode % automation.sendMode
+
     ; block input at this moment so user can't interference
     if (hwnd) {
       RDA_Window_Activate(hwnd, RDA_Automation.TIMEOUT, RDA_Automation.DELAY)
@@ -753,16 +805,12 @@ RDA_KeyboardSendKeys(automation, hwnd, keys, control) {
     ; this doesn't work on every process, but it's the preferable mode
     SetBatchLines -1
     SetTitleMatchMode 2
+    ; this is required for windows at other virtual desktops
+    DetectHiddenWindows, On
 
-    ; log error but don't stop
-    try {
-      PostMessage, 0x0006, 1, 0, , ahk_id %hwnd% ; WM_ACTIVATE := 0x0006
-      sleep 250
-    } catch e {
-      if (e.message == 1) {
-        RDA_Log_Error(A_ThisFunc . " PostMessage - activate failed (probably hwnd don't exist)")
-      }
-    }
+    ; fake activate window, some applications don't handle input if are not active...
+    RDA_TryPostMessage(WM_ACTIVATE := 0x0006, 1, 0, hwnd)
+    sleep 250 ; gives time to "hover"
 
     automation.requestBlockInput()
     err := 0
@@ -781,15 +829,8 @@ RDA_KeyboardSendKeys(automation, hwnd, keys, control) {
       throw err
     }
 
-
-    ; log error but don't stop
-    try {
-      PostMessage, 0x0006, 0, 0, , ahk_id %hwnd% ; WM_ACTIVATE := 0x0006
-    } catch e {
-      if (e.message == 1) {
-        RDA_Log_Error(A_ThisFunc . " PostMessage - deactivate failed (probably hwnd don't exist)")
-      }
-    }
+    ; fake deactivate window
+    RDA_TryPostMessage(WM_ACTIVATE := 0x0006, 0, 0, hwnd)
   }
 
   sleep % automation.actionDelay
