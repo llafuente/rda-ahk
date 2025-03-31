@@ -15,7 +15,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       could recieve the click if it's hover.
 
     Returns:
-      <RDA_AutomationJABElement>
+      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
   */
   osClick() {
     local
@@ -38,7 +38,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       could recieve the click if it's hover.
 
     Returns:
-      <RDA_AutomationJABElement>
+      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
   */
   osRightClick() {
     local
@@ -61,7 +61,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       could recieve the click if it's hover.
 
     Returns:
-      <RDA_AutomationJABElement>
+      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
   */
   osDoubleClick() {
     local
@@ -81,7 +81,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       Hover an element at OS level. This functionallity is not available in JAB
 
     Returns:
-      <RDA_AutomationJABElement>
+      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
   */
   osHover() {
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
@@ -110,6 +110,109 @@ class RDA_AutomationBaseElement extends RDA_Base {
 
     return v
   }
+  ;
+  ; expect
+  ;
+  /*!
+    Method: expectValue
+      Asserts if current element has given value
+
+    Parameters:
+      value - string - value
+      exception - Exception - exception
+
+    Returns:
+      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+  */
+  expectValue(value, exception) {
+    if (this.getValue() != value) {
+      throw exception
+    }
+    return this
+  }
+  /*!
+    Method: expectPassword
+      Asserts if current element has given value
+
+    Parameters:
+      password - string - password
+      exception - Exception - exception
+
+    Returns:
+      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+  */
+  expectPassword(password, exception) {
+    if (this.getPassword() != password) {
+      throw exception
+    }
+    return this
+  }
+  /*!
+    Method: expectChecked
+      Asserts if current element is unchecked
+
+    Parameters:
+      exception - Exception - exception
+
+    Returns:
+      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+  */
+  expectChecked(exception) {
+    if (!this.isChecked()) {
+      throw exception
+    }
+    return this
+  }
+  /*!
+    Method: expectUnChecked
+      Asserts if current element is checked
+
+    Parameters:
+      exception - Exception - exception
+
+    Returns:
+      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+  */
+  expectUnChecked(exception) {
+    if (this.isChecked()) {
+      throw exception
+    }
+    return this
+  }
+
+  /*!
+    Method: expectSelected
+      Asserts if current element is unselected
+
+    Parameters:
+      exception - Exception - exception
+
+    Returns:
+      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+  */
+  expectSelected(exception) {
+    if (!this.isSelected()) {
+      throw exception
+    }
+    return this
+  }
+  /*!
+    Method: expectUnSelected
+      Asserts if current element is selected
+
+    Parameters:
+      exception - Exception - exception
+
+    Returns:
+      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+  */
+  expectUnSelected(exception) {
+    if (this.isSelected()) {
+      throw exception
+    }
+    return this
+  }
+
   ;
   ; xpath
   ;
@@ -310,7 +413,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       Not found
 
     Returns:
-      <RDA_AutomationUIAElement>
+      <RDA_AutomationBaseElement>[]|<RDA_AutomationJABElement>[]|<RDA_AutomationUIAElement>[]
   */
   find(query) {
     local
@@ -343,7 +446,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       Multiple elements found
 
     Returns:
-      <RDA_AutomationUIAElement>
+      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
   */
   findOne(query) {
     local
@@ -380,7 +483,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       Timeout reached at ?: Control not found
 
     Returns:
-      <RDA_AutomationUIAElement>
+      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
   */
   waitOne(query, timeout := -1, delay := -1) {
     local startTime := A_TickCount, actions, elements
@@ -434,7 +537,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
     ==========================
 
     Returns:
-      <RDA_AutomationJABElement>[]
+      <RDA_AutomationBaseElement>[]|<RDA_AutomationJABElement>[]|<RDA_AutomationUIAElement>[]
   */
   getDescendantsTree(limits := 0) {
     local
