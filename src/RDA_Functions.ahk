@@ -606,14 +606,11 @@ RDA_MouseMove(automation, hwnd, x, y) {
 
   Parameters:
     automation - <RDA_Automation>
-    hwnd - number - window identifier, 0 means relative to current position
     x - number - x coordinate
     y - number - y coordinate
 */
 RDA_MouseRelativeMove(automation, x, y) {
   RDA_Log_Debug(A_ThisFunc . "(x = " . x . " , y = " . y . ") " . automation.toString())
-
-  __RDA_IfInteractive_ActivateWindow(automation, hwnd)
 
   SetMouseDelay % automation.mouseDelay
   SendMode % automation.sendMode

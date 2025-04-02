@@ -26,9 +26,12 @@ class Test_RDA_AutomationWindows {
     Run notepad.exe
     win := windows.waitOne({process: "notepad.exe"})
 
+    RDA_Log_Debug(win.toString())
+
     Yunit.assert(win != 0, "Window exist")
     Yunit.assert(win.process == "notepad.exe", "test process")
-    Yunit.assert(win.path == "C:\Windows\SysWOW64\notepad.exe", "test path")
+    ; 32 or 64 bit windows
+    Yunit.assert(win.path == "C:\Windows\SysWOW64\notepad.exe" || win.path == "C:\Windows\System32\notepad.exe", "test path")
     ; this is "os-locale" dependant
     Yunit.assert(win.title == "Untitled - Notepad", "test title")
     Yunit.assert(win.classNN == "Notepad", "test classNN")
