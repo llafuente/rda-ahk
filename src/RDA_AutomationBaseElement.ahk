@@ -115,6 +115,23 @@ class RDA_AutomationBaseElement extends RDA_Base {
   ;
   /*!
     Method: expectValue
+      Asserts if current element type is not the given one
+
+    Parameters:
+      type - string - type
+      exception - Exception - exception
+
+    Returns:
+      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+  */
+  expectType(type, exception) {
+    if (this.getType() != type) {
+      throw exception
+    }
+    return this
+  }
+  /*!
+    Method: expectValue
       Asserts if current element has given value
 
     Parameters:
