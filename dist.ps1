@@ -7,6 +7,8 @@ if (Test-Path $outputFile -ne $null) {
   Remove-Item $outputFile -Force
 }
 
+$gdip = $true
+
 
 $files = @(
   ".\UIAutomation\Lib\UIA_Constants.ahk",
@@ -44,10 +46,14 @@ $files = @(
 
   ".\src\RDA_Position.ahk",
   ".\src\RDA_ScreenPosition.ahk",
-  ".\src\RDA_WindowPosition.ahk",
-
-  ".\src\RDA_Overlay.ahk"
+  ".\src\RDA_WindowPosition.ahk"
 )
+
+if ($gdip -eq $true) {
+  $files += ".\AHK-GDIp-Library-Compilation\ahk-v1-1\Gdip_All.ahk"
+  $files += ".\src\RDA_Overlay.ahk"
+}
+
 $contents = ""
 foreach ($file in $files) {
   $contents += Get-Content $file -Encoding UTF8 -Raw

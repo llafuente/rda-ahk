@@ -7,3 +7,6 @@
 [submodule "JSON"]
 	path = JSON
 	url = git@github.com:cocobelgica/AutoHotkey-JSON.git
+[submodule "AHK-GDIp-Library-Compilation"]
+	path = AHK-GDIp-Library-Compilation
+	url = git@github.com:marius-sucan/AHK-GDIp-Library-Compilation
