@@ -1,0 +1,2 @@
+class RDA_Region {
+}

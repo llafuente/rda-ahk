@@ -63,6 +63,8 @@ class RDA_Position extends RDA_Base {
       <RDA_ScreenPosition>
   */
   add(pos) {
+    RDA_Log_Debug(A_ThisFunc . "(" . pos.toString() . ")")
+
     this.x += pos.x
     this.y += pos.y
 
@@ -79,6 +81,8 @@ class RDA_Position extends RDA_Base {
       <RDA_ScreenPosition>
   */
   subtract(pos) {
+    RDA_Log_Debug(A_ThisFunc . "(" . pos.toString() . ")")
+
     this.x -= pos.x
     this.y -= pos.y
 

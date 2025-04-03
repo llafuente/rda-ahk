@@ -33,11 +33,14 @@ $files = @(
   ".\src\RDA_AutomationWindows.ahk",
   ".\src\RDA_AutomationWindowSearch.ahk",
   ".\src\RDA_Rectangle.ahk",
-  ".\src\RDA_ScreenRegion.ahk",
   ".\src\RDA_SearchLimits.ahk",
   ".\src\RDA_Monitors.ahk",
   ".\src\RDA_VirtualDesktops.ahk",
   ".\src\RDA_AutomationLayout.ahk",
+
+  ".\src\RDA_Region.ahk",
+  ".\src\RDA_ScreenRegion.ahk",
+  ".\src\RDA_WindowRegion.ahk",
 
   ".\src\RDA_Position.ahk",
   ".\src\RDA_ScreenPosition.ahk",

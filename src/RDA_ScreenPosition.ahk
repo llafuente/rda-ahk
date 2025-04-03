@@ -55,6 +55,7 @@ class RDA_ScreenPosition extends RDA_Position {
       <RDA_ScreenRegion>
   */
   clone() {
+    RDA_Log_Debug(A_ThisFunc)
     return new RDA_ScreenPosition(this.automation, this.x, this.y)
   }
   /*!

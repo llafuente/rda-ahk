@@ -189,11 +189,23 @@ There are two ways:
 ### Dependencies
 
 * https://github.com/Descolada/UIAutomation
-  It will bridge Microsoft UI Automation CPP and RDA
+
+  It will bridge Microsoft UI Automation CPP and AHK
 
 * https://github.com/cocobelgica/AutoHotkey-JSON
+
   JSON library it's only used for debuggin purposes.
-  Only one function uses it, its optional.
+
+  Optional.
 
 * https://github.com/Uberi/Yunit
+
   Unit testing.
+
+  Optional.
+
+* https://github.com/marius-sucan/AHK-GDIp-Library-Compilation
+
+  GDIp library. Overlay and debug purposes.
+
+  Optional.

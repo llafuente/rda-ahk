@@ -1,9 +1,10 @@
 /*!
   Class: RDA_ScreenRegion
     Represents a region (x,y,w,h) in the screen
+
+  Extends: RDA_Region
 */
-class RDA_ScreenRegion extends RDA_Base {
-  ;static __Call := TooFewArguments(RDA_ScreenRegion)
+class RDA_ScreenRegion extends RDA_Region {
   /*!
     Property: origin
       <RDA_ScreenPosition> - origin of the region
