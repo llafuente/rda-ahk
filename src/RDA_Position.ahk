@@ -122,7 +122,7 @@ class RDA_Position extends RDA_Base {
       ==========================
 
     Throws
-      If color dont match
+      If color does not match
 
     Returns:
       <RDA_Position>
@@ -133,6 +133,44 @@ class RDA_Position extends RDA_Base {
     if (RDA_Color_variantion(c, color) > variation) {
       throw RDA_Exception("Expected color [" . c . "] to be: " . color . "(±" . variation . ")")
     }
+
+    return this
+  }
+  ;
+  ; overlay draw
+  ;
+  /*!
+    Method: drawFill
+      Draws a colored dot (circle)
+
+    Parameters:
+      overlay - <RDA_Overlay> - overlay win
+      color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
+      radius - number - radius
+
+    Returns:
+      <RDA_ScreenPosition> - for chaining
+  */
+  drawFill(overlay, color, radius := 1) {
+    overlay.fillCircle(this.toScreen(), color, radius)
+
+    return this
+  }
+
+  /*!
+    Method: drawBorder
+      Draws a bordered circle
+
+    Parameters:
+      overlay - <RDA_Overlay> - overlay win
+      color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
+      radius - number - radius
+
+    Returns:
+      <RDA_ScreenPosition> - for chaining
+  */
+  drawBorder(overlay, color, radius := 1, size := 1) {
+    overlay.borderCircle(this.toScreen(), color, radius, size)
 
     return this
   }

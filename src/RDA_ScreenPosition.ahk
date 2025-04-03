@@ -228,5 +228,10 @@ class RDA_ScreenPosition extends RDA_Position {
   toWindow(win) {
     return this.relativeTo(win)
   }
+
+  ; internal
+  toScreen() {
+    return this
+  }
 }
 

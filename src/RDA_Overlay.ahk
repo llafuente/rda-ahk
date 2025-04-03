@@ -12,7 +12,7 @@ class RDA_Overlay {
   /*!
     Constructor: RDA_Overlay
 
-    Parameter:
+    Parameters:
       automation - <RDA_Automation> -
       region - <RDA_ScreenRegion> - default is the primary screen
   */
@@ -57,8 +57,9 @@ class RDA_Overlay {
     Gdip_SetSmoothingMode(this.G, 4)
 
     this.hwnd := hwnd
+    RDA_Log_Debug(A_ThisFunc . " " . this.toString())
   }
-
+  ; internal, destructor
   __Delete() {
     local
 
@@ -74,25 +75,89 @@ class RDA_Overlay {
     ; The graphics may now be deleted
     Gdip_DeleteGraphics(this.G)
 
-     ; gdi+ may now be shutdown on exiting the program
-     Gdip_Shutdown(this.pToken)
+    ; gdi+ may now be shutdown on exiting the program
+    Gdip_Shutdown(this.pToken)
   }
+  /*!
+    Methods: toString
+      Dumps the object to a readable string
+
+    Returns:
+      string - dump
+  */
+  toString() {
+    return "RDA_Overlay{hwnd " . this.hwnd . "}"
+  }
+
   /*!
     Method: refresh
       Refresh window
   */
   refresh() {
-    RDA_Log_Debug(A_ThisFunc . "(" . this.hwnd . ")")
+    RDA_Log_Debug(A_ThisFunc . "[" . this.hwnd . "]")
 
     ; Update the specified window we have created (hwnd1) with a handle to our bitmap (hdc), specifying the x,y,w,h we want it positioned on our screen
     ; So this will position our gui at (0,0) with the Width and Height specified earlier
     UpdateLayeredWindow(this.hwnd, this.hdc, this.region.x, this.region.y, this.region.w, this.region.h)
   }
   /*!
-    Method: drawImage
-      Draws a image into the overlay at given position
+    Method: clear
+      Clears the graphics of a bitmap ready for further drawing
+
+    Returns:
+      <RDA_Overlay> - for chaining
   */
-  drawImage(imagePath, x := 0, y := 0, w := 0, h := 0) {
+  clear() {
+    RDA_Log_Debug(A_ThisFunc . "[" . this.hwnd . "]")
+
+    Gdip_GraphicsClear(this.G, 0x00FFFFFF)
+
+    return this
+  }
+  /*!
+    Method: drawImage
+      Draws an image into given region
+
+    Parameters:
+      imagePath - string - image path
+      region - <RDA_ScreenRegion> - region
+
+    Returns:
+      <RDA_Overlay> - for chaining
+  */
+  drawImage(imagePath, region) {
+    RDA_Log_Debug(A_ThisFunc . "[" . this.hwnd . "](" . imagePath . ", " . region.toString() . ")")
+
+    pBitmapFile := Gdip_CreateBitmapFromFile(imagePath)
+    RDA_Assert(pBitmapFile, "Gdip_CreateBitmapFromFile failed")
+
+    ; Get the width and height of the 1st bitmap
+    srcWidth := Gdip_GetImageWidth(pBitmapFile)
+    srcHeight := Gdip_GetImageHeight(pBitmapFile)
+
+    Gdip_DrawImage(this.G, pBitmapFile, region.x, region.y, region.w, region.h, 0, 0, srcWidth, srcHeight)
+    Gdip_DisposeImage(pBitmapFile)
+
+    return this
+  }
+  /*!
+    Method: drawImageAt
+      Draws an image into the overlay at given position
+
+    Parameters:
+      imagePath - string - image path
+      x - number - destination x coordinates
+      y - number - destination y coordinates
+      w - number - width, default image width
+      h - number - height, default image height
+
+    Returns:
+      <RDA_Overlay> - for chaining
+  */
+  drawImageAt(imagePath, x := 0, y := 0, w := 0, h := 0) {
+
+    RDA_Log_Debug(A_ThisFunc . "[" . this.hwnd . "](" . imagePath . ", " . x . ", " . y . ", " . w . ", " . h . ", " . color . ")")
+
     pBitmapFile := Gdip_CreateBitmapFromFile(imagePath)
     RDA_Assert(pBitmapFile, "Gdip_CreateBitmapFromFile failed")
 
@@ -108,99 +173,327 @@ class RDA_Overlay {
 
     Gdip_DrawImage(this.G, pBitmapFile, x, y, w, h, 0, 0, srcWidth, srcHeight)
     Gdip_DisposeImage(pBitmapFile)
+
+    return this
+  }
+  /*!
+    Method: fillRectangle
+      Draws an image into the overlay at given position
+
+    Parameters:
+      region - <RDA_ScreenRegion> - region
+      color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
+
+    Returns:
+      <RDA_Overlay> - for chaining
+  */
+  fillRectangle(region, color) {
+    return this.fillRectangle4(region.x, region.y, region.w, region.h, color)
+  }
+  /*!
+    Method: fillRectangle4
+      Draws an image into the overlay at given position
+
+    Parameters:
+      x - number - top/left x coordinate
+      y - number - top/left y coordinate
+      w - number - width
+      h - number - height
+      color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
+
+    Returns:
+      <RDA_Overlay> - for chaining
+  */
+  fillRectangle4(x, y, w, h, color) {
+    local
+
+    RDA_Log_Debug(A_ThisFunc . "[" . this.hwnd . "](" . x . ", " . y . ", " . w . ", " . h . ", " . color . ")")
+
+    pBrush := Gdip_BrushCreateSolid(color)
+    Gdip_FillRectangle(this.G, pBrush, x, y, w, h)
+    Gdip_DeleteBrush(pBrush)
+
+    return this
+  }
+  /*!
+    Method: borderRectangle
+      Draws a rectangle border
+
+    Parameters:
+      region - <RDA_ScreenRegion> - region
+      color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
+
+    Returns:
+      <RDA_Overlay> - for chaining
+  */
+  borderRectangle(region, color, size := 1) {
+    return this.borderRectangle4(region.x, region.y, region.w, region.h, color, size)
+  }
+  /*!
+    Method: borderRectangle4
+      Draws a rectangle border
+
+    Parameters:
+      x - number - top/left x coordinate
+      y - number - top/left y coordinate
+      w - number - width
+      h - number - height
+      color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
+
+    Returns:
+      <RDA_Overlay> - for chaining
+  */
+  borderRectangle4(x, y, w, h, color, size := 1) {
+    local
+
+    RDA_Log_Debug(A_ThisFunc . "[" . this.hwnd . "](" . x . ", " . y . ", " . w . ", " . h . ", " . color . ", " . size . ")")
+
+    pPen := Gdip_CreatePen(0x66ff0000, size)
+    Gdip_DrawRectangle(this.G, pPen, x, y, w, h)
+    Gdip_DeletePen(pPen)
+
+    return this
+  }
+  /*!
+    Method: fillCircle
+      Draws a filled circle into the overlay at given position
+
+    Parameters:
+      pos - <RDA_ScreenPosition> - position
+      color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
+      radius - number - radius
+
+    Returns:
+      <RDA_Overlay> - for chaining
+  */
+  fillCircle(pos, color, radius := 1) {
+    return this.fillCircle2(pos.x, pos.y, color, radius)
+  }
+  /*!
+    Method: fillCircle2
+      Draws a filled circle into the overlay at given position
+
+    Parameters:
+      x - number - center x coordinate
+      y - number - center y coordinate
+      color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
+      radius - number - radius
+
+    Returns:
+      <RDA_Overlay> - for chaining
+  */
+  fillCircle2(x, y, color, radius := 1) {
+    local
+
+    RDA_Log_Debug(A_ThisFunc . "[" . this.hwnd . "](" . x . ", " . y . ", " . color . ", " . radius . ")")
+
+    pBrush := Gdip_BrushCreateSolid(color)
+    Gdip_FillEllipse(this.G, pBrush, x - radius, y - radius, radius * 2, radius * 2)
+    Gdip_DeleteBrush(pBrush)
+
+    return this
+  }
+  /*!
+    Method: fillCircle
+      Draws a border circle into the overlay at given position
+
+    Parameters:
+      pos - <RDA_ScreenPosition> - position
+      color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
+      radius - number - radius
+      size - number - border size
+
+    Returns:
+      <RDA_Overlay> - for chaining
+  */
+  borderCircle(pos, color, radius := 1, size := 1) {
+    return this.borderCircle2(pos.x, pos.y, color, radius, size)
+  }
+  /*!
+    Method: borderCircle2
+      Draws a border circle into the overlay at given position
+
+    Parameters:
+      x - number - center x coordinate
+      y - number - center y coordinate
+      color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
+      radius - number - radius
+      size - number - border size
+
+    Returns:
+      <RDA_Overlay> - for chaining
+  */
+  borderCircle2(x, y, color, radius := 1, size := 1) {
+    local
+
+    RDA_Log_Debug(A_ThisFunc . "[" . this.hwnd . "](" . x . ", " . y . ", " color . ", " . radius . ", " . size . ")")
+
+    pPen := Gdip_CreatePen(color, size)
+    Gdip_DrawEllipse(this.G, pPen, x - radius, y - radius, radius * 2, radius * 2)
+    Gdip_DeletePen(pPen)
+
+    return this
+  }
+  /*!
+    Method: fillEllipse
+      Draws a ellipse into the overlay at given region
+
+    Parameters:
+      region - <RDA_ScreenRegion> - region
+      color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
+
+    Returns:
+      <RDA_Overlay> - for chaining
+  */
+  fillEllipse(region, color) {
+    return this.fillEllipse4(region.x, region.y, region.w, region.h, color)
+  }
+  /*!
+    Method: fillEllipse
+      Draws a ellipse into the overlay at given region
+
+    Parameters:
+      x - number - top/left x coordinate
+      y - number - top/left y coordinate
+      w - number - width
+      h - number - height
+      color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
+
+    Returns:
+      <RDA_Overlay> - for chaining
+  */
+  fillEllipse4(x, y, w, h, color) {
+    local
+
+    RDA_Log_Debug(A_ThisFunc . "[" . this.hwnd . "](" . x . ", " . y . ", " . w . ", " . h . ", " . color . ", " . radius . ")")
+
+    pBrush := Gdip_BrushCreateSolid(color)
+    Gdip_FillEllipse(this.G, pBrush, x, y, w, h)
+    Gdip_DeleteBrush(pBrush)
+
+    return this
+  }
+  /*!
+    Method: borderEllipse
+      Draws a border ellipse into inside given region
+
+    Parameters:
+      region - <RDA_ScreenRegion> - region
+      color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
+      size - number - border size
+
+    Returns:
+      <RDA_Overlay> - for chaining
+  */
+  borderEllipse(region, color, size := 1) {
+    return this.borderEllipse4(region.x, region.y, region.w, region.h, color, size)
+  }
+  /*!
+    Method: borderEllipse4
+      Draws a border ellipse into inside given region
+
+    Parameters:
+      x - number - center x coordinate
+      y - number - center y coordinate
+      w - number - width
+      h - number - height
+      color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
+      size - number - border size
+
+    Returns:
+      <RDA_Overlay> - for chaining
+  */
+  borderEllipse4(x, y, w, h, color, size := 1) {
+    local
+
+    RDA_Log_Debug(A_ThisFunc . "[" . this.hwnd . "](" . x . ", " . y . ", " . w . ", " . h . ", " . color . ", " . radius . ", " . size . ")")
+
+    pPen := Gdip_CreatePen(color, size)
+    Gdip_DrawEllipse(this.G, pPen, x, y, w, h)
+    Gdip_DeletePen(pPen)
+
+    return this
+  }
+  /*!
+    Method: line
+      Draws a line
+
+    Parameters:
+      src - <RDA_ScreenPosition> - src
+      dst - <RDA_ScreenPosition> - dst
+      color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
+      size - number - line width
+
+    Returns:
+      <RDA_Overlay> - for chaining
+  */
+  line(src, dst, color, size := 1) {
+    return this.line4(src.x, src.y, dst.x, dst.y, color, size)
+  }
+  /*!
+    Method: line4
+      Draws a line
+
+    Parameters:
+      x - number - source x coordinate
+      y - number - source y coordinate
+      x2 - number - destination x coordinate
+      y2 - number - destination y coordinate
+      color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
+      size - number - line width
+
+    Returns:
+      <RDA_Overlay> - for chaining
+  */
+  line4(x, y, x2, y2, color, size := 1) {
+    local
+
+    RDA_Log_Debug(A_ThisFunc . "[" . this.hwnd . "](" . x . ", " . y . ", " . x2 . ", " . y2 . ", " . color . ", " . size ")")
+
+    pPen := Gdip_CreatePen(color, size)
+    Gdip_DrawLine(win.G, pPen, x, y, x2, y2)
+    Gdip_DeletePen(pPen)
+
+    return this
+  }
+
+  /*!
+    Method: text
+      Draws text bellow given position
+
+    Parameters:
+      win - <RDA_Overlay> - overlay win
+      text - string - text
+      color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
+  */
+  text(pos, text, color, font := "Arial", fontSize := 16) {
+    return this.text2(pos.x, pos.y, text, color, font, fontSize)
+  }
+  /*!
+    Method: text
+      Draws text bellow given position
+
+    Parameters:
+      win - <RDA_Overlay> - overlay win
+      text - string - text
+      color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
+  */
+  text2(x, y, text, color, font := "Arial", fontSize := 16) {
+    local
+
+    RDA_Log_Debug(A_ThisFunc . "[" . this.hwnd . "](" . x . ", " . y . ", " . text . ", " . color . ")")
+
+    pBrush := Gdip_BrushCreateSolid(color)
+    ; pPen := Gdip_CreatePen(color, 1)
+    pPen := 0
+    Gdip_DrawOrientedString(this.G, text, font, fontSize, "", x, y, A_ScreenWidth, 300, 0, pBrush, pPen, 0)
+    ; Gdip_DeletePen(pPen)
+    Gdip_DeleteBrush(pBrush)
   }
 }
 
-/*!
-  Class: RDA_ScreenRegion
-    Creates a window overlay that do not interference with inputs but logs them.
-*/
-
-/*!
-  Method: drawFill
-    Draws a colored rectangle
-
-  Parameters:
-    win - <RDA_Overlay> - overlay win
-    color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
-*/
-RDA_GDI_ScreenRegion_drawFill(self, win, color) {
-  local
-
-  RDA_Log_Debug(A_ThisFunc . "(" . self.toString() . ", " . color . ")")
-
-  pBrush := Gdip_BrushCreateSolid(color)
-  Gdip_FillRectangle(win.G, pBrush, self.x, self.y, self.w, self.h)
-  Gdip_DeleteBrush(pBrush)
-}
-/*!
-  Method: drawBorder
-    Draws a rectangle outline
-
-  Parameters:
-    win - <RDA_Overlay> - overlay win
-    color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
-*/
-RDA_GDI_ScreenRegion_drawBorder(self, win, color) {
-  local
-
-  RDA_Log_Debug(A_ThisFunc . "(" . self.toString() . ", " . color . ")")
-
-  pPen := Gdip_CreatePen(0x66ff0000, 1)
-  Gdip_DrawRectangle(win.G, pPen, self.x, self.y, self.w, self.h)
-  Gdip_DeletePen(pPen)
-}
-
-/*!
-  Method: drawText
-    Draw a rectangle
-
-  Parameters:
-    win - <RDA_Overlay> - overlay win
-    text - string - text
-    color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
-*/
-; TODO RGB Color!
-RDA_GDI_ScreenRegion_drawText(self, win, text, color) {
-  local
-
-  ; RDA_Log_Debug(A_ThisFunc . "(" . RDA_JSON_stringify(win) . ")")
-  RDA_Log_Debug(A_ThisFunc . "(" . self.toString() . ", " . text . ", " . color . ")")
-
-/*
-  Font := "Arial"
-  Options := "x" . (self.x + 8) . "p y" . (self.y + 8) . "p w" . (self.w * 2) . "p Centre cffff0000 r4 s8 " ; Underline Italic
-  Options := "x" . self.x . "p y" . self.y . "p w" . (self.w) . "p Centre vCentre cffff0000 s8 " ; Underline Italic
-  Options := "x" . self.x . "p y" . self.y . "p cffff0000 s8" ; Underline Italic
-  ;Options := "x" . (self.x + 8) . "p y" . (self.y + 8) . "p w" . (self.w * 2) . "p Left cff000000 r4 s8 " ; Underline Italic
-  ;Options := "x" . (self.x + 8) . "p y" . (self.y + 8) . "p Left cff000000 r4 s8 " ; Underline Italic
-  ;Gdip_TextToGraphics(win.G, text, Options, Font, self.w, self.h)
-  Gdip_TextToGraphics(win.G, text, Options, Font, self.w, self.h)
-*/
-  pBrushBgr := 0
-  pPen := Gdip_CreatePen(color, 1)
-  Gdip_DrawOrientedString(win.G, text, "Arial", 10, "", self.x, self.y, self.w, self.h, 0, pBrushBgr, pPen, 1)
-  Gdip_DeletePen(pPen)
-}
-
-/*!
-  Method: drawImageInto
-    Draws an image into given region
-
-  Parameters:
-    win - <RDA_Overlay> - overlay win
-    text - string - text
-    color - number - ARGB = Transparency, red, green, blue, 0xFFFFFFFF
-*/
-; TODO RGB Color!
-RDA_GDI_ScreenRegion_drawImageInto(self, win, imagePath) {
-  local
-
-  win.drawImage(imagePath, self.x, self.y, self.w, self.h)
-}
 
 
-RDA_ScreenRegion.drawFill := Func("RDA_GDI_ScreenRegion_drawFill")
-RDA_ScreenRegion.drawBorder := Func("RDA_GDI_ScreenRegion_drawBorder")
-RDA_ScreenRegion.drawText := Func("RDA_GDI_ScreenRegion_drawText")
-RDA_ScreenRegion.drawImageInto := Func("RDA_GDI_ScreenRegion_drawImageInto")
+
+
+

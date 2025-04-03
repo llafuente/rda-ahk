@@ -55,6 +55,8 @@ class RDA_ScreenRegion extends RDA_Region {
   __New(origin, rect) {
     this.origin := origin
     this.rect := rect
+
+    RDA_Log_Debug(A_ThisFunc . " " . this.toString())
   }
   /*
     Static: fromPoints
@@ -454,6 +456,11 @@ class RDA_ScreenRegion extends RDA_Region {
     Loop 4
       Gui, Range_%A_Index%: Destroy
 
+    return this
+  }
+
+  ; internal to avoid code duplication :)
+  toScreen() {
     return this
   }
 
