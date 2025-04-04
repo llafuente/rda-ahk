@@ -8,6 +8,7 @@ if (Test-Path $outputFile -ne $null) {
 }
 
 $gdip = $true
+$json = $true
 
 
 $files = @(
@@ -53,6 +54,11 @@ if ($gdip -eq $true) {
   $files += ".\AHK-GDIp-Library-Compilation\ahk-v1-1\Gdip_All.ahk"
   $files += ".\src\RDA_Overlay.ahk"
 }
+
+if ($json -eq $true) {
+  $files += ".\JSON\JSON.ahk"
+}
+
 
 $contents = ""
 foreach ($file in $files) {
