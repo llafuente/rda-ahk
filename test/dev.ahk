@@ -48,9 +48,8 @@ FileAppend, Test start!`n, *
 #Include Test_Utils.ahk
 #Include Test_RDA_Automation.ahk
 
-#Include TestOpenApp.ahk
-
 #Include Test_RDA_Region.ahk
+#Include Test_RDA_Position.ahk
 #Include Test_RDA_AutomationWindows.ahk
 #Include Test_RDA_Keyboard.ahk
 #Include Test_RDA_Mouse.ahk
@@ -69,6 +68,7 @@ FileAppend, Test start!`n, *
 
 Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Automation)
 Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Region)
+Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Position)
 Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_AutomationWindows)
 Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Keyboard)
 Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Mouse)

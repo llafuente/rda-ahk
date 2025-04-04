@@ -5,53 +5,6 @@
   Extends: RDA_Region
 */
 class RDA_ScreenRegion extends RDA_Region {
-  /*!
-    Property: origin
-      <RDA_ScreenPosition> - origin of the region
-  */
-  origin := 0
-  /*!
-    Property: rect
-      <RDA_Rectangle> - size of the region
-  */
-  rect := 0
-  /*!
-    Property: x
-      number - Getter shortcut to origin.x
-  */
-  x[] {
-    get {
-      return this.origin.x
-    }
-  }
-  /*!
-    Property: y
-      number - Getter shortcut to origin.y
-  */
-  y[] {
-    get {
-      return this.origin.y
-    }
-  }
-  /*!
-    Property: w
-      number - Getter shortcut to rect.w
-  */
-  w[] {
-    get {
-      return this.rect.w
-    }
-  }
-  /*!
-    Property: h
-      number - Getter shortcut to rect.w
-  */
-  h[] {
-    get {
-      return this.rect.h
-    }
-  }
-
   __New(origin, rect) {
     this.origin := origin
     this.rect := rect
@@ -129,6 +82,11 @@ class RDA_ScreenRegion extends RDA_Region {
   clone() {
     return new RDA_ScreenRegion(this.origin.clone(), this.rect.clone())
   }
+
+  ;
+  ; box model
+  ;
+
   /*!
     Method: getCenter
       Calculates the center of the region
@@ -218,206 +176,10 @@ class RDA_ScreenRegion extends RDA_Region {
     RDA_Log_Debug(A_ThisFunc . "(" . x . ", "  . y . ")")
     return new RDA_ScreenPosition(this.origin.automation, x, y)
   }
-  /*!
-    Method: expandLeft
-      Expands region to the left
 
-    Parameters:
-      value - number - value
-
-    Returns:
-      <RDA_ScreenRegion>
-  */
-  expandLeft(value) {
-    RDA_Log_Debug(A_ThisFunc . "(" . value . ")")
-    this.origin.x -= value
-    return this
-  }
-  /*!
-    Method: expandUp
-      Expands region upwards
-
-    Parameters:
-      value - number - value
-
-    Returns:
-      <RDA_ScreenRegion>
-  */
-  expandUp(value) {
-    RDA_Log_Debug(A_ThisFunc . "(" . value . ")")
-    this.origin.y -= value
-    return this
-  }
-  /*!
-    Method: expandRight
-      Expands region to the right
-
-    Parameters:
-      value - number - value
-
-    Returns:
-      <RDA_ScreenRegion>
-  */
-  expandRight(value) {
-    RDA_Log_Debug(A_ThisFunc . "(" . value . ")")
-    this.rect.w += value
-    return this
-  }
-  /*!
-    Method: expandRight
-      Expands region downwards
-
-    Parameters:
-      value - number - value
-
-    Returns:
-      <RDA_ScreenRegion>
-  */
-  expandDown(value) {
-    RDA_Log_Debug(A_ThisFunc . "(" . value . ")")
-    this.rect.h += value
-    return this
-  }
-  /*!
-    Method: expandOut
-      Expands region outwards
-
-    Parameters:
-      value - number - value
-
-    Returns:
-      <RDA_ScreenRegion>
-  */
-  expandOut(value) {
-    RDA_Log_Debug(A_ThisFunc . "(" . value . ")")
-
-    this.origin.x -= value
-    this.origin.y -= value
-    this.rect.w += value * 2
-    this.rect.h += value * 2
-
-    return this
-  }
-  /*!
-    Method: click
-      Clicks at region center, Alias of <RDA_AutomationMouse.click>
-  */
-  click() {
-    this.getCenter().click()
-  }
-  /*!
-    Method: rightClick
-      Right clicks at region center, Alias of <RDA_AutomationMouse.rightClick>
-  */
-  rightClick() {
-    this.getCenter().rightClick()
-  }
-  /*!
-    Method: doubleClick
-      Double clicks at region center, Alias of <RDA_AutomationMouse.doubleClick>
-  */
-  doubleClick() {
-    this.getCenter().doubleClick()
-  }
-  /*!
-    Method: searchColor
-
-    Parameters:
-      color - number - RGB color
-      variation - number - Number of shades of variation. See: https://www.autohotkey.com/docs/v1/lib/PixelSearch.htm#Parameters
-
-    Throws:
-      Color not found
-
-    Returns:
-      <RDA_ScreenPosition>
-  */
-  searchColor(color, variation := "") {
-    RDA_Log_Debug(A_ThisFunc)
-
-    ; TODO: normalize to relative ?
-    return RDA_PixelSearchColor(this.origin.automation, color, this.origin.x, this.origin.y, this.rect.w, this.rect.h)
-  }
-
-  /*!
-    Method: searchImage
-      Searches a region of the screen for an image and returns its position
-
-    Remarks:
-      It set current window to opaque (non-transparent)
-
-    Parameters:
-      imagePath - string - Absolute image path
-      sensibility - number - Color-variant sensibility. A number from 0 to 255, 0 means exact match
-      timeout - number - Timeouts, in miliseconds
-      delay - number - Retries delay, in miliseconds
-
-    Returns:
-      <RDA_ScreenPosition>
-  */
-  searchImage(imagePath, sensibility := -1) {
-    return RDA_ImageSearch(this.origin.automation, imagePath, sensibility, this, "")
-  }
-  /*!
-    Method: waitAppearImage
-      Searches a region of the screen for first image until it appears and return its position
-
-    Remarks:
-      It set current window to opaque (non-transparent)
-
-    Parameters:
-      imagePaths - string|string[] - Absolute image path
-      sensibility - number - Color-variant sensibility. A number from 0 to 255, 0 means exact match
-      timeout - number - Timeouts, in miliseconds
-      delay - number - Retries delay, in miliseconds
-
-    Returns:
-      <RDA_ScreenPosition>
-  */
-  waitAppearImage(imagePaths, sensibility := -1, timeout := -1, delay := -1) {
-    if (!RDA_IsArray(imagePaths)) {
-      imagePaths := [imagePaths]
-    }
-    timeout := (timeout == -1 ? RDA_Automation.TIMEOUT : timeout)
-    delay := (delay == -1 ? RDA_Automation.DELAY : delay)
-    return RDA_ImagesWaitAppear(this.origin.automation, imagePaths, sensibility, this, "", timeout, delay)
-  }
-  /*!
-    Method: waitDisappearImage
-      Searches a region of the screen for first image until it appears and return its position
-
-    Remarks:
-      It set current window to opaque (non-transparent)
-
-    Parameters:
-      imagePaths - string|string[] - Absolute image path
-      sensibility - number - Color-variant sensibility. A number from 0 to 255, 0 means exact match
-
-    Returns:
-      number - Index of the image not found (1 if a string was sent)
-  */
-  waitDisappearImage(imagePaths, sensibility := -1, timeout := -1, delay := -1) {
-    if (!RDA_IsArray(imagePaths)) {
-      imagePaths := [imagePaths]
-    }
-    timeout := (timeout == -1 ? RDA_Automation.TIMEOUT : timeout)
-    delay := (delay == -1 ? RDA_Automation.DELAY : delay)
-    return RDA_ImagesWaitDisappear(this.origin.automation, imagePaths, sensibility, this, "", timeout, delay)
-  }
-
-  /*!
-    Method: screenshot
-      Takes a screenshot of current region
-
-    Parameters:
-      file - string - File path
-      captureCursor - boolean - Add cursor to capture ?
-  */
-  screenshot(file, captureCursor :=  false) {
-    RDA_Log_Debug(A_ThisFunc . "(" . file . ", "  . captureCursor . ")")
-
-    RDA_Screenshot(this.origin.x, this.origin.y, this.rect.w, this.rect.h, file, captureCursor)
-  }
+  ;
+  ; debug
+  ;
 
   /*!
     Method: highlight

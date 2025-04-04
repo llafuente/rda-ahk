@@ -97,6 +97,29 @@ class Test_RDA_Region {
     Yunit.assert(region.getBottomRight().toString() == "RDA_ScreenPosition{x: 50, y: 50}")
   }
 
+  Test_RDA_Region_Interface() {
+    local
+    global Yunit, RDA_Automation, RDA_ScreenRegion, RDA_WindowRegion
+    ; check WindowRegion and ScreenRegion has the same interface
+
+    automation := new RDA_Automation()
+    windows := automation.windows()
+    Yunit.assert(windows.automation != 0, "windows has automation property")
+
+    ; win := windows.get()[1]
+    screenMethods := []
+    for k,v in RDA_ScreenRegion {
+      screenMethods.push(k)
+    }
+    windowMethods := []
+    for k,v in RDA_WindowRegion {
+      windowMethods.push(k)
+    }
+    diff := ArrayDiff(screenMethods, windowMethods)
+    RDA_Log_Debug(diff)
+    Yunit.assert(diff.length() == 4, "Missing some methods")
+  }
+
 
   End() {
   }
