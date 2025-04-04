@@ -3,12 +3,16 @@
     Creates a window overlay that do not interference with inputs but logs them.
 */
 class RDA_Overlay {
+  automation := 0
   pToken := 0
   hwnd := 0
   hbm := 0
   hdc := 0
   obm := 0
   G := 0
+
+  objects := []
+
   /*!
     Constructor: RDA_Overlay
 
@@ -19,6 +23,9 @@ class RDA_Overlay {
   __New(automation, region := 0) {
     local
     global RDA_ScreenRegion
+
+    RDA_Assert(automation, A_ThisFunc . " automation is null")
+    this.automation := automation
 
     if (!region) {
       region := RDA_ScreenRegion.fromPrimaryScreen(automation)
@@ -94,7 +101,19 @@ class RDA_Overlay {
       Refresh window
   */
   refresh() {
-    RDA_Log_Debug(A_ThisFunc . "[" . this.hwnd . "]")
+    local
+
+    RDA_Log_Debug(A_ThisFunc . "[" . this.hwnd . "] objects " . this.objects.length())
+
+    i := 1
+    while (i <= this.objects.length()) {
+      if (!this.objects[i].update()) {
+        this.objects.removeAt(i)
+        continue
+      }
+
+      i += 1
+    }
 
     ; Update the specified window we have created (hwnd1) with a handle to our bitmap (hdc), specifying the x,y,w,h we want it positioned on our screen
     ; So this will position our gui at (0,0) with the Width and Height specified earlier
@@ -156,7 +175,7 @@ class RDA_Overlay {
   */
   drawImageAt(imagePath, x := 0, y := 0, w := 0, h := 0) {
 
-    RDA_Log_Debug(A_ThisFunc . "[" . this.hwnd . "](" . imagePath . ", " . x . ", " . y . ", " . w . ", " . h . ", " . color . ")")
+    RDA_Log_Debug(A_ThisFunc . "[" . this.hwnd . "](" . imagePath . ", " . x . ", " . y . ", " . w . ", " . h . ")")
 
     pBitmapFile := Gdip_CreateBitmapFromFile(imagePath)
     RDA_Assert(pBitmapFile, "Gdip_CreateBitmapFromFile failed")
@@ -365,7 +384,7 @@ class RDA_Overlay {
   fillEllipse4(x, y, w, h, color) {
     local
 
-    RDA_Log_Debug(A_ThisFunc . "[" . this.hwnd . "](" . x . ", " . y . ", " . w . ", " . h . ", " . color . ", " . radius . ")")
+    RDA_Log_Debug(A_ThisFunc . "[" . this.hwnd . "](" . x . ", " . y . ", " . w . ", " . h . ", " . color . ")")
 
     pBrush := Gdip_BrushCreateSolid(color)
     Gdip_FillEllipse(this.G, pBrush, x, y, w, h)
@@ -406,7 +425,7 @@ class RDA_Overlay {
   borderEllipse4(x, y, w, h, color, size := 1) {
     local
 
-    RDA_Log_Debug(A_ThisFunc . "[" . this.hwnd . "](" . x . ", " . y . ", " . w . ", " . h . ", " . color . ", " . radius . ", " . size . ")")
+    RDA_Log_Debug(A_ThisFunc . "[" . this.hwnd . "](" . x . ", " . y . ", " . w . ", " . h . ", " . color . ", " . size . ")")
 
     pPen := Gdip_CreatePen(color, size)
     Gdip_DrawEllipse(this.G, pPen, x, y, w, h)
@@ -490,10 +509,134 @@ class RDA_Overlay {
     ; Gdip_DeletePen(pPen)
     Gdip_DeleteBrush(pBrush)
   }
+
+  addObject(obj) {
+    this.objects.push(obj)
+    obj.overlayOwner := this
+  }
+
+  removeObject(obj) {
+    idx := RDA_Array_IndexOf(this.objects, obj)
+    this.objects.removeAt(idx)
+  }
 }
 
+class RDA_OverlayObject {
+  overlayOwner := 0
+  __new() {
+    this.countdown := 10
+  }
+  __Delete() {
+  }
 
+  update() {
+    RDA_Assert(this.overlayOwner, "overlayOwner must be set before calling update")
 
+    RDA_Log_Debug(A_ThisFunc)
 
+    if (true) {
+      this.countdown -= 1
+      this.overlayOwner.text2(1024, 0, "" . this.countdown, 0xFF0000000)
+      return true
+    }
 
+    return false
+  }
+}
+
+/*!
+  Class: RDA_OverlayClick
+*/
+class RDA_OverlayClick extends RDA_OverlayObject {
+  pos := 0
+  timeout := 0
+  /*!
+    Constructor: RDA_OverlayClick
+
+    Parameters:
+      pos - <RDA_ScreenPosition>|<RDA_WindowPosition> - position
+      timeout - number - Timeout, in miliseconds
+  */
+  __new(pos, timeout := 2000) {
+    this.pos := pos
+    this.timeout := A_TickCount + timeout
+    this.start := A_TickCount
+  }
+
+  update() {
+    RDA_Assert(this.overlayOwner, "overlayOwner must be set before calling update")
+
+    RDA_Log_Debug(A_ThisFunc)
+
+    if (A_TickCount > this.timeout) {
+      return false
+    }
+
+    radius := (A_TickCount - this.start) // 100
+
+    pos := this.pos.toScreen()
+    ; borderCircle(pos, color, radius := 1, size := 1) {
+    this.overlayOwner.borderCircle(pos, 0x66FF0000, radius, 2)
+
+    radius := (A_TickCount - this.start) // 200
+    this.overlayOwner.borderCircle(pos, 0x66FF0000, radius, 2)
+
+    return true
+  }
+}
+/*!
+  Class: RDA_OverlayCountdown
+*/
+class RDA_OverlayCountdown extends RDA_OverlayObject {
+  /*!
+    Constructor: RDA_OverlayCountdown
+
+    Parameters:
+      count - number - seconds
+  */
+  __new(count) {
+    this.countdown := A_TickCount + count * 1000
+  }
+  __Delete() {
+  }
+
+  update() {
+    RDA_Assert(this.overlayOwner, "overlayOwner must be set before calling update")
+
+    RDA_Log_Debug(A_ThisFunc)
+
+    seconds := (this.countdown - A_TickCount) // 1000
+    if (seconds > 0) {
+      this.overlayOwner.text2(1024, 0, "" . seconds, 0xFF0000000)
+      return true
+    }
+
+    return false
+  }
+}
+/*!
+  Class: RDA_OverlayLayout
+*/
+class RDA_OverlayLayout extends RDA_OverlayObject {
+  layout := 0
+  __new(win) {
+    this.layout := new RDA_Layout(win)
+    this.layout.fromJsonFile(A_ScriptDir . "\nacar-form-criterio-busqueda-entidades.json")
+  }
+
+  __Delete() {
+  }
+
+  update() {
+    RDA_Assert(this.overlayOwner, "overlayOwner must be set before calling update")
+
+    loop % this.layout.elements.length() {
+      el := this.layout.elements[A_Index]
+      ;el.region.drawFill(this.overlayOwner, 0xFF0000000)
+      el.region.drawBorder(this.overlayOwner, 0x66FF00000, 1)
+    }
+
+    return true
+  }
+}
 
