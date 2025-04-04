@@ -4,15 +4,16 @@ class Test_RDA_Pixel {
 
   RDA_Get_SearchColor() {
     local
-    global RDA_Automation, Yunit
+    global RDA_Automation, Yunit, TestOpenApp
 
     RDA_Log_Debug(A_ThisFunc)
 
     automation := new RDA_Automation()
     windows := automation.windows()
 
-    Run % "mspaint.exe " . A_ScriptDir . "\dots-128x128.png"
-    win := windows.waitOne({process: "mspaint.exe"})
+    app := new TestOpenApp("mspaint.exe " . A_ScriptDir . "\dots-128x128.png", {process: "mspaint.exe"})
+    win := app.win
+
     win.move(0, 0)
     win.resize(1024, 768)
 
@@ -32,16 +33,16 @@ class Test_RDA_Pixel {
 
   RDA_WaitColor() {
     local
-    global RDA_Automation, Yunit
+    global RDA_Automation, Yunit, TestOpenApp
 
     RDA_Log_Debug(A_ThisFunc)
 
     automation := new RDA_Automation()
     windows := automation.windows()
 
-    Run % "mspaint.exe " . A_ScriptDir . "\green.png"
+    app := new TestOpenApp("mspaint.exe " . A_ScriptDir . "\green.png", {process: "mspaint.exe"})
+    win := app.win
 
-    win := windows.waitOne({process: "mspaint.exe"})
     win.move(50,50)
     win.resize(640, 480)
 

@@ -30,17 +30,25 @@ FileAppend, Test start!`n, *
 #include ..\src\RDA_AutomationWindow.ahk
 #include ..\src\RDA_AutomationWindows.ahk
 #include ..\src\RDA_AutomationWindowSearch.ahk
-#include ..\src\RDA_Rectangle.ahk
-#include ..\src\RDA_ScreenPosition.ahk
-#include ..\src\RDA_ScreenRegion.ahk
+
 #include ..\src\RDA_SearchLimits.ahk
 #include ..\src\RDA_Monitors.ahk
 #include ..\src\RDA_VirtualDesktops.ahk
 #include ..\src\RDA_AutomationLayout.ahk
+
+#include ..\src\RDA_Rectangle.ahk
+#include ..\src\RDA_Region.ahk
+#include ..\src\RDA_WindowRegion.ahk
+#include ..\src\RDA_ScreenRegion.ahk
+
+#include ..\src\RDA_Position.ahk
 #include ..\src\RDA_WindowPosition.ahk
+#include ..\src\RDA_ScreenPosition.ahk
 
 #Include Test_Utils.ahk
 #Include Test_RDA_Automation.ahk
+
+#Include TestOpenApp.ahk
 
 #Include Test_RDA_Region.ahk
 #Include Test_RDA_AutomationWindows.ahk
@@ -72,7 +80,7 @@ Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_XPath)
 Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_JAB)
 Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Monitors)
 Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_VirtualDesktops)
-;Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_AutomationLayout)
+Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_AutomationLayout)
 
 ;#Include Test_RDA_UIA2.ahk
 ;Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_UIA2)

@@ -31,7 +31,7 @@ class Test_RDA_Mouse {
 
   Test_4_Automation_WindowsMouse() {
     local
-    global RDA_Automation, Yunit
+    global RDA_Automation, Yunit, TestOpenApp
 
     RDA_Log_Debug(A_ThisFunc)
 
@@ -41,8 +41,8 @@ class Test_RDA_Mouse {
 
 
     ; test mouse inside windows class
-    Run % "mspaint.exe " . A_ScriptDir . "\green.png"
-    win := windows.waitOne({process: "mspaint.exe"})
+    app := new TestOpenApp("mspaint.exe " . A_ScriptDir . "\green.png", {process: "mspaint.exe"})
+    win := app.win
     Yunit.assert(win != 0, "mspaint found")
     sleep 1000
 
