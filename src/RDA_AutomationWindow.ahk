@@ -380,7 +380,7 @@ class RDA_AutomationWindow extends RDA_Base {
     local
 
     region := RDA_Window_GetSizeAndPosition(this.automation, this.hwnd)
-    region.origin.move(x, y)
+    region.origin.add2(x, y)
     if (w) {
       region.rect.w := w
     }
@@ -788,7 +788,7 @@ class RDA_AutomationWindow extends RDA_Base {
     global RDA_WindowPosition
     RDA_Log_Debug(A_ThisFunc . "(" . x . ", " . y . ")")
 
-    return new RDA_WindowPosition(this.automation, this, x, y)
+    return new RDA_WindowPosition(this, x, y)
   }
   /*!
     Method: screenPixel
@@ -804,9 +804,7 @@ class RDA_AutomationWindow extends RDA_Base {
   screenPixel(x, y) {
     local
 
-    pos := this.getPosition()
-    pos.move(x, y)
-    return pos
+    return this.getPosition().add2(x, y)
   }
 
   /*!
@@ -1073,6 +1071,5 @@ class RDA_AutomationWindow extends RDA_Base {
     this.automation.virtualDesktops().MoveTo(this.hwnd, vdesk)
 
     return this
-
   }
 }

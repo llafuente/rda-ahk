@@ -25,7 +25,7 @@ class RDA_Position extends RDA_Base {
     Returns:
       <RDA_ScreenPosition>
   */
-  set(x, y) {
+  set2(x, y) {
     RDA_Log_Debug(A_ThisFunc . "(" . x . "," . y . ")")
 
     this.x := x
@@ -34,27 +34,8 @@ class RDA_Position extends RDA_Base {
     return this
   }
   /*!
-    Method: move
-      Moves (add XY) to current position. See <RDA_Position.add>
-
-    Parameters:
-      x - number - x amount
-      y - number - y amount
-
-    Returns:
-      <RDA_ScreenPosition>
-  */
-  move(x, y) {
-    RDA_Log_Debug(A_ThisFunc . "(" . x . "," . y . ")")
-
-    this.x += x
-    this.y += y
-
-    return this
-  }
-  /*!
     Method: add
-      Adds given screen position
+      Adds given amount
 
     Parameters:
       pos - <RDA_ScreenPosition> - screen position
@@ -71,8 +52,27 @@ class RDA_Position extends RDA_Base {
     return this
   }
   /*!
+    Method: add2
+      Adds given amount
+
+    Parameters:
+      x - number - x amount
+      y - number - y amount
+
+    Returns:
+      <RDA_ScreenPosition>
+  */
+  add2(x, y) {
+    RDA_Log_Debug(A_ThisFunc . "(" . x . "," . y . ")")
+
+    this.x += x
+    this.y += y
+
+    return this
+  }
+  /*!
     Method: subtract
-      Subtracts given screen position
+      Subtracts given amount
 
     Parameters:
       pos - <RDA_ScreenPosition> - screen position
@@ -85,6 +85,25 @@ class RDA_Position extends RDA_Base {
 
     this.x -= pos.x
     this.y -= pos.y
+
+    return this
+  }
+  /*!
+    Method: subtract
+      Subtracts given amount
+
+    Parameters:
+      x - number - x amount
+      y - number - y amount
+
+    Returns:
+      <RDA_ScreenPosition>
+  */
+  subtract2(x, y) {
+    RDA_Log_Debug(A_ThisFunc . "(" . pos.toString() . ")")
+
+    this.x -= x
+    this.y -= y
 
     return this
   }

@@ -24,13 +24,15 @@ class RDA_WindowPosition extends RDA_Position {
       x - number - screen position x
       y - number - screen position y
   */
-  __New(automation, window, x, y) {
-    RDA_Assert(automation, A_ThisFunc . " automation is null")
-    this.automation := automation
+  __New(window, x, y) {
+    this.automation := window.automation
     this.window := window
     this.x := x
     this.y := y
     RDA_Log_Debug(this.toString())
+
+    RDA_Assert(this.automation, A_ThisFunc . " automation is null")
+    RDA_Assert(this.window, A_ThisFunc . " window is null")
   }
   /*!
     Method: toString
@@ -51,7 +53,7 @@ class RDA_WindowPosition extends RDA_Position {
   */
   clone() {
     RDA_Log_Debug(A_ThisFunc)
-    return new RDA_WindowPosition(this.automation, this.window, this.x, this.y)
+    return new RDA_WindowPosition(this.window, this.x, this.y)
   }
   ; internal
   _checkValidWindow() {

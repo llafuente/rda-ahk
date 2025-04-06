@@ -216,7 +216,7 @@ class RDA_ScreenPosition extends RDA_Position {
 
     origin := win.getPosition()
 
-    return new RDA_WindowPosition(this.automation, win, this.x - origin.x, this.y - origin.y)
+    return new RDA_WindowPosition(win, this.x - origin.x, this.y - origin.y)
   }
   /*!
     Method: toWindow
