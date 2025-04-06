@@ -1,4 +1,4 @@
-class RDA_Region {
+class RDA_Region extends RDA_Base {
   /*!
     Property: automation
       <RDA_Automation> - automation config
