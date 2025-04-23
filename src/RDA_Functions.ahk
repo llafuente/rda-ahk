@@ -50,6 +50,41 @@ RDA_VTable(p, n) {
 }
 
 /*!
+  Function: RDA_instaceOf
+    Returns if given obj is the type of cls
+
+  Parameters:
+    obj - any - instance of an object
+    cls - any - The class
+
+  Returns:
+    boolean - Found?
+*/
+RDA_instaceOf(obj, cls) {
+  local e, b
+
+  loop {
+    if (!obj) {
+      return false
+    }
+
+    try {
+      b := ObjGetBase(obj)
+      if (b == cls || obj.__CLASS == cls || obj.__CLASS == cls.__CLASS) {
+        return true
+      } else if (!b || A_Index == 20) { ; exit at 20, avoid recursion
+        return false
+      }
+
+      obj := b
+    } catch e {
+      return false
+    }
+  }
+}
+
+
+/*!
   Function: RDA_Array_IndexOf
     Returns the first index at which a given element can be found in the array, or -1 if it is not present
 
