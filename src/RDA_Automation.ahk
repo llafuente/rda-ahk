@@ -16,24 +16,21 @@ class RDA_Automation extends RDA_Base {
   static DELAY := 250
   /*!
     Property: keyDelay
-      number - Delay between key strokes.
-
-      Time in milliseconds.
+      number - Delay between key strokes, in milliseconds.
 
       Use -1 for no delay at all and 0 for the smallest possible delay
-      (however, if the Play parameter is present, both 0 and -1 produce no delay).
 
       See: https://www.autohotkey.com/docs/commands/SetKeyDelay.htm
   */
   keyDelay := 50
   /*!
     Property: pressDuration
-      number - Certain games and other specialized applications may require a delay inside
-      each keystroke; that is, after the press of the key but before its release.
+      number - Certain games and other specialized applications may require a
+      delay inside       each keystroke; that is, after the press of the key
+      but before its release.
 
-      Use -1 for no delay at all (default) and 0 for the smallest possible delay
+      Specify -1 for no delay at all or 0 for the smallest possible delay
       (however, if the Play parameter is present, both 0 and -1 produce no delay).
-      Omit this parameter to leave the current PressDuration unchanged.
 
       See: https://www.autohotkey.com/docs/commands/SetKeyDelay.htm
   */
@@ -44,15 +41,14 @@ class RDA_Automation extends RDA_Base {
 
       Time in milliseconds.
 
-      Use -1 for no delay at all and 0 for the smallest possible delay
-      (however, if the Play parameter is present, both 0 and -1 produce no delay).
+      Specify -1 for no delay at all or 0 for the smallest possible delay
 
       See: https://www.autohotkey.com/docs/v1/lib/SetMouseDelay.htm
   */
   mouseDelay := 50
   /*!
     Property: inputMode
-      number - How input is going to be send.
+      string - Configures how input is going to be sent
 
       Valid values:
 
@@ -63,9 +59,9 @@ class RDA_Automation extends RDA_Base {
   inputMode := "interactive"
   /*!
     Property: sendMode
-      string - Configures AHK SendMode, what API use to send keystrokes/mouse events
-
-      See: https://www.autohotkey.com/docs/commands/SendMode.htm
+      string - Makes Send synonymous with SendInput or SendPlay rather than the
+      default (SendEvent). Also makes Click and MouseMove/Click/Drag use the
+      specified method.
 
       Valid values:
 
@@ -76,11 +72,13 @@ class RDA_Automation extends RDA_Base {
       * InputThenPlay
 
       * Play
+
+      See: https://www.autohotkey.com/docs/commands/SendMode.htm
   */
   sendMode := "Event"
   /*!
     Constant: sendModes
-      string[] - List of all valid <RDA_Automation.sendMode>
+      string[] - <RDA_Automation.sendMode> Validation list.
   */
   static sendModes := ["Event", "Input", "InputThenPlay", "Play"]
   /*!
@@ -88,7 +86,7 @@ class RDA_Automation extends RDA_Base {
       number - Delay after each action performed by the library.
 
       This value allows you to adapt to performance degrade in long running
-      applications but shall not be used as "sleep" replacement.
+      applications and also helps you to slow down a bot to debug.
   */
   actionDelay := 100
   /*!
@@ -155,7 +153,7 @@ class RDA_Automation extends RDA_Base {
 
   /*!
     Constructor:
-      Sets the delay that will occur after each keystroke sent by Send or ControlSend.
+      Configures <RDA_Automation>
 
     Parameters:
       inputMode - number - see <RDA_Automation.inputMode>
@@ -273,7 +271,7 @@ class RDA_Automation extends RDA_Base {
   }
   /*!
     Method: setMouseDelay
-      Sets press duration.
+      Sets mouse delay.
 
     Parameters:
       mouseDelay - number - see <RDA_Automation.mouseDelay>

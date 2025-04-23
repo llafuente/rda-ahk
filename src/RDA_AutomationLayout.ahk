@@ -20,13 +20,13 @@ class RDA_LayoutElement {
   type := ""
   /*!
     property: region
-      <RDA_ScreenRegion> - region
+      <RDA_WindowRegion> - region
   */
   region := 0
   ; internal
   _parseCommonProperties(obj) {
     local
-    global RDA_Layout, RDA_ScreenRegion
+    global RDA_Layout, RDA_WindowRegion
 
     if (!RDA_Array_IndexOf(RDA_Layout.types, obj.type)) {
       throw RDA_Exception("Invalid type: " . obj.type)
@@ -34,7 +34,7 @@ class RDA_LayoutElement {
 
     this.name := obj.name
     this.type := obj.type
-    this.region := RDA_ScreenRegion.fromPoints(this.layout.automation, obj.region.x, obj.region.y, obj.region.w, obj.region.h)
+    this.region := RDA_WindowRegion.fromPoints(this.layout.win, obj.region.x, obj.region.y, obj.region.w, obj.region.h)
 
     RDA_Assert(this.name, "invalid property name is required")
     RDA_Assert(this.type, "invalid property type is required")
@@ -718,8 +718,8 @@ class RDA_Layout extends RDA_Base {
   */
   static classes := [RDA_LayoutImage, RDA_LayoutEdit, RDA_LayoutStaticDropdown, RDA_LayoutAutocompleteDropdown, RDA_LayoutCheckbox, RDA_LayoutButton]
   /*!
-    property: region
-      <RDA_ScreenRegion> - region
+    property: win
+      <RDA_AutomationWindow> - window
   */
   win := []
   /*!

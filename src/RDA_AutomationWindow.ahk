@@ -13,7 +13,7 @@ class RDA_AutomationWindow extends RDA_Base {
       number - hwnd identifier
   */
   hwnd := 0
-  ; internal
+  ; internal, cache
   _title := 0
   /*!
     Property: title
@@ -30,7 +30,7 @@ class RDA_AutomationWindow extends RDA_Base {
       return this._title
     }
   }
-  ; internal
+  ; internal, cache
   _pid := 0
   /*!
     Property: pid
@@ -47,7 +47,7 @@ class RDA_AutomationWindow extends RDA_Base {
       return this._pid
     }
   }
-  ; internal
+  ; internal, cache
   _process := 0
   /*!
     Property: process
@@ -64,7 +64,7 @@ class RDA_AutomationWindow extends RDA_Base {
       return this._process
     }
   }
-  ; internal
+  ; internal, cache
   _path := 0
   /*!
     Property: path
@@ -81,7 +81,7 @@ class RDA_AutomationWindow extends RDA_Base {
       return this._path
     }
   }
-  ; internal
+  ; internal, cache
   _classNN := 0
   /*!
     Property: classNN
@@ -96,7 +96,6 @@ class RDA_AutomationWindow extends RDA_Base {
         this._classNN := theProcessClassNN
       }
       return this._classNN
-
     }
   }
   /*!
@@ -138,7 +137,6 @@ class RDA_AutomationWindow extends RDA_Base {
     local
 
     this.automation := automation
-
     this.hwnd := hwnd
 
     RDA_Assert(this.automation, A_ThisFunc . " automation is null")
@@ -475,7 +473,7 @@ class RDA_AutomationWindow extends RDA_Base {
       Shortcut: <RDA_AutomationKeyboard.type>
 
     Parameters:
-      text - string - Text
+      text - string - (Raw) Text
 
     Returns:
       <RDA_AutomationWindow>
@@ -492,7 +490,7 @@ class RDA_AutomationWindow extends RDA_Base {
       Shortcut:<RDA_AutomationKeyboard.typePassword>
 
     Parameters:
-      password - string - Text
+      password - string - (Raw) Text
 
     Returns:
       <RDA_AutomationWindow>
@@ -545,7 +543,7 @@ class RDA_AutomationWindow extends RDA_Base {
 
   /*!
     Method: getChildren
-      Get all children windows that match given searchObject
+      Retrieves all children windows that match given searchObject
 
     Example:
       ======= AutoHotKey =======
@@ -580,7 +578,7 @@ class RDA_AutomationWindow extends RDA_Base {
   }
   /*!
     Method: getChild
-      Get the child window that match given searchObject
+      Retrieves the child window that match given searchObject
 
     Example:
       ======= AutoHotKey =======
@@ -613,7 +611,7 @@ class RDA_AutomationWindow extends RDA_Base {
 
     return rwins[1]
   }
-/*!
+  /*!
     Method: waitChild
       Waits the child window that match given searchObject (only one)
 
@@ -663,11 +661,6 @@ class RDA_AutomationWindow extends RDA_Base {
 
     return this
   }
-
-  ; TODO this need study ?
-  ; what really means to be visible ?
-  ;isVisible() {
-  ;}
   /*!
     Method: isShown
       Returns if the window is shown
@@ -736,7 +729,7 @@ class RDA_AutomationWindow extends RDA_Base {
   }
 
   /*!
-    Method: winRestore
+    Method: restore
       Restores the specified window
 
     Returns:
@@ -754,7 +747,7 @@ class RDA_AutomationWindow extends RDA_Base {
     return this
   }
   /*!
-    Method: winMinimize
+    Method: minimize
       Minimizes the current window
 
     Returns:
@@ -792,7 +785,7 @@ class RDA_AutomationWindow extends RDA_Base {
   }
   /*!
     Method: screenPixel
-      Creates a screen position
+      Creates a screen position given a relative position
 
     Parameters:
       x - number - x position relative to window
