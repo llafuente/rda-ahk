@@ -834,8 +834,8 @@ class RDA_Layout extends RDA_Base {
       element := this.elements[A_Index]
       if (element.type == "Image") {
 
-        RDA_Assert(element.image, "element found with type[" . type . "] but no image defined")
-        RDA_Assert(FileExist(element.image), "image not found: " . element.name)
+        RDA_Assert(element.image, "element found with type [" . type . "] but no image defined")
+        RDA_Assert(FileExist(element.image), "image not found [" . element.image . "]: " . element.name)
 
         this.win.waitAppearImage([element.image], sensibility, timeout, delay)
       }

@@ -1223,7 +1223,7 @@ RDA_ImagesWaitAppear(automation, imagePathList, sensibility, screenRegion, optio
 
     if (A_TickCount >= startTime + timeout) {
       RDA_Log_Debug(A_ThisFunc . " timeout reached")
-      throw RDA_Exception("Timeout reached at " . A_ThisFunc . ". Image(s) not found.")
+      throw RDA_Exception("Timeout reached at " . A_ThisFunc . ". Image(s) not found.`n" . e.message)
     }
 
     sleep % delay
@@ -1275,7 +1275,7 @@ RDA_ImagesWaitDisappear(automation, imagePathList, sensibility, screenRegion, op
 
     if (A_TickCount >= startTime + timeout) {
       RDA_Log_Debug(A_ThisFunc . " timeout reached")
-      throw RDA_Exception("Timeout reached at " . A_ThisFunc . ". Image(s) not found.")
+      throw RDA_Exception("Timeout reached at " . A_ThisFunc . ". Image(s) not found.`n" . e.message)
     }
 
     sleep % delay
