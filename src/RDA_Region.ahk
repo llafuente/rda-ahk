@@ -253,6 +253,7 @@ class RDA_Region extends RDA_Base {
   */
   waitAppearImage(imagePaths, sensibility := -1, timeout := -1, delay := -1) {
     local
+    global RDA_Automation
 
     region := this.toScreen()
     if (!RDA_IsArray(imagePaths)) {
@@ -278,6 +279,7 @@ class RDA_Region extends RDA_Base {
   */
   waitDisappearImage(imagePaths, sensibility := -1, timeout := -1, delay := -1) {
     local
+    global RDA_Automation
 
     region := this.toScreen()
     if (!RDA_IsArray(imagePaths)) {
