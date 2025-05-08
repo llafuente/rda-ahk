@@ -600,7 +600,7 @@ class RDA_OverlayClick extends RDA_OverlayObject {
     Constructor: RDA_OverlayClick
 
     Parameters:
-      pos - <RDA_ScreenPosition>|<RDA_WindowPosition> - position
+      pos - <RDA_ScreenPosition> | <RDA_WindowPosition> - position
       timeout - number - Timeout, in miliseconds
   */
   __new(pos, timeout := 2000) {

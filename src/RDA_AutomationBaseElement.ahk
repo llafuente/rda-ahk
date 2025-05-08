@@ -15,7 +15,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       could recieve the click if it's hover.
 
     Returns:
-      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
   osClick() {
     local
@@ -38,7 +38,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       could recieve the click if it's hover.
 
     Returns:
-      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
   osRightClick() {
     local
@@ -61,7 +61,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       could recieve the click if it's hover.
 
     Returns:
-      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
   osDoubleClick() {
     local
@@ -81,7 +81,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       Hover an element at OS level. This functionallity is not available in JAB
 
     Returns:
-      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
   osHover() {
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
@@ -122,7 +122,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       exception - Exception - exception
 
     Returns:
-      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
   expectType(type, exception) {
     if (this.getType() != type) {
@@ -139,7 +139,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       exception - Exception - exception
 
     Returns:
-      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
   expectValue(value, exception) {
     if (this.getValue() != value) {
@@ -156,7 +156,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       exception - Exception - exception
 
     Returns:
-      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
   expectPassword(password, exception) {
     if (this.getPassword() != password) {
@@ -172,7 +172,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       exception - Exception - exception
 
     Returns:
-      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
   expectChecked(exception) {
     if (!this.isChecked()) {
@@ -188,7 +188,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       exception - Exception - exception
 
     Returns:
-      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
   expectUnChecked(exception) {
     if (this.isChecked()) {
@@ -205,7 +205,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       exception - Exception - exception
 
     Returns:
-      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
   expectSelected(exception) {
     if (!this.isSelected()) {
@@ -221,7 +221,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       exception - Exception - exception
 
     Returns:
-      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
   expectUnSelected(exception) {
     if (this.isSelected()) {
@@ -463,7 +463,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       Multiple elements found
 
     Returns:
-      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
   findOne(query) {
     local
@@ -500,7 +500,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       Timeout reached at ?: Control not found
 
     Returns:
-      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
   waitOne(query, timeout := -1, delay := -1) {
     local startTime := A_TickCount, actions, elements
