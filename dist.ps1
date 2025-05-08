@@ -60,7 +60,14 @@ if ($json -eq $true) {
 }
 
 
-$contents = ""
+$contents = @'
+/*
+https://github.com/llafuente/rda-ahk
+MIT
+Copyright 2025 Luis Lafuente Morales
+*/
+'@
+
 foreach ($file in $files) {
   $contents += Get-Content $file -Encoding UTF8 -Raw
 }
