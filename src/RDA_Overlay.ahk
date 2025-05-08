@@ -1,6 +1,9 @@
 /*!
   Class: RDA_Overlay
-    Creates a window overlay that do not interference with inputs but logs them.
+    Creates a window overlay at a given region.
+
+  Remarks:
+    Do not interfere with inputs / mouse.
 */
 class RDA_Overlay {
   automation := 0
@@ -98,7 +101,7 @@ class RDA_Overlay {
 
   /*!
     Method: refresh
-      Refresh window
+      Updates all objects and update window.
   */
   refresh() {
     local
@@ -189,6 +192,7 @@ class RDA_Overlay {
     if (!h) {
       h := srcHeight
     }
+    RDA_Log_Debug(A_ThisFunc . "[" . this.hwnd . "](" . imagePath . ", " . x . ", " . y . ", " . w . ", " . h . ")")
 
     Gdip_DrawImage(this.G, pBitmapFile, x, y, w, h, 0, 0, srcWidth, srcHeight)
     Gdip_DisposeImage(pBitmapFile)
@@ -509,38 +513,80 @@ class RDA_Overlay {
     ; Gdip_DeletePen(pPen)
     Gdip_DeleteBrush(pBrush)
   }
+  /*!
+    Method: addObject
+      Appends obect
 
+    Parameters:
+      obj - <RDA_OverlayObject> - overlay object
+
+    Returns:
+      <RDA_AutomationOverlay> - for chaining
+  */
   addObject(obj) {
     this.objects.push(obj)
     obj.overlayOwner := this
-  }
 
+    return this
+  }
+  /*!
+    Method: removeObject
+      Removes given obect
+
+    Parameters:
+      obj - <RDA_OverlayObject> - overlay object
+
+    Returns:
+      bool - if it was removed
+  */
   removeObject(obj) {
     idx := RDA_Array_IndexOf(this.objects, obj)
-    this.objects.removeAt(idx)
-  }
-}
-
-class RDA_OverlayObject {
-  overlayOwner := 0
-  __new() {
-    this.countdown := 10
-  }
-  __Delete() {
-  }
-
-  update() {
-    RDA_Assert(this.overlayOwner, "overlayOwner must be set before calling update")
-
-    RDA_Log_Debug(A_ThisFunc)
-
-    if (true) {
-      this.countdown -= 1
-      this.overlayOwner.text2(1024, 0, "" . this.countdown, 0xFF0000000)
+    if (idx > 0) {
+      this.objects.removeAt(idx)
       return true
     }
 
     return false
+  }
+}
+
+/*!
+  Class: RDA_OverlayObject
+    (abstract) Base class for overlay objects
+*/
+class RDA_OverlayObject {
+  /*!
+    Property: overlayOwner
+      overlayOwner - <RDA_AutomationOverlay>
+  */
+  overlayOwner := 0
+  /*!
+    Constructor: RDA_OverlayObject
+      Creates <RDA_OverlayObject>
+  */
+  __new() {
+  }
+
+  __Delete() {
+  }
+  /*!
+    Method: update
+      Updates the object
+  */
+  update() {
+    RDA_Assert(this.overlayOwner, "overlayOwner must be set before calling update")
+
+    return this.draw()
+  }
+  /*!
+    Method: draw
+      Draws onto overlay.
+
+    Remarks:
+      This need to be overriden
+  */
+  draw() {
+    throw RDA_Exception(A_ThisFunc . " needs to be overriden")
   }
 }
 
@@ -563,9 +609,7 @@ class RDA_OverlayClick extends RDA_OverlayObject {
     this.start := A_TickCount
   }
 
-  update() {
-    RDA_Assert(this.overlayOwner, "overlayOwner must be set before calling update")
-
+  draw() {
     RDA_Log_Debug(A_ThisFunc)
 
     if (A_TickCount > this.timeout) {
@@ -599,10 +643,11 @@ class RDA_OverlayCountdown extends RDA_OverlayObject {
   }
   __Delete() {
   }
-
-  update() {
-    RDA_Assert(this.overlayOwner, "overlayOwner must be set before calling update")
-
+  /*!
+    Method: draw
+      Draws a countdown onto overlay
+  */
+  draw() {
     RDA_Log_Debug(A_ThisFunc)
 
     seconds := (this.countdown - A_TickCount) // 1000
@@ -616,23 +661,53 @@ class RDA_OverlayCountdown extends RDA_OverlayObject {
 }
 /*!
   Class: RDA_OverlayLayout
+
+  Extends: RDA_OverlayObject
+
+  Example:
+    ======= AutoHotKey =======
+      automation := new RDA_Automation()
+      windows := automation.windows()
+
+      win := windows.findOne({...})
+      layout := new RDA_Layout(win)
+      layout.fromJsonFile(A_ScriptDir . "\layout.json")
+
+      overlay := new RDA_Overlay(automation)
+      overlay.addObject(new RDA_OverlayLayout(layout))
+      overlay.refresh()
+    ==========================
 */
 class RDA_OverlayLayout extends RDA_OverlayObject {
+  /*!
+    Property:
+      <RDA_Layout> - layout
+  */
   layout := 0
-  __new(win) {
-    this.layout := new RDA_Layout(win)
-    this.layout.fromJsonFile(A_ScriptDir . "\nacar-form-criterio-busqueda-entidades.json")
+  /*!
+    Constructor: RDA_OverlayLayout
+      Creates <RDA_OverlayLayout>
+
+    Parameters:
+      layout - <RDA_Layout> - layout
+  */
+  __new(layout) {
+    this.layout := layout
   }
 
   __Delete() {
   }
+  /*!
+    Method: draw
+      Draws layout onto overlay
 
-  update() {
-    RDA_Assert(this.overlayOwner, "overlayOwner must be set before calling update")
-
+    Returns:
+      boolean - if it needs to be removed
+  */
+  draw() {
     loop % this.layout.elements.length() {
       el := this.layout.elements[A_Index]
-      ;el.region.drawFill(this.overlayOwner, 0xFF0000000)
+      el.region.drawFill(this.overlayOwner, 0x33FF00000)
       el.region.drawBorder(this.overlayOwner, 0x66FF00000, 1)
     }
 
