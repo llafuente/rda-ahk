@@ -1783,11 +1783,6 @@ _RDA_xPath_Parse(tokens) {
 }
 
 /*!
-  class: RDA_xPathAction
-    TODO
-*/
-
-/*!
   Function: RDA_xPath_Parse
     Parses given xpath.
 
@@ -1840,37 +1835,51 @@ RDA_xPath_Parse(xpath) {
   }
 }
 
-
+; internal
 RDA_Elements_getName(list) {
   local ret := []
 
-  loop % list.length {
+  loop % list.length() {
     ret.push(list[A_Index].getName())
   }
 
   return ret
 }
 
+/*!
+  Function: RDA_Color_variantion
+    Calculates the color variation between two colors.
 
+  Parameters:
+    src - number - RGB Color
+    dst - number - RGB Color
+
+  Example:
+    ======= AutoHotKey =======
+    RDA_Color_variantion(0xFFFFFF, 0xFFFFFF) == 0
+    RDA_Color_variantion(0xFFFFFE, 0xFFFFFF) == 1/3
+    RDA_Color_variantion(0xFEFEFE, 0xFFFFFF) == 1
+    RDA_Color_variantion(0x00FEFE, 0xFFFFFF) == 255/3
+    ==========================
+
+  Returns:
+    number - variation
+*/
 RDA_Color_variantion(src, dst) {
-  RDA_Log_Debug(A_ThisFunc . "(" . src . ", " . dst . ")")
+  local
+  ; don't need to log at fist as nothing will throw, just leave a nice log at the end with every number.
 
   red := src >> 16
   green := (src >> 8) & 0xff
   blue := src & 0xff
 
-  RDA_Log_Debug(A_ThisFunc . "(" . red . ", " . green . ", " . blue . ")")
-
   red2 := dst >> 16
   green2 := (dst >> 8) & 0xff
   blue2 := dst & 0xff
 
-  RDA_Log_Debug(A_ThisFunc . "(" . red2 . ", " . green2 . ", " . blue2 . ")")
-
   r := (Abs(red - red2) + Abs(green - green2) + Abs(blue - blue2)) / 3
 
-  RDA_Log_Debug(A_ThisFunc . " = " . r)
+  RDA_Log_Debug(A_ThisFunc . "(" . src . " (" . red . ", " . green . ", " . blue . "), " . dst . "(" . red2 . ", " . green2 . ", " . blue2 . ")) = " . r)
 
   return r
-
 }
