@@ -1,5 +1,6 @@
 /*!
   Class: RDA_Position
+    Base class to represent a position in 2D
 */
 class RDA_Position extends RDA_Base {
   /*!
@@ -119,6 +120,10 @@ class RDA_Position extends RDA_Base {
       }
       ==========================
 
+    Parameters:
+      color - number - RGB Color
+      variation - number - Allowed color variation, default: expect match
+
     Returns:
       boolean
   */
@@ -140,24 +145,44 @@ class RDA_Position extends RDA_Base {
       win.pixel(50, 50).expectColor(0xFF0000)
       ==========================
 
+    Parameters:
+      color - number - RGB Color
+      variation - number - Allowed color variation, default: expect match
+      expectionMessage - string - exception message. Tokens:
+
+      * %readcolor%
+
+      * %expectedColor%
+
+      * %expectedVariantion%
+
     Throws
-      If color does not match
+      default: Expected color [%readcolor%] to be [%expectedColor%] (±%expectedVariantion%)"
 
     Returns:
       <RDA_Position>
   */
-  expectColor(color, variation := 0) {
+  expectColor(color, variation := 0, expectionMessage := -1) {
+    local
+
     c := this.getColor()
+    expectionMessage := expectionMessage == -1 ? "Expected color [%readcolor%] to be [%expectedColor%] (±%expectedVariantion%)" : expectionMessage
 
     if (RDA_Color_variantion(c, color) > variation) {
-      throw RDA_Exception("Expected color [" . c . "] to be: " . color . "(±" . variation . ")")
+      expectionMessage := StrReplace(expectionMessage, "%readcolor%", c)
+      expectionMessage := StrReplace(expectionMessage, "%expectedColor%", color)
+      expectionMessage := StrReplace(expectionMessage, "%expectedVariantion%", variation)
+
+      throw RDA_Exception(expectionMessage)
     }
 
     return this
   }
+
   ;
   ; overlay draw
   ;
+
   /*!
     Method: drawFill
       Draws a colored dot (circle)

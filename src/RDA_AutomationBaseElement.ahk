@@ -119,14 +119,17 @@ class RDA_AutomationBaseElement extends RDA_Base {
 
     Parameters:
       type - string - type
-      exception - Exception - exception
+      exceptionMessage - string - exception message
 
     Returns:
       <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
-  expectType(type, exception) {
+  expectType(type, exceptionMessage := "Unexpected type") {
+    local
+    RDA_Log_Debug(A_ThisFunc . "(" . type . ", " . exceptionMessage . ")")
+
     if (this.getType() != type) {
-      throw exception
+      throw RDA_Exception(exceptionMessage)
     }
     return this
   }
@@ -135,15 +138,25 @@ class RDA_AutomationBaseElement extends RDA_Base {
       Asserts if current element has given value
 
     Parameters:
-      value - string - value
-      exception - Exception - exception
+      expectedValue - string - value
+      exceptionMessage - string - exception message. Tokens:
+        * %expectedValue%
+        * %value%
 
     Returns:
       <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
-  expectValue(value, exception) {
-    if (this.getValue() != value) {
-      throw exception
+  expectValue(expectedValue, exceptionMessage := "Expected: ""%expectedValue%"" but has: ""%value%""") {
+    local
+    RDA_Log_Debug(A_ThisFunc . "(" . expectedValue . ", " . exceptionMessage . ")")
+
+    currentValue := this.getValue()
+
+    if (currentValue != expectedValue) {
+      exceptionMessage := StrReplace(exceptionMessage, "%value%", currentValue)
+      exceptionMessage := StrReplace(exceptionMessage, "%expectedValue%", expectedValue)
+
+      throw RDA_Exception(exceptionMessage)
     }
     return this
   }
@@ -152,15 +165,23 @@ class RDA_AutomationBaseElement extends RDA_Base {
       Asserts if current element has given value
 
     Parameters:
-      password - string - password
-      exception - Exception - exception
+      expectedValue - string - password
+      exceptionMessage - string - exception message
 
     Returns:
       <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
-  expectPassword(password, exception) {
-    if (this.getPassword() != password) {
-      throw exception
+  expectPassword(expectedValue, exceptionMessage := "Expected: ""%expectedValue%"" but has: ""%value%""") {
+    local
+    RDA_Log_Debug(A_ThisFunc . "(" . expectedValue . ", " . exceptionMessage . ")")
+
+    currentValue := this.getPassword()
+
+    if (currentValue != expectedValue) {
+      exceptionMessage := StrReplace(exceptionMessage, "%value%", currentValue)
+      exceptionMessage := StrReplace(exceptionMessage, "%expectedValue%", expectedValue)
+
+      throw RDA_Exception(exceptionMessage)
     }
     return this
   }
@@ -169,14 +190,17 @@ class RDA_AutomationBaseElement extends RDA_Base {
       Asserts if current element is unchecked
 
     Parameters:
-      exception - Exception - exception
+      exceptionMessage - string - exception message
 
     Returns:
       <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
-  expectChecked(exception) {
+  expectChecked(exceptionMessage := "Expected to be checked") {
+    local
+    RDA_Log_Debug(A_ThisFunc . "(" . exceptionMessage . ")")
+
     if (!this.isChecked()) {
-      throw exception
+      throw RDA_Exception(exceptionMessage)
     }
     return this
   }
@@ -185,14 +209,17 @@ class RDA_AutomationBaseElement extends RDA_Base {
       Asserts if current element is checked
 
     Parameters:
-      exception - Exception - exception
+      exceptionMessage - string - exception message
 
     Returns:
       <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
-  expectUnChecked(exception) {
+  expectUnChecked(exceptionMessage:= "Expected to be unchecked") {
+    local
+    RDA_Log_Debug(A_ThisFunc . "(" . exceptionMessage . ")")
+
     if (this.isChecked()) {
-      throw exception
+      throw RDA_Exception(exceptionMessage)
     }
     return this
   }
@@ -202,14 +229,17 @@ class RDA_AutomationBaseElement extends RDA_Base {
       Asserts if current element is unselected
 
     Parameters:
-      exception - Exception - exception
+      exceptionMessage - string - exception message
 
     Returns:
       <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
-  expectSelected(exception) {
+  expectSelected(exceptionMessage := "Expected to be selected") {
+    local
+    RDA_Log_Debug(A_ThisFunc . "(" . exceptionMessage . ")")
+
     if (!this.isSelected()) {
-      throw exception
+      throw RDA_Exception(exceptionMessage)
     }
     return this
   }
@@ -218,14 +248,17 @@ class RDA_AutomationBaseElement extends RDA_Base {
       Asserts if current element is selected
 
     Parameters:
-      exception - Exception - exception
+      exceptionMessage - string - exception message
 
     Returns:
       <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
-  expectUnSelected(exception) {
+  expectUnSelected(exceptionMessage := "Expected to be unselected") {
+    local
+    RDA_Log_Debug(A_ThisFunc . "(" . exceptionMessage . ")")
+
     if (this.isSelected()) {
-      throw exception
+      throw RDA_Exception(exceptionMessage)
     }
     return this
   }

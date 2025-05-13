@@ -94,17 +94,17 @@ class Test_RDA_JAB {
     brent := hair.findOne("//Label[@name=""Brent""]")
     Yunit.assert(brent.hasPattern("SelectionItem"), "brent list>label has SelectionItem")
     hair.osClick()
-    brent.select()
+    brent.expectUnSelected().select().expectSelected()
     win.sendKeys("{Enter}")
 
     brent := eyes.findOne("//Label[@name=""Brent""]")
     eyes.osClick()
-    brent.select()
+    brent.expectUnSelected().select().expectSelected()
     win.sendKeys("{Enter}")
 
     brent := mouth.findOne("//Label[@name=""Brent""]")
     mouth.osClick()
-    brent.select()
+    brent.expectUnSelected().select().expectSelected()
     win.sendKeys("{Enter}")
 
     selected := hair.getSelectedItems()
@@ -212,10 +212,8 @@ class Test_RDA_JAB {
 
     Yunit.assert(textEl.getValue() != "", "Divider Size has value")
 
-    textEl.setValue("123")
-    Yunit.assert(textEl.getValue() == "123", "Divider Size has 123 value")
-    textEl.setValue("999")
-    Yunit.assert(textEl.getValue() == "999", "Divider Size has 999 value")
+    textEl.setValue("123").expectValue("123")
+    textEl.setValue("999").expectValue("999")
 
     textEl :=winElement.findOne("//Text[@name=""First Component's Minimum Size""]")
     textEl.osClick()
