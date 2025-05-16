@@ -67,7 +67,21 @@ class Test_RDA_UIA {
     Yunit.assert(elements.length() == 6, "There are 6 MenuItem(s)")
 
     elements := uiaWin.find("//*[@Type != ""MenuItem""]")
-    Yunit.assert(elements.length() == total - 6, "There are 26-6 not MenuItem(s)")
+    Yunit.assert(elements.length() == total - 6, "(find) There are 26-6 not MenuItem(s)")
+
+    elements := uiaWin.wait("//*[@Type != ""MenuItem""]")
+    Yunit.assert(elements.length() == total - 6, "(wait) There are 26-6 not MenuItem(s)")
+
+    startTime := A_TickCount
+    lastException := 0
+    try {
+      elements := uiaWin.wait("//*[@Type = ""Non existing elements""]", 1000, 250)
+    } catch e {
+      lastException := e
+    }
+msgbox % lastException.message
+    Yunit.assert(InStr(lastException.message, "not fouund"), "(wait errror) Elements not found")
+    Yunit.assert(A_TickCount - startTime > 900, "(wait errror) We wait some time")
 
     fileMenuItem := uiaWin.findOne("//MenuItem[@Name=""File""]")
     Yunit.assert(fileMenuItem.getName() == "File", "First MenuItem is File")

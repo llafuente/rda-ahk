@@ -114,7 +114,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
   ; expect
   ;
   /*!
-    Method: expectValue
+    Method: expectType
       Asserts if current element type is not the given one
 
     Parameters:
@@ -480,7 +480,6 @@ class RDA_AutomationBaseElement extends RDA_Base {
     RDA_Log_Debug(A_ThisFunc . " Found " . elements.length() . " elements")
     return elements
   }
-
   /*!
     Method: findOne
       Retrieves the first element that match given query
@@ -517,6 +516,65 @@ class RDA_AutomationBaseElement extends RDA_Base {
     return elements[1]
   }
   /*!
+    Method: wait
+      Waits to appear at least one element that match given query
+
+    Remarks:
+      It will honor <RDA_Automation.limits>
+
+    Parameters:
+      query - string - xpath-ish
+      timeout - number - timeout, in miliseconds
+      delay - number - delay, in miliseconds
+
+  Example:
+    ======= AutoHotKey =======
+    ; Returns all List with name xxx
+    elements := element.wait("//List[@name = 'xxx']")
+    ; search all list and returns label children
+    elements := element.wait("//List/Label")
+    ; Returns all nodes with type document or edit
+    elements := element.wait("//*[@type = 'Document' or @type = 'Edit']")
+    ; Returns Labels under a list
+    elements := element.wait("//List/Label")
+    ==========================
+
+    Throws:
+      Timeout reached at ?: Element(s) not found
+
+    Returns:
+      <RDA_AutomationBaseElement>[]|<RDA_AutomationJABElement>[]|<RDA_AutomationUIAElement>[]
+  */
+  wait(query, timeout := -1, delay := -1) {
+    local
+    global RDA_Automation
+
+    startTime := A_TickCount
+    timeout := (timeout == -1 ? RDA_Automation.TIMEOUT : timeout)
+    delay := (delay == -1 ? RDA_Automation.DELAY : delay)
+
+    RDA_Log_Debug(A_ThisFunc . "(" . query . ", " . timeout . ", " . delay . ")")
+
+    actions := RDA_xPath_Parse(query)
+
+    loop {
+      elements := this._find(actions)
+      RDA_Log_Debug(A_ThisFunc . " ? " . elements.length())
+      if (elements.length()) {
+        return elements
+      }
+      RDA_Log_Debug(A_ThisFunc . " retry ")
+
+      if (A_TickCount >= startTime + timeout) {
+        RDA_Log_Error(A_ThisFunc " timeout(" . timeout . ") reached")
+
+        throw RDA_Exception("Timeout reached at " . A_ThisFunc . ": Element(s) not found: " . query)
+      }
+
+      sleep % delay
+    }
+  }
+  /*!
     Method: waitOne
       Waits to appear an element that match given query
 
@@ -528,15 +586,17 @@ class RDA_AutomationBaseElement extends RDA_Base {
       timeout - number - timeout, in miliseconds
       delay - number - delay, in miliseconds
 
-
     Throws:
-      Timeout reached at ?: Control not found
+      Timeout reached at ?: Element not found
 
     Returns:
       <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
   waitOne(query, timeout := -1, delay := -1) {
-    local startTime := A_TickCount, actions, elements
+    local
+    global RDA_Automation
+
+    startTime := A_TickCount
     timeout := (timeout == -1 ? RDA_Automation.TIMEOUT : timeout)
     delay := (delay == -1 ? RDA_Automation.DELAY : delay)
 
@@ -553,7 +613,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       if (A_TickCount >= startTime + timeout) {
         RDA_Log_Error(A_ThisFunc " timeout(" . timeout . ") reached")
         if (elements.length() == 0) {
-          throw RDA_Exception("Timeout reached at " . A_ThisFunc . ": Control not found: " . query)
+          throw RDA_Exception("Timeout reached at " . A_ThisFunc . ": Element not found: " . query)
         }
         throw RDA_Exception("Timeout reached at " . A_ThisFunc . ": Multiple elements found: " . query)
       }
