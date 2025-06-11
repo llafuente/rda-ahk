@@ -193,10 +193,12 @@ class RDA_ScreenRegion extends RDA_Region {
     Returns:
       <RDA_ScreenRegion>
   */
-  highlight(displayTime:=2000, color:="Red", d:=4) {
+  highlight(displayTime:=-1, color:="Red", d:=4) {
     local
+    global RDA_Automation
 
     RDA_Log_Debug(A_ThisFunc)
+    displayTime := displayTime == -1 ? RDA_Automation.HIGHLIGHT_TIME : displayTime
 
     x := this.origin.x
     y := this.origin.y

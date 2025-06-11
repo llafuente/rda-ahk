@@ -15,6 +15,11 @@ class RDA_Automation extends RDA_Base {
   */
   static DELAY := 250
   /*!
+    Constant: HIGHLIGHT_TIME
+      Default highlight time, in miliseconds
+  */
+  static HIGHLIGHT_TIME := 1000
+  /*!
     Property: keyDelay
       number - Delay between key strokes, in milliseconds.
 
