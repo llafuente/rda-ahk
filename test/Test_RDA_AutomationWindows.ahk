@@ -1,3 +1,10 @@
+Test_RDA_AutomationWindows_CloseOnDestruction(windows) {
+  Run notepad.exe
+  win := windows.waitOne({process: "notepad.exe"})
+  win.closeOnDestruction()
+  sleep 2000
+}
+
 class Test_RDA_AutomationWindows {
   Begin() {
   }
@@ -14,7 +21,7 @@ class Test_RDA_AutomationWindows {
     Yunit.assert(wins.Length() > 0, "Return some windows")
 
     Run notepad.exe
-    sleep 2000
+    sleep 2000 ; test findOne, we need to wait manually, but use: waitOne!
     win := windows.findOne({process: "notepad.exe"})
 
     Yunit.assert(win != 0, "Window exist")
@@ -131,10 +138,92 @@ class Test_RDA_AutomationWindows {
       paints[A_Index].close()
     }
 
+    loop % paints.length() {
+      if (paints[A_Index].isAlive()) {
+        throw Exception("close failed!")
+      }
+    }
+
     paints := windows.find({process: "mspaint.exe"}, wins)
     Yunit.assert(paints.length() == 0, "All paints are closed")
   }
 
+  Test_4_Automation_WindowsExpects() {
+    local
+    global RDA_Automation, Yunit
+
+    RDA_Log_Debug(A_ThisFunc)
+
+    automation := new RDA_Automation()
+    windows := automation.windows()
+    ; mspaint multiple isntances
+    wins := windows.get()
+    Run mspaint.exe
+    sleep 3000
+    win := windows.findOne({process: "mspaint.exe"})
+
+    ; do not throw
+    win.expectAlive()
+
+    ; throws
+    startTime := A_TickCount
+    lastException := 0
+    try {
+      win.expectDead("custom-message", 1000)
+    } catch e {
+      lastException := e
+    }
+    if (!lastException) {
+      throw Exception("Expected expectDead to throw")
+    }
+    Yunit.assert(lastException.message == "custom-message", "throws with custom message")
+    Yunit.assert(A_TickCount - startTime > 900, "(wait errror) We wait some time")
+
+    win.close()
+
+    ; do not throw
+    win.expectDead("custom-message", 1000)
+
+
+    ; throws
+    lastException := 0
+    try {
+      win.expectAlive("????")
+    } catch e {
+      lastException := e
+    }
+    if (!lastException) {
+      throw Exception("Expected expectAlive to throw")
+    }
+    Yunit.assert(lastException.message == "????", "windows is dead! throws with custom message")
+  }
+
+
+  Test_5_Automation_WindowsCloseOnDestruction() {
+    local
+    global RDA_Automation, Yunit
+
+    RDA_Log_Debug(A_ThisFunc)
+
+    automation := new RDA_Automation()
+    windows := automation.windows()
+    Test_RDA_AutomationWindows_CloseOnDestruction(windows)
+
+    lastException := 0
+    try {
+      win := windows.findOne({process: "notepad.exe"})
+    } catch e {
+      lastException := e
+    }
+    if (!lastException) {
+      throw Exception("Expected findOne to throw")
+    }
+    Yunit.assert(lastException.message == "Window not found", "Window not found, closeOnDestruction close the window :)")
+  }
+
+
+
   End() {
   }
 }
+

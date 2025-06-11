@@ -13,6 +13,8 @@ class RDA_AutomationWindow extends RDA_Base {
       number - hwnd identifier
   */
   hwnd := 0
+  ; internal
+  _closeOnDestruction := false
   ; internal, cache
   _title := 0
   /*!
@@ -143,6 +145,11 @@ class RDA_AutomationWindow extends RDA_Base {
     RDA_Assert(this.hwnd, A_ThisFunc . " hwnd is null")
     ; RDA_Log_Debug(A_ThisFunc . " " . this.toString())
   }
+  __Delete() {
+    if (this._closeOnDestruction) {
+      this.close()
+    }
+  }
   /*!
     Method: toString
       Dumps the object to a readable string
@@ -258,6 +265,20 @@ class RDA_AutomationWindow extends RDA_Base {
     timeout := (timeout == -1 ? RDA_Automation.TIMEOUT : timeout)
 
     return RDA_Window_Close(this.hwnd, timeout)
+  }
+  /*!
+    Method: closeOnDestruction
+      Closes window when class is destroyed.
+
+      It's a clean way to close current window when instances is destroyed.
+
+    Returns:
+      <RDA_AutomationWindow>
+  */
+  closeOnDestruction() {
+    this._closeOnDestruction := true
+
+    return this
   }
   /*!
     Method: isClosed
@@ -971,6 +992,7 @@ class RDA_AutomationWindow extends RDA_Base {
 
     return this
   }
+
   /*!
     Method: copyToClipboard
       Alias of <RDA_AutomationClipboard.copy> but activate current window before.
@@ -1065,4 +1087,51 @@ class RDA_AutomationWindow extends RDA_Base {
 
     return this
   }
+
+  /*!
+    Method: expectAlive
+      Expects the window to be alive or throws
+
+    Parameters:
+      errorMessage - string - error message to throw
+
+    Throws:
+      Expected window to be alive
+
+    Returns:
+      <RDA_AutomationWindow>
+  */
+  expectAlive(errorMessage := "Expected window to be alive") {
+    local
+    global RDA_Automation
+
+    if (this.isAlive()) {
+      return this
+    }
+
+    throw RDA_Exception(errorMessage)
+  }
+  /*!
+    Method: expectDead
+      Expects the window to be dead or throws
+
+    Parameters:
+      errorMessage - string - error message to throw
+      timeout - number - Timeout, in miliseconds
+
+    Throws:
+      Expected window to be dead
+
+    Returns:
+      <RDA_AutomationWindow>
+  */
+  expectDead(errorMessage := "Expected window to be dead", timeout := 0) {
+    local
+    global RDA_Automation
+
+    timeout := (timeout == -1 ? RDA_Automation.TIMEOUT : timeout)
+
+    return RDA_Window_WaitClose(this.hwnd, timeout, errorMessage)
+  }
+
 }
