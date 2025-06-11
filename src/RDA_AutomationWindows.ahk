@@ -163,7 +163,9 @@ class RDA_AutomationWindows extends RDA_Base {
       <RDA_AutomationWindow>
   */
   waitOne(searchObject, hidden := false, timeout := -1, delay := -1) {
-    local bound
+    local
+    global RDA_Automation
+
     timeout := timeout == -1 ? RDA_Automation.TIMEOUT : timeout
     delay := delay == -1 ? RDA_Automation.DELAY : delay
 
@@ -171,6 +173,63 @@ class RDA_AutomationWindows extends RDA_Base {
 
     bound := ObjBindMethod(this, "findOne", searchObject, hidden)
     return RDA_RepeatWhileThrows(bound, timeout, delay)
+  }
+  /*!
+    Method: waitOneOf
+      Returns the first window that match before timeout
+
+    Example:
+      ======= AutoHotKey =======
+      ; searches an application wich title Notepad
+      automation := RDA_Automation()
+      windows := automation.windows()
+      win := windows.waitOneOf([{"title": "Error dialog"}, {"title": "App frame"}])
+      switch(win.title) {
+        case "Error dialog":
+          throw RDA_Exception("Error dialog found")
+        case "App frame":
+          ; ...
+      }
+      ==========================
+
+    Parameters:
+      searchObject - <RDA_AutomationWindowSearch>[] - search objects
+      hidden - boolean - Search hidden windows?
+
+    Returns:
+      <RDA_AutomationWindow> - First window found
+  */
+  waitOneOf(searchObjects, hidden := false, timeout := -1, delay := -1) {
+    local
+    global RDA_Automation
+
+    timeout := timeout == -1 ? RDA_Automation.TIMEOUT : timeout
+    delay := delay == -1 ? RDA_Automation.DELAY : delay
+
+    RDA_Log_Debug(A_ThisFunc . "(" . RDA_JSON_stringify(searchObjects) . ", hidden? " . (hidden ? "yes" : "no") . ", " . timeout . ", " . delay . ")")
+
+    startTime := A_TickCount
+
+    loop {
+      wins := this.get(hidden)
+
+      loop % wins.Length() {
+        win := wins[A_Index]
+        loop % searchObjects.length() {
+          searchObject := searchObjects[A_Index]
+          if (win.isMatch(searchObject)) {
+            return win
+          }
+        }
+      }
+
+      if (timeout <= 0 || A_TickCount >= startTime + timeout) {
+        RDA_Log_Error(A_ThisFunc " timeout(" . timeout . ") reached")
+        throw RDA_Exception("Window(s) not found")
+      }
+
+      sleep % delay
+    }
   }
 
   /*!
@@ -201,9 +260,10 @@ class RDA_AutomationWindows extends RDA_Base {
       RDA_AutomationWindow[]
   */
   findNew(searchObject, previousWindows, hidden := false) {
-    local rwins := [], wins, win, found
+    local
     RDA_Log_Debug(A_ThisFunc . "(" . RDA_JSON_stringify(searchObject) . " , previousWindows.length = " . previousWindows.length() . ", hidden? " . (hidden ? "yes" : "no"))
 
+    output := []
     wins := this.get(hidden)
     loop % wins.Length() {
       win := wins[A_Index]
@@ -221,11 +281,11 @@ class RDA_AutomationWindows extends RDA_Base {
       }
 
       if (win.isMatch(searchObject)) {
-        rwins.push(win)
+        output.push(win)
       }
     }
 
-    return rwins
+    return output
   }
   /*!
     Method: findOneNew
@@ -260,18 +320,18 @@ class RDA_AutomationWindows extends RDA_Base {
       <RDA_AutomationWindow>
   */
   findOneNew(searchObject, previousWindows, hidden := false) {
-    local rwins
+    local
     RDA_Log_Debug(A_ThisFunc . "(" . RDA_JSON_stringify(searchObject) . " , previousWindows.length = " . previousWindows.length() . ", hidden? " . (hidden ? "yes" : "no"))
 
-    rwins := this.findNew(searchObject, previousWindows, hidden)
-    if (!rwins.length()) {
+    output := this.findNew(searchObject, previousWindows, hidden)
+    if (!output.length()) {
       throw RDA_Exception("Window not found")
     }
-    if (rwins.length() > 1) {
+    if (output.length() > 1) {
       throw RDA_Exception("Multiple windows found")
     }
 
-    return rwins[1]
+    return output[1]
   }
 
   /*!
@@ -303,7 +363,9 @@ class RDA_AutomationWindows extends RDA_Base {
       <RDA_AutomationWindow>
   */
   waitOneNew(searchObject, previousWindows, hidden := false, timeout := -1, delay := -1) {
-    local bound
+    local
+    global RDA_Automation
+
     timeout := timeout == -1 ? RDA_Automation.TIMEOUT : timeout
     delay := delay == -1 ? RDA_Automation.DELAY : delay
     RDA_Log_Debug(A_ThisFunc . "(" . RDA_JSON_stringify(searchObject) . " , previousWindows.length = " . previousWindows.length() . ", hidden? " . (hidden ? "yes" : "no") . ", timeout = " . timeout . ", delay = " . delay . ")")
