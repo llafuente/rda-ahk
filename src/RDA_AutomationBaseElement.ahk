@@ -510,7 +510,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
     }
 
     if (elements.length() > 1) {
-      throw RDA_Exception("Multiple elements found: " . query)
+      throw RDA_Exception("Multiple elements found [" . elements.length() . "] for " . query)
     }
 
     return elements[1]
