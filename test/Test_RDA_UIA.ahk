@@ -79,7 +79,7 @@ class Test_RDA_UIA {
     } catch e {
       lastException := e
     }
-msgbox % lastException.message
+
     Yunit.assert(InStr(lastException.message, "not fouund"), "(wait errror) Elements not found")
     Yunit.assert(A_TickCount - startTime > 900, "(wait errror) We wait some time")
 

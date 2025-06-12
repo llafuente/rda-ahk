@@ -807,6 +807,8 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
       <RDA_AutomationUIAElement>[]
   */
   getChildren() {
+    RDA_Log_Debug(A_ThisFunc . "()")
+
     return this._wrapList(this.uiaHandle.GetChildren(0x2))
   }
   /*!
@@ -826,10 +828,12 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
     local
     global RDA_AutomationUIAElement
 
+    RDA_Log_Debug(A_ThisFunc . "(" . index . ")")
+
     elements := this.uiaHandle.GetChildren(0x2)
 
     if (index < 1 || index > elements.length()) {
-      RDA_Log_Debug("Index out of bounds at " . this.toString())
+      RDA_Log_Debug(A_ThisFunc . "Index out of bounds at " . this.toString())
       throw RDA_Exception("Index out of bounds")
     }
 
