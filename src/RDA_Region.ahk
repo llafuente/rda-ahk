@@ -54,7 +54,24 @@ class RDA_Region extends RDA_Base {
       return this.rect.h
     }
   }
-
+  /*!
+    Property: x2
+      number - Getter shortcut to origin.x2
+  */
+  x2[] {
+    get {
+      return this.origin.x + this.rect.w
+    }
+  }
+  /*!
+    Property: y2
+      number - Getter shortcut to origin.y2
+  */
+  y2[] {
+    get {
+      return this.origin.y + this.rect.h
+    }
+  }
   ;
   ; mouse
   ;
@@ -164,6 +181,27 @@ class RDA_Region extends RDA_Base {
     this.rect.h += value * 2
 
     return this
+  }
+
+  /*!
+    Method: expandOut
+      checks if this region is inside the given one
+
+    Parameters:
+      value - number - value
+
+    Returns:
+      <RDA_ScreenRegion>
+  */
+  isInside(region) {
+    local
+
+    smallRegion := this.toScreen()
+    bigRegion := region.toScreen()
+
+    RDA_Log_Debug(A_ThisFunc . "(" . smallRegion.toString() . " inside of? " . bigRegion.toString() . ")")
+
+    return bigRegion.x <= smallRegion.x && bigRegion.y <= smallRegion.y && bigRegion.x2 >= smallRegion.x2 && bigRegion.y2 >= smallRegion.y2
   }
 
   ;
