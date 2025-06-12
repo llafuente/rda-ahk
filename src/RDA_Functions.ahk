@@ -343,14 +343,17 @@ RDA_RepeatWhileThrows(fn, timeout, delay) {
   Returns:
     boolean - If the window exists after waiting to close
 */
-RDA_Window_WaitClose(hwnd, timeout) {
+RDA_Window_WaitClose(hwnd, timeout, errorMessage := "Window still alive") {
   RDA_Log_Debug(A_ThisFunc . "(" . hwnd . ", timeout = " . timeout . ")")
 
   timeout /= 1000
-  WinWaitClose ahk_id %hwnd%, 0, %timeout%
+  WinWaitClose ahk_id %hwnd%, , %timeout%
+  if (ErrorLevel == 1) {
+    RDA_Log_Debug(A_ThisFunc . " timeout")
+  }
 
   if (RDA_Window_Exist(hwnd)) {
-    throw RDA_Exception("Window still alive")
+    throw RDA_Exception(errorMessage)
   }
 }
 
@@ -393,10 +396,10 @@ RDA_Window_Exist(hwnd) {
   local
 
   DetectHiddenWindows On
-  result := (WinExist("ahk_id " . hwnd) != 0)
+  result := WinExist("ahk_id " . hwnd)
 
-  RDA_Log_Debug(A_ThisFunc . " hwnd = " . hwnd . " result = " . (result ? "yes" : "no"))
-  return result
+  RDA_Log_Debug(A_ThisFunc . " hwnd = " . hwnd . " result = " . result)
+  return !!result
 }
 
 /*!
