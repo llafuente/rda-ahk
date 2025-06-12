@@ -814,7 +814,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
       Retrieves a child by index
 
     Parameters:
-      index - number - Index
+      index - number - 1 Index
 
     Throws:
       Index out of bounds
@@ -833,7 +833,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
       throw RDA_Exception("Index out of bounds")
     }
 
-    return new RDA_AutomationUIAElement(this.automation, this.win, elements[1])
+    return new RDA_AutomationUIAElement(this.automation, this.win, elements[index])
   }
   /*!
     Method: getDescendants
