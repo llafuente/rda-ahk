@@ -1091,7 +1091,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     VarSetCapacity(actions, 0)
     actions := 0
 
-    RDA_Log_Debug(A_ThisFunc . " = " . RDA_JSON_stringify(list))
+    RDA_Log_Debug(A_ThisFunc . " output[" . count . "] = " . RDA_JSON_stringify(list))
 
     Return list
   }
@@ -1127,7 +1127,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
       Alternative method to <RDA_AutomationUIAElement.getValue>
 
     Remarks:
-      It use the clipboard and *select-all*, *copy-to-clipboard* actions.
+      It uses the clipboard and *select-all*, *copy-to-clipboard* actions.
 
     Throws:
       Could not find a compatible action: select-all
@@ -1168,7 +1168,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     local
     global RDA_AutomationJABAccessibleContextInfo, RDA_AutomationJAB
 
-    RDA_Log_Debug(A_ThisFunc)
+    RDA_Log_Debug(A_ThisFunc "(" . this.toString() . ")")
 
     this._info := new RDA_AutomationJABAccessibleContextInfo()
     VarSetCapacity(Info, 6188,0)
@@ -1241,6 +1241,80 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     RDA_Log_Debug(this._info.toString())
 
     return this._info
+  }
+
+  /*!
+    Method: getTableInfo
+      Retrieves table element info
+
+    Throws:
+      getAccessibleTableInfo failed
+
+    Returns:
+      <RDA_AutomationJABAccessibleTableInfo>
+  */
+  getTableInfo() {
+    local
+    global RDA_AutomationJABAccessibleTableInfo, RDA_AutomationJAB
+
+    RDA_Log_Debug(A_ThisFunc)
+
+    tableInfo := new RDA_AutomationJABAccessibleTableInfo()
+
+    VarSetCapacity(Info, 6188,0)
+    if (!DllCall(this.jab.dllName . "\getAccessibleTableInfo"
+      , "Int", this.vmId, this.jab.acType, this.acId, "Ptr", &Info
+      , "Cdecl " . this.jab.acType)) {
+      throw RDA_Exception("getAccessibleTableInfo failed")
+    }
+
+    ; https://github.com/openjdk/jdk/blob/master/src/jdk.accessibility/windows/native/include/bridge/AccessBridgePackages.h#L651
+    offset := 0
+
+    ; JOBJECT64 caption;  // AccesibleContext
+    tableInfo.caption := NumGet(&Info,offset,"Int64")
+    offset += 8
+    ;JOBJECT64 summary;  // AccessibleContext
+    tableInfo.summary := NumGet(&Info,offset,"Int64")
+    offset += 8
+    ; jint rowCount;
+    tableInfo.rowCount := NumGet(&Info,offset,"Int")
+    offset += 4
+    ; jint columnCount;
+    tableInfo.columnCount := NumGet(&Info,offset,"Int")
+    offset += 4
+    ; JOBJECT64 accessibleContext;
+    tableInfo.accessibleContext := NumGet(&Info,offset,"Int64")
+    offset += 8
+    ; JOBJECT64 accessibleTable;
+    tableInfo.accessibleTable := NumGet(&Info,offset,"Int64")
+    offset += 8
+
+    RDA_Log_Debug(offset)
+    RDA_Log_Debug(tableInfo.toString())
+
+    return tableInfo
+    /*
+    row := 0
+    column := 0
+
+    VarSetCapacity(Info, 6188,0)
+    if (!DllCall(this.jab.dllName . "\getAccessibleTableCellInfo"
+      , "Int", this.vmId, this.jab.acType, tableInfo.accessibleTable, "Int", row, "Int", column, "Ptr", &Info
+      , "Cdecl " . this.jab.acType)) {
+      throw RDA_Exception("getAccessibleTableInfo failed")
+    }
+    ; https://github.com/wodenwang/nami/blob/master/package/src/main/package/java/win32/include/win32/bridge/AccessBridgePackages.h#L873
+    offset := 0
+
+    JOBJECT64  accessibleContext;
+    jint     index;
+    jint     row;
+    jint     column;
+    jint     rowExtent;
+    jint     columnExtent;
+    jboolean isSelected;
+    */
   }
 }
 

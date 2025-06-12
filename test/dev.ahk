@@ -22,6 +22,7 @@ FileAppend, Test start!`n, *
 #include ..\src\RDA_AutomationClipboard.ahk
 #include ..\src\RDA_AutomationJAB.ahk
 #include ..\src\RDA_AutomationJABAccessibleContextInfo.ahk
+#include ..\src\RDA_AutomationJABAccessibleTableInfo.ahk
 #include ..\src\RDA_AutomationJABElement.ahk
 #include ..\src\RDA_AutomationKeyboard.ahk
 #include ..\src\RDA_AutomationMouse.ahk

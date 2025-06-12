@@ -27,6 +27,7 @@ $files = @(
   ".\src\RDA_AutomationClipboard.ahk",
   ".\src\RDA_AutomationJAB.ahk",
   ".\src\RDA_AutomationJABAccessibleContextInfo.ahk",
+  ".\src\RDA_AutomationJABAccessibleTableInfo.ahk",
   ".\src\RDA_AutomationJABElement.ahk",
   ".\src\RDA_AutomationKeyboard.ahk",
   ".\src\RDA_AutomationMouse.ahk",
