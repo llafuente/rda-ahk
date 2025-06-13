@@ -18,6 +18,7 @@ class Test_RDA_UIA {
 
     Run notepad.exe
     win := windows.waitOne({process: "notepad.exe"})
+    win.closeOnDestruction()
     win.move(50, 50)
     win.resize(640, 480)
 
@@ -63,6 +64,39 @@ class Test_RDA_UIA {
     elements := uiaWin.find("//*")
     Yunit.assert(elements.length() == total, "(find)There are 26 elements in the tree")
 
+    elements := uiaWin.findN("//*", total)
+    Yunit.assert(elements.length() == total, "(find)There are 26 elements in the tree")
+
+    lastException := 0
+    try {
+      uiaWin.findN("//*", total -1)
+    } catch e {
+      lastException := e
+    }
+    if (!lastException) {
+      throw RDA_Exception("exptected and exception with findN")
+    }
+
+    Yunit.assert(InStr(lastException.message, "Expected element count"), "findN exception check")
+
+
+    startTime := A_TickCount
+    lastException := 0
+    try {
+      uiaWin.waitN("//*", 15, 1000)
+    } catch e {
+      lastException := e
+    }
+    if (!lastException) {
+      throw RDA_Exception("exptected and exception with waitN")
+    }
+
+    Yunit.assert(lastException.message == "Timeout reached at RDA_AutomationBaseElement.waitN: Expected element count [15] found [26] for query: //*"), "findN exception check")
+    Yunit.assert(A_TickCount - startTime > 900, "(wait errror) We wait some time")
+
+    elements := uiaWin.waitN("//*", total)
+    Yunit.assert(elements.length() == total, "(waitN)There are 26 elements in the tree")
+
     elements := uiaWin.find("//MenuItem")
     Yunit.assert(elements.length() == 6, "There are 6 MenuItem(s)")
 
@@ -80,7 +114,7 @@ class Test_RDA_UIA {
       lastException := e
     }
 
-    Yunit.assert(InStr(lastException.message, "not fouund"), "(wait errror) Elements not found")
+    Yunit.assert(InStr(lastException.message, "Element(s) not found"), "(wait errror) Elements not found")
     Yunit.assert(A_TickCount - startTime > 900, "(wait errror) We wait some time")
 
     fileMenuItem := uiaWin.findOne("//MenuItem[@Name=""File""]")
@@ -275,6 +309,7 @@ class Test_RDA_UIA {
 
     Run notepad.exe
     win := windows.waitOne({process: "notepad.exe"})
+    win.closeOnDestruction()
     uiaWin := win.asUIAElement()
     RDA_Log_Debug(uiaWin.dumpXML())
 
