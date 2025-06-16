@@ -507,7 +507,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
   */
   findN(query, n) {
     local
-    RDA_Log_Debug(A_ThisFunc . "(" . query . ")")
+    RDA_Log_Debug(A_ThisFunc . "(" . query . ", " . n . ")")
 
     actions := RDA_xPath_Parse(query)
     elements := this._find(actions)
