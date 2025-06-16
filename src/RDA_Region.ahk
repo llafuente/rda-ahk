@@ -204,6 +204,33 @@ class RDA_Region extends RDA_Base {
     return bigRegion.x <= smallRegion.x && bigRegion.y <= smallRegion.y && bigRegion.x2 >= smallRegion.x2 && bigRegion.y2 >= smallRegion.y2
   }
 
+  intersection(region) {
+    local
+    global RDA_ScreenRegion
+
+    aRegion := this.toScreen()
+    bRegion := region.toScreen()
+
+    RDA_Log_Debug(A_ThisFunc . "(" . aRegion.toString() . " inside of? " . bRegion.toString() . ")")
+
+
+    x := Max(aRegion.x, bRegion.x)
+    y := Max(aRegion.y, bRegion.y)
+    x2 := Min(aRegion.x2, bRegion.x2)
+    y2 := Min(aRegion.y2, bRegion.y2)
+    w := x2 - x
+    h := y2 -y
+
+    if (w < 0) {
+      throw RDA_Exception("Do not intercept")
+    }
+    if (h < 0) {
+      throw RDA_Exception("Do not intercept")
+    }
+
+    return RDA_ScreenRegion.fromPoints(this.automation, x, y, w, h)
+  }
+
   ;
   ; colors
   ;

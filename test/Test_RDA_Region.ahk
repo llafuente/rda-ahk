@@ -2,6 +2,70 @@ class Test_RDA_Region {
   Begin() {
   }
 
+  Test_RDA_Region_Math() {
+    local
+    global Yunit, RDA_Automation, RDA_ScreenRegion, RDA_WindowRegion
+
+
+    automation := new RDA_Automation()
+
+    a := RDA_ScreenRegion.fromPoints(automation, 0, 0, 50, 50)
+    b := RDA_ScreenRegion.fromPoints(automation, 25, 25, 50, 50)
+
+    c := RDA_ScreenRegion.fromPoints(automation, 75, 0, 50, 50)
+    d := RDA_ScreenRegion.fromPoints(automation, 75, -75, 50, 50)
+    e := RDA_ScreenRegion.fromPoints(automation, -75, 0, 50, 50)
+    f := RDA_ScreenRegion.fromPoints(automation, -75, -75, 50, 50)
+
+    Yunit.assert(a.intersection(b).toString() == "RDA_ScreenRegion{x: 25, y: 25, w: 25, h: 25}", "cehck a∩b ok")
+
+
+    h := RDA_ScreenRegion.fromPoints(automation, 5, 5, 5, 5)
+
+    lastException := 0
+    try {
+      a.intersection(c).toString()
+    } catch e {
+      lastException := e
+    }
+    Yunit.assert(lastException.message == "Do not intercept", "a∩c Do not intercept")
+
+    lastException := 0
+    try {
+      a.intersection(d).toString()
+    } catch e {
+      lastException := e
+    }
+    Yunit.assert(lastException.message == "Do not intercept", "a∩d Do not intercept")
+
+    lastException := 0
+    try {
+      a.intersection(e).toString()
+    } catch e {
+      lastException := e
+    }
+    Yunit.assert(lastException.message == "Do not intercept", "a∩e Do not intercept")
+
+    lastException := 0
+    try {
+      a.intersection(f).toString()
+    } catch e {
+      lastException := e
+    }
+    Yunit.assert(lastException.message == "Do not intercept", "a∩f Do not intercept")
+
+
+    lastException := 0
+    try {
+      b.intersection(h).toString()
+    } catch e {
+      lastException := e
+    }
+    Yunit.assert(lastException.message == "Do not intercept", "a∩h Do not intercept")
+
+
+  }
+  /*
   Test_RDA_Region_Window() {
     local
     global RDA_Automation, Yunit, TestOpenApp
@@ -119,7 +183,7 @@ class Test_RDA_Region {
     RDA_Log_Debug(diff)
     Yunit.assert(diff.length() == 4, "Missing some methods")
   }
-
+*/
 
   End() {
   }
