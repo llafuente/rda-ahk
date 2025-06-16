@@ -1016,6 +1016,10 @@ class RDA_AutomationWindow extends RDA_Base {
     Method: asUIAElement
       Retrieves current windows as RDA_AutomationUIAElement
 
+    Parameters:
+      timeout - number - timeout, in miliseconds
+      delay - number - retry delay, in miliseconds
+
     Example:
       ======= AutoHotKey =======
       automation := new RDA_Automation()
@@ -1030,10 +1034,32 @@ class RDA_AutomationWindow extends RDA_Base {
     Returns:
       <RDA_AutomationUIAElement>
   */
-  asUIAElement() {
-    RDA_Log_Debug(A_ThisFunc)
+  asUIAElement(timeout := -1, delay := -1) {
+    local
+    global RDA_Automation, RDA_AutomationUIAElement
+    timeout := (timeout == -1 ? RDA_Automation.TIMEOUT : timeout)
+    delay := (delay == -1 ? RDA_Automation.DELAY : delay)
 
-    return new RDA_AutomationUIAElement(this.automation, this, this.automation.UIA.elementFromHandle(this.hwnd))
+    RDA_Log_Debug(A_ThisFunc . "(" . timeout . ", " . delay . ")")
+    startTime := A_TickCount
+    lastException := 0
+
+    loop {
+      try {
+        handle := this.automation.UIA.elementFromHandle(this.hwnd)
+        return new RDA_AutomationUIAElement(this.automation, this, handle)
+      } catch e {
+        lastException := e
+      }
+
+      if (A_TickCount >= startTime + timeout) {
+        RDA_Log_Error(A_ThisFunc " timeout(" . timeout . ") reached")
+        throw lastException
+      }
+      sleep % delay
+    }
+
+    throw RDA_Exception("unreachable")
   }
   /*!
     Method: asJABElement
