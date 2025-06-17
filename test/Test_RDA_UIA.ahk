@@ -91,7 +91,7 @@ class Test_RDA_UIA {
       throw RDA_Exception("exptected and exception with waitN")
     }
 
-    Yunit.assert(lastException.message == "Timeout reached at RDA_AutomationBaseElement.waitN: Expected element count [15] found [26] for query: //*"), "findN exception check")
+    Yunit.assert(lastException.message == "Timeout reached at RDA_AutomationBaseElement.waitN: Expected element count [15] found [26] for query: //*", "findN exception check")
     Yunit.assert(A_TickCount - startTime > 900, "(wait errror) We wait some time")
 
     elements := uiaWin.waitN("//*", total)

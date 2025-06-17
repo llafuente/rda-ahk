@@ -63,6 +63,7 @@ FileAppend, Test start!`n, *
 #Include Test_RDA_Monitors.ahk
 #Include Test_RDA_VirtualDesktops.ahk
 #Include Test_RDA_AutomationLayout.ahk
+#Include Test_RDA_Functions.ahk
 
 #SingleInstance
 #Warn All, StdOut ; Enable every type of warning, and displayed in a MsgBox
@@ -82,6 +83,7 @@ Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_JAB)
 Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Monitors)
 Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_VirtualDesktops)
 Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_AutomationLayout)
+Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_Functions)
 
 ;#Include Test_RDA_UIA2.ahk
 ;Yunit.Use(YunitStdOut, YunitJUnit, YunitOutputDebug).Test(Test_RDA_UIA2)

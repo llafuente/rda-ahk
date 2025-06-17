@@ -293,7 +293,7 @@ RDA_TryPostMessage(msgNumber , wParam, lParam, hwnd) {
 
   Parameters:
     fn - Func | FuncBound - Function
-    timeout - timeout in miliseconds
+    timeout - number - timeout in miliseconds
     delay - number - Time between retries, in miliseconds
 
   Throws:
@@ -1885,4 +1885,46 @@ RDA_Color_variantion(src, dst) {
   RDA_Log_Debug(A_ThisFunc . "(" . src . " (" . red . ", " . green . ", " . blue . "), " . dst . "(" . red2 . ", " . green2 . ", " . blue2 . ")) = " . r)
 
   return r
+}
+
+/*!
+  Function: RDA_File_WaitExist
+    Waits until given file exists
+
+  Parameters:
+    file - string - absolute path to file
+    timeout - number - timeout in miliseconds
+    delay - number - Time between retries, in miliseconds
+
+  Example:
+    ======= AutoHotKey =======
+    ; wait 5 seconds for file creation
+    RDA_File_WaitExist("c:\...\xxx.txt", 5000, 250)
+    ==========================
+
+  Returns:
+    boolean - true if found, false if not found
+*/
+RDA_File_WaitExist(file, timeout, delay) {
+  local
+
+  startTime := A_TickCount
+
+  RDA_Log_Debug(A_ThisFunc . "(" . file . ", timeout = " . timeout . ", delay = " . delay . ")")
+  loop {
+    ; RDA_Log_Debug(A_ThisFunc . " tick " . FileExist(file))
+    if (FileExist(file)) {
+      RDA_Log_Error(A_ThisFunc . " file found: " . file)
+      return true
+    }
+
+    if (timeout <= 0 || A_TickCount >= startTime + timeout) {
+      RDA_Log_Error(A_ThisFunc . " timeout reached: " . file)
+      return false
+    }
+
+    sleep % delay
+  }
+
+  throw RDA_Exception("unreachable")
 }
