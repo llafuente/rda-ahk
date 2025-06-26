@@ -18,6 +18,17 @@ API / info / usage
 class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   ; static __Call := TooFewArguments(RDA_AutomationJABElement)
   /*!
+    Constant: HIGHLIGHT_SETVALUE
+      number - highlights element given miliseconds before setting value
+  */
+  HIGHLIGHT_SETVALUE := 0
+  /*!
+    Constant: HIGHLIGHT_CLICK
+      number - highlights element given miliseconds before clicking
+  */
+  HIGHLIGHT_CLICK := 0
+
+  /*!
     Property: jab
       <RDA_AutomationJAB>
   */
@@ -121,7 +132,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
       string
   */
   getType() {
-    local type, c
+    local
 
     this.__cacheInfo()
 
@@ -322,7 +333,14 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
       <RDA_AutomationJABElement>
   */
   click() {
+    local
+    global RDA_AutomationJABElement
+
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
+
+    if (RDA_AutomationJABElement.HIGHLIGHT_CLICK > 0) {
+      this.highlight(RDA_AutomationJABElement.HIGHLIGHT_CLICK)
+    }
 
     ; for an unknown reason this string is multi-language!
     availableActions := this.getActions()
@@ -722,7 +740,15 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
       <RDA_AutomationUIAElement>
   */
   setValue(text) {
+    local
+    global RDA_AutomationJABElement
+
     RDA_Log_Debug(A_ThisFunc . "(" . text . ")")
+
+    if (RDA_AutomationJABElement.HIGHLIGHT_SETVALUE > 0) {
+      this.highlight(RDA_AutomationJABElement.HIGHLIGHT_SETVALUE)
+    }
+
     this._setValue(text)
 
     return this
@@ -739,7 +765,15 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
       <RDA_AutomationUIAElement>
   */
   setPassword(text) {
+    local
+    global RDA_AutomationJABElement
+
     RDA_Log_Debug(A_ThisFunc . "( text.length = " . StrLen(text) . ")")
+
+    if (RDA_AutomationJABElement.HIGHLIGHT_SETVALUE > 0) {
+      this.highlight(RDA_AutomationJABElement.HIGHLIGHT_SETVALUE)
+    }
+
     this._setValue(text)
 
     return this
@@ -1261,7 +1295,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
 
     tableInfo := new RDA_AutomationJABAccessibleTableInfo()
 
-    VarSetCapacity(Info, 6188,0)
+    VarSetCapacity(Info, 40, 0)
     if (!DllCall(this.jab.dllName . "\getAccessibleTableInfo"
       , "Int", this.vmId, this.jab.acType, this.acId, "Ptr", &Info
       , "Cdecl " . this.jab.acType)) {
@@ -1290,7 +1324,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     tableInfo.accessibleTable := NumGet(&Info,offset,"Int64")
     offset += 8
 
-    RDA_Log_Debug(offset)
+    ;RDA_Log_Debug(offset)
     RDA_Log_Debug(tableInfo.toString())
 
     return tableInfo
