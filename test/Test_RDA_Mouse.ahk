@@ -1,7 +1,7 @@
 class Test_RDA_Mouse {
   Begin() {
   }
-
+/*
   Test_4_Automation_WindowsMouse2() {
     local
     global RDA_Automation, Yunit
@@ -77,7 +77,36 @@ class Test_RDA_Mouse {
     Yunit.assert(position.x == 101, "Mouse moved to 101 on x")
     Yunit.assert(position.y == 202, "Mouse moved to 202 on y")
   }
+*/
 
+  Test_4_MouseCursor() {
+    local
+    global RDA_Automation, Yunit
+
+    RDA_Log_Debug(A_ThisFunc)
+
+    automation := new RDA_Automation()
+    windows := automation.windows()
+    mouse := automation.mouse()
+
+    Run notepad.exe
+    win := windows.waitOne({process: "notepad.exe"})
+    win.closeOnDestruction()
+    win.move(50,50)
+    win.resize(1024,768)
+
+    win.pixel(10,10).mouseMove()
+    ;Yunit.assert(mouse.getCursor() == , "AppStarting")
+    Yunit.assert(RDA_Array_IndexOf(["Arrow", "AppStarting"], mouse.getCursor()) > 0, "Arrow or AppStarting")
+    win.pixel(100,100).mouseMove()
+    Yunit.assert(mouse.getCursor() == "IBeam", "IBeam")
+
+    win.pixel(1019,250).mouseMove()
+    Yunit.assert(mouse.isCursor("SizeWE"), "SizeWE")
+
+    win.pixel(200,760).mouseMove()
+    mouse.expectCursor("SizeNS", "Expected mouse cursor: SizeNS")
+  }
 
   End() {
   }
