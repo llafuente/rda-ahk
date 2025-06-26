@@ -179,6 +179,9 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     if (InStr(s, "focusable")) {
       ret.push("Invoke") ; <-- click
     }
+    if (InStr(s, "expandable")) {
+      ret.push("ExpandCollapsed") ; <-- click
+    }
     if (r == "check box" || r == "toggle button" || r == "radio button"|| r == "push button") {
       ret.push("Toggle")
     }
@@ -320,7 +323,9 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
 
     Remarks:
       This do not honor <RDA_Automation> configuration at it uses JAB doAction
-      It will try to do one of the following actions
+
+      It will try to do one of the following actions (first available)
+
       * click
       * hacer click
       * toogleexpand
@@ -494,6 +499,87 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
 
     this._ensureCheck(false)
   }
+  ;
+  ; ExpandCollapsed
+  ;
+
+  _ensureExpanded(state) {
+    local
+
+    RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
+
+    if (this.isExpanded() != state) {
+      try {
+        this.click()
+      } catch e {
+        RDA_Log_Error(A_ThisFunc . " " . e.message)
+      }
+    }
+
+    if (this.isExpanded() != state) {
+      throw RDA_Exception("Click called but no change")
+    }
+  }
+  /*!
+    Method: ensureExpanded
+      Expand the element only if it's collapsed, element must implement ExpandCollapsed
+
+    Throws:
+      Click failed, no change
+      ExpandCollapsed not implemented
+  */
+  ensureExpanded() {
+    this._ensureExpanded(true)
+  }
+  /*!
+    Method: ensureCollapsed
+      Collapse the element only if it's expanded, element must implement ExpandCollapsed
+
+    Throws:
+      Click failed, no change
+      ExpandCollapsed not implemented
+  */
+  ensureCollapsed() {
+    this._ensureExpanded(false)
+  }
+
+  /*!
+    Method: isExpanded
+      Retrieves if the element is expanded, element must implement ExpandCollapsed
+
+    Throws:
+      ExpandCollapsed not implemented
+
+    Returns:
+      boolean
+  */
+  isExpanded() {
+    local
+
+    RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
+    this.__cacheInfo(true)
+
+    if (!RDA_Array_IndexOf(this.getPatterns(), "ExpandCollapsed")) {
+      throw RDA_Exception("ExpandCollapsed not implemented")
+    }
+
+    return InStr(this._info.states, "expanded") > 0
+  }
+  /*!
+    Method: isCollapsed
+      Retrieves if the element is collapsed, element must implement ExpandCollapsed
+
+    Throws:
+      ExpandCollapsed not implemented
+
+    Returns:
+      boolean
+  */
+  isCollapsed() {
+    ; state=collapsed => !expanded
+    return this.isExpanded()
+  }
+
   ;
   ; SelectionItem
   ;

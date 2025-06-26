@@ -97,7 +97,7 @@ Here there is a quick table of what operations will be available for each patter
 | Invoke                | click                 | click                 |
 | Toggle                | toggle/isChecked      | toggle/isChecked      |
 | Selection             | getSelected           | getSelected           |
-| ExpandCollapse*       | expand/collapse       | expand/collapse       |
+| ExpandCollapse        | expand/collapse*      | expand/collapse       |
 | Scroll*               |                       |                       |
 | Action                |                       | getActions/doActions  |
 
