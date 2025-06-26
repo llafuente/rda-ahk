@@ -678,7 +678,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
     timeout := (timeout == -1 ? RDA_Automation.TIMEOUT : timeout)
     delay := (delay == -1 ? RDA_Automation.DELAY : delay)
 
-    RDA_Log_Debug(A_ThisFunc . "(" . query . ", " . timeout . ", " . delay . ")")
+    RDA_Log_Debug(A_ThisFunc . "(" . query . ", " . n . ", " . timeout . ", " . delay . ")")
 
     actions := RDA_xPath_Parse(query)
 
