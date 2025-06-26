@@ -59,6 +59,23 @@ class RDA_AutomationWindows extends RDA_Base {
     return r
   }
   /*!
+    Method: getForeground
+      Retrieves a window instance to the foreground window
+      (the window with which the user is currently working).
+
+    Returns:
+      <RDA_AutomationWindow>
+  */
+  getForeground() {
+    local
+    global RDA_AutomationWindow
+
+    hwnd := RDA_GetForegroundWindow()
+    RDA_Log_Debug(A_ThisFunc . " hwnd = " . hwnd)
+
+    return new RDA_AutomationWindow(this.automation, hwnd)
+  }
+  /*!
     Method: find
       Searches windows that match given object properties
 
