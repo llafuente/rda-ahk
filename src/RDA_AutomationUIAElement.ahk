@@ -328,7 +328,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
 
     Throws:
       TogglePattern not implemented
-      Toggle called but no change
+      Executed but no change
 
     Returns:
       <RDA_AutomationUIAElement>
@@ -349,7 +349,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
 
         after := pattern.CurrentToggleState ? true : false
         if (before == after) {
-          throw RDA_Exception("Toggle called but no change")
+          throw RDA_Exception("Executed but no change")
         }
 
         return this
@@ -410,7 +410,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
           sleep % this.automation.actionDelay
 
           if (pattern.CurrentToggleState != state) {
-            throw RDA_Exception("Toggle called but no change")
+            throw RDA_Exception("toggle called but no change")
           }
         }
 
@@ -430,7 +430,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
       Checks the element only if it's unchecked, element must implement TogglePattern
 
     Throws:
-      Toggle failed, no change
+      toggle called but no change
       TogglePattern not implemented
   */
   ensureChecked() {
@@ -443,7 +443,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
       Unchecks the element only if it's checked, element must implement TogglePattern
 
     Throws:
-      Toggle failed, no change
+      toggle called but no change
       TogglePattern not implemented
   */
   ensureUnChecked() {
@@ -462,16 +462,16 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
     global UIA_Enum
     if (this.uiaHandle.GetCurrentPropertyValue(UIA_Enum.UIA_IsSelectionItemPatternAvailablePropertyId)) {
       pattern := this.uiaHandle.GetCurrentPatternAs("SelectionItem")
-      v := pattern.CurrentIsSelected ? true : false
-      if (v != state) {
+      if (state != (pattern.CurrentIsSelected ? true : false)) {
         pattern.select()
 
         sleep % this.automation.actionDelay
+
+        if (state != (pattern.CurrentIsSelected ? true : false)) {
+          throw RDA_Exception("select called but no change")
+        }
       }
 
-      if (state == (pattern.CurrentIsSelected ? true : false)) {
-        throw RDA_Exception("select called but no change")
-      }
 
       return this
     }
@@ -652,6 +652,26 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
       throw e
     }
   }
+
+  /*!
+    Method: ensureSelected
+      Alias of <RDA_AutomationUIAElement.select>
+
+    Throws:
+      Select called but no change
+      SelectionItemPattern not implemented
+  */
+  ensureSelected() {
+    return this.select()
+  }
+  /*!
+    Method: ensureUnSelected
+      Alias of <RDA_AutomationUIAElement.unselect>
+  */
+  ensureUnSelected() {
+    return this.unselect()
+  }
+
   ;
   ; TextPattern
   ;

@@ -190,7 +190,8 @@ class Test_RDA_UIA {
 
     ; click on the "Page size" -> "open"
     SizeComboBox := popup.findOne("//ComboBox[@Name=""Size:""]")
-    SizeComboBox.findOne("//*[@Name=""Open"" and @Type=""Button""]").click()
+    openSize := SizeComboBox.findOne("//*[@Name=""Open"" and @Type=""Button""]")
+    openSize.click()
 
     sizeSelection := popup.waitOne("//*[@Name=""Size:"" and @Type=""List""]")
     Yunit.assert(sizeSelection.canSelectMultiple() == false, "Size is single selection")
@@ -204,11 +205,19 @@ class Test_RDA_UIA {
     ;listItem := popup.waitOne("//ListItem[@Name=""12\"" x 18\""""]")
     ;Yunit.assert(listItem.isVisible() == false, "ListItem is not visible")
     ;listItem.click()
-    listItem := popup.waitOne("//List[@Name=""Size:""]//1")
-    listItem.click()
 
     ; check selection!
-    Yunit.assert(sizeSelection.getSelectedItems()[1].getName() == listItem.getName(), "Check selected size value")
+    listItem := popup.waitOne("//List[@Name=""Size:""]//1")
+    listItem.click()
+    Yunit.assert(listItem.getParent().getSelectedItems()[1].getName() == listItem.getName(), "Check[1st] selected size value")
+
+    openSize.click()
+    listItem := popup.waitOne("//List[@Name=""Size:""]//2")
+    listItem.ensureSelected()
+    Yunit.assert(listItem.getParent().getSelectedItems()[1].getName() == listItem.getName(), "Check[2nd] selected size value")
+
+    ; TODO
+    ; ensureUnSelected
 
     control := popup.findOne("//RadioButton[@Name=""Landscape""]")
     control.click()

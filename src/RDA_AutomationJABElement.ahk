@@ -748,6 +748,50 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     this.__cacheInfo()
     return InStr(this._info.states, "multiselectable") > 0
   }
+  ; internal
+  _ensureSelect(state) {
+    local
+
+    RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
+
+    if (this.isSelected() != state) {
+      try {
+        this.select()
+      } catch e {
+        RDA_Log_Error(A_ThisFunc . " " . e.message)
+      }
+    }
+
+    if (this.isSelected() != state) {
+      throw RDA_Exception("select called but no change")
+    }
+  }
+  /*!
+    Method: ensureSelected
+      Selects the element only if it's unselected, element must implement SelectionItemPattern
+
+    Throws:
+      select called but no change
+      SelectionItemPattern not implemented
+  */
+  ensureSelected() {
+    RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
+
+    this._ensureSelect(true)
+  }
+  /*!
+    Method: ensureUnChecked
+      Unselects the element only if it's selected, element must implement SelectionItemPattern
+
+    Throws:
+      select called but no change
+      SelectionItemPattern not implemented
+  */
+  ensureUnselected() {
+    RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
+
+    this._ensureSelect(false)
+  }
   ;
   ; TextPattern
   ;
