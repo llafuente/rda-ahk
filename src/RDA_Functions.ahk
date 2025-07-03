@@ -90,6 +90,19 @@ RDA_instaceOf(obj, cls) {
 
     The contents of the arrays must be primitives as *==* will be used to compare.
 
+  Example:
+    ======= AutoHotKey =======
+    arr := [1, 2, 3]
+    arr2 := [5, "xxx", {}, []]
+
+    RDA_Assert(RDA_Array_IndexOf(arr, 1) == 1, "RDA_Array_IndexOf 1 failed")
+    RDA_Assert(RDA_Array_IndexOf(arr, 2) == 2, "RDA_Array_IndexOf 2 failed")
+    RDA_Assert(RDA_Array_IndexOf(arr, 3) == 3, "RDA_Array_IndexOf 3 failed")
+    RDA_Assert(RDA_Array_IndexOf(arr2, "xxx") == 2, "RDA_Array_IndexOf 4 failed")
+    RDA_Assert(RDA_Array_IndexOf(arr2, {}) == 0, "RDA_Array_IndexOf 5 failed")
+    RDA_Assert(RDA_Array_IndexOf(arr2, []) == 0, "RDA_Array_IndexOf 6 failed")
+    ==========================
+
   Parameters:
     arr - any[] - array
     avalue - any - Value
@@ -148,6 +161,13 @@ RDA_Array_Concat(arr, arr2) {
   Function: RDA_Array_Join
     Creates and returns a new string by concatenating all of the elements in an array
     separated by commas or a specified separator string
+
+  Example:
+    ======= AutoHotKey =======
+    RDA_Array_Join([1,2,3], ",") ; 1,2,3
+    RDA_Array_Join(["a","b","c"], ",") ; a,b,c
+    ==========================
+
 
   Parameters:
     arr - object[] - array
