@@ -94,6 +94,21 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   ; query
   ;
   /*!
+    Method: getId
+      Do not exists in JAB it's only for interface compatibility
+
+    Parameters:
+      useCache - bool - use cached value (true) or fetch current value (false)
+
+    Returns:
+      string
+  */
+  getId(useCache := true) {
+    RDA_Log_Debug(A_ThisFunc)
+
+    return ""
+  }
+  /*!
     Method: getName
       Retrieves the element name
 

@@ -291,6 +291,8 @@ class RDA_AutomationBaseElement extends RDA_Base {
             return this.getType()
           case "@NAME":
             return this.getName()
+          case "@ID":
+            return this.getId()
           case "@IDX":
             return this.getIndex()
           case "@INDEX":
@@ -835,6 +837,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
     ; name, type, patterns, children, path
     text .= padding . "<" . type
     text .= " name=" . RDA_JSON_stringify(node.element.getName())
+    text .= " id=" . RDA_JSON_stringify(node.element.getId())
     text .= " patterns=" . RDA_JSON_stringify(RDA_Array_Join(node.element.getPatterns(), ","))
     text .= " path=" . RDA_JSON_stringify(node.path)
     text .= " description=" . RDA_JSON_stringify(node.element.getDescription())

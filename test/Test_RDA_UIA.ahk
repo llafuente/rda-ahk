@@ -117,6 +117,9 @@ class Test_RDA_UIA {
     Yunit.assert(InStr(lastException.message, "Element(s) not found"), "(wait errror) Elements not found")
     Yunit.assert(A_TickCount - startTime > 900, "(wait errror) We wait some time")
 
+    elements := uiaWin.find("//*[@Id=""DownButton""]")
+    Yunit.assert(elements.length() == 2, "(find by id) 2 x DownButton")
+
     fileMenuItem := uiaWin.findOne("//MenuItem[@Name=""File""]")
     Yunit.assert(fileMenuItem.getName() == "File", "First MenuItem is File")
     Yunit.assert(fileMenuItem.findOne("./..").isSameElement(fileMenuItem.getParent()), "Check xpath parent == getParent")

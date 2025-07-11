@@ -236,17 +236,19 @@ RDA_IsArray(anything) {
 */
 RDA_Exception(message, trace_offset := 0, What := "") {
   local
-  RDA_Log_Debug(A_ThisFunc . " " . message)
   ; traceback to log
   r := [], i := 0, n := (A_AhkVersion<"2" ? 2 : 3) + trace_offset
+  trace := ""
   Loop {
     e := Exception(".", offset := -(A_Index + n))
     if (e.What == offset) {
-      RDA_Log_Debug(e.file ":" e.Line " @ main")
+      trace .= "`n" . e.file ":" e.Line " @ main"
       break
     }
-    RDA_Log_Debug(e.file ":" e.Line " @ " e.What)
+    trace .= "`n" . e.file ":" e.Line " @ " e.What
   }
+
+  RDA_Log_Debug(A_ThisFunc . " " . message . trace)
 
   return Exception(message, trace_offset - 1, What)
 }

@@ -22,6 +22,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
   uiaHandle := 0
 
   ; internal
+  cachedId := ""
   cachedName := ""
   cachedType := ""
   cachedIndex := ""
@@ -53,6 +54,25 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
   ;
   ; Query
   ;
+
+  /*!
+    Method: getId
+      Retrieves the element (automation) id
+
+    Parameters:
+      useCache - bool - use cached value (true) or fetch current value (false)
+
+    Returns:
+      string
+  */
+  getId(useCache := true) {
+    if (!useCache || !this.cachedId) {
+      this.cachedId := this.uiaHandle.CurrentAutomationId
+    }
+
+    RDA_Log_Debug(A_ThisFunc . "=" . this.cachedId)
+    return this.cachedId
+  }
   /*!
     Method: getName
       Retrieves the element name
