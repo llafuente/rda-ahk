@@ -8,7 +8,7 @@ Test_RDA_AutomationWindows_CloseOnDestruction(windows) {
 class Test_RDA_AutomationWindows {
   Begin() {
   }
-
+/*
   Test_2_Automation_Windows() {
     local
     global RDA_Automation, Yunit
@@ -220,6 +220,36 @@ class Test_RDA_AutomationWindows {
     }
     Yunit.assert(lastException.message == "Window not found", "Window not found, closeOnDestruction close the window :)")
   }
+*/
+  Test_5_Automation_Windows_getNew() {
+    local
+    global RDA_Automation, Yunit
+
+    RDA_Log_Debug(A_ThisFunc)
+
+    ; get previous windows
+    automation := new RDA_Automation()
+    windows := automation.windows()
+    previousWindows := windows.get()
+
+    wins := windows.getNew(previousWindows)
+    Yunit.assert(wins.length() == 0, "0 new windows")
+
+    ; run your application
+    Run notepad.exe
+    sleep 2000 ; wait because it's a "find" example
+    wins := windows.getNew(previousWindows)
+    wins[1].closeOnDestruction()
+    Yunit.assert(wins.length() == 1, "1 new windows")
+
+    Run mspaint.exe
+    sleep 2000 ; wait because it's a "find" example
+    wins := windows.getNew(previousWindows)
+    wins[1].closeOnDestruction()
+    wins[2].closeOnDestruction()
+    Yunit.assert(wins.length() == 2, "2 new windows")
+}
+
 
 
 

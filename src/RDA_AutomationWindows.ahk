@@ -21,7 +21,7 @@ class RDA_AutomationWindows extends RDA_Base {
     Example:
       ======= AutoHotKey =======
       ; searches an application wich title Notepad
-      automation := RDA_Automation()
+      automation := new RDA_Automation()
       windows := automation.windows()
       wins := windows.get()
       ; print all windows!
@@ -82,7 +82,7 @@ class RDA_AutomationWindows extends RDA_Base {
     Example:
       ======= AutoHotKey =======
       ; searches an application wich title Notepad
-      automation := RDA_Automation()
+      automation := new RDA_Automation()
       windows := automation.windows()
       win := windows.find({"title": "Notepad"})
       ; searches an application wich process name is notepad.exe
@@ -122,7 +122,7 @@ class RDA_AutomationWindows extends RDA_Base {
 
     Example:
       ======= AutoHotKey =======
-      automation := RDA_Automation()
+      automation := new RDA_Automation()
       windows := automation.windows()
       Run notepad.exe
       sleep 3000 ; wait because it's a "find" example
@@ -166,7 +166,7 @@ class RDA_AutomationWindows extends RDA_Base {
       delay - number - delay, in miliseconds
 
       ======= AutoHotKey =======
-      windows := RDA_Automation().windows()
+      windows := (new RDA_Automation()).windows()
       Run notepad.exe
       ; wait 30s to notepad to open
       win := windows.waitOne({process: "notepad.exe"}, false, 30000)
@@ -198,7 +198,7 @@ class RDA_AutomationWindows extends RDA_Base {
     Example:
       ======= AutoHotKey =======
       ; searches an application wich title Notepad
-      automation := RDA_Automation()
+      automation := new RDA_Automation()
       windows := automation.windows()
       win := windows.waitOneOf([{"title": "Error dialog"}, {"title": "App frame"}])
       switch(win.title) {
@@ -250,13 +250,66 @@ class RDA_AutomationWindows extends RDA_Base {
   }
 
   /*!
+    Method: getNew
+      Retreves all new windows
+
+    Example:
+      ======= AutoHotKey =======
+      ; get previous windows
+      automation := new RDA_Automation()
+      windows := automation.windows()
+      previousWindows := windows.get()
+      ; run your application
+      Run notepad.exe
+      Run mspaint.exe
+
+      sleep 2000 ; wait because it's a "find" example
+      ; get your application
+      notepadWins := windows.getNew(previousWindows)
+      ==========================
+
+    Parameters:
+      previousWindows - <RDA_AutomationWindow[]> - Black list, result of calling <RDA_AutomationWindows.get>
+      hidden - boolean - search hidden windows?
+
+    Returns:
+      RDA_AutomationWindow[]
+  */
+  getNew(previousWindows, hidden := false) {
+    local
+    RDA_Log_Debug(A_ThisFunc . "(previousWindows.length = " . previousWindows.length() . ", hidden? " . (hidden ? "yes" : "no"))
+
+    output := []
+    wins := this.get(hidden)
+    loop % wins.Length() {
+      win := wins[A_Index]
+
+      ; skip previous windows
+      found := false
+      loop % previousWindows.Length() {
+        if (win.hwnd == previousWindows[A_Index].hwnd) {
+          found := true
+          break
+        }
+      }
+      if found {
+        continue
+      }
+
+      output.push(win)
+    }
+
+    return output
+  }
+
+  /*!
     Method: findNew
       Searches windows that match given object properties that it's not in the given window list.
 
     Example:
       ======= AutoHotKey =======
       ; get previous windows
-      automation := RDA_Automation()
+      automation := new RDA_Automation()
       windows := automation.windows()
       previousWindows := windows.get()
       ; run your application
@@ -310,7 +363,7 @@ class RDA_AutomationWindows extends RDA_Base {
 
     Example:
       ======= AutoHotKey =======
-      automation := RDA_Automation()
+      automation := new RDA_Automation()
       windows := automation.windows()
       ; run notepad
       Run notepad.exe
@@ -364,7 +417,7 @@ class RDA_AutomationWindows extends RDA_Base {
 
     Example:
       ======= AutoHotKey =======
-      automation := RDA_Automation()
+      automation := new RDA_Automation()
       windows := automation.windows()
       previousWindows := windows.get()
       Run notepad.exe
