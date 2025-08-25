@@ -780,7 +780,12 @@ RDA_Window_Show(hwnd) {
 RDA_Window_Activate(hwnd, timeout, delay) {
   local
 
-  winHwnd := DllCall("user32\GetAncestor", "Ptr", hwnd, "UInt", 2, "Ptr") ;GA_ROOT := 2
+  winHwnd := DllCall("User32\GetAncestor", "Ptr", hwnd, "UInt", 2, "Ptr") ;GA_ROOT := 2
+  if (!winHwnd) {
+    RDA_Log_Debug(A_ThisFunc . " get ancestor failed, using original value.")
+    winHwnd := hwnd
+  }
+
   RDA_Log_Debug(A_ThisFunc . "(" . hwnd . " / " . winHwnd . ")")
 
   ; be gentle, WinActivate can halt the process inside a RDP
@@ -788,15 +793,20 @@ RDA_Window_Activate(hwnd, timeout, delay) {
   startTime := A_TickCount
 
   loop {
+    ; ahk
     ; hwnd2 := WinExist("A")
-    hwnd2 := DllCall("GetForegroundWindow")
+    ; dll
+    hwnd2 := DllCall("User32\GetForegroundWindow")
 
     if (hwnd2 == winHwnd) {
       return
     }
 
     RDA_Log_Debug(A_ThisFunc . " GetForegroundWindow = " . hwnd2)
+    ; ahk
     WinActivate ahk_id %winHwnd%
+    ; dll
+    ; hwnd2 := DllCall("User32\SetForegroundWindow", "Ptr", winHwnd)
 
     if (A_TickCount >= startTime + timeout) {
       RDA_Log_Error(A_ThisFunc . " timeout reached")
