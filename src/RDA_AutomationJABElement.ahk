@@ -108,6 +108,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
 
     return ""
   }
+  _name := 0
   /*!
     Method: getName
       Retrieves the element name
@@ -122,9 +123,31 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     RDA_Log_Debug(A_ThisFunc)
 
     this.__cacheInfo(!useCache)
-    RDA_Log_Debug(A_ThisFunc . "=" . this._info.name)
+    name := this._info.name
+    /*
+    name := ""
 
-    return this._info.name
+    if (!name) {
+      if (!useCache || !this._name) {
+        buff := 0
+        VarSetCapacity(buff, RDA_AutomationJAB.MAX_STRING_SIZE * 2, 0)
+        ;BOOL GetVirtualAccessibleName(long vmID, AccessibleValue av, wchar_t *value, short len);
+        if (!DllCall(this.jab.dllName . "\getVirtualAccessibleName"
+          , "Int", this.vmId, this.jab.acType, this.acId
+          , "ptr", &buff, "short", RDA_AutomationJAB.MAX_STRING_SIZE
+          , "Cdecl Int")) {
+          throw RDA_Exception("getVirtualAccessibleName failed")
+        }
+        this._name := StrGet(&buff, RDA_AutomationJAB.MAX_STRING_SIZE, "UTF-16")
+      }
+
+      name := this._name
+    }
+    */
+
+    RDA_Log_Debug(A_ThisFunc . "=" . name)
+
+    return name
   }
   /*!
     Method: getDescription
@@ -179,7 +202,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     s := this._info.states
     r := this._info.role
 
-    RDA_Log_Debug(A_ThisFunc . "states = " . s . " role = " . r)
+    RDA_Log_Debug(A_ThisFunc . " states = " . s . " role = " . r)
 
     ; InStr(s, "editable")
     if (this._info.accessibleValueInterface) {
@@ -219,7 +242,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   */
   getIndex() {
     this.__cacheInfo()
-    RDA_Log_Debug(A_ThisFunc . "=" . this._info.indexInParent + 1)
+    RDA_Log_Debug(A_ThisFunc . " = " . this._info.indexInParent + 1)
 
     return this._info.indexInParent + 1
   }
@@ -604,7 +627,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
 
     Throws:
       SelectionItemPattern not implemented
-      select called but no change
+      select() called but no change
 
     Returns:
       <RDA_AutomationJABElement>
@@ -615,7 +638,10 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
     this.__cacheInfo()
 
+    this.expectPattern("SelectionItem", "SelectionItemPattern not implemented")
+
     parent := this.getParent()
+    parent.expectPattern("Selection", "SelectionPattern not implemented")
 
     ; void AddAccessibleSelectionFromContext(long vmID, AccessibleSelection as, int i);
     DllCall(this.jab.dllName . "\addAccessibleSelectionFromContext"
@@ -623,7 +649,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
       , "Cdecl Int")
 
     if (!this.isSelected()) {
-      throw RDA_Exception("select called but no change")
+      throw RDA_Exception("select() called but no change")
     }
 
     return this

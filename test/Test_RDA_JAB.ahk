@@ -207,27 +207,42 @@ class Test_RDA_JAB {
     winElement.findOne("//ToggleButton[@Description=""JSplitPane demo""]").click()
     RDA_Log_Debug(winElement.dumpXML())
 
-    textEl := winElement.findOne("//Text[@name=""Divider Size""]")
+    pageTab := winElement.findOne("//PageTab[@name=""Split Pane Demo""]")
+
+    textEl := pageTab.findOne("//Text[@name=""Divider Size""]")
     RDA_Log_Debug(textEl.getActions())
 
     Yunit.assert(textEl.getValue() != "", "Divider Size has value")
 
-    textEl.setValue("123").expectValue("123")
-    textEl.setValue("999").expectValue("999")
+    ; this is a common issues
+    ; JAB do not update based on value until input is sent to window
+    textEl.focus().setValue("123").expectValue("123")
+    textEl.setValue("25").expectValue("25")
+    win.sendKeys("{ENTER}")
 
-    textEl :=winElement.findOne("//Text[@name=""First Component's Minimum Size""]")
+    textEl :=pageTab.findOne("//Text[@name=""First Component's Minimum Size""]")
     textEl.osClick()
+    win.sendKeys("{BackSpace}{BackSpace}30")
+    textEl.expectValue("30")
 
-    textEl :=winElement.findOne("//Text[@name=""Second Component's Minimum Size""]")
+    splitPane := pageTab.findOne("//SplitPane")
+    children := splitPane.getChildren()
+    region1 := children[1].getRegion()
+    region2 := children[2].getRegion()
+
+    Yunit.assert(region2.x - (region1.x + region1.w) == 25, "Divider Size match expected")
+
+    ; focus check
+    textEl :=pageTab.findOne("//Text[@name=""Second Component's Minimum Size""]")
     textEl.focus()
 
     textEl2 := automation.jab.getFocusedElement(win.hwnd)
     Yunit.assert(textEl.isSameElement(textEl2), "text focus check")
 
-    winElement.findOne("//RadioButton[@name=""Vertically Split""]").click()
-    winElement.findOne("//RadioButton[@name=""Horizontally Split""]").click()
-    winElement.findOne("//CheckBox[@name=""Continuous Layout""]").click()
-    winElement.findOne("//CheckBox[@name=""One-Touch expandable""]").click()
+    pageTab.findOne("//RadioButton[@name=""Vertically Split""]").click()
+    pageTab.findOne("//RadioButton[@name=""Horizontally Split""]").click()
+    pageTab.findOne("//CheckBox[@name=""Continuous Layout""]").click()
+    pageTab.findOne("//CheckBox[@name=""One-Touch expandable""]").click()
 
     ; **************************************************************************
     winElement.findOne("//ToggleButton[@Description=""JSlider demo""]").click()
@@ -363,7 +378,7 @@ class Test_RDA_JAB {
     } catch e {
       lastException := e
     }
-    Yunit.assert(lastException.message == "Not found: //ToggleButton[@description=""JTable demo""]", "(limited search) Element not found")
+    Yunit.assert(lastException.message == "Element(s) not found for query: //ToggleButton[@description=""JTable demo""]", "(limited search) Element not found")
 
     automation.limits.reset()
     winElement.findOne("//ToggleButton[@description=""JTable demo""]").click()
