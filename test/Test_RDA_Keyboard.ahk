@@ -166,15 +166,19 @@ class Test_RDA_Keyboard {
     sleep 1000
     ;win.rightClick(100, 100)
 */
+    text := "012345678901234567890123456789012345678901234567890123456789"
+    expectedText := ""
     loop 10 {
-      win.sendKeys("012345678901234567890123456789012345678901234567890123456789{Enter}")
+      win.sendKeys(text . "{Enter}")
+      expectedText .= text . "`r`n"
     }
     win.click(100, 100)
-    win.sendKeys("{LShift DOWN}{LControl DOWN}{HOME}{LControl UP}{LShift UP}")
+    ;win.sendKeys("{LShift DOWN}{LControl DOWN}{HOME}{LControl UP}{LShift UP}")
     ;win.sendKeys("{LControl DOWN}c{LControl UP}{LShift UP}")
+    win.sendKeys("{LControl DOWN}{vk41}{LControl UP}{LShift UP}")
     win.sendKeys("{LControl DOWN}{vk43}{LControl UP}{LShift UP}")
 
-    Yunit.assert(Clipboard == "012345678901234567890123456789012345678901234567890123456789`r`n012345678901234567890123456789012345678901234567890123456789`r`n012345678901234567890123456789012345678901234567890123456789`r`n012345678901234567890123456789012345678901234567890123456789`r`n012345678901234567890123456789012345678901234567890123456789`r`n012345678901", "check clipboard")
+    Yunit.assert(Clipboard == expectedText, "check clipboard")
 
     Clipboard := ""
 
