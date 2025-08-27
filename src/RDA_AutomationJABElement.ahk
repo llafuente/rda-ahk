@@ -448,7 +448,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
 
     Throws:
       TogglePattern not implemented
-      Toggle called but no change
+      toggle() called but no change
 
     Returns:
       <RDA_AutomationJABElement>
@@ -468,7 +468,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     after := this.isChecked()
 
     if (before == after) {
-      throw RDA_Exception("Toggle called but no change")
+      throw RDA_Exception("toggle() called but no change")
     }
   }
   /*!
@@ -487,9 +487,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
     this.__cacheInfo(true)
 
-    if (!RDA_Array_IndexOf(this.getPatterns(), "Toggle")) {
-      throw RDA_Exception("TogglePattern not implemented")
-    }
+    this.expectPattern("Toggle", "TogglePattern not implemented")
 
     return InStr(this._info.states, "checked") > 0
   }
@@ -508,7 +506,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     }
 
     if (this.isChecked() != state) {
-      throw RDA_Exception("Toggle called but no change")
+      throw RDA_Exception("toggle() called but no change")
     }
   }
   /*!
@@ -516,7 +514,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
       Checks the element only if it's unchecked, element must implement TogglePattern
 
     Throws:
-      Toggle failed, no change
+      toggle() called but no change
       TogglePattern not implemented
   */
   ensureChecked() {
@@ -529,7 +527,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
       Unchecks the element only if it's checked, element must implement TogglePattern
 
     Throws:
-      Toggle failed, no change
+      toggle() called but no change
       TogglePattern not implemented
   */
   ensureUnChecked() {
@@ -555,7 +553,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     }
 
     if (this.isExpanded() != state) {
-      throw RDA_Exception("Click called but no change")
+      throw RDA_Exception("click() called but no change")
     }
   }
   /*!
@@ -563,10 +561,11 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
       Expand the element only if it's collapsed, element must implement ExpandCollapsed
 
     Throws:
-      Click failed, no change
-      ExpandCollapsed not implemented
+      click() called but no change
+      ExpandCollapsedPattern not implemented
   */
   ensureExpanded() {
+    this.expectPattern("ExpandCollapsed", "ExpandCollapsedPattern not implemented")
     this._ensureExpanded(true)
   }
   /*!
@@ -575,9 +574,10 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
 
     Throws:
       Click failed, no change
-      ExpandCollapsed not implemented
+      ExpandCollapsedPattern not implemented
   */
   ensureCollapsed() {
+    this.expectPattern("ExpandCollapsed", "ExpandCollapsedPattern not implemented")
     this._ensureExpanded(false)
   }
 
@@ -586,7 +586,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
       Retrieves if the element is expanded, element must implement ExpandCollapsed
 
     Throws:
-      ExpandCollapsed not implemented
+      ExpandCollapsedPattern not implemented
 
     Returns:
       boolean
@@ -597,9 +597,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
     this.__cacheInfo(true)
 
-    if (!RDA_Array_IndexOf(this.getPatterns(), "ExpandCollapsed")) {
-      throw RDA_Exception("ExpandCollapsed not implemented")
-    }
+    this.expectPattern("ExpandCollapsed", "ExpandCollapsedPattern not implemented")
 
     return InStr(this._info.states, "expanded") > 0
   }
@@ -700,9 +698,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
     this.__cacheInfo(true)
 
-    if (!RDA_Array_IndexOf(this.getPatterns(), "SelectionItem")) {
-      throw RDA_Exception("SelectionItem not implemented")
-    }
+    this.expectPattern("SelectionItem", "SelectionItemPattern not implemented")
 
     return InStr(this._info.states, "selected") > 0
 
@@ -728,12 +724,14 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
 
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
 
+    this.expectPattern("Selection", "SelectionPattern not implemented")
+
     ; int GetAccessibleSelectionCountFromContext(long vmID, AccessibleSelection as);
     count := DllCall(this.jab.dllName . "\getAccessibleSelectionCountFromContext"
       , "Int", this.vmId, this.jab.acType, this.acId
       , "Cdecl Int")
 
-    RDA_Log_Debug(A_ThisFunc . " found " . count . " elements")
+    RDA_Log_Debug(A_ThisFunc . " selected " . count . " elements")
 
     list := []
     loop % count {
@@ -765,6 +763,8 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   clearSelectedItems() {
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
 
+    this.expectPattern("Selection", "SelectionPattern not implemented")
+
     ; void ClearAccessibleSelectionFromContext(long vmID, AccessibleSelection as)
     DllCall(this.jab.dllName . "\clearAccessibleSelectionFromContext"
       , "Int", this.vmId, this.jab.acType, this.acId
@@ -786,7 +786,10 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     local pattern, v, e
 
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
+
     this.__cacheInfo()
+    this.expectPattern("Selection", "SelectionPattern not implemented")
+
     return InStr(this._info.states, "multiselectable") > 0
   }
   ; internal
@@ -840,31 +843,18 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     Method: getSelectedText
       Retrieves the element selected text, element must implement TextPattern
 
+      Not implemented
+
     Throws:
-      TextPattern not implemented
-      getSelectedText failed
+      not implemented
 
     Returns:
       string
   */
   getSelectedText() {
     local
-    global UIA_Enum
-    try {
-      if (this.uiaHandle.GetCurrentPropertyValue(UIA_Enum.UIA_IsTextPatternAvailablePropertyId)) {
-        pattern := this.uiaHandle.GetCurrentPatternAs("Text") ; UIA_TextPattern
-        selections := pattern.GetSelection() ; UIA_TextRangeArray
-        selection := selections[1]
-        return selection.GetText()
-      }
 
-      throw RDA_Exception("TextPattern not implemented")
-    } catch e {
-      RDA_Log_Error(A_ThisFunc . " at " . this.toString())
-      RDA_Log_Error(A_ThisFunc . " error = " . e.message)
-
-      throw e
-    }
+    throw RDA_Exception("not implemented")
   }
   ;
   ; ValuePattern
@@ -872,7 +862,6 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   ; internal
   _setValue(text) {
     local
-    global UIA_Enum
 
     this.__cacheInfo()
 
