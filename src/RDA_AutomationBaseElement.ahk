@@ -113,6 +113,28 @@ class RDA_AutomationBaseElement extends RDA_Base {
   ;
   ; expect
   ;
+
+  /*!
+    Method: expectPattern
+      Asserts if current element patterns don't have the given one
+
+    Parameters:
+      type - string - type
+      exceptionMessage - string - exception message
+
+    Returns:
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
+  */
+  expectPattern(pattern, exceptionMessage := "Unexpected pattern") {
+    local
+    RDA_Log_Debug(A_ThisFunc . "(" . pattern . ", " . exceptionMessage . ")")
+
+    patterns := this.getPatterns()
+    if (!RDA_Array_IndexOf(patterns, pattern)) {
+      throw RDA_Exception(exceptionMessage)
+    }
+    return this
+  }
   /*!
     Method: expectType
       Asserts if current element type is not the given one
