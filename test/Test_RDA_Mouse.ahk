@@ -1,8 +1,8 @@
 class Test_RDA_Mouse {
   Begin() {
   }
-/*
-  Test_4_Automation_WindowsMouse2() {
+
+  Test_Mouse() {
     local
     global RDA_Automation, Yunit
 
@@ -27,9 +27,21 @@ class Test_RDA_Mouse {
       Yunit.assert(position.x == A_index * 50, A_index . " check mouse x at origin")
       Yunit.assert(position.y == A_index * 25, A_index . " check mouse y at origin")
     }
+
+    ; test mouse itself
+    position := mouse.get()
+    mouse.move(25, 25)
+    position2 := mouse.get()
+    Yunit.assert(position.x + 25 == position2.x, "Mouse moved 25 on x")
+    Yunit.assert(position.y + 25 == position2.y, "Mouse moved 25 on y")
+
+    mouse.moveTo(101, 202)
+    position := mouse.get()
+    Yunit.assert(position.x == 101, "Mouse moved to 101 on x")
+    Yunit.assert(position.y == 202, "Mouse moved to 202 on y")
   }
 
-  Test_4_Automation_WindowsMouse() {
+  Test_Window_Mouse() {
     local
     global RDA_Automation, Yunit, TestOpenApp
 
@@ -41,15 +53,22 @@ class Test_RDA_Mouse {
 
 
     ; test mouse inside windows class
-    app := new TestOpenApp("mspaint.exe " . A_ScriptDir . "\green.png", {process: "mspaint.exe"})
-    win := app.win
+    Run % "mspaint.exe " . A_ScriptDir . "\green.png"
+    win := windows.waitOne({process: "mspaint.exe"})
+    win.closeOnDestruction()
+
     Yunit.assert(win != 0, "mspaint found")
     sleep 1000
 
     position := mouse.get()
 
-    win.click(200, 200)
+    ; modify document to trigger popup
+    win.resize(1024,768)
+    win.click(200, 300)
     win.close(0)
+
+    ;win.sendKeys("{CtrlDown}w{CtrlUp}")
+
     ; save changes ?
     popup := windows.waitOne({process: "mspaint.exe", classNN: "#32770"})
     popup.mouseMoveTo(200, 110)
@@ -64,22 +83,10 @@ class Test_RDA_Mouse {
 
     Yunit.assert(position.x != position2.x, "Mouse moved on x")
     Yunit.assert(position.y != position2.y, "Mouse moved on y")
-
-    ; test mouse itself
-    position := mouse.get()
-    mouse.move(25, 25)
-    position2 := mouse.get()
-    Yunit.assert(position.x + 25 == position2.x, "Mouse moved 25 on x")
-    Yunit.assert(position.y + 25 == position2.y, "Mouse moved 25 on y")
-
-    mouse.moveTo(101, 202)
-    position := mouse.get()
-    Yunit.assert(position.x == 101, "Mouse moved to 101 on x")
-    Yunit.assert(position.y == 202, "Mouse moved to 202 on y")
   }
-*/
 
-  Test_4_MouseCursor() {
+
+  Test_Mouse_Cursor() {
     local
     global RDA_Automation, Yunit
 
@@ -96,8 +103,16 @@ class Test_RDA_Mouse {
     win.resize(1024,768)
 
     win.pixel(10,10).mouseMove()
+    mouse.waitCursor("SizeWE")
+    mouse.expectCursor(["SizeWE"], "unexpected cursor at left")
+
+    win.pixel(50,60).mouseMove()
+    mouse.expectCursor(["Arrow", "AppStarting"], "unexpected cursor at menu")
+    mouse.waitCursor("Arrow")
+
     ;Yunit.assert(mouse.getCursor() == , "AppStarting")
-    Yunit.assert(RDA_Array_IndexOf(["Arrow", "AppStarting"], mouse.getCursor()) > 0, "Arrow or AppStarting")
+    ;Yunit.assert(RDA_Array_IndexOf(["Arrow", "AppStarting"], mouse.getCursor()) > 0, "Arrow or AppStarting")
+
     win.pixel(100,100).mouseMove()
     Yunit.assert(mouse.getCursor() == "IBeam", "IBeam")
 
