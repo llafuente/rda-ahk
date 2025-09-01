@@ -9,6 +9,7 @@ class RDA_Overlay {
   automation := 0
   pToken := 0
   hwnd := 0
+  region := 0
   hbm := 0
   hdc := 0
   obm := 0
@@ -30,11 +31,9 @@ class RDA_Overlay {
     RDA_Assert(automation, A_ThisFunc . " automation is null")
     this.automation := automation
 
-    if (!region) {
-      region := RDA_ScreenRegion.fromPrimaryScreen(automation)
-    }
+    this.region := !region ? RDA_ScreenRegion.fromPrimaryScreen(automation) : region
 
-    RDA_Log_Debug(A_ThisFunc . "(" . region.toString() . ")")
+    RDA_Log_Debug(A_ThisFunc . "(" . this.region.toString() . ")")
 
     ; Start gdi+
     If (!this.pToken := Gdip_Startup()) {
@@ -49,7 +48,7 @@ class RDA_Overlay {
 
 
     ; Create a gdi bitmap with width and height of what we are going to draw into it. This is the entire drawing area for everything
-    this.hbm := CreateDIBSection(region.w, region.h)
+    this.hbm := CreateDIBSection(this.region.w, this.region.h)
     RDA_Assert(this.hbm != 0, "CreateDIBSection failed")
 
     ; Get a device context compatible with the screen
@@ -96,7 +95,7 @@ class RDA_Overlay {
       string - dump
   */
   toString() {
-    return "RDA_Overlay{hwnd " . this.hwnd . "}"
+    return "RDA_Overlay{hwnd " . this.hwnd . ", region: " . this.region.toString() . "}"
   }
 
   /*!
