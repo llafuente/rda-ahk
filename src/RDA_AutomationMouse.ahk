@@ -105,6 +105,59 @@ class RDA_AutomationMouse extends RDA_Base {
     return RDA_MouseGetPosition(this.automation)
   }
   /*!
+    Method: expectPosition
+      Asserts if current mouse position is not the given
+
+    Parameters:
+      expectedPosition - RDA_ScreenPosition - screen position
+      errorMessage - string - Exception error message
+
+    Throws:
+      Unexpected mouse cursor value
+
+    Returns:
+      <RDA_AutomationMouse>
+  */
+  expectPosition(expectedPosition, errorMessage := "Unexpected mouse cursor value") {
+    local
+
+    RDA_Log_Debug(A_ThisFunc "(" . errorMessage . ")")
+
+    if (this.get().equal(expectedPosition)) {
+      return this
+    }
+
+    throw RDA_Exception(errorMessage)
+  }
+  /*!
+    Method: expectPosition2
+      Asserts if current mouse position is not the given
+
+    Parameters:
+      x - number - screen position x
+      y - number - screen position y
+      errorMessage - string - Exception error message
+
+    Throws:
+      Unexpected mouse cursor value
+
+    Returns:
+      <RDA_AutomationMouse>
+  */
+  expectPosition2(x, y, errorMessage := "Unexpected mouse cursor value") {
+    local
+
+    RDA_Log_Debug(A_ThisFunc . "(" . x . ", " . y . ", " . errorMessage . ")")
+
+    p := this.get()
+    RDA_Log_Debug(A_ThisFunc . " <-- " . p.toString() )
+    if (p.x == x && p.y == y) {
+      return this
+    }
+
+    throw RDA_Exception(errorMessage)
+  }
+  /*!
     Method: getPosition
       See <RDA_MouseGetPosition>
 

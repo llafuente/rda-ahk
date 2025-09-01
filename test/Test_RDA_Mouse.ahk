@@ -4,7 +4,7 @@ class Test_RDA_Mouse {
 
   Test_Mouse() {
     local
-    global RDA_Automation, Yunit
+    global RDA_Automation, Yunit, RDA_ScreenPosition
 
     RDA_Log_Debug(A_ThisFunc)
 
@@ -15,30 +15,23 @@ class Test_RDA_Mouse {
     mouse.moveTo(0, 0)
     sleep 250
 
-    position := mouse.get()
-    Yunit.assert(position.x == 0, "check mouse x at origin")
-    Yunit.assert(position.y == 0, "check mouse y at origin")
+    mouse.expectPosition2(0, 0, "check mouse x at origin")
 
     loop 5 {
       mouse.move(50, 25)
       sleep 250
 
-      position := mouse.get()
-      Yunit.assert(position.x == A_index * 50, A_index . " check mouse x at origin")
-      Yunit.assert(position.y == A_index * 25, A_index . " check mouse y at origin")
+      mouse.expectPosition2(A_index * 50, A_index * 25, " check mouse position[" . A_index . "]")
     }
 
     ; test mouse itself
     position := mouse.get()
     mouse.move(25, 25)
-    position2 := mouse.get()
-    Yunit.assert(position.x + 25 == position2.x, "Mouse moved 25 on x")
-    Yunit.assert(position.y + 25 == position2.y, "Mouse moved 25 on y")
+    mouse.expectPosition2(position.x + 25, position.y + 25, "Mouse moved 25 on x/y")
 
     mouse.moveTo(101, 202)
     position := mouse.get()
-    Yunit.assert(position.x == 101, "Mouse moved to 101 on x")
-    Yunit.assert(position.y == 202, "Mouse moved to 202 on y")
+    mouse.expectPosition(new RDA_ScreenPosition(automation, 101, 202), "Mouse moved to (101,202)")
   }
 
   Test_Window_Mouse() {

@@ -48,6 +48,19 @@ class RDA_ScreenPosition extends RDA_Position {
     return "RDA_ScreenPosition{x: " . this.x . ", y: " . this.y . "}"
   }
   /*!
+    Method: equal
+      Equality check
+
+    Returns:
+      <RDA_ScreenRegion>
+  */
+  equal(other) {
+    RDA_Log_Debug(A_ThisFunc . "(" . other.toString() . ")" . this.toString())
+    a := this.toScreen()
+    b := other.toScreen()
+    return a.x == b.x && a.y == b.y
+  }
+  /*!
     Method: clone
       Duplicates screen position
 
