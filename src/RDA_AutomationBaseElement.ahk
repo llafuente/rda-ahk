@@ -113,7 +113,26 @@ class RDA_AutomationBaseElement extends RDA_Base {
   ;
   ; expect
   ;
+  /*!
+    Method: expectChildElementCount
+      Asserts if current element count is not the given one
 
+    Parameters:
+      expectedCount - number - count
+      exceptionMessage - string - exception message
+
+    Returns:
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
+  */
+  expectChildElementCount(expectedCount, exceptionMessage := "Unexpected child element count") {
+    local
+    RDA_Log_Debug(A_ThisFunc . "(" . expectedCount . ", " . exceptionMessage . ")")
+
+    if (this.getChildElementCount() != expectedCount) {
+      throw RDA_Exception(exceptionMessage)
+    }
+    return this
+  }
   /*!
     Method: expectPattern
       Asserts if current element patterns don't have the given one
