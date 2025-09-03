@@ -58,34 +58,35 @@ class Test_RDA_JAB {
     Yunit.assert(aqua.getName() == "Aqua", "check Aqua name")
 
     themes.click()
-    emerald.click()
-    Yunit.assert(emerald.isChecked() == true, "emerald is checked")
+    emerald.expectUnchecked().click().expectChecked("emerald should be checked")
 
     themes.click()
-    aqua.click()
-    Yunit.assert(aqua.isChecked() == true, "aqua is checked")
+    aqua.expectUnchecked().click().expectChecked("aqua should be checked")
 
     resizable := winElement.findOne("//CheckBox[@Name=""Resizable""]")
-    resizable.ensureUnchecked()
-    resizable.ensureChecked()
-    resizable.ensureUnchecked()
+    resizable.ensureUnchecked().expectUnchecked()
+    resizable.ensureChecked().expectChecked()
+    resizable.ensureUnchecked().expectUnchecked()
 
     ; **************************************************************************
 
     winElement.findOne("//ToggleButton[@Description=""JComboBox demo""]").click()
+    pageTab := winElement.findOne("//PageTab[@name=""ComboBox Demo""]")
+    pageTab.cacheTree()
+
     RDA_Log_Debug(winElement.dumpXML())
 
-    hair := winElement.findOne("//ComboBox[@Name=""Hair:""]")
+    hair := pageTab.findOne("//ComboBox[@Name=""Hair:""]")
     Yunit.assert(hair.hasPattern("Selection"), "Hair combobox has SelectionPattern")
     Yunit.assert(hair.getSelectedItems().length() == 1, "Hair One is selected")
     Yunit.assert(hair.canSelectMultiple() == false, "Hair single selection")
 
-    eyes := winElement.findOne("//ComboBox[@Name=""Eyes & Nose:""]")
+    eyes := pageTab.findOne("//ComboBox[@Name=""Eyes & Nose:""]")
     Yunit.assert(hair.hasPattern("Selection"), "Eyes combobox has SelectionPattern")
     Yunit.assert(hair.getSelectedItems().length() == 1, "Eyes One is selected")
     Yunit.assert(hair.canSelectMultiple() == false, "Eyes single selection")
 
-    mouth := winElement.findOne("//ComboBox[@Name=""Mouth:""]")
+    mouth := pageTab.findOne("//ComboBox[@Name=""Mouth:""]")
     Yunit.assert(hair.hasPattern("Selection"), "Mouth combobox has SelectionPattern")
     Yunit.assert(hair.getSelectedItems().length() == 1, "Mouth One is selected")
     Yunit.assert(hair.canSelectMultiple() == false, "Mouth single selection")
@@ -146,7 +147,7 @@ class Test_RDA_JAB {
 
 
     ; test that change is registered without ui!
-    presets := winElement.findOne("//ComboBox[@Name=""Presets:""]")
+    presets := pageTab.findOne("//ComboBox[@Name=""Presets:""]")
     presets.osClick()
     presets.findOne("//Label[@Name=""Howard, Scott, Hans""]").select()
     win.sendKeys("{Enter}")
@@ -189,19 +190,55 @@ class Test_RDA_JAB {
     winElement.findOne("//ToggleButton[@Description=""JList demo""]").click()
     RDA_Log_Debug(winElement.dumpXML())
 
-    list := winElement.findOne("//Label[@name=""YoYoWorks""]").getParent()
+    pageTab := winElement.findOne("//PageTab[@name=""List Demo""]")
+
+    list := pageTab.findOne("//Label[@name=""YoYoWorks""]").getParent()
+    list.cacheTree()
     Yunit.assert(list.getType() == "List", "fetch list by path")
     Yunit.assert(list.canSelectMultiple() == true, "multiple selection")
-    list.clearSelectedItems()
 
+    list.clearSelectedItems()
     Yunit.assert(list.getSelectedItems().length() == 0, "selection cleared")
 
+    ; visible
     list.findOne("//Label[@name=""TeraTelecom""]").select()
     list.findOne("//Label[@name=""YoYoWorks""]").select()
+    ; not visible
     list.findOne("//Label[@name=""MetaSystems""]").select()
+    list.findOne("//Label[@name=""NetTech""]").select()
+    list.findOne("//Label[@name=""CompuSoft""]").select()
+    list.findOne("//Label[@name=""TeraWorks""]").select()
 
-    Yunit.assert(list.getSelectedItems().length() == 3, "3 selected")
+    Yunit.assert(list.getSelectedItems().length() == 6, "6 selected")
 
+    list.expectChildElementCount(30)
+
+    ; this modify the tree but it's cached!
+    pageTab.findOne("//CheckBox[@name=""Tera""]").click().expectUnChecked()
+
+    list.expectChildElementCount(30)
+    Yunit.assert(list.getChildren().length() == 30, "cached children: 30")
+
+    ; refresh, not it's not cached and should be less elements
+    list := pageTab.findOne("//Label[@name=""YoYoWorks""]").getParent()
+
+    list.expectChildElementCount(24)
+    Yunit.assert(list.getChildren().length() == 24, "invalid children count")
+
+
+    lastException := 0
+    try {
+      list.getSelectedItems()
+    } catch e {
+      lastException := e
+    }
+    Yunit.assert(lastException.message == "Selection returns an empty object", "expected error: Selection returns an empty object")
+
+    ; Yunit.assert(list.getSelectedItems().length() == 6, "6 selected")
+
+    ; fix it!
+    list.getChild(1).click()
+    Yunit.assert(list.getSelectedItems().length() == 1, "1 selected")
 
     ; **************************************************************************
     winElement.findOne("//ToggleButton[@Description=""JSplitPane demo""]").click()
@@ -265,21 +302,24 @@ class Test_RDA_JAB {
     winElement.findOne("//ToggleButton[@Description=""JTree demo""]").click()
     RDA_Log_Debug(winElement.dumpXML())
 
+    pageTab := winElement.findOne("//PageTab[@name=""Tree Demo""]")
+
     ; winElement.findOne("//Label[@name=""Music""]").click()
-    winElement.findOne("//Label[@name=""Classical""]").click()
-    winElement.findOne("//Label[@name=""Beethoven""]").click()
-    winElement.findOne("//Label[@name=""concertos""]").click()
-    winElement.findOne("//Label[@name=""Jazz""]").click()
-    winElement.findOne("//Label[@name=""Rock""]").click()
-    winElement.findOne("//Label[@name=""Rock""]").osClick()
+    pageTab.findOne("//Label[@name=""Classical""]").click()
+    pageTab.findOne("//Label[@name=""Beethoven""]").click()
+    pageTab.findOne("//Label[@name=""concertos""]").click()
+    pageTab.findOne("//Label[@name=""Jazz""]").click()
+    pageTab.findOne("//Label[@name=""Rock""]").click()
+    pageTab.findOne("//Label[@name=""Rock""]").osClick()
     win.sendKeys("{F2}")
     win.type("Rock And Roll Baby!")
     win.sendKeys("{Enter}")
 
     ; label is renamed, shall be fetch with the new name!
-    winElement.findOne("//Label[@name=""Rock And Roll Baby!""]")
+    pageTab.findOne("//Label[@name=""Rock And Roll Baby!""]")
 
 
+    ; **************************************************************************
     winElement.findOne("//ToggleButton[@description=""JButton, JRadioButton, JToggleButton, JCheckbox demos""]").click()
     RDA_Log_Debug(winElement.dumpXML())
 

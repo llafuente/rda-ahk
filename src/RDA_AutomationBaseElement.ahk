@@ -746,6 +746,79 @@ class RDA_AutomationBaseElement extends RDA_Base {
   ; actions
   ;
 
+  ;
+  ; tree
+  ;
+
+  cachedChildren := 0
+  cachedParent := 0
+  /*!
+    Method: cacheTree
+      Caches the descentants tree
+
+  Example:
+    ======= AutoHotKey =======
+    ; with default limits
+    element.cacheTree()
+    ; some heavy tree operations
+    ; ...
+    ; clear cache
+    element.clearCacheTree()
+    ==========================
+
+    Returns:
+      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+  */
+  cacheTree(parent := 0) {
+    RDA_Log_Debug(A_ThisFunc)
+    this._cacheTree(parent)
+
+    return this
+  }
+  ; internal, recursion
+  _cacheTree(parent) {
+    RDA_Log_Debug(A_ThisFunc . " " . this.toString())
+
+    this.cachedChildren := this._getChildren()
+    this.cachedParent := parent ? parent : this._getParent()
+
+    loop % this.cachedChildren.length() {
+      this.cachedChildren[A_Index]._cacheTree(this)
+    }
+  }
+  /*!
+    Method: cacheTree
+      clears the descentants tree cache
+
+  Example:
+    ======= AutoHotKey =======
+    ; with default limits
+    element.cacheTree()
+    ; some heavy tree operations
+    ; ...
+    ; clear cache
+    element.clearCacheTree()
+    ==========================
+
+    Returns:
+      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+  */
+  clearCacheTree() {
+    RDA_Log_Debug(A_ThisFunc . " " . this.toString())
+
+    this._clearCacheTree()
+
+    return this
+  }
+  ; internal, recursion
+  _clearCacheTree() {
+    loop % this.cachedChildren.length() {
+      this.cachedChildren._clearCacheTree()
+    }
+
+    this.cachedChildren := 0
+    this.cachedParent := 0
+  }
 
   ;
   ; query

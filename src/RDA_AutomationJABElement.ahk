@@ -1069,6 +1069,40 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   ;
   ; tree
   ;
+  _getChildren() {
+    local
+
+    if (this.cachedChildren) {
+      return this.cachedChildren
+    }
+
+    ret := []
+    loop % this.getChildElementCount() {
+      ret.push(this.getChild(A_Index))
+    }
+
+    return ret
+  }
+
+  _getParent() {
+    local
+    global RDA_AutomationJABElement
+
+    if (this.cachedParent) {
+      return this.cachedParent
+    }
+
+    acId := DllCall(this.jab.dllName . "\getAccessibleParentFromContext"
+      , "Int", this.vmId, this.jab.acType, this.acId
+      , "Cdecl " . this.jab.acType)
+    if (!acId) {
+      throw RDA_Exception("Could not get parent")
+    }
+
+    return new RDA_AutomationJABElement(this.jab, this.win, this.vmId, acId)
+  }
+
+
   /*!
     Method: getChildren
       Retrieves all the element child elements
@@ -1078,12 +1112,11 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   */
   getChildren() {
     local
+    RDA_Log_Debug(A_ThisFunc . "()")
 
-    ret := []
-    loop % this.getChildElementCount() {
-      ret.push(this.getChild(A_Index))
-    }
-    RDA_Log_Debug(A_ThisFunc . " Found " . ret.length() . " elements")
+    ret := this._getChildren()
+
+    ; RDA_Log_Debug(A_ThisFunc . " Found " . ret.length() . " elements")
 
     return ret
   }
@@ -1130,7 +1163,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     local
     global RDA_ElementTreeNode
 
-    RDA_Log_Debug(A_ThisFunc . "(" . limits ? limits.toString() : "no" . ")")
+    RDA_Log_Debug(A_ThisFunc . "(" . limits ? limits.toString() : "unlimited" . ")")
 
     list := RDA_ElementTreeNode.flatternToElements(this._getDescendantsTree(limits))
 
@@ -1166,14 +1199,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
 
     RDA_Log_Debug(A_ThisFunc . "(" . this.toString() . ")")
 
-    acId := DllCall(this.jab.dllName . "\getAccessibleParentFromContext"
-      , "Int", this.vmId, this.jab.acType, this.acId
-      , "Cdecl " . this.jab.acType)
-    if (!acId) {
-      throw RDA_Exception("Could not get parent")
-    }
-
-    return new RDA_AutomationJABElement(this.jab, this.win, this.vmId, acId)
+    return this._getParent()
   }
 
   ;

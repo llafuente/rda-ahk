@@ -2,7 +2,6 @@ class Test_RDA_UIA {
   Begin() {
   }
 
-
   Test_14_Automation_UIA() {
     local
     global RDA_Automation, Yunit
@@ -189,19 +188,29 @@ class Test_RDA_UIA {
     popupWin := win.waitChild({classNN: "#32770"})
     popup := popupWin.asUIAElement()
 
+    popup.cacheTree()
     RDA_Log_Debug(popup.dumpXML())
+
+    Yunit.assert(popup.getChildren().length() == 29, "cached children")
+    Yunit.assert(popup.getDescendants().length() == 36, "cached descendants")
+
+
 
     ; click on the "Page size" -> "open"
     SizeComboBox := popup.findOne("//ComboBox[@Name=""Size:""]")
     openSize := SizeComboBox.findOne("//*[@Name=""Open"" and @Type=""Button""]")
     openSize.click()
 
-    sizeSelection := popup.waitOne("//*[@Name=""Size:"" and @Type=""List""]")
+    ; SizeComboBox now will have a List as child with all options
+    ; we need to clear cache to be able to see it!
+    SizeComboBox.clearCacheTree()
+
+    sizeSelection := SizeComboBox.waitOne("//*[@Name=""Size:"" and @Type=""List""]")
     Yunit.assert(sizeSelection.canSelectMultiple() == false, "Size is single selection")
     ; We cannot test the element itself, we cannot assume it the one we want here
     Yunit.assert(sizeSelection.getSelectedItems().length() == 1, "One element is selected")
 
-    RDA_Log_Debug(popup.dumpXML())
+    RDA_Log_Debug(SizeComboBox.dumpXML())
 
     ; this is flacky, it's proven to work...
     ; click on a hidden item, the worst case scenario :P
@@ -210,12 +219,12 @@ class Test_RDA_UIA {
     ;listItem.click()
 
     ; check selection!
-    listItem := popup.waitOne("//List[@Name=""Size:""]//1")
+    listItem := SizeComboBox.waitOne("//List[@Name=""Size:""]//1")
     listItem.click()
     Yunit.assert(listItem.getParent().getSelectedItems()[1].getName() == listItem.getName(), "Check[1st] selected size value")
 
     openSize.click()
-    listItem := popup.waitOne("//List[@Name=""Size:""]//2")
+    listItem := SizeComboBox.waitOne("//List[@Name=""Size:""]//2")
     listItem.ensureSelected()
     Yunit.assert(listItem.getParent().getSelectedItems()[1].getName() == listItem.getName(), "Check[2nd] selected size value")
 

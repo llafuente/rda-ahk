@@ -189,7 +189,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
   getChildElementCount() {
     local
 
-    count := this.uiaHandle.GetChildren(0x2).length()
+    count := this._getChildren().length()
     RDA_Log_Debug(A_ThisFunc . "() = " . count)
 
     return count
@@ -838,6 +838,13 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
   ;
   ; tree
   ;
+  _getChildren() {
+    return this.cachedChildren ? this.cachedChildren : this._wrapList(this.uiaHandle.GetChildren(0x2))
+  }
+
+  _getParent() {
+    return this.cachedParent ? this.cachedParent : this.uiaHandle.TreeWalkerTrue.GetParentElement(this.uiaHandle)
+  }
 
   /*!
     Method: getChildren
@@ -849,7 +856,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
   getChildren() {
     RDA_Log_Debug(A_ThisFunc . "()")
 
-    return this._wrapList(this.uiaHandle.GetChildren(0x2))
+    return this._getChildren()
   }
   /*!
     Method: getChild
@@ -870,7 +877,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
 
     RDA_Log_Debug(A_ThisFunc . "(" . index . ")")
 
-    elements := this.uiaHandle.GetChildren(0x2)
+    elements := this._getChildren()
 
     if (index < 1 || index > elements.length()) {
       RDA_Log_Debug(A_ThisFunc . "Index out of bounds at " . this.toString())
@@ -883,28 +890,23 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
     Method: getDescendants
       Retrieves all element descendants
 
+    Remarks:
+      NOTE: UIA has no support for limits because it degrade performance a lot
+
     Returns:
       <RDA_AutomationUIAElement>[]
   */
   getDescendants() {
     local
+    global RDA_ElementTreeNode
 
     RDA_Log_Debug(A_ThisFunc)
-    /*
-    stack := this.getChildren()
-    ret := RDA_Array_Concat([], stack)
-
-    while (stack.Length()) {
-      element := stack.pop()
-
-      elements := element.getChildren()
-
-      stack := RDA_Array_Concat(stack, elements)
-      ret := RDA_Array_Concat(ret, elements)
+    ; optimization route for UIA in case of no cache
+    if (!this.cachedChildren) {
+      ret := this._wrapList(this.uiaHandle.FindAll())
+    } else {
+      ret := RDA_ElementTreeNode.flatternToElements(this._getDescendantsTree(0))
     }
-    */
-    ;ret := this._wrapList(this.uiaHandle.GetChildren(0x4))
-    ret := this._wrapList(this.uiaHandle.FindAll())
 
     RDA_Log_Debug(A_ThisFunc . " Found " . ret.length() . " items")
     return ret
@@ -936,7 +938,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
     local
     global RDA_AutomationUIAElement
 
-    v := this.uiaHandle.TreeWalkerTrue.GetParentElement(this.uiaHandle)
+    v := this._getParent()
 
     if (IsObject(v)) {
       RDA_Log_Debug(A_ThisFunc)
