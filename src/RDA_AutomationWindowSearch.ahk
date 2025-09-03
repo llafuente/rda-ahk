@@ -3,6 +3,10 @@
 */
 class RDA_AutomationWindowSearch {
   /*!
+    Property: hwnd
+      string - Search by hwnd (full match)
+  */
+  /*!
     Property: title
       string - Search by title (full match)
   */

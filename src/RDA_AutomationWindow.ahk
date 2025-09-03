@@ -199,8 +199,14 @@ class RDA_AutomationWindow extends RDA_Base {
     old := A_StringCaseSense
     StringCaseSense Off
 
-    properties := ["title", "process", "path", "classNN", "pid"]
     allMatch := true
+
+    ; manual check: hwnd do not have $hwnd
+    if (searchObject.hwnd && searchObject.hwnd != this.hwnd) {
+      allMatch := false
+    }
+
+    properties := ["title", "process", "path", "classNN", "pid"]
 
     loop % properties.Length() {
       p := properties[A_Index]
