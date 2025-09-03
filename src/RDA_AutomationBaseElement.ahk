@@ -741,9 +741,9 @@ class RDA_AutomationBaseElement extends RDA_Base {
   Example:
     ======= AutoHotKey =======
     ; with default limits
-    rootNode := element.getDescendantsTree(automation.limits)
-    ; without limits
     rootNode := element.getDescendantsTree()
+    ; without limits
+    rootNode := element.getDescendantsTree(0)
     ; you can flattern the tree if needed :)
     arr := RDA_ElementTreeNode.flattern(rootNode)
     ==========================
@@ -751,17 +751,17 @@ class RDA_AutomationBaseElement extends RDA_Base {
     Returns:
       <RDA_AutomationBaseElement>[]|<RDA_AutomationJABElement>[]|<RDA_AutomationUIAElement>[]
   */
-  getDescendantsTree(limits := 0) {
+  getDescendantsTree(limits := -1) {
     local
 
-    RDA_Log_Debug(A_ThisFunc . "(" . limits ? limits.toString() : "no" . ")")
+    limits := limits == -1 ? this.automation.limits : limits
+    RDA_Log_Debug(A_ThisFunc . "(" . limits ? limits.toString() : "unlimited" . ")")
 
     return this._getDescendantsTree(limits)
   }
 
   _getDescendantsTree(limits) {
     local
-    limits := this.automation.limits
     dump := []
     elements := []
 
@@ -779,30 +779,38 @@ class RDA_AutomationBaseElement extends RDA_Base {
 
         treeNode.target.push(dumpNode)
 
-        ; exceed maxElements? -> skip children
-        if (elementCount >= limits.maxElements) {
-          continue
+        if (limits) {
+
+          ; exceed maxElements? -> skip children
+          if (elementCount >= limits.maxElements) {
+            RDA_Log_Debug("limits.maxElements exceeded")
+            continue
+          }
+
+          ; exceed maxDepth? -> skip children
+          if (treeNode.depth >= limits.maxDepth) {
+            RDA_Log_Debug("limits.maxDepth exceeded")
+            continue
+          }
+
+          ; is blacklisted? -> skip children
+          t := treeNode.element.getType()
+          if (RDA_Array_IndexOf(limits.skipChildrenOfTypes, t)) {
+            RDA_Log_Debug("skip children elements by type: " . t)
+            continue
+          }
+
+          childElementCount := treeNode.element.getChildElementCount()
+          ; exceed maxChildren? -> skip children
+          if (childElementCount > limits.maxChildren) {
+            RDA_Log_Debug("skip children elements limits.maxChildren >  " . childElementCount)
+            continue
+          }
         }
 
-        ; exceed maxDepth? -> skip children
-        if (treeNode.depth >= limits.maxDepth) {
-          continue
-        }
+        children := treeNode.element._getChildren()
 
-        ; is blacklisted? -> skip children
-        if (RDA_Array_IndexOf(limits.skipChildrenOfTypes, treeNode.element.getType())) {
-          RDA_Log_Debug("skip an element by type: " . treeNode.element.getType())
-          continue
-        }
-
-        childElementCount := treeNode.element.getChildElementCount()
-        ; exceed maxChildren? -> skip children
-        if (childElementCount > limits.maxChildren) {
-          RDA_Log_Debug("skip an element with " . childElementCount . " children")
-          continue
-        }
-
-        children := treeNode.element.getChildren()
+        ;RDA_Log_Debug(A_ThisFunc . " t = " . t . " .children = " . children.length())
 
         loop % children.length() {
           elements.InsertAt(1, {depth: treeNode.depth + 1
