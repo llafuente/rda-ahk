@@ -218,7 +218,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
       ret.push("Invoke") ; <-- click
     }
     if (InStr(s, "expandable")) {
-      ret.push("ExpandCollapsed") ; <-- click
+      ret.push("ExpandCollapse") ; <-- click
     }
     if (r == "check box" || r == "toggle button" || r == "radio button"|| r == "push button") {
       ret.push("Toggle")
@@ -516,11 +516,16 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     Throws:
       toggle() called but no change
       TogglePattern not implemented
+
+    Returns:
+      <RDA_AutomationJABElement>
   */
   ensureChecked() {
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
 
     this._ensureCheck(true)
+
+    return this
   }
   /*!
     Method: ensureUnChecked
@@ -529,14 +534,19 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     Throws:
       toggle() called but no change
       TogglePattern not implemented
+
+    Returns:
+      <RDA_AutomationJABElement>
   */
   ensureUnChecked() {
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
 
     this._ensureCheck(false)
+
+    return this
   }
   ;
-  ; ExpandCollapsed
+  ; ExpandCollapse
   ;
 
   _ensureExpanded(state) {
@@ -558,35 +568,45 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   }
   /*!
     Method: ensureExpanded
-      Expand the element only if it's collapsed, element must implement ExpandCollapsed
+      Expand the element only if it's collapsed, element must implement ExpandCollapse
 
     Throws:
       click() called but no change
-      ExpandCollapsedPattern not implemented
+      ExpandCollapsePattern not implemented
+
+    Returns:
+      <RDA_AutomationJABElement>
   */
   ensureExpanded() {
-    this.expectPattern("ExpandCollapsed", "ExpandCollapsedPattern not implemented")
+    this.expectPattern("ExpandCollapse", "ExpandCollapsePattern not implemented")
     this._ensureExpanded(true)
+
+    return this
   }
   /*!
     Method: ensureCollapsed
-      Collapse the element only if it's expanded, element must implement ExpandCollapsed
+      Collapse the element only if it's expanded, element must implement ExpandCollapse
 
     Throws:
       Click failed, no change
-      ExpandCollapsedPattern not implemented
+      ExpandCollapsePattern not implemented
+
+    Returns:
+      <RDA_AutomationJABElement>
   */
   ensureCollapsed() {
-    this.expectPattern("ExpandCollapsed", "ExpandCollapsedPattern not implemented")
+    this.expectPattern("ExpandCollapse", "ExpandCollapsePattern not implemented")
     this._ensureExpanded(false)
+
+    return this
   }
 
   /*!
     Method: isExpanded
-      Retrieves if the element is expanded, element must implement ExpandCollapsed
+      Retrieves if the element is expanded, element must implement ExpandCollapse
 
     Throws:
-      ExpandCollapsedPattern not implemented
+      ExpandCollapsePattern not implemented
 
     Returns:
       boolean
@@ -597,16 +617,16 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
     this.__cacheInfo(true)
 
-    this.expectPattern("ExpandCollapsed", "ExpandCollapsedPattern not implemented")
+    this.expectPattern("ExpandCollapse", "ExpandCollapsePattern not implemented")
 
     return InStr(this._info.states, "expanded") > 0
   }
   /*!
     Method: isCollapsed
-      Retrieves if the element is collapsed, element must implement ExpandCollapsed
+      Retrieves if the element is collapsed, element must implement ExpandCollapse
 
     Throws:
-      ExpandCollapsed not implemented
+      ExpandCollapse not implemented
 
     Returns:
       boolean
@@ -817,11 +837,16 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     Throws:
       select called but no change
       SelectionItemPattern not implemented
+
+    Returns:
+      <RDA_AutomationJABElement>
   */
   ensureSelected() {
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
 
     this._ensureSelect(true)
+
+    return this
   }
   /*!
     Method: ensureUnChecked
@@ -830,11 +855,16 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     Throws:
       select called but no change
       SelectionItemPattern not implemented
+
+    Returns:
+      <RDA_AutomationJABElement>
   */
   ensureUnselected() {
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
 
     this._ensureSelect(false)
+
+    return this
   }
   ;
   ; TextPattern

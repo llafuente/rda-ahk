@@ -452,11 +452,16 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
     Throws:
       toggle called but no change
       TogglePattern not implemented
+
+    Returns:
+      <RDA_AutomationUIAElement>
   */
   ensureChecked() {
     RDA_Log_Debug(A_ThisFunc . "@" . this.toString())
 
     this._ensureCheck(true)
+
+    return this
   }
   /*!
     Method: ensureUnChecked
@@ -465,11 +470,119 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
     Throws:
       toggle called but no change
       TogglePattern not implemented
+
+    Returns:
+      <RDA_AutomationUIAElement>
   */
   ensureUnChecked() {
     RDA_Log_Debug(A_ThisFunc . "@" . this.toString())
 
     this._ensureCheck(false)
+
+    return this
+  }
+
+  ;
+  ; ExpandCollapse
+  ;
+
+  _ensureExpanded(state) {
+    local
+
+    RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
+
+    if (this.isExpanded() != state) {
+      try {
+        this.click()
+      } catch e {
+        RDA_Log_Error(A_ThisFunc . " " . e.message)
+      }
+    }
+
+    if (this.isExpanded() != state) {
+      throw RDA_Exception("click() called but no change")
+    }
+  }
+  /*!
+    Method: ensureExpanded
+      Expand the element only if it's collapsed, element must implement ExpandCollapse
+
+    Throws:
+      click() called but no change
+      ExpandCollapsePattern not implemented
+
+    Returns:
+      <RDA_AutomationUIAElement>
+  */
+  ensureExpanded() {
+    this._ensureExpanded(true)
+
+    return this
+  }
+  /*!
+    Method: ensureCollapsed
+      Collapse the element only if it's expanded, element must implement ExpandCollapse
+
+    Throws:
+      Click failed, no change
+      ExpandCollapsePattern not implemented
+
+    Returns:
+      <RDA_AutomationUIAElement>
+  */
+  ensureCollapsed() {
+    this._ensureExpanded(false)
+
+    return this
+  }
+
+  /*!
+    Method: isExpanded
+      Retrieves if the element is expanded, element must implement ExpandCollapse
+
+    Throws:
+      ExpandCollapsePattern not implemented
+
+    Returns:
+      boolean
+  */
+  isExpanded() {
+    local
+    global UIA_Enum
+
+    RDA_Log_Debug(A_ThisFunc . "@" . this.toString())
+
+    try {
+      if (this.uiaHandle.GetCurrentPropertyValue(UIA_Enum.UIA_IsExpandCollapsePatternAvailablePropertyId)) {
+        pattern := this.uiaHandle.GetCurrentPatternAs("ExpandCollapse")
+        v := pattern.CurrentExpandCollapseState ? true : false
+
+        RDA_Log_Debug(A_ThisFunc . " = " . (v ? "yes" : "no"))
+
+        return v
+      }
+
+      throw RDA_Exception("ExpandCollapsePattern not implemented")
+    } catch e {
+      RDA_Log_Error(A_ThisFunc . " failed at " . this.toString())
+      RDA_Log_Error(A_ThisFunc . " error = " . e.message)
+
+      throw e
+    }
+  }
+  /*!
+    Method: isCollapsed
+      Retrieves if the element is collapsed, element must implement ExpandCollapse
+
+    Throws:
+      ExpandCollapse not implemented
+
+    Returns:
+      boolean
+  */
+  isCollapsed() {
+    ; state=collapsed => !expanded
+    return this.isExpanded()
   }
 
   ;

@@ -28,10 +28,11 @@ closePopup.sendKeys("n")
 
 ; check is closed!
 RDA_Assert(closePopup.isAlive() == false)
-RDA_Assert(win.isAlive() == false)
+; or even shorter
+win.expectDead()
 ```
 
-Fill some values from a java application and expect changes are saved.
+Fill some values from a java application and expect changes to be saved.
 
 ```AutoHotKey
 #Include dist\rda.ahk
@@ -46,21 +47,23 @@ winElement.findOne("//Text[@name=""Username:""]")
   .setValue("JohnDoe").expectValue("JohnDoe")
 
 winElement.findOne("//Text[@name=""Password:""]")
-  .setPassword("admin").expectValue("admin")
+  .setPassword("admin").expectPassword("admin")
 
 winElement.findOne("//CheckBox[@name=""Remember me:""]")
-  .ensureChecked("admin") ; <-- ensure is in fact set + expect
+  .ensureChecked() ; <-- ensure is in fact set + expect
 
 winElement.findOne("//PushButton[@name=""Login""]")
   .click()
+
+winElement.waitOne("//Label[@name=""A label from the next page""]")
 ```
 
 ## Features
 
-* Automate interactively and background apps (Mouse and keyboard)
-* Automate by image, pixel colors
+* Automate interactively and background apps (Mouse, keyboard, clipboard)
+* Automate by image, regions, pixel colors
 * Seamless automation with UI Automation / Java access bridge
-* Manage windows, monitor, virtual desktops
+* Manage windows, monitors and virtual desktops
 
 ## API Terminology / decisions
 
@@ -70,7 +73,7 @@ Components and Controls are the most common words for UI elements, but as you wi
 
 UIA use Pattern to report what an `element` is capable / operations that can be performed. JAB use the word Interfaces. And a browser ~should~ use `aria-*`. We made a decision to use *pattern* and make an effort to match what UIA does in other APIs.
 
-Each library use their own system to locate elements, that is a mess (API/ergonomics) so we implement a *"small/distilled" version of xPath* and that's how you locate elements!
+Each library use their own system to locate elements, that is a mess (for API ergonomics) so we implement a *"small/distilled" version of xPath* and that's how you locate elements!
 
 The API is designed to be *chained*.
 
@@ -81,7 +84,7 @@ The API is designed to be *chained*.
 
 The API is built in *layers of functionality* for example a `RDA_Window` will rely on `RDA_keyboard` to `sendKeys` but it will activate the window to ensure the action is performed only in the proper window while `RDA_Keyboard` will just send the keys to the Operating System.
 
-While the main purpose of the library is to automate we include many test functions to ensure that data is saved as expected or to test an application.
+While the main purpose of the library is to automate we include many unit test functions to ensure that data is saved as expected or to test an application.
 
 *Traceability*. AHK can call a non-existing method or worst, don't call a method at all. Every method/function will leave a trace in the log so you will know what your robot does in any moment and you will be able to perform a proper post-mortem if necessary.
 
@@ -89,17 +92,17 @@ While the main purpose of the library is to automate we include many test functi
 
 Here there is a quick table of what operations will be available for each pattern.
 
-| Pattern               | UIA                   | JAB                   |
-| --------------------- | --------------------- | --------------------- |
-| Value                 | set/getValue          | getValue              |
-| Text                  | set/getValue          | set/getValue          |
-| SelectionItem         | select/isSelected     | select/isSelected     |
-| Invoke                | click                 | click                 |
-| Toggle                | toggle/isChecked      | toggle/isChecked      |
-| Selection             | getSelected           | getSelected           |
-| ExpandCollapse        | expand/collapse*      | expand/collapse       |
-| Scroll*               |                       |                       |
-| Action                |                       | getActions/doActions  |
+| Pattern               | UIA                                            | JAB                                                       |
+| --------------------- | ---------------------------------------------- | --------------------------------------------------------- |
+| Value                 | setValue/getValue                              | getValue                                                  |
+| Text                  | setValue/getValue                              | setValue/getValue                                         |
+| Selection             | getSelected/canSelectMultiple                  | getSelected/canSelectMultiple                             |
+| SelectionItem         | select/unselect/isSelected                     | select/isSelected                                         |
+| Invoke                | click                                          | click                                                     |
+| Toggle                | ensureChecked/ensureUnChecked/toggle/isChecked | ensureChecked/ensureUnChecked/toggle/isChecked            |
+| ExpandCollapse        | ensureExpanded/ensureCollapsed                 | ensureExpanded/ensureCollapsed                            |
+| Scroll*               |                                                |                                                           |
+| Action                |                                                | getActions/doActions                                      |
 
 * In the TODO list
 
@@ -109,7 +112,7 @@ There are a few differences:
 
 * JAB do not have `setValue` for Value pattern because it just does not exists. A combination of keyboard+mouse shall be used to automate.
 
-* JAB do not have `Scroll` pattern because it does exists, and cannot be mimic because you cannot `setValue` of a scroll item.
+* JAB do not have `Scroll` pattern, the elment exists, but we cannot be mimic the behaviour because it lacks `setValue`.
 
 * Action pattern is JAB exclusive. JAB elements had many custom operations that are called `action` that expose neat functionality like "copy selected text to clipboard".
 
@@ -148,7 +151,7 @@ Some information about the project.
 ### Unit test
 
 The project is almost 100% unit tested We can't be sure because AutoHotKey
-do not have code coverage capabilities.
+do not have code coverage capabilities, but we try.
 
 ### Porting to AutoHotKey v2 ?
 
