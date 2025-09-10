@@ -37,6 +37,8 @@ class Test_RDA_JAB {
     }
     win.activate()
 
+    Yunit.assert(windows.getJAB().length() == 1, "one JAB window")
+
     winElement := win.asJABElement()
     Yunit.assert(winElement, "Window element created")
 
@@ -176,6 +178,7 @@ class Test_RDA_JAB {
     winElement.findOne("//PushButton[@name=""Show Plain JFileChooser""]").osClick()
 
     popup := win.waitChild({title: "Open"})
+    Yunit.assert(windows.getJAB().length() == 2, "two JAB window")
     ;uiaWin := popup.asUIAElement()
     ;RDA_Log_Debug(uiaWin.dumpXML())
     try {

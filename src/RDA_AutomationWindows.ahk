@@ -59,6 +59,35 @@ class RDA_AutomationWindows extends RDA_Base {
     return r
   }
   /*!
+    Method: getJAB
+      Retrieves all windows that have Java access bridge
+
+    Example:
+      ======= AutoHotKey =======
+      ; searches an application wich title Notepad
+      automation := new RDA_Automation()
+      windows := automation.windows()
+      wins := windows.getJAB()
+      ==========================
+
+    Returns:
+      <RDA_AutomationWindow[]>
+  */
+  getJAB() {
+    RDA_Log_Debug(A_ThisFunc)
+    jab := this.automation.jab
+    wins := this.get()
+    out := []
+    loop % wins.length() {
+      win := wins[A_Index]
+      if (jab.isJavaWindow(win.hwnd)) {
+        out.push(win)
+      }
+    }
+    RDA_Log_Debug(A_ThisFunc . " found " . out.length() . " windows")
+    return out
+  }
+  /*!
     Method: getForeground
       Retrieves a window instance to the foreground window
       (the window with which the user is currently working).
