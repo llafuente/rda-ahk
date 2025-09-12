@@ -776,6 +776,9 @@ RDA_Window_Show(hwnd) {
     hwnd - number - window identifier
     timeout - number - timeout, in miliseconds
     delay - number - delay, in miliseconds
+
+  Throws:
+    timeout reached
 */
 RDA_Window_Activate(hwnd, timeout, delay) {
   local
@@ -810,7 +813,7 @@ RDA_Window_Activate(hwnd, timeout, delay) {
 
     if (A_TickCount >= startTime + timeout) {
       RDA_Log_Error(A_ThisFunc . " timeout reached")
-      throw RDA_Exception("Timeout reached")
+      throw RDA_Exception(A_ThisFunc . " timeout reached")
     }
 
     sleep % delay
