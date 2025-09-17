@@ -468,6 +468,12 @@ class RDA_AutomationBaseElement extends RDA_Base {
           nstack := RDA_Array_Concat(nstack, newItems)
         }
         stack := nstack
+
+        ; there is no stack to work, quit
+        if (!stack.Length()) {
+          RDA_Log_Error(A_ThisFunc . " empty element stack at action[" . A_Index . "] = " . RDA_JSON_stringify(action))
+          break
+        }
         ; RDA_Log_Info(A_ThisFunc . " executed Action " . A_Index . " stack " . stack.length() . " elapsed = " . (A_TickCount - startTime2))
       }
       RDA_Log_Level := 3
