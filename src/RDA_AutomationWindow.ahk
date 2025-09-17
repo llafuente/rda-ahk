@@ -262,6 +262,9 @@ class RDA_AutomationWindow extends RDA_Base {
     Parameters:
       timeout - number - timeout, in miliseconds
 
+    Throws:
+      if timeout is sent: Window still alive
+
     Returns:
       boolean - If the window exists after waiting to close
   */

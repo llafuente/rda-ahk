@@ -388,6 +388,9 @@ RDA_Window_WaitClose(hwnd, timeout, errorMessage := "Window still alive") {
     timeout - number - timeout, in miliseconds
               timeout <= 0, then it won't wait and return false
 
+  Throws:
+    if timeout is sent: Window still alive
+
   Returns:
     boolean - If the window exists after waiting to close
 */
