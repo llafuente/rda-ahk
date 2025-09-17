@@ -780,7 +780,13 @@ class RDA_AutomationBaseElement extends RDA_Base {
     RDA_Log_Debug(A_ThisFunc . " " . this.toString())
 
     this.cachedChildren := this._getChildren()
-    this.cachedParent := parent ? parent : this._getParent()
+
+    ; root element has no parent, so we need this try/catch
+    try {
+      this.cachedParent := parent ? parent : this._getParent()
+    } catch e {
+      RDA_Log_Error(A_ThisFunc . " " . e.message)
+    }
 
     loop % this.cachedChildren.length() {
       this.cachedChildren[A_Index]._cacheTree(this)
