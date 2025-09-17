@@ -81,6 +81,16 @@ class RDA_AutomationJAB extends RDA_Base {
       DLL Name
   */
   dllName := 0
+  /*!
+    Property: isInitialized
+      is JAB initialized ?
+  */
+  isInitialized [] {
+    get {
+      return RDA_AutomationJAB.JABSWITCH_ENABLED > 0
+    }
+  }
+
   ; internal, LoadLibrary result
   library := 0
 
@@ -161,7 +171,7 @@ class RDA_AutomationJAB extends RDA_Base {
     Sleep, 250
 
     RDA_Log_Debug(A_ThisFunc . " JABInitialised? = " . initialised . " @ " . this.dllName)
-    RDA_Assert(initialised, "Could not load initialised WindowsAccessBridge dll")
+    RDA_Assert(initialised, "Windows_run failed: Could not initialise WindowsAccessBridge dll")
   }
 
   __Delete() {
@@ -219,6 +229,7 @@ class RDA_AutomationJAB extends RDA_Base {
      boolean
   */
   isJavaWindow(hwnd) {
+    RDA_Log_Debug(A_ThisFunc . "(" . hwnd . ")")
     return DllCall(this.dllName . "\isJavaWindow"
       , "Int", hwnd
       , "Cdecl Int")
