@@ -30,10 +30,10 @@ class Test_RDA_JAB {
     automation.jab.init(JAVA_PATH)
 
     try {
-      win := windows.waitOne({title: "SwingSet"}, false, 0)
+      win := windows.findOne({title: "SwingSet"}, false)
     } catch e {
       Run %JAVA_PATH%java.exe -jar SwingSet2.jar, % A_ScriptDir
-      win := windows.waitOne({title: "SwingSet"}, 5000)
+      win := windows.waitOne({title: "SwingSet"}, false, 5000)
     }
     win.activate()
 
@@ -47,9 +47,11 @@ class Test_RDA_JAB {
     winElement.findOne("//ToggleButton[@description=""JInternalFrame demo""]").click()
     RDA_Log_Debug(winElement.dumpXML())
 
+
     themesList := winElement.find("//Menu[@Name=""Themes""]")
     Yunit.assert(themesList.length() == 1, "Single themes found")
     ;Yunit.assert(themesList[1].__Class == RDA_AutomationJABElement, "instance of RDA_AutomationJABElement")
+    Yunit.assert(themesList[1].getRoot().isSameElement(winElement), "check root element are the same")
 
     themes := winElement.findOne("//Menu[@Name=""Themes""]")
     emerald := winElement.findOne("//RadioButton[@Name=""Emerald""]")

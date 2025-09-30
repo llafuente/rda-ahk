@@ -471,7 +471,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
 
         ; there is no stack to work, quit
         if (!stack.Length()) {
-          RDA_Log_Error(A_ThisFunc . " empty element stack at action[" . A_Index . "] = " . RDA_JSON_stringify(action))
+          RDA_Log_Error(A_ThisFunc . " empty element stack at action[" . A_Index . "/" . actions.length() . "] = " . RDA_JSON_stringify(action))
           break
         }
         ; RDA_Log_Info(A_ThisFunc . " executed Action " . A_Index . " stack " . stack.length() . " elapsed = " . (A_TickCount - startTime2))
@@ -755,6 +755,36 @@ class RDA_AutomationBaseElement extends RDA_Base {
   ;
   ; tree
   ;
+  /*!
+    Method: getRoot
+      Reverse tree until root element
+
+    Example:
+      ======= AutoHotKey =======
+      rootNode := node.getRoot()
+      ==========================
+
+    Returns:
+      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+  */
+  getRoot(max := 250) {
+    local
+    RDA_Log_Debug(A_ThisFunc . " " . this.toString())
+
+    root := this
+    loop % max {
+      try {
+        root := root.getParent()
+      } catch e {
+        RDA_Log_Debug(A_ThisFunc . " <-- " . root.toString())
+        return root
+      }
+    }
+
+    RDA_Log_Debug(A_ThisFunc . " (max) <-- " . root.toString())
+    return root
+  }
+
 
   cachedChildren := 0
   cachedParent := 0
@@ -783,6 +813,8 @@ class RDA_AutomationBaseElement extends RDA_Base {
   }
   ; internal, recursion
   _cacheTree(parent) {
+    local
+
     RDA_Log_Debug(A_ThisFunc . " " . this.toString())
 
     this.cachedChildren := this._getChildren()
@@ -948,7 +980,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
   dumpXML(value := false, selected := false) {
     local
     global RDA_Log_Level
-    RDA_Log_Debug(A_ThisFunc . "(" . value . ", " . selected . ")")
+    RDA_Log_Debug(A_ThisFunc . "(" . value . ", " . selected . ")" . this.toString())
 
     RDA_Log_Level := 2
     r := ""
