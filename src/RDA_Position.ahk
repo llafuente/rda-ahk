@@ -4,6 +4,37 @@
 */
 class RDA_Position extends RDA_Base {
   /*!
+    Method: equal
+      Equality check
+
+    Parameters:
+      other - <RDA_Position> - x coordinate
+
+    Returns:
+      <RDA_Position>
+  */
+  equal(other) {
+    RDA_Log_Debug(A_ThisFunc . "(" . other.toString() . ") == " . this.toString())
+    a := this.toScreen()
+    b := other.toScreen()
+    return a.x == b.x && a.y == b.y
+  }
+  /*!
+    Method: equal2
+      Equality check
+
+    Parameters:
+      x - number - x coordinate
+      y - number - x coordinate
+
+    Returns:
+      <RDA_Position>
+  */
+  equal2(x, y) {
+    RDA_Log_Debug(A_ThisFunc . "(" . x . ", " . y . ") == " . this.toString())
+    return this.x == x && this.y == y
+  }
+  /*!
     Method: getLength
       Calculates the length to origin
 
@@ -16,7 +47,7 @@ class RDA_Position extends RDA_Base {
     return v
   }
   /*!
-    Method: set
+    Method: set2
       Sets current position
 
     Parameters:
@@ -24,7 +55,7 @@ class RDA_Position extends RDA_Base {
       y - number - y amount
 
     Returns:
-      <RDA_ScreenPosition>
+      <RDA_Position>
   */
   set2(x, y) {
     RDA_Log_Debug(A_ThisFunc . "(" . x . "," . y . ")")
@@ -39,10 +70,10 @@ class RDA_Position extends RDA_Base {
       Adds given amount
 
     Parameters:
-      pos - <RDA_ScreenPosition> - screen position
+      pos - <RDA_Position> - position
 
     Returns:
-      <RDA_ScreenPosition>
+      <RDA_Position>
   */
   add(pos) {
     RDA_Log_Debug(A_ThisFunc . "(" . pos.toString() . ")")
@@ -61,7 +92,7 @@ class RDA_Position extends RDA_Base {
       y - number - y amount
 
     Returns:
-      <RDA_ScreenPosition>
+      <RDA_Position>
   */
   add2(x, y) {
     RDA_Log_Debug(A_ThisFunc . "(" . x . "," . y . ")")
@@ -76,10 +107,10 @@ class RDA_Position extends RDA_Base {
       Subtracts given amount
 
     Parameters:
-      pos - <RDA_ScreenPosition> - screen position
+      pos - <RDA_Position> - position
 
     Returns:
-      <RDA_ScreenPosition>
+      <RDA_Position>
   */
   subtract(pos) {
     RDA_Log_Debug(A_ThisFunc . "(" . pos.toString() . ")")
@@ -98,7 +129,7 @@ class RDA_Position extends RDA_Base {
       y - number - y amount
 
     Returns:
-      <RDA_ScreenPosition>
+      <RDA_Position>
   */
   subtract2(x, y) {
     RDA_Log_Debug(A_ThisFunc . "(" . pos.toString() . ")")
@@ -193,7 +224,7 @@ class RDA_Position extends RDA_Base {
       radius - number - radius
 
     Returns:
-      <RDA_ScreenPosition> - for chaining
+      <RDA_Position> - for chaining
   */
   drawFill(overlay, color, radius := 1) {
     overlay.fillCircle(this.toScreen(), color, radius)
@@ -211,7 +242,7 @@ class RDA_Position extends RDA_Base {
       radius - number - radius
 
     Returns:
-      <RDA_ScreenPosition> - for chaining
+      <RDA_Position> - for chaining
   */
   drawBorder(overlay, color, radius := 1, size := 1) {
     overlay.borderCircle(this.toScreen(), color, radius, size)
