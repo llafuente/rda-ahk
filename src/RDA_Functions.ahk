@@ -226,6 +226,35 @@ RDA_IsArray(anything) {
 }
 
 /*!
+  Function: RDA_Trace
+    Generates the stack trace.
+
+  Parameters:
+    offset - number - trace offset
+
+  Returns:
+    string
+*/
+RDA_Trace(offset := 0) {
+  local
+  ; TODO untested on v2
+  n := (A_AhkVersion<"2" ? 1 : 2) + offset
+  trace := ""
+
+  first := true
+  Loop {
+    e := Exception(".", offset := -(A_Index + n))
+    if (e.What == offset) {
+      break
+    }
+    trace .= (first ? "" : " @ " e.What) . "`n" . e.file ":" e.Line
+    first := false
+  }
+
+  trace .= " @ main"
+  return SubStr(trace, 2)
+}
+/*!
   Function: RDA_Exception
     Generates an exception and log the stack trace.
 
@@ -238,15 +267,8 @@ RDA_Exception(message, trace_offset := 0, What := "") {
   local
   ; traceback to log
   r := [], i := 0, n := (A_AhkVersion<"2" ? 2 : 3) + trace_offset
-  trace := ""
-  Loop {
-    e := Exception(".", offset := -(A_Index + n))
-    if (e.What == offset) {
-      trace .= "`n" . e.file ":" e.Line " @ main"
-      break
-    }
-    trace .= "`n" . e.file ":" e.Line " @ " e.What
-  }
+
+  trace := RDA_Trace(1)
 
   RDA_Log_Debug(A_ThisFunc . " " . message . trace)
 
@@ -483,6 +505,8 @@ RDA_Window_GetSizeAndPosition(automation, hwnd) {
 /*!
   Function: RDA_BlockInput
     Wrapper for BlockInput
+
+    Disables or enables the user's ability to interact with the computer via keyboard and mouse.
 
   Remarks:
     It may require admin priviledges!
