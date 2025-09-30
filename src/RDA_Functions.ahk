@@ -346,17 +346,25 @@ RDA_TryPostMessage(msgNumber , wParam, lParam, hwnd) {
   Returns:
     any - Result from the given function
 */
-RDA_RepeatWhileThrows(fn, timeout, delay) {
+RDA_RepeatWhileThrows(fn, timeout, delay, disable_log := false) {
   local
+  global RDA_Log_Level
 
   lastException := 0
   startTime := A_TickCount
+
+  if (disable_log) {
+    RDA_Log_Level := 2
+  }
 
   RDA_Log_Debug(A_ThisFunc . " call """ . fn.Name . """ timeout = " . timeout . " delay = " . delay)
   loop
   {
     try {
       r := fn.Call()
+      if (disable_log) {
+        RDA_Log_Level := 3
+      }
       return r
     } catch e {
       lastException := e
@@ -364,6 +372,9 @@ RDA_RepeatWhileThrows(fn, timeout, delay) {
 
     if (timeout <= 0 || A_TickCount >= startTime + timeout) {
       RDA_Log_Error(A_ThisFunc " timeout(" . timeout . ") reached")
+      if (disable_log) {
+        RDA_Log_Level := 3
+      }
       throw lastException
     }
 

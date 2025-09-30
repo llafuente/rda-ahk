@@ -5,11 +5,15 @@ Test_RDA_AutomationWindows_CloseOnDestruction(windows) {
   sleep 2000
 }
 
+Test_RDA_AutomationWindows_StartNotepad() {
+  Run notepad.exe
+}
+
 class Test_RDA_AutomationWindows {
   Begin() {
   }
-/*
-  Test_2_Automation_Windows() {
+
+  Test_Automation_Windows() {
     local
     global RDA_Automation, Yunit
 
@@ -28,13 +32,19 @@ class Test_RDA_AutomationWindows {
     Yunit.assert(win.process == "notepad.exe", "Found notepad!")
 
     win.close()
-    Yunit.assert(win.isClosed() == true, "notepad is closed")
+    win.expectDead("notepad is closed")
 
-    Run notepad.exe
+    ; delayed start to test wait!
+    startTime := A_TickCount
+    startNotepad := Func("Test_RDA_AutomationWindows_StartNotepad")
+
+    SetTimer % startNotepad, 2000
     win := windows.waitOne({process: "notepad.exe"})
+    SetTimer % startNotepad, Off
 
     RDA_Log_Debug(win.toString())
 
+    Yunit.assert(A_TickCount - startTime > 2000, "Elapsed at least 2000 ms")
     Yunit.assert(win != 0, "Window exist")
     Yunit.assert(win.process == "notepad.exe", "test process")
     ; 32 or 64 bit windows
@@ -96,7 +106,7 @@ class Test_RDA_AutomationWindows {
     Yunit.assert(win.isAlive() == false, "notepad is alive")
   }
 
-  Test_3_Automation_WindowsNew() {
+  Test_Automation_WindowsNew() {
     local
     global RDA_Automation, Yunit
 
@@ -148,7 +158,7 @@ class Test_RDA_AutomationWindows {
     Yunit.assert(paints.length() == 0, "All paints are closed")
   }
 
-  Test_4_Automation_WindowsExpects() {
+  Test_Automation_WindowsExpects() {
     local
     global RDA_Automation, Yunit
 
@@ -199,7 +209,7 @@ class Test_RDA_AutomationWindows {
   }
 
 
-  Test_5_Automation_WindowsCloseOnDestruction() {
+  Test_Automation_WindowsCloseOnDestruction() {
     local
     global RDA_Automation, Yunit
 
@@ -220,8 +230,8 @@ class Test_RDA_AutomationWindows {
     }
     Yunit.assert(lastException.message == "Window not found", "Window not found, closeOnDestruction close the window :)")
   }
-*/
-  Test_5_Automation_Windows_getNew() {
+
+  Test_Automation_Windows_getNew() {
     local
     global RDA_Automation, Yunit
 
@@ -248,9 +258,7 @@ class Test_RDA_AutomationWindows {
     wins[1].closeOnDestruction()
     wins[2].closeOnDestruction()
     Yunit.assert(wins.length() == 2, "2 new windows")
-}
-
-
+  }
 
 
   End() {

@@ -37,9 +37,18 @@ class RDA_AutomationWindows extends RDA_Base {
       <RDA_AutomationWindow[]>
   */
   get(hidden := false) {
-    local r, windows, hwnd
+    local
 
     RDA_Log_Debug(A_ThisFunc . "(hidden? " . (hidden ? "yes" : "no") . ")")
+    wins := this._get(hidden)
+    RDA_Log_Debug(A_ThisFunc . "<-- found " . wins.length() . " windows")
+
+    return wins
+  }
+  ; internal
+  _get(hidden) {
+    local
+    global RDA_AutomationWindow
 
     if (hidden == true) {
       DetectHiddenWindows On
@@ -74,6 +83,7 @@ class RDA_AutomationWindows extends RDA_Base {
       <RDA_AutomationWindow[]>
   */
   getJAB() {
+    local
     RDA_Log_Debug(A_ThisFunc)
     jab := this.automation.jab
     wins := this.get()
@@ -128,11 +138,21 @@ class RDA_AutomationWindows extends RDA_Base {
       <RDA_AutomationWindow>[]
   */
   find(searchObject, hidden := false) {
-    local wins, win, rwins := []
-
+    local
     RDA_Log_Debug(A_ThisFunc . "(" . RDA_JSON_stringify(searchObject) . ", hidden? " . (hidden ? "yes" : "no") . ")")
 
-    wins := this.get(hidden)
+    wins := this._find(searchObject, hidden)
+
+    RDA_Log_Debug(A_ThisFunc . " found " . wins.length() . " windows")
+
+    return wins
+  }
+  ; internal
+  _find(searchObject, hidden := false) {
+    local
+
+    rwins := []
+    wins := this._get(hidden)
 
     loop % wins.Length() {
       win := wins[A_Index]
@@ -141,7 +161,6 @@ class RDA_AutomationWindows extends RDA_Base {
       }
     }
 
-    RDA_Log_Debug(A_ThisFunc . " found " . rwins.length() . " windows")
     return rwins
   }
 
@@ -173,7 +192,7 @@ class RDA_AutomationWindows extends RDA_Base {
     local rwins
     RDA_Log_Debug(A_ThisFunc . "(" . RDA_JSON_stringify(searchObject) . ", hidden? " . (hidden ? "yes" : "no") . ")")
 
-    rwins := this.find(searchObject, hidden)
+    rwins := this._find(searchObject, hidden)
     if (!rwins.length()) {
       throw RDA_Exception("Window not found")
     }
@@ -181,6 +200,7 @@ class RDA_AutomationWindows extends RDA_Base {
       throw RDA_Exception("Multiple windows found")
     }
 
+    RDA_Log_Debug(A_ThisFunc . " <-- " . rwins[1].toString())
     return rwins[1]
   }
 
@@ -218,7 +238,11 @@ class RDA_AutomationWindows extends RDA_Base {
     RDA_Log_Debug(A_ThisFunc . "(" . RDA_JSON_stringify(searchObject) . ", hidden? " . (hidden ? "yes" : "no") . ", timeout = " . timeout . ", delay = " . delay . ")")
 
     bound := ObjBindMethod(this, "findOne", searchObject, hidden)
-    return RDA_RepeatWhileThrows(bound, timeout, delay)
+    win := RDA_RepeatWhileThrows(bound, timeout, delay, true)
+
+    RDA_Log_Debug(A_ThisFunc . " <-- " . win.toString())
+
+    return win
   }
   /*!
     Method: waitOneOf
@@ -470,6 +494,10 @@ class RDA_AutomationWindows extends RDA_Base {
     RDA_Log_Debug(A_ThisFunc . "(" . RDA_JSON_stringify(searchObject) . " , previousWindows.length = " . previousWindows.length() . ", hidden? " . (hidden ? "yes" : "no") . ", timeout = " . timeout . ", delay = " . delay . ")")
 
     bound := ObjBindMethod(this, "findOneNew", searchObject, previousWindows, hidden)
-    return RDA_RepeatWhileThrows(bound, timeout, delay)
+    win := RDA_RepeatWhileThrows(bound, timeout, delay, true)
+
+    RDA_Log_Debug(A_ThisFunc . " <-- " . win.toString())
+
+    return win
   }
 }

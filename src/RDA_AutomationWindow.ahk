@@ -668,7 +668,7 @@ class RDA_AutomationWindow extends RDA_Base {
     RDA_Log_Debug(A_ThisFunc . "(" . RDA_JSON_stringify(searchObject) . ", hidden? " . (hidden ? "yes" : "no") . " timeout = " . timeout . ", delay = " . delay . ")")
 
     bound := ObjBindMethod(this, "getChild", searchObject, hidden)
-    return RDA_RepeatWhileThrows(bound, timeout, delay)
+    return RDA_RepeatWhileThrows(bound, timeout, delay, true)
   }
 
   ;
