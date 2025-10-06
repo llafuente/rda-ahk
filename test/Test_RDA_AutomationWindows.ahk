@@ -29,7 +29,10 @@ class Test_RDA_AutomationWindows {
     win := windows.findOne({process: "notepad.exe"})
 
     Yunit.assert(win != 0, "Window exist")
-    Yunit.assert(win.process == "notepad.exe", "Found notepad!")
+    ; this is fun
+    ; win10: notepad.exe
+    ; win11: C:\Program Files\WindowsApps\Microsoft.WindowsNotepad_11.2507.26.0_x64__8wekyb3d8bbwe\Notepad\Notepad.exe
+    Yunit.assert(InStr(win.process, "otepad.exe"), "process is notepad")
 
     win.close()
     win.expectDead("notepad is closed")
@@ -46,11 +49,15 @@ class Test_RDA_AutomationWindows {
 
     Yunit.assert(A_TickCount - startTime > 2000, "Elapsed at least 2000 ms")
     Yunit.assert(win != 0, "Window exist")
-    Yunit.assert(win.process == "notepad.exe", "test process")
-    ; 32 or 64 bit windows
-    Yunit.assert(win.path == "C:\Windows\SysWOW64\notepad.exe" || win.path == "C:\Windows\System32\notepad.exe", "test path")
-    ; this is "os-locale" dependant
-    Yunit.assert(win.title == "Untitled - Notepad", "test title")
+    Yunit.assert(InStr(win.process, "otepad.exe"), "test process")
+    ; 32 or 64 bit windows, and win11
+    ; w10 32 C:\Windows\SysWOW64\notepad.exe
+    ; w10 64 C:\Windows\SysWOW64\notepad.exe
+    ; w11 C:\Program Files\WindowsApps\Microsoft.WindowsNotepad_11.2507.26.0_x64__8wekyb3d8bbwe\Notepad\Notepad.exe
+    Yunit.assert(InStr(win.path, "otepad.exe"), "test path")
+
+    ; this is "os-locale" dependant, test against no title
+    Yunit.assert(win.title != "", "test title")
     Yunit.assert(win.classNN == "Notepad", "test classNN")
 
     Yunit.assert(win.isClosed() == false, "notepad not closed")
