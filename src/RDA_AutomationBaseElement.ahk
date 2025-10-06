@@ -175,6 +175,46 @@ class RDA_AutomationBaseElement extends RDA_Base {
     return this
   }
   /*!
+    Method: expectName
+      Asserts if current element name is not the given one
+
+    Parameters:
+      name - string - name
+      exceptionMessage - string - exception message
+
+    Returns:
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
+  */
+  expectName(name, exceptionMessage := "Unexpected name") {
+    local
+    RDA_Log_Debug(A_ThisFunc . "(" . name . ", " . exceptionMessage . ")")
+
+    if (this.getName() != name) {
+      throw RDA_Exception(exceptionMessage)
+    }
+    return this
+  }
+  /*!
+    Method: expectDescription
+      Asserts if current element description is not the given one
+
+    Parameters:
+      description - string - description
+      exceptionMessage - string - exception message
+
+    Returns:
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
+  */
+  expectDescription(description, exceptionMessage := "Unexpected description") {
+    local
+    RDA_Log_Debug(A_ThisFunc . "(" . description . ", " . exceptionMessage . ")")
+
+    if (this.getDescription() != description) {
+      throw RDA_Exception(exceptionMessage)
+    }
+    return this
+  }
+  /*!
     Method: expectValue
       Asserts if current element has given value
 
