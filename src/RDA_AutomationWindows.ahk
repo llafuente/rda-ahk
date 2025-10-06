@@ -69,7 +69,7 @@ class RDA_AutomationWindows extends RDA_Base {
   }
   /*!
     Method: getJAB
-      Retrieves all windows that have Java access bridge
+      Retrieves all windows that have Java Access Bridge (JAB)
 
     Example:
       ======= AutoHotKey =======
@@ -123,10 +123,11 @@ class RDA_AutomationWindows extends RDA_Base {
       ; searches an application wich title Notepad
       automation := new RDA_Automation()
       windows := automation.windows()
+      ; retrieve all notepads by title
       win := windows.find({"title": "Notepad"})
-      ; searches an application wich process name is notepad.exe
+      ; retrieve all notepads by process name
       win := windows.find({"process": "notepad.exe"})
-      ; searches an application wich title start with Word (regex) and process name is word.exe
+      ; retrieve an application wich title start with Word (regex) and process name is word.exe
       win := windows.find({"$title": "Word.*", "process": "word.exe"})
       ==========================
 
@@ -333,7 +334,7 @@ class RDA_AutomationWindows extends RDA_Base {
     RDA_Log_Debug(A_ThisFunc . "(previousWindows.length = " . previousWindows.length() . ", hidden? " . (hidden ? "yes" : "no"))
 
     output := []
-    wins := this.get(hidden)
+    wins := this._get(hidden)
     loop % wins.Length() {
       win := wins[A_Index]
 
@@ -351,6 +352,8 @@ class RDA_AutomationWindows extends RDA_Base {
 
       output.push(win)
     }
+
+    RDA_Log_Debug(A_ThisFunc . "<-- found " . wins.length() . " windows")
 
     return output
   }
@@ -500,4 +503,6 @@ class RDA_AutomationWindows extends RDA_Base {
 
     return win
   }
+
+;  expectOneVisible(searchObject, timeout, delay, exceptionError)
 }
