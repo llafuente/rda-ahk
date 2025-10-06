@@ -55,7 +55,20 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   acId := 0
 
   ; internal
-  _info := 0
+  _cachedInfo := 0
+  /*!
+    Property: cachedInfo
+      <RDA_AutomationJABAccessibleContextInfo> cached
+  */
+  cachedInfo [] {
+    get {
+      if (!this._cachedInfo) {
+        this._cachedInfo := this.getInfo()
+      }
+
+      return this._cachedInfo
+    }
+  }
   /*!
     Constructor: RDA_AutomationJABElement
 
@@ -120,11 +133,18 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
       string
   */
   getName(useCache := true) {
-    RDA_Log_Debug(A_ThisFunc)
+    local
 
-    this.__cacheInfo(!useCache)
-    name := this._info.name
-    /*
+    info := useCache ? this.cachedInfo : (this._cachedInfo := this.getInfo())
+    name := info.name
+
+    RDA_Log_Debug(A_ThisFunc . " = " . name)
+
+    return name
+  }
+/*
+  ; alternative method using API, better performance with getInfo()
+  getName() {
     name := ""
 
     if (!name) {
@@ -143,24 +163,29 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
 
       name := this._name
     }
-    */
-
-    RDA_Log_Debug(A_ThisFunc . "=" . name)
-
-    return name
   }
+*/
+
+
   /*!
     Method: getDescription
       Retrieves the element description
 
+    Parameters:
+      useCache - bool - use cached value (true) or fetch current value (false)
+
     Returns:
       string
   */
-  getDescription() {
-    this.__cacheInfo()
-    RDA_Log_Debug(A_ThisFunc . "=" . this._info.description)
+  getDescription(useCache := true) {
+    local
 
-    return this._info.description
+    info := useCache ? this.cachedInfo : (this._cachedInfo := this.getInfo())
+    description := info.description
+
+    RDA_Log_Debug(A_ThisFunc . " = " . description)
+
+    return description
   }
   /*!
     Method: getType
@@ -172,15 +197,14 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   getType() {
     local
 
-    this.__cacheInfo()
+    info := this.cachedInfo
+    type := " " . info.role
 
-    type := " " . this._info.role
     while (c := InStr(type, " ")) {
       type := SubStr(type, 1, c - 1) . Format("{:U}", SubStr(type, c + 1, 1)) . SubStr(type, c + 2)
     }
 
-    RDA_Log_Debug(A_ThisFunc . "=" . type)
-
+    RDA_Log_Debug(A_ThisFunc . " = " . type)
 
     return type
   }
@@ -197,18 +221,17 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   getPatterns() {
     local
 
-    ret := []
-    this.__cacheInfo()
-    s := this._info.states
-    r := this._info.role
+    info := this.cachedInfo
+    s := info.states
+    r := info.role
 
-    RDA_Log_Debug(A_ThisFunc . " states = " . s . " role = " . r)
+    ret := []
 
     ; InStr(s, "editable")
-    if (this._info.accessibleValueInterface) {
+    if (info.accessibleValueInterface) {
       ret.push("Value")
     }
-    if (this._info.accessibleTextInterface) {
+    if (info.accessibleTextInterface) {
       ret.push("Text")
     }
     if (InStr(s, "selectable")) {
@@ -224,11 +247,11 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
       ret.push("Toggle")
     }
     ; r == "combo box" || r == "list") {
-    if (this._info.accessibleSelectionInterface) {
+    if (info.accessibleSelectionInterface) {
       ret.push("Selection")
     }
 
-    RDA_Log_Debug(A_ThisFunc . " = " . RDA_JSON_stringify(ret))
+    RDA_Log_Debug(A_ThisFunc . " = " . RDA_JSON_stringify(ret) . " states = " . s . " role = " . r)
 
     return ret
   }
@@ -237,26 +260,42 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     Method: getIndex
       Retrieves current index at the tree
 
+    Parameters:
+      useCache - bool - use cached value (true) or fetch current value (false)
+
     Returns:
       number - the 1 index for the rest.
   */
-  getIndex() {
-    this.__cacheInfo()
-    RDA_Log_Debug(A_ThisFunc . " = " . this._info.indexInParent + 1)
+  getIndex(useCache := true) {
+    local
 
-    return this._info.indexInParent + 1
+    info := useCache ? this.cachedInfo : (this._cachedInfo := this.getInfo())
+    indexInParent := info.indexInParent + 1
+
+    RDA_Log_Debug(A_ThisFunc . " = " . indexInParent)
+
+    return indexInParent
   }
 
   /*!
     Method: getChildElementCount
       Retrieves the children count
 
+    Parameters:
+      useCache - bool - use cached value (true) or fetch current value (false)
+
     Returns:
       number
   */
-  getChildElementCount() {
-    this.__cacheInfo()
-    return this._info.childrenCount
+  getChildElementCount(useCache := true) {
+    local
+
+    info := useCache ? this.cachedInfo : (this._cachedInfo := this.getInfo())
+    childrenCount := info.childrenCount
+
+    RDA_Log_Debug(A_ThisFunc . " = " . childrenCount)
+
+    return childrenCount
   }
   /*!
     Method: getProperty
@@ -308,13 +347,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
 
   ; internal, no log
   __cacheInfo(rebuild := false) {
-    if (rebuild) {
-      this._info := 0
-    } else if (this._info) {
-      return
-    }
-
-    this._info := this.getInfo()
+    throw exception("deprecated")
   }
 
   ;
@@ -346,9 +379,9 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     global RDA_ScreenRegion, RDA_ScreenPosition, RDA_Rectangle
 
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
-    this.__cacheInfo()
 
-    r := new RDA_ScreenRegion(new RDA_ScreenPosition(this.automation, this._info.x, this._info.y), new RDA_Rectangle(this.automation, this._info.width, this._info.height))
+    info := this.cachedInfo
+    r := new RDA_ScreenRegion(new RDA_ScreenPosition(this.automation, info.x, info.y), new RDA_Rectangle(this.automation, info.width, info.height))
 
     RDA_Log_Debug(A_ThisFunc . " = " . r.toString())
 
@@ -485,11 +518,12 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     local
 
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
-    this.__cacheInfo(true)
+
+    info := (this._cachedInfo := this.getInfo())
 
     this.expectPattern("Toggle", "TogglePattern not implemented")
 
-    return InStr(this._info.states, "checked") > 0
+    return InStr(info.states, "checked") > 0
   }
   ; internal
   _ensureCheck(state) {
@@ -615,11 +649,12 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     local
 
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
-    this.__cacheInfo(true)
+
+    info := (this._cachedInfo := this.getInfo())
 
     this.expectPattern("ExpandCollapse", "ExpandCollapsePattern not implemented")
 
-    return InStr(this._info.states, "expanded") > 0
+    return InStr(info.states, "expanded") > 0
   }
   /*!
     Method: isCollapsed
@@ -654,7 +689,8 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     local
 
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
-    this.__cacheInfo()
+
+    info := this.cachedInfo
 
     this.expectPattern("SelectionItem", "SelectionItemPattern not implemented")
 
@@ -663,7 +699,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
 
     ; void AddAccessibleSelectionFromContext(long vmID, AccessibleSelection as, int i);
     DllCall(this.jab.dllName . "\addAccessibleSelectionFromContext"
-      , "Int", this.vmId, this.jab.acType, parent.acId, "Int", this._info.indexInParent
+      , "Int", this.vmId, this.jab.acType, parent.acId, "Int", info.indexInParent
       , "Cdecl Int")
 
     if (!this.isSelected()) {
@@ -687,13 +723,14 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     local
 
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
-    this.__cacheInfo()
+
+    info := this.cachedInfo
 
     parent := this.getParent()
 
     ; void RemoveAccessibleSelectionFromContext(long vmID, AccessibleSelection as, int i);
     DllCall(this.jab.dllName . "\removeAccessibleSelectionFromContext"
-      , "Int", this.vmId, this.jab.acType, parent.acId, "Int", this._info.indexInParent
+      , "Int", this.vmId, this.jab.acType, parent.acId, "Int", info.indexInParent
       , "Cdecl Int")
 
     if (this.isSelected()) {
@@ -716,12 +753,12 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     local
 
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
-    this.__cacheInfo(true)
+
+    info := (this._cachedInfo := this.getInfo())
 
     this.expectPattern("SelectionItem", "SelectionItemPattern not implemented")
 
-    return InStr(this._info.states, "selected") > 0
-
+    return InStr(info.states, "selected") > 0
   }
   /*!
     Method: getSelectedItems
@@ -803,14 +840,15 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
       boolean
   */
   canSelectMultiple() {
-    local pattern, v, e
+    local
 
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
 
-    this.__cacheInfo()
+    info := this.cachedInfo
+
     this.expectPattern("Selection", "SelectionPattern not implemented")
 
-    return InStr(this._info.states, "multiselectable") > 0
+    return InStr(info.states, "multiselectable") > 0
   }
   ; internal
   _ensureSelect(state) {
@@ -893,9 +931,9 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
   _setValue(text) {
     local
 
-    this.__cacheInfo()
+    info := this.cachedInfo
 
-    if (this._info.accessibleTextInterface) {
+    if (info.accessibleTextInterface) {
       l := StrLen(text)
       VarSetCapacity(buff, l * 2, 0)
       StrPut(text, &buff, l, "UTF-16")
@@ -909,7 +947,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
       return
     }
 
-    if (this._info.accessibleValueInterface) {
+    if (info.accessibleValueInterface) {
       ; TODO
     }
 
@@ -974,22 +1012,25 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     global RDA_AutomationJAB
     RDA_Log_Debug(A_ThisFunc)
 
-    if (this._info.accessibleTextInterface) {
+    info := this.cachedInfo
+
+    if (info.accessibleTextInterface) {
       CharCount := CaretIndex := IndexAtPoint := 0
-      VarSetCapacity(Info, 12,0)
-      if (DllCall(this.jab.dllName . "\getAccessibleTextInfo"
+      pInfo := 0
+      VarSetCapacity(pInfo, 12, 0)
+      if (!DllCall(this.jab.dllName . "\getAccessibleTextInfo"
         , "Int", this.vmId, this.jab.acType, this.acId
-        , "Ptr", &Info, "Int", 0, "Int", 0
+        , "Ptr", &pInfo, "Int", 0, "Int", 0
         , "Cdecl Int")) {
-            CharCount := NumGet(&Info,0,"Int")
-            CaretIndex := NumGet(&Info,4,"Int")
-            IndexAtPoint := NumGet(&Info,8,"Int")
-      } else {
+        VarSetCapacity(pInfo, 0, 0)
         throw RDA_Exception("getAccessibleTextInfo failed")
       }
 
-      VarSetCapacity(Info, 0,0)
-      Info := 0
+      CharCount := NumGet(&pInfo,0,"Int")
+      CaretIndex := NumGet(&pInfo,4,"Int")
+      IndexAtPoint := NumGet(&pInfo,8,"Int")
+
+      VarSetCapacity(pInfo, 0, 0)
 
       ; now get the entire text!
       maxlen:=10000 ; arbitrary value, larger values tend to fail sometimes
@@ -1040,7 +1081,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
       return ret
     }
 
-    if (this._info.accessibleValueInterface) {
+    if (info.accessibleValueInterface) {
       ; this should be the way, but it's always empty...
       buff := 0
       VarSetCapacity(buff, RDA_AutomationJAB.MAX_STRING_SIZE * 2, 0)
@@ -1252,11 +1293,13 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
 
     RDA_Log_Debug(A_ThisFunc . "(" . this.toString() . ", " . RDA_JSON_stringify(actions) . ")")
 
-    this.__cacheInfo()
-    if (!this._info.accessibleActionInterface) {
+    info := this.cachedInfo
+
+    if (!info.accessibleActionInterface) {
       throw RDA_Exception("Element do not implement ActionInterface")
     }
 
+    buff := 0
     VarSetCapacity(buff, 256*256*2+4, 0)
     NumPut(actions.length(), &buff, 0, "Int")
     loop % actions.length() {
@@ -1273,7 +1316,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
         ;offset += 2
       }
       ; NumPut(0, &actions, offset, "UChar")
-  }
+    }
 
     VarSetCapacity(failure, A_PtrSize, 0)
     ; BOOL doAccessibleActions(long vmID, AccessibleContext accessibleContext, AccessibleActionsToDo *actionsToDo, jint *failure);
@@ -1288,9 +1331,12 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     RDA_Log_Debug(A_ThisFunc . " doAccessibleActions(result = " . r . ", failure = " . failure . ")")
     VarSetCapacity(buff, 0)
     buff := 0
+
     if (failure != -1) {
       throw RDA_Exception("Action failed: " . actions[failure + 1])
     }
+
+    return this
   }
 
   /*!
@@ -1420,10 +1466,11 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
 
     RDA_Log_Debug(A_ThisFunc "(" . this.toString() . ")")
 
-    this._info := new RDA_AutomationJABAccessibleContextInfo()
-    VarSetCapacity(Info, 6188,0)
+    info := new RDA_AutomationJABAccessibleContextInfo()
+    pInfo := 0
+    VarSetCapacity(pInfo, 6188, 0)
     if (!DllCall(this.jab.dllName . "\getAccessibleContextInfo"
-      , "Int", this.vmId, this.jab.acType, this.acId, "Ptr", &Info
+      , "Int", this.vmId, this.jab.acType, this.acId, "Ptr", &pInfo
       , "Cdecl " . this.jab.acType)) {
       throw RDA_Exception("getAccessibleContextInfo failed")
     }
@@ -1431,39 +1478,39 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     ; https://github.com/openjdk/jdk/blob/master/src/jdk.accessibility/windows/native/include/bridge/AccessBridgePackages.h#L651
     offset := 0
     ; wchar_t name[MAX_STRING_SIZE];          // the AccessibleName of the object
-    this._info.name := StrGet(&Info, RDA_AutomationJAB.MAX_STRING_SIZE, "UTF-16")
+    info.name := StrGet(&pInfo, RDA_AutomationJAB.MAX_STRING_SIZE, "UTF-16")
     offset += RDA_AutomationJAB.MAX_STRING_SIZE * 2
     ; wchar_t description[MAX_STRING_SIZE];   // the AccessibleDescription of the object
-    this._info.description := StrGet((&Info) + offset, RDA_AutomationJAB.MAX_STRING_SIZE, "UTF-16")
+    info.description := StrGet((&pInfo) + offset, RDA_AutomationJAB.MAX_STRING_SIZE, "UTF-16")
     offset += RDA_AutomationJAB.MAX_STRING_SIZE * 2
     ; wchar_t role[SHORT_STRING_SIZE];        // localized AccesibleRole string
     ; skip
     offset += RDA_AutomationJAB.SHORT_STRING_SIZE * 2
     ; wchar_t role_en_US[SHORT_STRING_SIZE];  // AccesibleRole string in the en_US locale
-    this._info.role := StrGet((&Info)+ offset, RDA_AutomationJAB.SHORT_STRING_SIZE, "UTF-16")
+    info.role := StrGet((&pInfo)+ offset, RDA_AutomationJAB.SHORT_STRING_SIZE, "UTF-16")
     offset += RDA_AutomationJAB.SHORT_STRING_SIZE * 2
     ; wchar_t states[SHORT_STRING_SIZE];      // localized AccesibleStateSet string (comma separated)
     offset += RDA_AutomationJAB.SHORT_STRING_SIZE * 2
     ; wchar_t states_en_US[SHORT_STRING_SIZE]; // AccesibleStateSet string in the en_US locale (comma separated)
-    this._info.states := StrGet((&Info)+ offset, RDA_AutomationJAB.SHORT_STRING_SIZE, "UTF-16")
+    info.states := StrGet((&pInfo)+ offset, RDA_AutomationJAB.SHORT_STRING_SIZE, "UTF-16")
     offset += RDA_AutomationJAB.SHORT_STRING_SIZE * 2
     ; jint indexInParent;                     // index of object in parent
-    this._info.indexInParent := NumGet(&Info,offset,"Int")
+    info.indexInParent := NumGet(&pInfo,offset,"Int")
     offset += 4
     ; jint childrenCount;                     // # of children, if any
-    this._info.childrenCount := NumGet(&Info,offset,"Int")
+    info.childrenCount := NumGet(&pInfo,offset,"Int")
     offset += 4
     ; jint x;                                 // screen coords in pixels
-    this._info.x := NumGet(&Info,offset,"Int")
+    info.x := NumGet(&pInfo,offset,"Int")
     offset += 4
     ; jint y;                                 // "
-    this._info.y := NumGet(&Info,offset,"Int")
+    info.y := NumGet(&pInfo,offset,"Int")
     offset += 4
     ; jint width;                             // pixel width of object
-    this._info.width := NumGet(&Info,offset,"Int")
+    info.width := NumGet(&pInfo,offset,"Int")
     offset += 4
     ; jint height;                            // pixel height of object
-    this._info.height := NumGet(&Info,offset,"Int")
+    info.height := NumGet(&pInfo,offset,"Int")
     offset += 4
     ; BOOL accessibleComponent;               // flags for various additional
     ; skip use: accessibleInterfaces
@@ -1478,19 +1525,20 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     ; skip use: accessibleInterfaces
     offset += 4
     ; BOOL accessibleInterfaces;              // new bitfield containing additional interface flags
-    accessibleInterfaces := NumGet(&Info,offset,"Int")
+    accessibleInterfaces := NumGet(&pInfo,offset,"Int")
 
-    this._info.accessibleValueInterface := (accessibleInterfaces & 1) == 1
-    this._info.accessibleActionInterface := (accessibleInterfaces & 2) == 2
-    this._info.accessibleComponentInterface := (accessibleInterfaces & 4) == 4
-    this._info.accessibleSelectionInterface := (accessibleInterfaces & 8) == 8
-    this._info.accessibleTableInterface := (accessibleInterfaces & 16) == 16
-    this._info.accessibleTextInterface := (accessibleInterfaces & 32) == 32
-    this._info.accessibleHypertextInterface := (accessibleInterfaces & 64) == 64
+    info.accessibleValueInterface := (accessibleInterfaces & 1) == 1
+    info.accessibleActionInterface := (accessibleInterfaces & 2) == 2
+    info.accessibleComponentInterface := (accessibleInterfaces & 4) == 4
+    info.accessibleSelectionInterface := (accessibleInterfaces & 8) == 8
+    info.accessibleTableInterface := (accessibleInterfaces & 16) == 16
+    info.accessibleTextInterface := (accessibleInterfaces & 32) == 32
+    info.accessibleHypertextInterface := (accessibleInterfaces & 64) == 64
 
-    RDA_Log_Debug(this._info.toString())
+    VarSetCapacity(pInfo, 0, 0)
+    RDA_Log_Debug(A_ThisFunc . " " . info.toString())
 
-    return this._info
+    return info
   }
 
   /*!
@@ -1511,10 +1559,12 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
 
     tableInfo := new RDA_AutomationJABAccessibleTableInfo()
 
-    VarSetCapacity(Info, 40, 0)
+    pInfo := 0
+    VarSetCapacity(pInfo, 40, 0)
     if (!DllCall(this.jab.dllName . "\getAccessibleTableInfo"
-      , "Int", this.vmId, this.jab.acType, this.acId, "Ptr", &Info
+      , "Int", this.vmId, this.jab.acType, this.acId, "Ptr", &pInfo
       , "Cdecl " . this.jab.acType)) {
+      VarSetCapacity(pInfo, 0, 0)
       throw RDA_Exception("getAccessibleTableInfo failed")
     }
 
@@ -1522,35 +1572,35 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     offset := 0
 
     ; JOBJECT64 caption;  // AccesibleContext
-    tableInfo.caption := NumGet(&Info,offset,"Int64")
+    tableInfo.caption := NumGet(&pInfo,offset,"Int64")
     offset += 8
     ;JOBJECT64 summary;  // AccessibleContext
-    tableInfo.summary := NumGet(&Info,offset,"Int64")
+    tableInfo.summary := NumGet(&pInfo,offset,"Int64")
     offset += 8
     ; jint rowCount;
-    tableInfo.rowCount := NumGet(&Info,offset,"Int")
+    tableInfo.rowCount := NumGet(&pInfo,offset,"Int")
     offset += 4
     ; jint columnCount;
-    tableInfo.columnCount := NumGet(&Info,offset,"Int")
+    tableInfo.columnCount := NumGet(&pInfo,offset,"Int")
     offset += 4
     ; JOBJECT64 accessibleContext;
-    tableInfo.accessibleContext := NumGet(&Info,offset,"Int64")
+    tableInfo.accessibleContext := NumGet(&pInfo,offset,"Int64")
     offset += 8
     ; JOBJECT64 accessibleTable;
-    tableInfo.accessibleTable := NumGet(&Info,offset,"Int64")
+    tableInfo.accessibleTable := NumGet(&pInfo,offset,"Int64")
     offset += 8
 
-    ;RDA_Log_Debug(offset)
-    RDA_Log_Debug(tableInfo.toString())
+    RDA_Log_Debug(A_ThisFunc . " " . tableInfo.toString())
+    VarSetCapacity(pInfo, 0, 0)
 
     return tableInfo
     /*
     row := 0
     column := 0
 
-    VarSetCapacity(Info, 6188,0)
+    VarSetCapacity(pInfo, 6188,0)
     if (!DllCall(this.jab.dllName . "\getAccessibleTableCellInfo"
-      , "Int", this.vmId, this.jab.acType, tableInfo.accessibleTable, "Int", row, "Int", column, "Ptr", &Info
+      , "Int", this.vmId, this.jab.acType, tableInfo.accessibleTable, "Int", row, "Int", column, "Ptr", &pInfo
       , "Cdecl " . this.jab.acType)) {
       throw RDA_Exception("getAccessibleTableInfo failed")
     }
