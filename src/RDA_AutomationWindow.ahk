@@ -146,6 +146,8 @@ class RDA_AutomationWindow extends RDA_Base {
     ; RDA_Log_Debug(A_ThisFunc . " " . this.toString())
   }
   __Delete() {
+    RDA_Log_Debug(A_ThisFunc . " _closeOnDestruction = " . (this._closeOnDestruction ? "yes" : "no"))
+
     if (this._closeOnDestruction) {
       this.close()
     }
@@ -285,6 +287,8 @@ class RDA_AutomationWindow extends RDA_Base {
       <RDA_AutomationWindow>
   */
   closeOnDestruction() {
+    RDA_Log_Debug(A_ThisFunc)
+
     this._closeOnDestruction := true
 
     return this
@@ -299,15 +303,35 @@ class RDA_AutomationWindow extends RDA_Base {
   isClosed() {
     return !RDA_Window_Exist(this.hwnd)
   }
+  ; internal
+  _isActivated() {
+    return this.hwnd == DllCall("GetForegroundWindow")
+  }
   /*!
     Method: isActivated
       Returns if the window is the foreground
+      (the window with which the user is currently working)
 
     Returns:
       boolean
   */
   isActivated() {
-    return this.hwnd == DllCall("GetForegroundWindow")
+    local
+
+    r := this._isActivated()
+    RDA_Log_Debug(A_ThisFunc . " <-- " . r ? "yes" : "no")
+
+    return r
+  }
+  /*!
+    Method: isDeactivated
+      Opposite of <RDA_AutomationWindow.isActivated>
+
+    Returns:
+      boolean
+  */
+  isDeactivated() {
+    return this.isActivated()
   }
   /*!
     Method: isForeground
@@ -317,6 +341,16 @@ class RDA_AutomationWindow extends RDA_Base {
       boolean
   */
   isForeground() {
+    return this.isActivated()
+  }
+  /*!
+    Method: isForeground
+      Opposite of <RDA_AutomationWindow.isActivated>
+
+    Returns:
+      boolean
+  */
+  isBackground() {
     return this.isActivated()
   }
   /*!
@@ -511,6 +545,7 @@ class RDA_AutomationWindow extends RDA_Base {
   type(text) {
     RDA_Log_Debug(A_ThisFunc . "(text = " . text . ") " . this.automation.toString())
 
+    this.expectAlive("Dead windows cannot recieve keys")
     this.automation.keyboard().type(text, this.hwnd, this.defaultBackgroundControl)
 
     return this
@@ -528,6 +563,7 @@ class RDA_AutomationWindow extends RDA_Base {
   typePassword(password) {
     RDA_Log_Debug(A_ThisFunc . "(password.length = " . StrLen(password) . ") " . this.automation.toString())
 
+    this.expectAlive("Dead windows cannot recieve keys")
     this.automation.keyboard().typePassword(password, this.hwnd, this.defaultBackgroundControl)
 
     return this
@@ -545,6 +581,7 @@ class RDA_AutomationWindow extends RDA_Base {
   sendKeys(keys) {
     RDA_Log_Debug(A_ThisFunc . "(keys = " . keys . ") " . this.automation.toString())
 
+    this.expectAlive("Dead windows cannot recieve keys")
     this.automation.keyboard().sendKeys(keys, this.hwnd, this.defaultBackgroundControl)
 
     return this
@@ -562,6 +599,7 @@ class RDA_AutomationWindow extends RDA_Base {
   sendPassword(password) {
     RDA_Log_Debug(A_ThisFunc . "(password.length = " . StrLen(password) . ") " . this.automation.toString())
 
+    this.expectAlive("Dead windows cannot recieve keys")
     this.automation.keyboard().sendPassword(password, this.hwnd, this.defaultBackgroundControl)
 
     return this
@@ -1089,7 +1127,7 @@ class RDA_AutomationWindow extends RDA_Base {
       <RDA_AutomationJABElement>
   */
   asJABElement() {
-    RDA_Log_Debug(A_ThisFunc)
+    RDA_Log_Debug(A_ThisFunc . "() " . this.toString())
 
     return this.automation.jab.elementFromHandle(this.hwnd)
   }
@@ -1168,5 +1206,92 @@ class RDA_AutomationWindow extends RDA_Base {
 
     return RDA_Window_WaitClose(this.hwnd, timeout, errorMessage)
   }
+  /*!
+    Method: expectClosed
+      Alias of <RDA_AutomationWindow.expectClosed>
 
+    Parameters:
+      errorMessage - string - error message to throw
+      timeout - number - Timeout, in miliseconds
+
+    Throws:
+      Expected window to be dead
+
+    Returns:
+      <RDA_AutomationWindow>
+  */
+  expectClosed() {
+    return this.expectDead(errorMessage, timeout)
+  }
+  ; internal
+  _waitActivated(chk, timeout, delay, exceptionMessage) {
+    local
+
+    startTime := A_TickCount
+    loop {
+      if (this._isActivated() == chk) {
+        RDA_Log_Debug(A_ThisFunc " <-- " . this.toString())
+        return this
+      }
+
+      if (A_TickCount >= startTime + timeout) {
+        RDA_Log_Error(A_ThisFunc " timeout(" . timeout . ") reached")
+        throw RDA_Exception(exceptionMessage)
+      }
+
+      sleep % delay
+    }
+  }
+  /*!
+    Method: waitActivated
+      Waits until windows is activated
+
+    Parameters:
+      timeout - number - Timeout, in miliseconds
+      delay - number - Delay, in miliseconds
+      exceptionMessage - string - exception message if not activated
+
+    Throws:
+      Window is not activated, timeout reached
+
+    Returns:
+      <RDA_AutomationWindow>
+  */
+  waitActivated(timeout := -1, delay := -1, exceptionMessage := "Window is not activated, timeout reached") {
+    local
+    global RDA_Automation
+
+    timeout := (timeout == -1 ? RDA_Automation.TIMEOUT : timeout)
+    delay := (delay == -1 ? RDA_Automation.DELAY : delay)
+
+    RDA_Log_Debug(A_ThisFunc . "(" . timeout . ", " . delay . ", " . exceptionMessage . ")")
+
+    return this._waitActivated(true, timeout, delay, exceptionMessage)
+  }
+  /*!
+    Method: waitDeactivated
+      Waits until windows is deactivated
+
+    Parameters:
+      timeout - number - Timeout, in miliseconds
+      delay - number - Delay, in miliseconds
+      exceptionMessage - string - exception message if not deactivated
+
+    Throws:
+      Window is not deactivated, timeout reached
+
+    Returns:
+      <RDA_AutomationWindow>
+  */
+  waitDeactivated(timeout := -1, delay := -1, exceptionMessage := "Window is not deactivated, timeout reached") {
+    local
+    global RDA_Automation
+
+    timeout := (timeout == -1 ? RDA_Automation.TIMEOUT : timeout)
+    delay := (delay == -1 ? RDA_Automation.DELAY : delay)
+
+    RDA_Log_Debug(A_ThisFunc . "(" . timeout . ", " . delay . ", " . exceptionMessage . ")")
+
+    return this._waitActivated(false, timeout, delay, exceptionMessage)
+  }
 }

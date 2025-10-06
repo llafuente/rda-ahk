@@ -261,7 +261,68 @@ class Test_RDA_AutomationWindows {
   }
 
 
+  Test_Automation_Window_waitActivated() {
+    local
+    global RDA_Automation, Yunit
+
+    RDA_Log_Debug(A_ThisFunc)
+
+    ; get previous windows
+    automation := new RDA_Automation()
+    windows := automation.windows()
+    previousWindows := windows.get()
+
+    ; run your application
+    Run notepad.exe
+    Run notepad.exe
+    sleep 4000 ; wait because it's a "find" example
+    wins := windows.getNew(previousWindows)
+    Yunit.assert(wins.length() == 2, "2 new windows")
+    wins[1].closeOnDestruction()
+    wins[2].closeOnDestruction()
+
+    ; direct activate
+    startTime := A_TickCount
+    wins[1].activate()
+    wins[1].waitActivated()
+    Yunit.assert(A_TickCount - startTime < 1000, "Elapsed at less 1000 ms")
+
+    ; direct activate
+    startTime := A_TickCount
+    wins[2].activate()
+    wins[2].waitActivated()
+    Yunit.assert(A_TickCount - startTime < 1000, "Elapsed at less 1000 ms")
+
+    ; wait activate
+    activate_win1 := ObjBindMethod(wins[1], "activate")
+    activate_win2 := ObjBindMethod(wins[2], "activate")
+
+    startTime := A_TickCount
+    SetTimer % activate_win1, 1000
+    wins[1].waitActivated()
+    SetTimer % activate_win1, Off
+
+    Yunit.assert(A_TickCount - startTime > 1000, "Elapsed at least 1000 ms")
+
+    startTime := A_TickCount
+    SetTimer % activate_win2, 1000
+    wins[2].waitActivated()
+    SetTimer % activate_win2, Off
+
+    Yunit.assert(A_TickCount - startTime > 1000, "Elapsed at least 1000 ms")
+
+    activate_win1 := 0
+    activate_win2 := 0
+
+
+    ; autohotkey bug. ObjBindMethod prevent destructor to be called
+    ; closeOnDestruction don't work here :S
+    wins[1].close(0)
+    wins[2].close(0)
+  }
+
   End() {
   }
 }
+
 
