@@ -180,7 +180,10 @@ class RDA_LayoutImage extends RDA_LayoutElement {
   */
   __New(layout, obj) {
     this.layout := layout
-    RDA_Assert(this.layout, "invalid parameters layout is required")
+
+    RDA_Assert(layout, "invalid parameters layout is required")
+    RDA_Assert(RDA_instaceOf(layout, RDA_Layout), "expected layout to be instance of RDA_Layout")
+
     this._parseCommonProperties(obj)
 
     ; optional
@@ -289,7 +292,10 @@ class RDA_LayoutEdit extends RDA_LayoutElement {
   */
   __New(layout, obj) {
     this.layout := layout
-    RDA_Assert(this.layout, "invalid parameters layout is required")
+
+    RDA_Assert(layout, "invalid parameters layout is required")
+    RDA_Assert(RDA_instaceOf(layout, RDA_Layout), "expected layout to be instance of RDA_Layout")
+
     this._parseCommonProperties(obj)
 
     if (obj.HasKey("clearKeys")) {
@@ -366,6 +372,10 @@ class RDA_LayoutStaticDropdown extends RDA_LayoutElement {
   */
   __New(layout, obj) {
     this.layout := layout
+
+    RDA_Assert(layout, "invalid parameters layout is required")
+    RDA_Assert(RDA_instaceOf(layout, RDA_Layout), "expected layout to be instance of RDA_Layout")
+
     this._parseCommonProperties(obj)
 
     this.options := obj.options
@@ -446,6 +456,10 @@ class RDA_LayoutAutocompleteDropdown extends RDA_LayoutElement {
   */
   __New(layout, obj) {
     this.layout := layout
+
+    RDA_Assert(layout, "invalid parameters layout is required")
+    RDA_Assert(RDA_instaceOf(layout, RDA_Layout), "expected layout to be instance of RDA_Layout")
+
     this._parseCommonProperties(obj)
 
     if (obj.HasKey("enterKeys")) {
@@ -502,6 +516,10 @@ class RDA_LayoutCheckbox extends RDA_LayoutElement {
   */
   __New(layout, obj) {
     this.layout := layout
+
+    RDA_Assert(layout, "invalid parameters layout is required")
+    RDA_Assert(RDA_instaceOf(layout, RDA_Layout), "expected layout to be instance of RDA_Layout")
+
     this._parseCommonProperties(obj)
   }
   /*!
@@ -548,6 +566,10 @@ class RDA_LayoutButton extends RDA_LayoutImage {
   */
   __New(layout, obj) {
     this.layout := layout
+
+    RDA_Assert(layout, "invalid parameters layout is required")
+    RDA_Assert(RDA_instaceOf(layout, RDA_Layout), "expected layout to be instance of RDA_Layout")
+
     this._parseCommonProperties(obj)
 
     if (obj.HasKey("image")) {
@@ -739,11 +761,16 @@ class RDA_Layout extends RDA_Base {
       win - <RDA_AutomationWindow> - window
   */
   __New(win) {
+    local
+    global RDA_AutomationWindow
+
     this.automation := win.automation
     this.win := win
 
     RDA_Assert(this.win, "invalid parameter win is required")
     RDA_Assert(this.automation, "invalid parameter automation is required")
+
+    RDA_Assert(RDA_instaceOf(win, RDA_AutomationWindow), "expected win to be instance of RDA_AutomationWindow")
   }
   /*!
     Method: fromJsonFile

@@ -338,7 +338,11 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
       boolean
   */
   isSameElement(other) {
+    local
+    global RDA_AutomationJABElement
+
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString() . " (" . other.toString() . ")")
+    RDA_Assert(RDA_instaceOf(other, RDA_AutomationJABElement), "expected other to be instance of RDA_AutomationJABElement")
 
     ; BOOL isSameObject(vmID, obj1, obj2);
     return DllCall(this.jab.dllName . "\isSameObject"

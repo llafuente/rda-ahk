@@ -1155,6 +1155,10 @@ class RDA_AutomationWindow extends RDA_Base {
   */
   moveToVirtualDesktop(vdesk) {
     local
+    global RDA_VirtualDesktop
+
+    RDA_Assert(vdesk), "vdesk is null")
+    RDA_Assert(RDA_instaceOf(vdesk, RDA_VirtualDesktop), "expected vdesk to be instance of RDA_VirtualDesktop")
 
     this.automation.virtualDesktops().MoveTo(this.hwnd, vdesk)
 
@@ -1220,7 +1224,7 @@ class RDA_AutomationWindow extends RDA_Base {
     Returns:
       <RDA_AutomationWindow>
   */
-  expectClosed() {
+  expectClosed(errorMessage, timeout) {
     return this.expectDead(errorMessage, timeout)
   }
   ; internal
