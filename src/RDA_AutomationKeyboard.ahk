@@ -38,7 +38,7 @@ class RDA_AutomationKeyboard extends RDA_Base {
       <RDA_AutomationKeyboard>
   */
   type(text, hwnd := 0, backgroundControl := "") {
-    RDA_Log_Debug(A_ThisFunc . "(text = " . text . ") " . this.automation.toString())
+    RDA_Log_Debug(A_ThisFunc . "(text = " . text . ") " . ", " . hwnd . ", " . backgroundControl . ") ")
 
     RDA_KeyboardSendKeys(this.automation, hwnd, "{Raw}" . text, backgroundControl)
 
@@ -68,7 +68,7 @@ class RDA_AutomationKeyboard extends RDA_Base {
       <RDA_AutomationKeyboard>
   */
   typePassword(password, hwnd := 0, backgroundControl := "") {
-    RDA_Log_Debug(A_ThisFunc . "(password.length = " . StrLen(password) . ") " . this.automation.toString())
+    RDA_Log_Debug(A_ThisFunc . "(password.length = " . StrLen(password) . ", " . hwnd . ", " . backgroundControl . ") ")
 
     RDA_KeyboardSendKeys(this.automation, hwnd, "{Raw}" . password, backgroundControl)
 
@@ -95,7 +95,7 @@ class RDA_AutomationKeyboard extends RDA_Base {
       <RDA_AutomationKeyboard>
   */
   sendKeys(keys, hwnd := 0, backgroundControl := "") {
-    RDA_Log_Debug(A_ThisFunc . "(keys = " . keys . ") " . this.automation.toString())
+    RDA_Log_Debug(A_ThisFunc . "(keys = " . keys . ", " . hwnd . ", " . backgroundControl . ") ")
 
     RDA_KeyboardSendKeys(this.automation, hwnd, keys, backgroundControl)
 
@@ -119,7 +119,7 @@ class RDA_AutomationKeyboard extends RDA_Base {
       <RDA_AutomationKeyboard>
   */
   sendPassword(password, hwnd := 0, backgroundControl := "") {
-    RDA_Log_Debug(A_ThisFunc . "(password.length = " . StrLen(password) . ") " . this.automation.toString())
+    RDA_Log_Debug(A_ThisFunc . "(password.length = " . StrLen(password) . ", " . hwnd . ", " . backgroundControl . ") ")
 
     RDA_KeyboardSendKeys(this.automation, hwnd, password, backgroundControl)
 

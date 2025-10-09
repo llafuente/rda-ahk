@@ -579,7 +579,7 @@ class RDA_AutomationWindow extends RDA_Base {
       <RDA_AutomationWindow>
   */
   sendKeys(keys) {
-    RDA_Log_Debug(A_ThisFunc . "(keys = " . keys . ") " . this.automation.toString())
+    RDA_Log_Debug(A_ThisFunc . "(keys = " . keys . ") " . this.toString())
 
     this.expectAlive("Dead windows cannot recieve keys")
     this.automation.keyboard().sendKeys(keys, this.hwnd, this.defaultBackgroundControl)
@@ -1007,7 +1007,7 @@ class RDA_AutomationWindow extends RDA_Base {
       Takes a screenshot of current region
 
     Parameters:
-      file - string - File path
+      file - string|0 - File path (0 to copy to clipboard)
       captureCursor - boolean - Add cursor to capture ?
 
     Returns:
@@ -1042,7 +1042,7 @@ class RDA_AutomationWindow extends RDA_Base {
 
   /*!
     Method: copyToClipboard
-      Alias of <RDA_AutomationClipboard.copy> but activate current window before.
+      Alias of <RDA_AutomationClipboard.copy> activating current window before.
 
     Parameters:
       keys - string - Copy command by default CTRL+C

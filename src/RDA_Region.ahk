@@ -264,7 +264,7 @@ class RDA_Region extends RDA_Base {
       Takes a screenshot of current region
 
     Parameters:
-      file - string - File path
+      file - string|0 - File path (0 to copy to clipboard)
       captureCursor - boolean - Add cursor to capture ?
   */
   screenshot(file, captureCursor :=  false) {
