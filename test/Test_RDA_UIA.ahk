@@ -16,7 +16,7 @@ class Test_RDA_UIA {
     Yunit.assert(wins.Length() > 0, "Return some windows")
 
     Run notepad.exe
-    win := windows.waitOne({process: "notepad.exe"})
+    win := windows.expectOneVisible({process: "notepad.exe"})
     win.closeOnDestruction()
     win.move(50, 50)
     win.resize(640, 480)
@@ -329,7 +329,7 @@ class Test_RDA_UIA {
     Yunit.assert(wins.Length() > 0, "Return some windows")
 
     Run notepad.exe
-    win := windows.waitOne({process: "notepad.exe"})
+    win := windows.expectOneVisible({process: "notepad.exe"})
     win.closeOnDestruction()
     uiaWin := win.asUIAElement()
     RDA_Log_Debug(uiaWin.dumpXML())

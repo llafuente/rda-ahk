@@ -504,5 +504,36 @@ class RDA_AutomationWindows extends RDA_Base {
     return win
   }
 
-;  expectOneVisible(searchObject, timeout, delay, exceptionError)
+  /*!
+      Method: expectOneVisible
+        Waits and returns a single visible window or throws
+
+      Parameters:
+        searchObject - <RDA_AutomationWindowSearch> - search object
+        exceptionMessage - string - Exception message
+        timeout - number - timeout, in miliseconds
+        delay - number - delay, in miliseconds
+
+      Example:
+        ======= AutoHotKey =======
+        windows := (new RDA_Automation()).windows()
+        Run notepad.exe
+        ; wait 30s to notepad to open
+        win := windows.expectOneVisible({process: "notepad.exe"}, "Expected a notepad window")
+        ==========================
+
+      Throws:
+        Window not found
+        Multiple windows found
+
+      Returns:
+        <RDA_AutomationWindow>
+    */
+    expectOneVisible(searchObject, exceptionMessage := "Expected a visible window", timeout := -1, delay := -1) {
+      try {
+        return this.waitOne(searchObject, false, timeout, delay)
+      } catch e {
+        throw RDA_Exception(exceptionMessage)
+      }
+    }
 }
