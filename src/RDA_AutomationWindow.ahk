@@ -1157,7 +1157,7 @@ class RDA_AutomationWindow extends RDA_Base {
     local
     global RDA_VirtualDesktop
 
-    RDA_Assert(vdesk), "vdesk is null")
+    RDA_Assert(vdesk, "vdesk is null")
     RDA_Assert(RDA_instaceOf(vdesk, RDA_VirtualDesktop), "expected vdesk to be instance of RDA_VirtualDesktop")
 
     this.automation.virtualDesktops().MoveTo(this.hwnd, vdesk)
