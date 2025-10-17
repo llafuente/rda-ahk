@@ -116,9 +116,18 @@ There are a few differences:
 
 * Action pattern is JAB exclusive. JAB elements had many custom operations that are called `action` that expose neat functionality like "copy selected text to clipboard".
 
+## Install
+
+```cmd
+git clone https://github.com/llafuente/rda-ahk
+cd rda-ahk
+git submodule update --init --recursive
+
+```
+
 ## Distribution
 
-To generate the distribution file use:
+To generate the distribution file use (after install):
 
 ```cmd
 npm run dist

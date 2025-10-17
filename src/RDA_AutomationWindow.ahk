@@ -344,7 +344,7 @@ class RDA_AutomationWindow extends RDA_Base {
     return this.isActivated()
   }
   /*!
-    Method: isForeground
+    Method: isBackground
       Opposite of <RDA_AutomationWindow.isActivated>
 
     Returns:
