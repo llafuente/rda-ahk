@@ -530,6 +530,8 @@ class RDA_AutomationWindows extends RDA_Base {
         <RDA_AutomationWindow>
     */
     expectOneVisible(searchObject, exceptionMessage := "Expected a visible window", timeout := -1, delay := -1) {
+      local
+
       try {
         return this.waitOne(searchObject, false, timeout, delay)
       } catch e {
