@@ -92,6 +92,8 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     RDA_Assert(this.vmId, "invalid argument vmId is empty")
     RDA_Assert(this.acId, "invalid argument acId is empty")
 
+    RDA_Assert(RDA_instaceOf(jab, RDA_AutomationJAB), "expected jab to be instance of RDA_AutomationJAB")
+    RDA_Assert(RDA_instaceOf(win, RDA_AutomationWindow), "expected win to be instance of RDA_AutomationWindow")
   }
   __Delete() {
     ; DllCall(this.jab.dllName . "\ReleaseJavaObject", "Int", this.vmId, this.JAB.acType, this.acId, "Cdecl")
