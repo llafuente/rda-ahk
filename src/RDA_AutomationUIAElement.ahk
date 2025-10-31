@@ -997,7 +997,7 @@ class RDA_AutomationUIAElement extends RDA_AutomationBaseElement {
       throw RDA_Exception("Index out of bounds")
     }
 
-    return new RDA_AutomationUIAElement(this.automation, this.win, elements[index])
+    return elements[index]
   }
   /*!
     Method: getDescendants
