@@ -552,7 +552,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       Element(s) not found for query
 
     Returns:
-      <RDA_AutomationBaseElement>[]|<RDA_AutomationJABElement>[]|<RDA_AutomationUIAElement>[]
+      <RDA_AutomationBaseElement>[] | <RDA_AutomationJABElement>[] | <RDA_AutomationUIAElement>[]
   */
   find(query) {
     local
@@ -592,7 +592,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       Expected element count [?] found [?] for query: ?
 
     Returns:
-      <RDA_AutomationBaseElement>[]|<RDA_AutomationJABElement>[]|<RDA_AutomationUIAElement>[]
+      <RDA_AutomationBaseElement>[] | <RDA_AutomationJABElement>[] | <RDA_AutomationUIAElement>[]
   */
   findN(query, n) {
     local
@@ -661,7 +661,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       Timeout reached at ?: Element(s) not found
 
     Returns:
-      <RDA_AutomationBaseElement>[]|<RDA_AutomationJABElement>[]|<RDA_AutomationUIAElement>[]
+      <RDA_AutomationBaseElement>[] | <RDA_AutomationJABElement>[] | <RDA_AutomationUIAElement>[]
   */
   wait(query, timeout := -1, delay := -1) {
     local
@@ -805,7 +805,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
       ==========================
 
     Returns:
-      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
   getRoot(max := 250) {
     local
@@ -843,7 +843,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
     ==========================
 
     Returns:
-      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
   cacheTree(parent := 0) {
     RDA_Log_Debug(A_ThisFunc)
@@ -871,7 +871,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
     }
   }
   /*!
-    Method: cacheTree
+    Method: clearCacheTree
       clears the descentants tree cache
 
   Example:
@@ -885,7 +885,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
     ==========================
 
     Returns:
-      <RDA_AutomationBaseElement>|<RDA_AutomationJABElement>|<RDA_AutomationUIAElement>
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
   */
   clearCacheTree() {
     RDA_Log_Debug(A_ThisFunc . " " . this.toString())
@@ -925,7 +925,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
     ==========================
 
     Returns:
-      <RDA_AutomationBaseElement>[]|<RDA_AutomationJABElement>[]|<RDA_AutomationUIAElement>[]
+      <RDA_AutomationBaseElement>[] | <RDA_AutomationJABElement>[] | <RDA_AutomationUIAElement>[]
   */
   getDescendantsTree(limits := -1) {
     local
