@@ -712,6 +712,9 @@ class RDA_OverlayLayout extends RDA_OverlayObject {
       el := this.layout.elements[A_Index]
       el.region.drawFill(this.overlayOwner, 0x33FF00000)
       el.region.drawBorder(this.overlayOwner, 0x66FF00000, 1)
+
+      pos := el.region.getTopLeft().subtract2(0, 16)
+      this.overlayOwner.text(pos, el.name, 0xFF000000)
     }
 
     return true
