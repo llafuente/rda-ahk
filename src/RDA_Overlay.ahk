@@ -72,6 +72,8 @@ class RDA_Overlay {
   __Delete() {
     local
 
+    RDA_Log_Debug(A_ThisFunc . " " . this.toString())
+
     ; Select the object back into the hdc
     SelectObject(this.hdc, this.obm)
 
@@ -86,6 +88,8 @@ class RDA_Overlay {
 
     ; gdi+ may now be shutdown on exiting the program
     Gdip_Shutdown(this.pToken)
+
+    Gui, Overlay: Destroy
   }
   /*!
     Methods: toString
