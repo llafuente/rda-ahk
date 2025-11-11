@@ -132,7 +132,7 @@ class RDA_Position extends RDA_Base {
       <RDA_Position>
   */
   subtract2(x, y) {
-    RDA_Log_Debug(A_ThisFunc . "(" . pos.toString() . ")")
+    RDA_Log_Debug(A_ThisFunc . "(" . x . ", " . y . ")")
 
     this.x -= x
     this.y -= y
@@ -195,6 +195,8 @@ class RDA_Position extends RDA_Base {
   */
   expectColor(color, variation := 0, expectionMessage := -1) {
     local
+
+    RDA_Log_Debug(A_ThisFunc . "(" . color . ", " . variation . ", " . expectionMessage . ")")
 
     c := this.getColor()
     expectionMessage := expectionMessage == -1 ? "Expected color [%readcolor%] to be [%expectedColor%] (±%expectedVariantion%)" : expectionMessage

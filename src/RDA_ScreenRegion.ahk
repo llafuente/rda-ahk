@@ -197,7 +197,7 @@ class RDA_ScreenRegion extends RDA_Region {
     local
     global RDA_Automation
 
-    RDA_Log_Debug(A_ThisFunc)
+    RDA_Log_Debug(A_ThisFunc . "(" . this.toString() . ")")
     displayTime := displayTime == -1 ? RDA_Automation.HIGHLIGHT_TIME : displayTime
 
     x := this.origin.x
