@@ -416,13 +416,13 @@ body {
 <a name="RDA_AutomationBaseElement.find"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">find</div>
  <div  class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">find(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">query</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Retrieves all elements that match given query</p><div class="CHeading">Remarks</div><p>It will honor <a href="#RDA_Automation.limits" target="_top"   >RDA_Automation.limits</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">query</td><td class="CDLDefinition"><p>string - xpath-ish</p></td></tr></table><div class="CHeading">Example</div><pre class="CCode"><span class="SHComment">; Returns all List with name xxx</span><br />elements := element.find(<span class="SHString">&quot;//List[@name = 'xxx']&quot;</span>)<br /><span class="SHComment">; search all list and returns label children</span><br />elements := element.find(<span class="SHString">&quot;//List/Label&quot;</span>)<br /><span class="SHComment">; Returns all nodes with type document or edit</span><br />elements := element.find(<span class="SHString">&quot;//*[@type = 'Document' or @type = 'Edit']&quot;</span>)<br /><span class="SHComment">; Returns Labels under a list</span><br />elements := element.find(<span class="SHString">&quot;//List/Label&quot;</span>)</pre><div class="CHeading">Throws</div><p>Element(s) not found for query</p><div class="CHeading">Returns</div><p>&lt;RDA_AutomationBaseElement&gt;[]|&lt;RDA_AutomationJABElement&gt;[]|&lt;RDA_AutomationUIAElement&gt;[]</p></div>
+ <div class="CBody"><p>Retrieves all elements that match given query</p><div class="CHeading">Remarks</div><p>It will honor <a href="#RDA_Automation.limits" target="_top"   >RDA_Automation.limits</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">query</td><td class="CDLDefinition"><p>string - xpath-ish</p></td></tr></table><div class="CHeading">Example</div><pre class="CCode"><span class="SHComment">; Returns all List with name xxx</span><br />elements := element.find(<span class="SHString">&quot;//List[@name = 'xxx']&quot;</span>)<br /><span class="SHComment">; search all list and returns label children</span><br />elements := element.find(<span class="SHString">&quot;//List/Label&quot;</span>)<br /><span class="SHComment">; Returns all nodes with type document or edit</span><br />elements := element.find(<span class="SHString">&quot;//*[@type = 'Document' or @type = 'Edit']&quot;</span>)<br /><span class="SHComment">; Returns Labels under a list</span><br />elements := element.find(<span class="SHString">&quot;//List/Label&quot;</span>)</pre><div class="CHeading">Throws</div><p>Element(s) not found for query</p><div class="CHeading">Returns</div><p>&lt;RDA_AutomationBaseElement&gt;[] | &lt;RDA_AutomationJABElement&gt;[] | &lt;RDA_AutomationUIAElement&gt;[]</p></div>
 </div>
 
 <a name="RDA_AutomationBaseElement.findN"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">findN</div>
  <div  class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/3/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/3/2">findN(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">query,</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="2/2/3/3" data-NarrowGridArea="3/1/4/2" style="grid-area:2/2/3/3">n</div><div class="PAfterParameters NegativeLeftSpaceOnWide" data-WideGridArea="2/3/3/4" data-NarrowGridArea="4/1/5/3" style="grid-area:2/3/3/4">)</div></div></div></div>
- <div class="CBody"><p>Retrieves all elements that match given query when element count is exactly N</p><div class="CHeading">Remarks</div><p>It will honor <a href="#RDA_Automation.limits" target="_top"   >RDA_Automation.limits</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">query</td><td class="CDLDefinition"><p>string - xpath-ish</p></td></tr><tr><td class="CDLEntry">n</td><td class="CDLDefinition"><p>number - Expected element count</p></td></tr></table><div class="CHeading">Example</div><pre class="CCode"><span class="SHComment">; Returns all List with name xxx</span><br />elements := element.findN(<span class="SHString">&quot;//Label&quot;</span>, <span class="SHNumber">3</span>)</pre><div class="CHeading">Throws</div><p>Element(s) not found for query: ?&nbsp; Expected element count [?] found [?] for query: ?</p><div class="CHeading">Returns</div><p>&lt;RDA_AutomationBaseElement&gt;[]|&lt;RDA_AutomationJABElement&gt;[]|&lt;RDA_AutomationUIAElement&gt;[]</p></div>
+ <div class="CBody"><p>Retrieves all elements that match given query when element count is exactly N</p><div class="CHeading">Remarks</div><p>It will honor <a href="#RDA_Automation.limits" target="_top"   >RDA_Automation.limits</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">query</td><td class="CDLDefinition"><p>string - xpath-ish</p></td></tr><tr><td class="CDLEntry">n</td><td class="CDLDefinition"><p>number - Expected element count</p></td></tr></table><div class="CHeading">Example</div><pre class="CCode"><span class="SHComment">; Returns all List with name xxx</span><br />elements := element.findN(<span class="SHString">&quot;//Label&quot;</span>, <span class="SHNumber">3</span>)</pre><div class="CHeading">Throws</div><p>Element(s) not found for query: ?&nbsp; Expected element count [?] found [?] for query: ?</p><div class="CHeading">Returns</div><p>&lt;RDA_AutomationBaseElement&gt;[] | &lt;RDA_AutomationJABElement&gt;[] | &lt;RDA_AutomationUIAElement&gt;[]</p></div>
 </div>
 
 <a name="RDA_AutomationBaseElement.findOne"></a><div class="CTopic TFunction LAutoHotKey">
@@ -434,7 +434,7 @@ body {
 <a name="RDA_AutomationBaseElement.wait"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">wait</div>
  <div  class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/4/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/4/2">wait(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">query,</div><div class="PName InFirstParameterColumn" data-WideGridArea="2/2/3/3" data-NarrowGridArea="3/1/4/2" style="grid-area:2/2/3/3">timeout</div><div class="PDefaultValueSeparator" data-WideGridArea="2/3/3/4" data-NarrowGridArea="3/2/4/3" style="grid-area:2/3/3/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="2/4/3/5" data-NarrowGridArea="3/3/4/4" style="grid-area:2/4/3/5"><span class="SHNumber">-1</span>,</div><div class="PName InFirstParameterColumn" data-WideGridArea="3/2/4/3" data-NarrowGridArea="4/1/5/2" style="grid-area:3/2/4/3">delay</div><div class="PDefaultValueSeparator" data-WideGridArea="3/3/4/4" data-NarrowGridArea="4/2/5/3" style="grid-area:3/3/4/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="3/4/4/5" data-NarrowGridArea="4/3/5/4" style="grid-area:3/4/4/5"><span class="SHNumber">-1</span></div><div class="PAfterParameters NegativeLeftSpaceOnWide" data-WideGridArea="3/5/4/6" data-NarrowGridArea="5/1/6/5" style="grid-area:3/5/4/6">)</div></div></div></div>
- <div class="CBody"><p>Waits to appear at least one element that match given query</p><div class="CHeading">Remarks</div><p>It will honor <a href="#RDA_Automation.limits" target="_top"   >RDA_Automation.limits</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">query</td><td class="CDLDefinition"><p>string - xpath-ish</p></td></tr><tr><td class="CDLEntry">timeout</td><td class="CDLDefinition"><p>number - timeout, in miliseconds</p></td></tr><tr><td class="CDLEntry">delay</td><td class="CDLDefinition"><p>number - delay, in miliseconds</p></td></tr></table><div class="CHeading">Example</div><pre class="CCode"><span class="SHComment">; Returns all List with name xxx</span><br />elements := element.wait(<span class="SHString">&quot;//List[@name = 'xxx']&quot;</span>)<br /><span class="SHComment">; search all list and returns label children</span><br />elements := element.wait(<span class="SHString">&quot;//List/Label&quot;</span>)<br /><span class="SHComment">; Returns all nodes with type document or edit</span><br />elements := element.wait(<span class="SHString">&quot;//*[@type = 'Document' or @type = 'Edit']&quot;</span>)<br /><span class="SHComment">; Returns Labels under a list</span><br />elements := element.wait(<span class="SHString">&quot;//List/Label&quot;</span>)</pre><div class="CHeading">Throws</div><p>Timeout reached at ?: Element(s) not found</p><div class="CHeading">Returns</div><p>&lt;RDA_AutomationBaseElement&gt;[]|&lt;RDA_AutomationJABElement&gt;[]|&lt;RDA_AutomationUIAElement&gt;[]</p></div>
+ <div class="CBody"><p>Waits to appear at least one element that match given query</p><div class="CHeading">Remarks</div><p>It will honor <a href="#RDA_Automation.limits" target="_top"   >RDA_Automation.limits</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">query</td><td class="CDLDefinition"><p>string - xpath-ish</p></td></tr><tr><td class="CDLEntry">timeout</td><td class="CDLDefinition"><p>number - timeout, in miliseconds</p></td></tr><tr><td class="CDLEntry">delay</td><td class="CDLDefinition"><p>number - delay, in miliseconds</p></td></tr></table><div class="CHeading">Example</div><pre class="CCode"><span class="SHComment">; Returns all List with name xxx</span><br />elements := element.wait(<span class="SHString">&quot;//List[@name = 'xxx']&quot;</span>)<br /><span class="SHComment">; search all list and returns label children</span><br />elements := element.wait(<span class="SHString">&quot;//List/Label&quot;</span>)<br /><span class="SHComment">; Returns all nodes with type document or edit</span><br />elements := element.wait(<span class="SHString">&quot;//*[@type = 'Document' or @type = 'Edit']&quot;</span>)<br /><span class="SHComment">; Returns Labels under a list</span><br />elements := element.wait(<span class="SHString">&quot;//List/Label&quot;</span>)</pre><div class="CHeading">Throws</div><p>Timeout reached at ?: Element(s) not found</p><div class="CHeading">Returns</div><p>&lt;RDA_AutomationBaseElement&gt;[] | &lt;RDA_AutomationJABElement&gt;[] | &lt;RDA_AutomationUIAElement&gt;[]</p></div>
 </div>
 
 <a name="RDA_AutomationBaseElement.waitOne"></a><div class="CTopic TFunction LAutoHotKey">
@@ -452,25 +452,25 @@ body {
 <a name="RDA_AutomationBaseElement.getRoot"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getRoot</div>
  <div  class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/2/2">getRoot(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">max</div><div class="PDefaultValueSeparator" data-WideGridArea="1/3/2/4" data-NarrowGridArea="2/2/3/3" style="grid-area:1/3/2/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="1/4/2/5" data-NarrowGridArea="2/3/3/4" style="grid-area:1/4/2/5"><span class="SHNumber">250</span></div><div class="PAfterParameters" data-WideGridArea="1/5/2/6" data-NarrowGridArea="3/1/4/5" style="grid-area:1/5/2/6">)</div></div></div></div>
- <div class="CBody"><p>Reverse tree until root element</p><div class="CHeading">Example</div><pre class="CCode">rootNode := node.getRoot()</pre><div class="CHeading">Returns</div><p>&lt;RDA_AutomationBaseElement&gt;|&lt;RDA_AutomationJABElement&gt;|&lt;RDA_AutomationUIAElement&gt;</p></div>
+ <div class="CBody"><p>Reverse tree until root element</p><div class="CHeading">Example</div><pre class="CCode">rootNode := node.getRoot()</pre><div class="CHeading">Returns</div><p><a href="#RDA_AutomationBaseElement" target="_top"   >RDA_AutomationBaseElement</a> | <a href="#RDA_AutomationJABElement" target="_top"   >RDA_AutomationJABElement</a> | <a href="#RDA_AutomationUIAElement" target="_top"   >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationBaseElement.cacheTree"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">cacheTree</div>
  <div  class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/2/2">cacheTree(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">parent</div><div class="PDefaultValueSeparator" data-WideGridArea="1/3/2/4" data-NarrowGridArea="2/2/3/3" style="grid-area:1/3/2/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="1/4/2/5" data-NarrowGridArea="2/3/3/4" style="grid-area:1/4/2/5"><span class="SHNumber">0</span></div><div class="PAfterParameters" data-WideGridArea="1/5/2/6" data-NarrowGridArea="3/1/4/5" style="grid-area:1/5/2/6">)</div></div></div></div>
- <div class="CBody"><p>Caches the descentants tree</p><div class="CHeading">Example</div><pre class="CCode"><span class="SHComment">; with default limits</span><br />element.cacheTree()<br /><span class="SHComment">; some heavy tree operations</span><br /><span class="SHComment">; ...</span><br /><span class="SHComment">; clear cache</span><br />element.clearCacheTree()</pre><div class="CHeading">Returns</div><p>&lt;RDA_AutomationBaseElement&gt;|&lt;RDA_AutomationJABElement&gt;|&lt;RDA_AutomationUIAElement&gt;</p></div>
+ <div class="CBody"><p>Caches the descentants tree</p><div class="CHeading">Example</div><pre class="CCode"><span class="SHComment">; with default limits</span><br />element.cacheTree()<br /><span class="SHComment">; some heavy tree operations</span><br /><span class="SHComment">; ...</span><br /><span class="SHComment">; clear cache</span><br />element.clearCacheTree()</pre><div class="CHeading">Returns</div><p><a href="#RDA_AutomationBaseElement" target="_top"   >RDA_AutomationBaseElement</a> | <a href="#RDA_AutomationJABElement" target="_top"   >RDA_AutomationJABElement</a> | <a href="#RDA_AutomationUIAElement" target="_top"   >RDA_AutomationUIAElement</a></p></div>
 </div>
 
-<a name="RDA_AutomationBaseElement.cacheTree(2)"></a><div class="CTopic TFunction LAutoHotKey">
- <div class="CTitle">cacheTree</div>
+<a name="RDA_AutomationBaseElement.clearCacheTree"></a><div class="CTopic TFunction LAutoHotKey">
+ <div class="CTitle">clearCacheTree</div>
  <div  class="NDPrototype"><div class="PSection PPlainSection">clearCacheTree()</div></div>
- <div class="CBody"><p>clears the descentants tree cache</p><div class="CHeading">Example</div><pre class="CCode"><span class="SHComment">; with default limits</span><br />element.cacheTree()<br /><span class="SHComment">; some heavy tree operations</span><br /><span class="SHComment">; ...</span><br /><span class="SHComment">; clear cache</span><br />element.clearCacheTree()</pre><div class="CHeading">Returns</div><p>&lt;RDA_AutomationBaseElement&gt;|&lt;RDA_AutomationJABElement&gt;|&lt;RDA_AutomationUIAElement&gt;</p></div>
+ <div class="CBody"><p>clears the descentants tree cache</p><div class="CHeading">Example</div><pre class="CCode"><span class="SHComment">; with default limits</span><br />element.cacheTree()<br /><span class="SHComment">; some heavy tree operations</span><br /><span class="SHComment">; ...</span><br /><span class="SHComment">; clear cache</span><br />element.clearCacheTree()</pre><div class="CHeading">Returns</div><p><a href="#RDA_AutomationBaseElement" target="_top"   >RDA_AutomationBaseElement</a> | <a href="#RDA_AutomationJABElement" target="_top"   >RDA_AutomationJABElement</a> | <a href="#RDA_AutomationUIAElement" target="_top"   >RDA_AutomationUIAElement</a></p></div>
 </div>
 
 <a name="RDA_AutomationBaseElement.getDescendantsTree"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getDescendantsTree</div>
  <div  class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/2/2">getDescendantsTree(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">limits</div><div class="PDefaultValueSeparator" data-WideGridArea="1/3/2/4" data-NarrowGridArea="2/2/3/3" style="grid-area:1/3/2/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="1/4/2/5" data-NarrowGridArea="2/3/3/4" style="grid-area:1/4/2/5"><span class="SHNumber">-1</span></div><div class="PAfterParameters" data-WideGridArea="1/5/2/6" data-NarrowGridArea="3/1/4/5" style="grid-area:1/5/2/6">)</div></div></div></div>
- <div class="CBody"><p>Retrieves all descendants elements as tree</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">limits</td><td class="CDLDefinition"><p><a href="#RDA_SearchLimits" target="_top"   >RDA_SearchLimits</a> - Configure limits for descendant discovery.</p></td></tr></table><div class="CHeading">Example</div><pre class="CCode"><span class="SHComment">; with default limits</span><br />rootNode := element.getDescendantsTree()<br /><span class="SHComment">; without limits</span><br />rootNode := element.getDescendantsTree(<span class="SHNumber">0</span>)<br /><span class="SHComment">; you can flattern the tree if needed :)</span><br />arr := RDA_ElementTreeNode.flattern(rootNode)</pre><div class="CHeading">Returns</div><p>&lt;RDA_AutomationBaseElement&gt;[]|&lt;RDA_AutomationJABElement&gt;[]|&lt;RDA_AutomationUIAElement&gt;[]</p></div>
+ <div class="CBody"><p>Retrieves all descendants elements as tree</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">limits</td><td class="CDLDefinition"><p><a href="#RDA_SearchLimits" target="_top"   >RDA_SearchLimits</a> - Configure limits for descendant discovery.</p></td></tr></table><div class="CHeading">Example</div><pre class="CCode"><span class="SHComment">; with default limits</span><br />rootNode := element.getDescendantsTree()<br /><span class="SHComment">; without limits</span><br />rootNode := element.getDescendantsTree(<span class="SHNumber">0</span>)<br /><span class="SHComment">; you can flattern the tree if needed :)</span><br />arr := RDA_ElementTreeNode.flattern(rootNode)</pre><div class="CHeading">Returns</div><p>&lt;RDA_AutomationBaseElement&gt;[] | &lt;RDA_AutomationJABElement&gt;[] | &lt;RDA_AutomationUIAElement&gt;[]</p></div>
 </div>
 
 <a name="RDA_AutomationBaseElement.dumpXML"></a><div class="CTopic TFunction LAutoHotKey last">
@@ -613,10 +613,22 @@ body {
  <div class="CBody"><p>Gets the Root element of given window handle or throws</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">hwnd</td><td class="CDLDefinition"><p>number - Window handler</p></td></tr></table><div class="CHeading">Throws</div><p>JavaAccessBridge is not initilizated, call RDA_AutomationJAB.init() isJavaWindow failed getAccessibleContextFromHWND failed</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement" target="_top"   >RDA_AutomationJABElement</a></p></div>
 </div>
 
-<a name="RDA_AutomationJAB.getFocusedElement"></a><div class="CTopic TFunction LAutoHotKey last">
+<a name="RDA_AutomationJAB.handleFromElement"></a><div class="CTopic TFunction LAutoHotKey">
+ <div class="CTitle">handleFromElement</div>
+ <div  class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/3/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/3/2">handleFromElement(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">vmID,</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="2/2/3/3" data-NarrowGridArea="3/1/4/2" style="grid-area:2/2/3/3">acId</div><div class="PAfterParameters NegativeLeftSpaceOnWide" data-WideGridArea="2/3/3/4" data-NarrowGridArea="4/1/5/3" style="grid-area:2/3/3/4">)</div></div></div></div>
+ <div class="CBody"><p>Get focused Element</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">vmID</td><td class="CDLDefinition"><p>number - Virtual machine handle</p></td></tr><tr><td class="CDLEntry">acId</td><td class="CDLDefinition"><p>number - AccesibleContext handle</p></td></tr></table><div class="CHeading">Throws</div><p>Cannot not determine hwnd</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement" target="_top"   >RDA_AutomationJABElement</a></p></div>
+</div>
+
+<a name="RDA_AutomationJAB.getFocusedElement"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getFocusedElement</div>
  <div  class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">getFocusedElement(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">hwnd</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
  <div class="CBody"><p>Get focused Element</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">hwnd</td><td class="CDLDefinition"><p>number - Window handler</p></td></tr></table><div class="CHeading">Throws</div><p>JavaAccessBridge is not initilizated, call RDA_AutomationJAB.init()</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationJABElement" target="_top"   >RDA_AutomationJABElement</a></p></div>
+</div>
+
+<a name="RDA_AutomationJAB.onClick"></a><div class="CTopic TFunction LAutoHotKey last">
+ <div class="CTitle">onClick</div>
+ <div  class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">onClick(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">fnName</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
+ <div class="CBody"><p>Register a callback when a componet is clicked</p><p>Function definition: xxx(vmID, event, acId)</p><p>After registering callbacks wait some time (1s) for them to be fully registered.</p><p>For an example see &lt;onFocusGained&gt;</p><div class="CHeading">Example</div><pre class="CCode">jab_element_onclick(vmID, <span class="SHKeyword">event</span>, acId) {<br />  global jabInstance<br />  RDA_Log_Debug(A_ThisFunc . <span class="SHString">&quot;(&quot;</span> . vmID . <span class="SHString">&quot;, &quot;</span> . <span class="SHKeyword">event</span> . <span class="SHString">&quot;, &quot;</span> . acId . <span class="SHString">&quot;)&quot;</span>)<br /><br />  win := <span class="SHKeyword">new</span> RDA_AutomationWindow(jabInstance.automation, jabInstance.handleFromElement(vmID, acId))<br />  element := <span class="SHKeyword">new</span> RDA_AutomationJABElement(jabInstance, win, vmID, acId)<br />}<br /><br />automation := <span class="SHKeyword">new</span> RDA_Automation()<br />automation.jab.init(JAVA_PATH)<br />automation.jab.onClick(<span class="SHString">&quot;jab_element_onclick&quot;</span>)<br />jabInstance := automation.jab</pre><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">fnName</td><td class="CDLDefinition"><p>string | Func - Function name or Func</p></td></tr></table><div class="CHeading">Throws</div><p>Not valid function name: &lt;fnName&gt; BoundFunc is not allowed as callback</p></div>
 </div>
 
 </div><div class="page-break"></div>
@@ -1142,85 +1154,85 @@ body {
 
 <script type="text/javascript">var q = window.location.search;if (q.startsWith("?Theme=")){var t = q.slice(7);var e = t.indexOf(";");if (e != -1){  t = t.slice(0, e);  }document.documentElement.classList.add(t + "Theme")}</script>
 
-<a name="RDA_LayoutElement"></a><div class="CTopic TClass LAutoHotKey first">
- <div class="CTitle">RDA_LayoutElement</div>
- <div class="CBody"><p>Base class for RAW Automation element</p></div>
+<a name="RDA_LayoutAbstractElement"></a><div class="CTopic TClass LAutoHotKey first">
+ <div class="CTitle">RDA_LayoutAbstractElement</div>
+ <div class="CBody"><p>Abstract class for RAW Automation element</p></div>
 </div>
 
-<a name="RDA_LayoutElement.layout"></a><div class="CTopic TProperty LAutoHotKey">
+<a name="RDA_LayoutAbstractElement.layout"></a><div class="CTopic TProperty LAutoHotKey">
  <div class="CTitle">layout</div>
  <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a href="#RDA_Layout" target="_top"   >RDA_Layout</a></td><td class="CDLDefinition"><p>layout</p></td></tr></table></div>
 </div>
 
-<a name="RDA_LayoutElement.name"></a><div class="CTopic TProperty LAutoHotKey">
+<a name="RDA_LayoutAbstractElement.name"></a><div class="CTopic TProperty LAutoHotKey">
  <div class="CTitle">name</div>
  <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">string</td><td class="CDLDefinition"><p>name</p></td></tr></table></div>
 </div>
 
-<a name="RDA_LayoutElement.name(2)"></a><div class="CTopic TProperty LAutoHotKey">
+<a name="RDA_LayoutAbstractElement.name(2)"></a><div class="CTopic TProperty LAutoHotKey">
  <div class="CTitle">name</div>
  <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">string</td><td class="CDLDefinition"><p>name</p></td></tr></table></div>
 </div>
 
-<a name="RDA_LayoutElement.region"></a><div class="CTopic TProperty LAutoHotKey">
+<a name="RDA_LayoutAbstractElement.region"></a><div class="CTopic TProperty LAutoHotKey">
  <div class="CTitle">region</div>
  <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a href="#RDA_WindowRegion" target="_top"   >RDA_WindowRegion</a></td><td class="CDLDefinition"><p>region</p></td></tr></table></div>
 </div>
 
-<a name="RDA_LayoutElement.toString"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_LayoutAbstractElement.RDA_LayoutAbstractElement"></a><div class="CTopic TFunction LAutoHotKey">
+ <div class="CTitle">RDA_LayoutAbstractElement</div>
+ <div class="CBody"><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">layout</td><td class="CDLDefinition"><p><a href="#RDA_Layout" target="_top"   >RDA_Layout</a> - layout</p></td></tr><tr><td class="CDLEntry">obj</td><td class="CDLDefinition"><p>object - plain object</p></td></tr></table><div class="CHeading">Throws</div><p>it's an abstract class</p></div>
+</div>
+
+<a name="RDA_LayoutAbstractElement.toString"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">toString</div>
  <div  class="NDPrototype"><div class="PSection PPlainSection">toString()</div></div>
  <div class="CBody"><p>Dumps the object to a readable string</p><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">string</td><td class="CDLDefinition"><p>debug info</p></td></tr></table></div>
 </div>
 
-<a name="RDA_LayoutElement.getCenter"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_LayoutAbstractElement.getCenter"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getCenter</div>
  <div  class="NDPrototype"><div class="PSection PPlainSection">getCenter()</div></div>
  <div class="CBody"><p>Calculates the center of the element</p><div class="CHeading">Returns</div><p><a href="#RDA_ScreenPosition" target="_top"   >RDA_ScreenPosition</a></p></div>
 </div>
 
-<a name="RDA_LayoutElement.highlight"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_LayoutAbstractElement.highlight"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">highlight</div>
  <div  class="NDPrototype"><div class="PSection PPlainSection">highlight()</div></div>
- <div class="CBody"><p>Highlights current region</p><div class="CHeading">Returns</div><p><a href="#RDA_LayoutElement" target="_top"   >RDA_LayoutElement</a></p></div>
+ <div class="CBody"><p>Highlights current region</p><div class="CHeading">Returns</div><p><a href="#RDA_LayoutAbstractElement.RDA_LayoutAbstractElement" target="_top"   >RDA_LayoutAbstractElement</a></p></div>
 </div>
 
-<a name="RDA_LayoutElement.hover"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_LayoutAbstractElement.hover"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">hover</div>
  <div  class="NDPrototype"><div class="PSection PPlainSection">hover()</div></div>
- <div class="CBody"><p>Hover the element</p><div class="CHeading">Returns</div><p><a href="#RDA_LayoutElement" target="_top"   >RDA_LayoutElement</a></p></div>
+ <div class="CBody"><p>Hover the element</p><div class="CHeading">Returns</div><p><a href="#RDA_LayoutAbstractElement.RDA_LayoutAbstractElement" target="_top"   >RDA_LayoutAbstractElement</a></p></div>
 </div>
 
-<a name="RDA_LayoutElement.click"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_LayoutAbstractElement.click"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">click</div>
  <div  class="NDPrototype"><div class="PSection PPlainSection">click()</div></div>
- <div class="CBody"><p>Performs a left click at the region center.</p><div class="CHeading">Returns</div><p><a href="#RDA_LayoutElement" target="_top"   >RDA_LayoutElement</a></p></div>
+ <div class="CBody"><p>Performs a left click at the region center.</p><div class="CHeading">Returns</div><p><a href="#RDA_LayoutAbstractElement.RDA_LayoutAbstractElement" target="_top"   >RDA_LayoutAbstractElement</a></p></div>
 </div>
 
-<a name="RDA_LayoutElement.rightClick"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_LayoutAbstractElement.rightClick"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">rightClick</div>
  <div  class="NDPrototype"><div class="PSection PPlainSection">rightClick()</div></div>
- <div class="CBody"><p>Performs a right click at the region center.</p><p>See <a href="#RDA_Mouse_WindowClick" target="_top"   >RDA_Mouse_WindowClick</a></p><div class="CHeading">Returns</div><p><a href="#RDA_LayoutElement" target="_top"   >RDA_LayoutElement</a></p></div>
+ <div class="CBody"><p>Performs a right click at the region center.</p><p>See <a href="#RDA_Mouse_WindowClick" target="_top"   >RDA_Mouse_WindowClick</a></p><div class="CHeading">Returns</div><p><a href="#RDA_LayoutAbstractElement.RDA_LayoutAbstractElement" target="_top"   >RDA_LayoutAbstractElement</a></p></div>
 </div>
 
-<a name="RDA_LayoutElement.rightClick(2)"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_LayoutAbstractElement.rightClick(2)"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">rightClick</div>
- <div class="CBody"><p>Performs a lft double click at the region center</p><p>See <a href="#RDA_Mouse_WindowClick" target="_top"   >RDA_Mouse_WindowClick</a></p><div class="CHeading">Returns</div><p><a href="#RDA_LayoutElement" target="_top"   >RDA_LayoutElement</a></p></div>
+ <div class="CBody"><p>Performs a lft double click at the region center</p><p>See <a href="#RDA_Mouse_WindowClick" target="_top"   >RDA_Mouse_WindowClick</a></p><div class="CHeading">Returns</div><p><a href="#RDA_LayoutAbstractElement.RDA_LayoutAbstractElement" target="_top"   >RDA_LayoutAbstractElement</a></p></div>
 </div>
 
-<a name="RDA_LayoutElement.hover(2)"></a><div class="CTopic TFunction LAutoHotKey">
+<a name="RDA_LayoutAbstractElement.hover(2)"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">hover</div>
- <div class="CBody"><p>Sleeps</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">ms</td><td class="CDLDefinition"><p>number - Timeout, in miliseconds</p></td></tr></table><div class="CHeading">Returns</div><p><a href="#RDA_LayoutElement" target="_top"   >RDA_LayoutElement</a></p></div>
+ <div class="CBody"><p>Sleeps</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">ms</td><td class="CDLDefinition"><p>number - Timeout, in miliseconds</p></td></tr></table><div class="CHeading">Returns</div><p><a href="#RDA_LayoutAbstractElement.RDA_LayoutAbstractElement" target="_top"   >RDA_LayoutAbstractElement</a></p></div>
 </div>
 
 <a name="RDA_LayoutImage"></a><div class="CTopic TClass LAutoHotKey">
  <div class="CTitle">RDA_LayoutImage</div>
- <div class="CBody"><p>Static header</p><p>Extends: RDA_LayoutElement</p></div>
-</div>
-
-<a name="RDA_LayoutImage.image"></a><div class="CTopic TProperty LAutoHotKey">
- <div class="CTitle">image</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">string</td><td class="CDLDefinition"><p>Path to image</p></td></tr></table></div>
+ <div class="CBody"><p>Static header</p><p>Extends: RDA_LayoutAbstractElement</p></div>
 </div>
 
 <a name="RDA_LayoutImage.RDA_LayoutImage"></a><div class="CTopic TFunction LAutoHotKey">
@@ -1228,10 +1240,25 @@ body {
  <div class="CBody"><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">layout</td><td class="CDLDefinition"><p><a href="#RDA_Layout" target="_top"   >RDA_Layout</a> - layout</p></td></tr><tr><td class="CDLEntry">obj</td><td class="CDLDefinition"><p>object - plain object</p></td></tr></table></div>
 </div>
 
+<a name="RDA_LayoutImage(2)"></a><div class="CTopic TClass LAutoHotKey">
+ <div class="CTitle">RDA_LayoutImage</div>
+ <div class="CBody"><p>Static header</p><p>Extends: RDA_LayoutAbstractElement</p></div>
+</div>
+
+<a name="RDA_LayoutImage.image"></a><div class="CTopic TProperty LAutoHotKey">
+ <div class="CTitle">image</div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">string</td><td class="CDLDefinition"><p>Path to image</p></td></tr></table></div>
+</div>
+
+<a name="RDA_LayoutImage.RDA_LayoutImage(2)"></a><div class="CTopic TFunction LAutoHotKey">
+ <div class="CTitle">RDA_LayoutImage</div>
+ <div class="CBody"><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">layout</td><td class="CDLDefinition"><p><a href="#RDA_Layout" target="_top"   >RDA_Layout</a> - layout</p></td></tr><tr><td class="CDLEntry">obj</td><td class="CDLDefinition"><p>object - plain object</p></td></tr></table></div>
+</div>
+
 <a name="RDA_LayoutImage.updateImage"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">updateImage</div>
  <div  class="NDPrototype"><div class="PSection PPlainSection">updateImage()</div></div>
- <div class="CBody"><p>Takes a screenshot of current element region and save to image</p><div class="CHeading">Returns</div><p><a href="#RDA_LayoutEdit" target="_top"   >RDA_LayoutEdit</a></p></div>
+ <div class="CBody"><p>Takes a screenshot of current element region and save to image</p><div class="CHeading">Returns</div><p><a href="#RDA_LayoutImage.RDA_LayoutImage" target="_top"   >RDA_LayoutImage</a></p></div>
 </div>
 
 <a name="RDA_LayoutImage.waitAppear"></a><div class="CTopic TFunction LAutoHotKey">
@@ -1248,7 +1275,7 @@ body {
 
 <a name="RDA_LayoutEdit"></a><div class="CTopic TClass LAutoHotKey">
  <div class="CTitle">RDA_LayoutEdit</div>
- <div class="CBody"><p>Automate: Edit, Input, Textarea. A box that you type and value is set</p><p>Extends: RDA_LayoutElement</p></div>
+ <div class="CBody"><p>Automate: Edit, Input, Textarea. A box that you type and value is set</p><p>Extends: RDA_LayoutAbstractElement</p></div>
 </div>
 
 <a name="RDA_LayoutEdit.clearKeys"></a><div class="CTopic TProperty LAutoHotKey">
@@ -1280,7 +1307,7 @@ body {
 
 <a name="RDA_LayoutStaticDropdown"></a><div class="CTopic TClass LAutoHotKey">
  <div class="CTitle">RDA_LayoutStaticDropdown</div>
- <div class="CBody"><p>A dropdown with all known values and in the same order.</p><p>Extends: RDA_LayoutElement</p></div>
+ <div class="CBody"><p>A dropdown with all known values and in the same order.</p><p>Extends: RDA_LayoutAbstractElement</p></div>
 </div>
 
 <a name="RDA_LayoutStaticDropdown.RDA_LayoutStaticDropdown"></a><div class="CTopic TFunction LAutoHotKey">
@@ -1302,7 +1329,7 @@ body {
 
 <a name="RDA_LayoutAutocompleteDropdown"></a><div class="CTopic TClass LAutoHotKey">
  <div class="CTitle">RDA_LayoutAutocompleteDropdown</div>
- <div class="CBody"><p>Extends: RDA_LayoutElement</p></div>
+ <div class="CBody"><p>Extends: RDA_LayoutAbstractElement</p></div>
 </div>
 
 <a name="RDA_LayoutAutocompleteDropdown.enterKeys"></a><div class="CTopic TProperty LAutoHotKey">
@@ -1328,7 +1355,7 @@ body {
 
 <a name="RDA_LayoutCheckbox"></a><div class="CTopic TClass LAutoHotKey">
  <div class="CTitle">RDA_LayoutCheckbox</div>
- <div class="CBody"><p>Checkbox</p><p>Extends: RDA_LayoutElement</p></div>
+ <div class="CBody"><p>Checkbox</p><p>Extends: RDA_LayoutAbstractElement</p></div>
 </div>
 
 <a name="RDA_LayoutCheckbox.RDA_LayoutCheckbox"></a><div class="CTopic TFunction LAutoHotKey">
@@ -1339,7 +1366,7 @@ body {
 <a name="RDA_LayoutCheckbox.toggle"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">toggle</div>
  <div  class="NDPrototype"><div class="PSection PPlainSection">toggle()</div></div>
- <div class="CBody"><p>Alias of <a href="#RDA_LayoutElement.click" target="_top"   >RDA_LayoutElement.click</a></p><div class="CHeading">Returns</div><p><a href="#RDA_LayoutAutocompleteDropdown" target="_top"   >RDA_LayoutAutocompleteDropdown</a></p></div>
+ <div class="CBody"><p>Alias of <a href="#RDA_LayoutAbstractElement.click" target="_top"   >RDA_LayoutAbstractElement.click</a></p><div class="CHeading">Returns</div><p><a href="#RDA_LayoutAutocompleteDropdown" target="_top"   >RDA_LayoutAutocompleteDropdown</a></p></div>
 </div>
 
 <a name="RDA_LayoutButton"></a><div class="CTopic TClass LAutoHotKey">
@@ -1359,7 +1386,7 @@ body {
 
 <a name="RDA_LayoutButton.updateImage"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">updateImage</div>
- <div class="CBody"><p>Takes a screenshot of current element region and save to image</p><div class="CHeading">Returns</div><p><a href="#RDA_LayoutEdit" target="_top"   >RDA_LayoutEdit</a></p></div>
+ <div class="CBody"><p>Takes a screenshot of current element region and save to image</p><div class="CHeading">Returns</div><p><a href="#RDA_LayoutButton.RDA_LayoutButton" target="_top"   >RDA_LayoutButton</a></p></div>
 </div>
 
 <a name="RDA_LayoutButton.isDisabled"></a><div class="CTopic TFunction LAutoHotKey">
@@ -1371,18 +1398,18 @@ body {
 <a name="RDA_LayoutButton.waitEnabled"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">waitEnabled</div>
  <div  class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/4/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/4/2">waitEnabled(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">sensibility</div><div class="PDefaultValueSeparator" data-WideGridArea="1/3/2/4" data-NarrowGridArea="2/2/3/3" style="grid-area:1/3/2/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="1/4/2/5" data-NarrowGridArea="2/3/3/4" style="grid-area:1/4/2/5"><span class="SHNumber">-1</span>,</div><div class="PName InFirstParameterColumn" data-WideGridArea="2/2/3/3" data-NarrowGridArea="3/1/4/2" style="grid-area:2/2/3/3">timeout</div><div class="PDefaultValueSeparator" data-WideGridArea="2/3/3/4" data-NarrowGridArea="3/2/4/3" style="grid-area:2/3/3/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="2/4/3/5" data-NarrowGridArea="3/3/4/4" style="grid-area:2/4/3/5"><span class="SHNumber">-1</span>,</div><div class="PName InFirstParameterColumn" data-WideGridArea="3/2/4/3" data-NarrowGridArea="4/1/5/2" style="grid-area:3/2/4/3">delay</div><div class="PDefaultValueSeparator" data-WideGridArea="3/3/4/4" data-NarrowGridArea="4/2/5/3" style="grid-area:3/3/4/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="3/4/4/5" data-NarrowGridArea="4/3/5/4" style="grid-area:3/4/4/5"><span class="SHNumber">-1</span></div><div class="PAfterParameters NegativeLeftSpaceOnWide" data-WideGridArea="3/5/4/6" data-NarrowGridArea="5/1/6/5" style="grid-area:3/5/4/6">)</div></div></div></div>
- <div class="CBody"><p>Waits button to be enabled</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">sensibility</td><td class="CDLDefinition"><p>number - Color-variant sensibility. A number from 0 to 255, 0 means exact match</p></td></tr><tr><td class="CDLEntry">timeout</td><td class="CDLDefinition"><p>number - Timeouts, in miliseconds</p></td></tr><tr><td class="CDLEntry">delay</td><td class="CDLDefinition"><p>number - Retries delay, in miliseconds</p></td></tr></table><div class="CHeading">Throws</div><p>image is required</p><div class="CHeading">Returns</div><p>boolean</p></div>
+ <div class="CBody"><p>Waits button to be enabled</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">sensibility</td><td class="CDLDefinition"><p>number - Color-variant sensibility. A number from 0 to 255, 0 means exact match</p></td></tr><tr><td class="CDLEntry">timeout</td><td class="CDLDefinition"><p>number - Timeouts, in miliseconds</p></td></tr><tr><td class="CDLEntry">delay</td><td class="CDLDefinition"><p>number - Retries delay, in miliseconds</p></td></tr></table><div class="CHeading">Throws</div><p>image is required</p><div class="CHeading">Returns</div><p><a href="#RDA_LayoutButton.RDA_LayoutButton" target="_top"   >RDA_LayoutButton</a></p></div>
 </div>
 
 <a name="RDA_LayoutButton.waitDisabled"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">waitDisabled</div>
  <div  class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/4/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/4/2">waitDisabled(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">sensibility</div><div class="PDefaultValueSeparator" data-WideGridArea="1/3/2/4" data-NarrowGridArea="2/2/3/3" style="grid-area:1/3/2/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="1/4/2/5" data-NarrowGridArea="2/3/3/4" style="grid-area:1/4/2/5"><span class="SHNumber">-1</span>,</div><div class="PName InFirstParameterColumn" data-WideGridArea="2/2/3/3" data-NarrowGridArea="3/1/4/2" style="grid-area:2/2/3/3">timeout</div><div class="PDefaultValueSeparator" data-WideGridArea="2/3/3/4" data-NarrowGridArea="3/2/4/3" style="grid-area:2/3/3/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="2/4/3/5" data-NarrowGridArea="3/3/4/4" style="grid-area:2/4/3/5"><span class="SHNumber">-1</span>,</div><div class="PName InFirstParameterColumn" data-WideGridArea="3/2/4/3" data-NarrowGridArea="4/1/5/2" style="grid-area:3/2/4/3">delay</div><div class="PDefaultValueSeparator" data-WideGridArea="3/3/4/4" data-NarrowGridArea="4/2/5/3" style="grid-area:3/3/4/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="3/4/4/5" data-NarrowGridArea="4/3/5/4" style="grid-area:3/4/4/5"><span class="SHNumber">-1</span></div><div class="PAfterParameters NegativeLeftSpaceOnWide" data-WideGridArea="3/5/4/6" data-NarrowGridArea="5/1/6/5" style="grid-area:3/5/4/6">)</div></div></div></div>
- <div class="CBody"><p>Waits button to be disabled</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">sensibility</td><td class="CDLDefinition"><p>number - Color-variant sensibility. A number from 0 to 255, 0 means exact match</p></td></tr><tr><td class="CDLEntry">timeout</td><td class="CDLDefinition"><p>number - Timeouts, in miliseconds</p></td></tr><tr><td class="CDLEntry">delay</td><td class="CDLDefinition"><p>number - Retries delay, in miliseconds</p></td></tr></table><div class="CHeading">Throws</div><p>image is required</p><div class="CHeading">Returns</div><p>boolean</p></div>
+ <div class="CBody"><p>Waits button to be disabled</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">sensibility</td><td class="CDLDefinition"><p>number - Color-variant sensibility. A number from 0 to 255, 0 means exact match</p></td></tr><tr><td class="CDLEntry">timeout</td><td class="CDLDefinition"><p>number - Timeouts, in miliseconds</p></td></tr><tr><td class="CDLEntry">delay</td><td class="CDLDefinition"><p>number - Retries delay, in miliseconds</p></td></tr></table><div class="CHeading">Throws</div><p>image is required</p><div class="CHeading">Returns</div><p><a href="#RDA_LayoutButton.RDA_LayoutButton" target="_top"   >RDA_LayoutButton</a></p></div>
 </div>
 
 <a name="RDA_Layout"></a><div class="CTopic TClass LAutoHotKey">
  <div class="CTitle">RDA_Layout</div>
- <div class="CBody"><p>Automate RAW applications via Image/Keyboard/Mouse in a way it does not require to change code to move things around.</p><p>Creates an abstraction layer from AHK-code to the application by defining named regions for each applications element.</p><p><a href="#RDA_Layout" target="_top"   >RDA_Layout</a> it's a factory of elements so you can add your own custom implementations.</p><div class="CHeading">Example</div><pre class="CCode">automation := <span class="SHKeyword">new</span> RDA_Automation()<br />windows := automation.windows()<br />win := windows.waitOne({process: <span class="SHString">&quot;mspaint.exe&quot;</span>})<br /><br /><span class="SHKeyword">class</span> MyInputClass <span class="SHKeyword">extends</span> RDA_LayoutElement {<br />  __New(layout, obj) {<br />    <span class="SHKeyword">this</span>.layout := layout<br />    RDA_Assert(<span class="SHKeyword">this</span>.layout, <span class="SHString">&quot;invalid parameters layout is required&quot;</span>)<br />    <span class="SHKeyword">this</span>._parseCommonProperties(obj)<br /><br />    <span class="SHComment">; handle here your custom properties</span><br />  }<br />  <span class="SHComment">; your custom methods :D</span><br />  doYourMagic() {<br />  }<br />}<br /><br /><span class="SHComment">; add new elements to the factory</span><br />RDA_Layout.types.push(<span class="SHString">&quot;MyInput&quot;</span>)<br />RDA_Layout.classes.push(MyInputClass)<br /><br />layout := <span class="SHKeyword">new</span> RDA_Layout(win)<br />layout.fromJsonFile(A_WorkingDir . <span class="SHString">&quot;\app-form-01.json&quot;</span>)<br />layout.waitAppear()<br />layout.element(<span class="SHString">&quot;username&quot;</span>).setValue(<span class="SHString">&quot;user&quot;</span>)<br />layout.element(<span class="SHString">&quot;password&quot;</span>).setPassword(<span class="SHString">&quot;nomoresecrets&quot;</span>)<br />layout.element(<span class="SHString">&quot;login&quot;</span>).click()<br /><span class="SHComment">; layout.element(&quot;custom&quot;).doYourMagic()</span><br />layout.waitDisappear()</pre></div>
+ <div class="CBody"><p>Automate RAW applications via Image/Keyboard/Mouse in a way it does not require to change code to move things around.</p><p>Creates an abstraction layer from AHK-code to the application by defining named regions for each applications element.</p><p><a href="#RDA_Layout" target="_top"   >RDA_Layout</a> it's a factory of elements so you can add your own custom implementations.</p><div class="CHeading">Example</div><pre class="CCode">automation := <span class="SHKeyword">new</span> RDA_Automation()<br />windows := automation.windows()<br />win := windows.waitOne({process: <span class="SHString">&quot;mspaint.exe&quot;</span>})<br /><br /><span class="SHKeyword">class</span> MyInputClass <span class="SHKeyword">extends</span> RDA_LayoutAbstractElement {<br />  __New(layout, obj) {<br />    <span class="SHKeyword">this</span>.layout := layout<br />    RDA_Assert(<span class="SHKeyword">this</span>.layout, <span class="SHString">&quot;invalid parameters layout is required&quot;</span>)<br />    <span class="SHKeyword">this</span>._parseCommonProperties(obj)<br /><br />    <span class="SHComment">; handle here your custom properties</span><br />  }<br />  <span class="SHComment">; your custom methods :D</span><br />  doYourMagic() {<br />  }<br />}<br /><br /><span class="SHComment">; add new elements to the factory</span><br />RDA_Layout.types.push(<span class="SHString">&quot;MyInput&quot;</span>)<br />RDA_Layout.classes.push(MyInputClass)<br /><br />layout := <span class="SHKeyword">new</span> RDA_Layout(win)<br />layout.fromJsonFile(A_WorkingDir . <span class="SHString">&quot;\app-form-01.json&quot;</span>)<br />layout.waitAppear()<br />layout.element(<span class="SHString">&quot;username&quot;</span>).setValue(<span class="SHString">&quot;user&quot;</span>)<br />layout.element(<span class="SHString">&quot;password&quot;</span>).setPassword(<span class="SHString">&quot;nomoresecrets&quot;</span>)<br />layout.element(<span class="SHString">&quot;login&quot;</span>).click()<br /><span class="SHComment">; layout.element(&quot;custom&quot;).doYourMagic()</span><br />layout.waitDisappear()</pre></div>
 </div>
 
 <a name="RDA_Layout.types"></a><div class="CTopic TConstant LAutoHotKey">
@@ -1407,7 +1434,7 @@ body {
 
 <a name="RDA_Layout.elements"></a><div class="CTopic TProperty LAutoHotKey">
  <div class="CTitle">elements</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">&lt;RDA_LayoutElement&gt;[]</td><td class="CDLDefinition"><p>elements</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">&lt;RDA_LayoutAbstractElement&gt;[]</td><td class="CDLDefinition"><p>elements</p></td></tr></table></div>
 </div>
 
 <a name="RDA_Layout.RDA_LayoutButton"></a><div class="CTopic TFunction LAutoHotKey">
@@ -1442,7 +1469,7 @@ body {
 <a name="RDA_Layout.element"></a><div class="CTopic TFunction LAutoHotKey last">
  <div class="CTitle">element</div>
  <div  class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">element(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">name</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
- <div class="CBody"><p>Searches an element by name and returns it</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">name</td><td class="CDLDefinition"><p>string</p></td></tr></table><div class="CHeading">Throws</div><p>element not found with name: ?</p><div class="CHeading">Returns</div><p><a href="#RDA_LayoutElement" target="_top"   >RDA_LayoutElement</a></p></div>
+ <div class="CBody"><p>Searches an element by name and returns it</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">name</td><td class="CDLDefinition"><p>string</p></td></tr></table><div class="CHeading">Throws</div><p>element not found with name: ?</p><div class="CHeading">Returns</div><p><a href="#RDA_LayoutAbstractElement" target="_top"   >RDA_LayoutAbstractElement</a></p></div>
 </div>
 
 </div><div class="page-break"></div>
@@ -1857,27 +1884,27 @@ body {
 
 <a name="RDA_AutomationWindow.title"></a><div class="CTopic TProperty LAutoHotKey">
  <div class="CTitle">title</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">string</td><td class="CDLDefinition"><p>Title, cached first time</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">string</td><td class="CDLDefinition"><p>Window title (cached).&nbsp; Use &lt;RDA_AutomationWindow.getTitle&gt;(false) to clear cache</p></td></tr></table></div>
 </div>
 
 <a name="RDA_AutomationWindow.pid"></a><div class="CTopic TProperty LAutoHotKey">
  <div class="CTitle">pid</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">number</td><td class="CDLDefinition"><p>Process identifier</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">number</td><td class="CDLDefinition"><p>Process identifier (cached).</p></td></tr></table></div>
 </div>
 
 <a name="RDA_AutomationWindow.process"></a><div class="CTopic TProperty LAutoHotKey">
  <div class="CTitle">process</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">string</td><td class="CDLDefinition"><p>The name of the process that owns the window</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">string</td><td class="CDLDefinition"><p>The name of the process that owns the window (cached).</p></td></tr></table></div>
 </div>
 
 <a name="RDA_AutomationWindow.path"></a><div class="CTopic TProperty LAutoHotKey">
  <div class="CTitle">path</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">string</td><td class="CDLDefinition"><p>Full path and name of the process that owns the window</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">string</td><td class="CDLDefinition"><p>Full path and name of the process that owns the window (cached)</p></td></tr></table></div>
 </div>
 
 <a name="RDA_AutomationWindow.classNN"></a><div class="CTopic TProperty LAutoHotKey">
  <div class="CTitle">classNN</div>
- <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">string</td><td class="CDLDefinition"><p>window's class name</p></td></tr></table></div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">string</td><td class="CDLDefinition"><p>window's class name (cached)</p></td></tr></table></div>
 </div>
 
 <a name="RDA_AutomationWindow.monitor"></a><div class="CTopic TProperty LAutoHotKey">
@@ -1904,6 +1931,12 @@ body {
  <div class="CTitle">toString</div>
  <div  class="NDPrototype"><div class="PSection PPlainSection">toString()</div></div>
  <div class="CBody"><p>Dumps the object to a readable string</p><div class="CHeading">Returns</div><p>string</p></div>
+</div>
+
+<a name="RDA_AutomationWindow.getTitle"></a><div class="CTopic TFunction LAutoHotKey">
+ <div class="CTitle">getTitle</div>
+ <div  class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/2/2">getTitle(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">use_cache</div><div class="PDefaultValueSeparator" data-WideGridArea="1/3/2/4" data-NarrowGridArea="2/2/3/3" style="grid-area:1/3/2/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="1/4/2/5" data-NarrowGridArea="2/3/3/4" style="grid-area:1/4/2/5"><span class="SHKeyword">true</span></div><div class="PAfterParameters" data-WideGridArea="1/5/2/6" data-NarrowGridArea="3/1/4/5" style="grid-area:1/5/2/6">)</div></div></div></div>
+ <div class="CBody"><p>Retrieve window title</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">use_cache</td><td class="CDLDefinition"><p>boolean - Use cache or fetch again</p></td></tr></table><div class="CHeading">Returns</div><p>string</p></div>
 </div>
 
 <a name="RDA_AutomationWindow.getTopLevelHWND"></a><div class="CTopic TFunction LAutoHotKey">
