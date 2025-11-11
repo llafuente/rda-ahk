@@ -273,6 +273,11 @@ class RDA_AutomationJAB extends RDA_Base {
     Method: windowFromElement
       Retrieve window handle from given element
 
+    Remarks:
+      This function may fail with acIds from callbacks (ex: <RDA_AutomationJAB.onClick>)
+
+      The only work around is to use global variables to save current window.
+
     Parameters:
       vmID - number - Virtual machine handle
       acId - number - AccesibleContext handle
@@ -373,5 +378,69 @@ class RDA_AutomationJAB extends RDA_Base {
 
     return new RDA_AutomationJABElement(this, win, element.vmId, acId)
   }
+  /*!
+    Method: onClick
+      Register a callback triggered when something is clicked.
 
+    Remarks:
+      Registering seems like a async process, wait some time to catch the events.
+
+    Remarks:
+      A single click can trigger multiple call to the callback.
+
+    Remarks:
+      see <RDA_AutomationJAB.windowFromElement> if retrieving window fail.
+
+
+    Example:
+    ======= AutoHotKey =======
+    ; Callback definition
+    jab_element_onclick(vmID, event, acId) {
+      global jabInstance
+      RDA_Log_Debug(A_ThisFunc . "(" . vmID . ", " . event . ", " . acId . ")")
+
+      win := jabInstance.windowFromElement(vmID, acId)
+      element := new RDA_AutomationJABElement(jabInstance, win, vmID, acId)
+    }
+
+    ; initialization
+    automation := new RDA_Automation()
+    automation.jab.init(JAVA_PATH)
+    automation.jab.onClick("jab_element_onclick")
+    ; this need to be "globaly" exposed because ahkv1 can't RegisterCallback of a FuncBound
+    jabInstance := automation.jab
+
+    ==========================
+
+    Parameters:
+      fnName - string | Func - Function name or Func
+
+    Throws:
+      Not valid function name: <fnName>
+      BoundFunc is not allowed as callback
+
+    Returns:
+      <RDA_AutomationJAB>
+  */
+  onClick(fnName) {
+    local
+
+    RDA_Log_Debug(A_ThisFunc . "(" . fnName . ")")
+
+    if (!IsFunc(fnName)) {
+      throw RDA_Exception("cannot find function by name: " . fnName)
+    }
+
+    ; BoundFunc not supported in v1, supported in v2
+    ; FunctionObject don't work
+
+    fp := RegisterCallback(fnName, "CDecl")
+    if (!DllCall(this.dllName . "\setMouseClickedFP"
+      , "UInt", fp
+      , "Cdecl Int")) {
+      throw RDA_Exception("setFocusGainedFP failed")
+    }
+
+    return this
+  }
 }

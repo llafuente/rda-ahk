@@ -1,4 +1,5 @@
 Test_RDA_AutomationWindows_CloseOnDestruction(windows) {
+  local
   Run notepad.exe
   win := windows.waitOne({process: "notepad.exe"})
   win.closeOnDestruction()

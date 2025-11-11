@@ -1,3 +1,30 @@
+jabInstance := 0
+; workaround java issue: windowFromElement fail, so need to use a static window
+; clearly not ideal, but it just keep failing with acId from callbacks
+jabWinInstance := 0
+
+jabClicked(vmID, event, acId) {
+  local
+  global jabInstance, jabWinInstance, RDA_AutomationWindow, RDA_AutomationJABElement
+
+  ; discar casting issue, this doesn't solve the problem but it's safer
+  ; vmID &= 0x7FFFFFFF
+  ; vmID &= 0xFFFFFFFF
+  ; acId &= 0x7FFFFFFFFFFFFFFF
+  ; acId &= 0xFFFFFFFFFFFFFFFF
+  ; vmID *= 1
+  ; acId *= 1
+
+  RDA_Log_Debug(A_ThisFunc . "(" . vmID . ", " . event . ", " . acId . ")")
+
+  ; win := jabWinInstance ? jabWinInstance : jabInstance.windowFromElement(vmID, acId)
+  win := jabInstance.windowFromElement(vmID, acId)
+  element := new RDA_AutomationJABElement(jabInstance, win, vmID, acId)
+
+  element.highlight(100)
+}
+
+
 class Test_RDA_JAB {
   Begin() {
   }
@@ -5,7 +32,7 @@ class Test_RDA_JAB {
 
   Test_16_Automation_JAB() {
     local
-    global RDA_Automation, Yunit, RDA_AutomationJABElement, RDA_AutomationJAB, RDA_ElementTreeNode
+    global RDA_Automation, Yunit, RDA_AutomationJABElement, RDA_AutomationJAB, RDA_ElementTreeNode, jabInstance, jabWinInstance
 
     RDA_Log_Debug(A_ThisFunc)
 
@@ -29,6 +56,7 @@ class Test_RDA_JAB {
     }
     automation.jab.init(JAVA_PATH)
 
+
     try {
       win := windows.findOne({title: "SwingSet"}, false)
     } catch e {
@@ -36,6 +64,10 @@ class Test_RDA_JAB {
       win := windows.waitOne({title: "SwingSet"}, false, 5000)
     }
     win.activate()
+
+    ; expose jab instance to callbacks
+    jabInstance := automation.jab
+    jabWinInstance := win
 
     Yunit.assert(windows.getJAB().length() == 1, "one JAB window")
 
@@ -48,11 +80,23 @@ class Test_RDA_JAB {
     win2 := automation.jab.windowFromElement(winElement.vmId, winElement.acId)
     Yunit.assert(win.hwnd == win2.hwnd, "windowFromElement check")
 
+    ; sme logic, should not throw
+    jabClicked(winElement.vmId, 0, winElement.acId)
+
     ; **************************************************************************
     element := winElement.findOne("//ToggleButton[@description=""JInternalFrame demo""]")
     pos := element.getRegion().getCenter()
     element2 := automation.jab.getElementAt(win, pos.x, pos.y)
     Yunit.assert(element.isSameElement(element2), "findOne element same as getElementAt")
+    ; **************************************************************************
+
+    ; manual test!
+    if (false) {
+      automation.jab.onClick("jabClicked")
+      sleep 1000
+      element.osClick()
+      msgbox now you can click and see the effect
+    }
 
     ; **************************************************************************
     winElement.findOne("//ToggleButton[@description=""JInternalFrame demo""]").click()
@@ -74,7 +118,6 @@ class Test_RDA_JAB {
 
     themes.click()
     emerald.expectUnchecked().click().expectChecked("emerald should be checked")
-
     themes.click()
     aqua.expectUnchecked().click().expectChecked("aqua should be checked")
 

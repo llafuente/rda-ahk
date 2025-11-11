@@ -954,6 +954,7 @@ class RDA_Layout extends RDA_Base {
       <RDA_LayoutAbstractElement>
   */
   element(name) {
+    local
     RDA_Log_Debug(A_ThisFunc . "(" . name . ")")
 
     loop % this.elements.length() {
