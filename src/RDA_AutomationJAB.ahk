@@ -293,4 +293,51 @@ class RDA_AutomationJAB extends RDA_Base {
 
     return new RDA_AutomationJABElement(this, new RDA_AutomationWindow(this.automation, hwnd), vmId, acId)
   }
+  /*!
+    Method: getElementAt
+      Retrieves an AccessibleContext object of the window or object that is under the mouse pointer.
+
+    Parameters:
+      win - <RDA_AutomationWindow> - window
+      x - number - x window coordinate
+      y - number - y window coordinate
+
+    Throws:
+      getAccessibleContextAt failed
+      Element not found
+  */
+  getElementAt(win, x, y) {
+    local
+    global RDA_AutomationJABElement
+
+    RDA_Log_Debug(A_ThisFunc . "(" . win.toString() . ", " . x . ", " . y . ")")
+
+    element := this.elementFromHandle(win.hwnd)
+
+    acId := 0
+    RDA_Log_Debug(this.dllName . "\getAccessibleContextAt"
+      . " Int" . element.vmId
+      . this.acType . element.acId
+      . " Int" . x
+      . " Int" . y
+      . this.acpType . acId
+      . " Cdecl Int")
+
+    acId := 0
+    if !DllCall(this.dllName . "\getAccessibleContextAt"
+      , "Int", element.vmId
+      , this.acType, element.acId
+      , "Int", x
+      , "Int", y
+      , this.acpType, acId
+      , "Cdecl Int") {
+        throw RDA_Exception("getAccessibleContextAt failed")
+    }
+    if (!acId) {
+      throw RDA_Exception("Element not found")
+    }
+
+    return new RDA_AutomationJABElement(this, win, element.vmId, acId)
+  }
+
 }

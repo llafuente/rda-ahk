@@ -1149,6 +1149,20 @@ class RDA_AutomationWindow extends RDA_Base {
     return this.automation.jab.elementFromHandle(this.hwnd)
   }
   /*!
+    Method: getJABElementAt
+      Shortcut to <RDA_AutomationJAB.getElementAt>
+
+    Parameters:
+      x - number - x window coordinate
+      y - number - y window coordinate
+
+    Returns:
+      <RDA_AutomationJABElement>
+  */
+  getJABElementAt(x, y) {
+    return this.automation.jab.getElementAt(this, x, y)
+  }
+  /*!
     Method: isOnCurrentVirtualDesktop
       Retrieves if windows is on the current virtual desktop
 
