@@ -1,8 +1,8 @@
 /*!
-  Class: RDA_LayoutElement
-    Base class for RAW Automation element
+  Class: RDA_LayoutAbstractElement
+    Abstract class for RAW Automation element
 */
-class RDA_LayoutElement {
+class RDA_LayoutAbstractElement {
   /*!
     property: layout
       <RDA_Layout> - layout
@@ -23,11 +23,25 @@ class RDA_LayoutElement {
       <RDA_WindowRegion> - region
   */
   region := 0
+  /*!
+    Constructor: RDA_LayoutAbstractElement
+
+    Parameters:
+      layout - <RDA_Layout> - layout
+      obj - object - plain object
+
+    Throws:
+      it's an abstract class
+  */
+  __New(layout, obj) {
+    throw RDA_Exception(A_ThisFunc . " it's an abstract class")
+  }
   ; internal
   _parseCommonProperties(obj) {
     local
     global RDA_Layout, RDA_WindowRegion
 
+    ; why back test ? we should use the factory right ?
     if (!RDA_Array_IndexOf(RDA_Layout.types, obj.type)) {
       throw RDA_Exception("Invalid type: " . obj.type)
     }
@@ -48,7 +62,7 @@ class RDA_LayoutElement {
       string - debug info
   */
   toString() {
-    return "RDA_LayoutElement{name: " . this.name . ", type: " . this.type . ", region: " . this.region.toString() . "}"
+    return "RDA_LayoutAbstractElement{name: " . this.name . ", type: " . this.type . ", region: " . this.region.toString() . "}"
   }
   /*!
     Method: getCenter
@@ -65,7 +79,7 @@ class RDA_LayoutElement {
       Highlights current region
 
     Returns:
-      <RDA_LayoutElement>
+      <RDA_LayoutAbstractElement>
   */
   highlight() {
     local
@@ -81,7 +95,7 @@ class RDA_LayoutElement {
       Hover the element
 
     Returns:
-      <RDA_LayoutElement>
+      <RDA_LayoutAbstractElement>
   */
   hover() {
     local
@@ -96,7 +110,7 @@ class RDA_LayoutElement {
       Performs a left click at the region center.
 
     Returns:
-      <RDA_LayoutElement>
+      <RDA_LayoutAbstractElement>
   */
   click() {
     local
@@ -113,7 +127,7 @@ class RDA_LayoutElement {
       See <RDA_Mouse_WindowClick>
 
     Returns:
-      <RDA_LayoutElement>
+      <RDA_LayoutAbstractElement>
   */
   rightClick() {
     local
@@ -130,7 +144,7 @@ class RDA_LayoutElement {
       See <RDA_Mouse_WindowClick>
 
     Returns:
-      <RDA_LayoutElement>
+      <RDA_LayoutAbstractElement>
   */
   doubleClick() {
     local
@@ -148,7 +162,7 @@ class RDA_LayoutElement {
       ms - number - Timeout, in miliseconds
 
     Returns:
-      <RDA_LayoutElement>
+      <RDA_LayoutAbstractElement>
   */
   sleep(ms) {
     local
@@ -158,14 +172,37 @@ class RDA_LayoutElement {
     return this
   }
 }
+/*!
+  Class: RDA_LayoutImage
+    Static header
+
+  Extends: RDA_LayoutAbstractElement
+*/
+class RDA_LayoutElement extends RDA_LayoutAbstractElement {
+  /*!
+    Constructor: RDA_LayoutImage
+
+    Parameters:
+      layout - <RDA_Layout> - layout
+      obj - object - plain object
+  */
+  __New(layout, obj) {
+    this.layout := layout
+
+    RDA_Assert(layout, "invalid parameters layout is required")
+    RDA_Assert(RDA_instaceOf(layout, RDA_Layout), "expected layout to be instance of RDA_Layout")
+
+    this._parseCommonProperties(obj)
+  }
+}
 
 /*!
   Class: RDA_LayoutImage
     Static header
 
-  Extends: RDA_LayoutElement
+  Extends: RDA_LayoutAbstractElement
 */
-class RDA_LayoutImage extends RDA_LayoutElement {
+class RDA_LayoutImage extends RDA_LayoutAbstractElement {
   /*!
     Property: image
       string - Path to image
@@ -191,13 +228,14 @@ class RDA_LayoutImage extends RDA_LayoutElement {
       this.image := A_WorkingDir . "\" . obj.image
     }
     RDA_Assert(this.image, "invalid property image is required")
+    ; RDA_Assert(FileExist(this.image), "file not found: " . this.image)
   }
   /*!
     Method: updateImage
       Takes a screenshot of current element region and save to image
 
     Returns:
-      <RDA_LayoutEdit>
+      <RDA_LayoutImage>
   */
   updateImage() {
     local
@@ -234,9 +272,8 @@ class RDA_LayoutImage extends RDA_LayoutElement {
     local
     RDA_Log_Debug(A_ThisFunc)
 
-    ; TODO smaller region ?
-    pos := this.layout.win.waitAppearImage([this.image], sensibility, timeout, delay)
-    ; TODO check position is inside the region ?
+    pos := this.region.waitAppearImage([this.image], sensibility, timeout, delay)
+
     return this
   }
   /*!
@@ -255,9 +292,8 @@ class RDA_LayoutImage extends RDA_LayoutElement {
     local
     RDA_Log_Debug(A_ThisFunc)
 
-    ; TODO smaller region ?
-    this.layout.win.waitDisappearImage(this, [this.image], sensibility, timeout, delay)
-    ; TODO check position is inside the region ?
+    this.region.waitDisappearImage([this.image], sensibility, timeout, delay)
+
     return this
   }
 }
@@ -266,9 +302,9 @@ class RDA_LayoutImage extends RDA_LayoutElement {
   Class: RDA_LayoutEdit
     Automate: Edit, Input, Textarea. A box that you type and value is set
 
-  Extends: RDA_LayoutElement
+  Extends: RDA_LayoutAbstractElement
 */
-class RDA_LayoutEdit extends RDA_LayoutElement {
+class RDA_LayoutEdit extends RDA_LayoutAbstractElement {
   /*!
     Property: clearKeys
       Keys that need to be pressed to clear input value
@@ -360,9 +396,9 @@ class RDA_LayoutEdit extends RDA_LayoutElement {
   Class: RDA_LayoutStaticDropdown
     A dropdown with all known values and in the same order.
 
-  Extends: RDA_LayoutElement
+  Extends: RDA_LayoutAbstractElement
 */
-class RDA_LayoutStaticDropdown extends RDA_LayoutElement {
+class RDA_LayoutStaticDropdown extends RDA_LayoutAbstractElement {
   /*!
     Constructor: RDA_LayoutStaticDropdown
 
@@ -434,9 +470,9 @@ class RDA_LayoutStaticDropdown extends RDA_LayoutElement {
 /*!
   Class: RDA_LayoutAutocompleteDropdown
 
-  Extends: RDA_LayoutElement
+  Extends: RDA_LayoutAbstractElement
 */
-class RDA_LayoutAutocompleteDropdown extends RDA_LayoutElement {
+class RDA_LayoutAutocompleteDropdown extends RDA_LayoutAbstractElement {
   /*!
     Property: enterKeys
       Keys that need to be pressed before set a value
@@ -504,9 +540,9 @@ class RDA_LayoutAutocompleteDropdown extends RDA_LayoutElement {
   Class: RDA_LayoutCheckbox
     Checkbox
 
-  Extends: RDA_LayoutElement
+  Extends: RDA_LayoutAbstractElement
 */
-class RDA_LayoutCheckbox extends RDA_LayoutElement {
+class RDA_LayoutCheckbox extends RDA_LayoutAbstractElement {
   /*!
     Constructor: RDA_LayoutCheckbox
 
@@ -524,7 +560,7 @@ class RDA_LayoutCheckbox extends RDA_LayoutElement {
   }
   /*!
     Method: toggle
-      Alias of <RDA_LayoutElement.click>
+      Alias of <RDA_LayoutAbstractElement.click>
 
     Returns:
       <RDA_LayoutAutocompleteDropdown>
@@ -575,6 +611,8 @@ class RDA_LayoutButton extends RDA_LayoutImage {
     if (obj.HasKey("image")) {
       this.image := A_WorkingDir . "\" . obj.image
     }
+    RDA_Assert(this.image, "invalid property image is required")
+
     if (obj.HasKey("disabledImage")) {
       this.disabledImage := A_WorkingDir . "\" . obj.disabledImage
     }
@@ -585,7 +623,7 @@ class RDA_LayoutButton extends RDA_LayoutImage {
       Takes a screenshot of current element region and save to image
 
     Returns:
-      <RDA_LayoutEdit>
+      <RDA_LayoutButton>
   */
   updateDisabledImage() {
     local
@@ -615,8 +653,7 @@ class RDA_LayoutButton extends RDA_LayoutImage {
 
     if (this.image) {
       try {
-      ; TODO search only in given region ?
-        this.layout.win.searchImage([this.image], sensibility)
+        this.region.searchImage([this.image], sensibility)
         return false
       } catch e {
         return true
@@ -625,8 +662,7 @@ class RDA_LayoutButton extends RDA_LayoutImage {
 
     if (this.disabledImage) {
       try {
-      ; TODO search only in given region ?
-        this.layout.win.searchImage([this.disabledImage], sensibility)
+        this.region.searchImage([this.disabledImage], sensibility)
         return true
       } catch e {
         return false
@@ -648,14 +684,17 @@ class RDA_LayoutButton extends RDA_LayoutImage {
       image is required
 
     Returns:
-      boolean
+      <RDA_LayoutButton>
   */
   waitEnabled(sensibility := -1, timeout := -1, delay := -1) {
     local
 
     RDA_Assert(this.image, "image is required")
+    RDA_Log_Debug(A_ThisFunc)
 
-    return this.waitAppear(sensibility, timeout, delay)
+    this.region.waitAppearImage([this.image], sensibility, timeout, delay)
+
+    return this
   }
   /*!
     method: waitDisabled
@@ -670,14 +709,15 @@ class RDA_LayoutButton extends RDA_LayoutImage {
       image is required
 
     Returns:
-      boolean
+      <RDA_LayoutButton>
   */
   waitDisabled(sensibility := -1, timeout := -1, delay := -1) {
     local
 
     RDA_Assert(this.disabledImage, "disabledImage is required")
+    RDA_Log_Debug(A_ThisFunc)
 
-    pos := this.layout.win.waitAppearImage([this.disabledImage], sensibility, timeout, delay)
+    this.region.waitAppearImage([this.disabledImage], sensibility, timeout, delay)
 
     return this
   }
@@ -700,7 +740,7 @@ class RDA_LayoutButton extends RDA_LayoutImage {
     windows := automation.windows()
     win := windows.waitOne({process: "mspaint.exe"})
 
-    class MyInputClass extends RDA_LayoutElement {
+    class MyInputClass extends RDA_LayoutAbstractElement {
       __New(layout, obj) {
         this.layout := layout
         RDA_Assert(this.layout, "invalid parameters layout is required")
@@ -733,12 +773,12 @@ class RDA_Layout extends RDA_Base {
     constant: types
       string[] - List of valid values for type
   */
-  static types := ["Image","Input", "Dropdown", "AutoDropdown", "Checkbox", "Button"]
+  static types := ["Element", "Image","Input", "Dropdown", "AutoDropdown", "Checkbox", "Button"]
   /*!
     constant: classes
       string[] - List of factory classes
   */
-  static classes := [RDA_LayoutImage, RDA_LayoutEdit, RDA_LayoutStaticDropdown, RDA_LayoutAutocompleteDropdown, RDA_LayoutCheckbox, RDA_LayoutButton]
+  static classes := [RDA_LayoutElement, RDA_LayoutImage, RDA_LayoutEdit, RDA_LayoutStaticDropdown, RDA_LayoutAutocompleteDropdown, RDA_LayoutCheckbox, RDA_LayoutButton]
   /*!
     property: win
       <RDA_AutomationWindow> - window
@@ -751,7 +791,7 @@ class RDA_Layout extends RDA_Base {
   offset := 0
   /*!
     property: elements
-      <RDA_LayoutElement>[] - elements
+      <RDA_LayoutAbstractElement>[] - elements
   */
   elements := []
   /*!
@@ -767,10 +807,10 @@ class RDA_Layout extends RDA_Base {
     this.automation := win.automation
     this.win := win
 
+    RDA_Assert(RDA_instaceOf(win, RDA_AutomationWindow), "expected win to be instance of RDA_AutomationWindow")
+
     RDA_Assert(this.win, "invalid parameter win is required")
     RDA_Assert(this.automation, "invalid parameter automation is required")
-
-    RDA_Assert(RDA_instaceOf(win, RDA_AutomationWindow), "expected win to be instance of RDA_AutomationWindow")
   }
   /*!
     Method: fromJsonFile
@@ -784,7 +824,7 @@ class RDA_Layout extends RDA_Base {
   */
   fromJsonFile(filepath) {
     local
-    global RDA_LayoutElement, RDA_Layout, RDA_ScreenPosition
+    global RDA_LayoutAbstractElement, RDA_Layout, RDA_ScreenPosition
 
 
     RDA_Log_Debug(A_ThisFunc . "(" . filepath . ")")
@@ -814,7 +854,7 @@ class RDA_Layout extends RDA_Base {
   */
   from(obj) {
     local
-    global RDA_LayoutElement, RDA_Layout, RDA_ScreenPosition
+    global RDA_LayoutAbstractElement, RDA_Layout, RDA_ScreenPosition
 
     RDA_Log_Debug(A_ThisFunc . "()")
 
@@ -911,9 +951,11 @@ class RDA_Layout extends RDA_Base {
       element not found with name: ?
 
     Returns:
-      <RDA_LayoutElement>
+      <RDA_LayoutAbstractElement>
   */
   element(name) {
+    RDA_Log_Debug(A_ThisFunc . "(" . name . ")")
+
     loop % this.elements.length() {
       element := this.elements[A_Index]
       if (element.name == name) {
