@@ -19,7 +19,8 @@ class RDA_AutomationWindow extends RDA_Base {
   _title := 0
   /*!
     Property: title
-      string - Title, cached first time
+      string - Window title (cached).
+      Use <RDA_AutomationWindow.getTitle>(false) to clear cache
   */
   title {
     get {
@@ -36,7 +37,7 @@ class RDA_AutomationWindow extends RDA_Base {
   _pid := 0
   /*!
     Property: pid
-      number - Process identifier
+      number - Process identifier (cached).
   */
   pid [] {
     get {
@@ -53,7 +54,7 @@ class RDA_AutomationWindow extends RDA_Base {
   _process := 0
   /*!
     Property: process
-      string - The name of the process that owns the window
+      string - The name of the process that owns the window (cached).
   */
   process [] {
     get {
@@ -70,7 +71,7 @@ class RDA_AutomationWindow extends RDA_Base {
   _path := 0
   /*!
     Property: path
-      string - Full path and name of the process that owns the window
+      string - Full path and name of the process that owns the window (cached)
   */
   path [] {
     get {
@@ -87,7 +88,7 @@ class RDA_AutomationWindow extends RDA_Base {
   _classNN := 0
   /*!
     Property: classNN
-      string - window's class name
+      string - window's class name (cached)
   */
   classNN {
     get {
@@ -146,7 +147,7 @@ class RDA_AutomationWindow extends RDA_Base {
     ; RDA_Log_Debug(A_ThisFunc . " " . this.toString())
   }
   __Delete() {
-    RDA_Log_Debug(A_ThisFunc . " _closeOnDestruction = " . (this._closeOnDestruction ? "yes" : "no"))
+    ; RDA_Log_Debug(A_ThisFunc . " _closeOnDestruction = " . (this._closeOnDestruction ? "yes" : "no"))
 
     if (this._closeOnDestruction) {
       this.close()
@@ -161,6 +162,22 @@ class RDA_AutomationWindow extends RDA_Base {
   */
   toString() {
     return "AutomationWindow { hwnd: " . this.hwnd . ", title: " . this.title . ", pid: " . this.pid . ",process: " . this.process . ", path: " . this.path . ", classNN: " . this.classNN . "}"
+  }
+  /*!
+    Method: getTitle
+      Retrieve window title
+
+    Parameters:
+      use_cache - boolean - Use cache or fetch again
+
+    Returns:
+      string
+  */
+  getTitle(use_cache := true) {
+    if (!use_cache) {
+      this._title := 0
+    }
+    return this.title
   }
   /*!
     Method: getTopLevelHWND
@@ -887,10 +904,10 @@ class RDA_AutomationWindow extends RDA_Base {
   getColor(x, y) {
     local
 
-    pos := this.getPosition()
     this.setOpaque().activate()
+    pos := this.getPosition().add2(x, y)
 
-    return RDA_PixelGetColor(pos.x + x, pos.y + y)
+    return RDA_PixelGetColor(pos.x, pos.y)
   }
   /*!
     Method: searchColor
