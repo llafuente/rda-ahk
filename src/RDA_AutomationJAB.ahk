@@ -265,9 +265,43 @@ class RDA_AutomationJAB extends RDA_Base {
       throw RDA_Exception("getAccessibleContextFromHWND failed")
     }
 
+    RDA_Log_Debug(A_ThisFunc . " <-- vmId = " . vmId . ", acId = " . acId)
+
     return new RDA_AutomationJABElement(this, new RDA_AutomationWindow(this.automation, hwnd), vmId, acId)
   }
+  /*!
+    Method: windowFromElement
+      Retrieve window handle from given element
 
+    Parameters:
+      vmID - number - Virtual machine handle
+      acId - number - AccesibleContext handle
+
+    Throws:
+      Cannot not determine hwnd
+
+    Returns:
+      <RDA_AutomationWindow>
+  */
+  windowFromElement(vmID, acId) {
+    local
+    global RDA_AutomationWindow
+
+    RDA_Log_Debug(A_ThisFunc . "(" . vmID . ", " . acId . ")")
+
+    hwnd := DllCall(this.dllName . "\getHWNDFromAccessibleContext"
+      , "Int", vmID
+      , this.acType, acId
+      , "Cdecl Ptr")
+
+    RDA_Log_Debug(A_ThisFunc . " <-- " . hwnd)
+
+    if (!hwnd) {
+      throw RDA_Exception("Cannot not determine hwnd")
+    }
+
+    return new RDA_AutomationWindow(this.automation, hwnd)
+  }
   /*!
     Method: getFocusedElement
       Get focused Element

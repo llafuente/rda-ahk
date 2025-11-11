@@ -42,6 +42,17 @@ class Test_RDA_JAB {
     winElement := win.asJABElement()
     Yunit.assert(winElement, "Window element created")
 
+    ; give some time to java
+    sleep 5000
+    ; **************************************************************************
+    win2 := automation.jab.windowFromElement(winElement.vmId, winElement.acId)
+    Yunit.assert(win.hwnd == win2.hwnd, "windowFromElement check")
+
+    ; **************************************************************************
+    element := winElement.findOne("//ToggleButton[@description=""JInternalFrame demo""]")
+    pos := element.getRegion().getCenter()
+    element2 := automation.jab.getElementAt(win, pos.x, pos.y)
+    Yunit.assert(element.isSameElement(element2), "findOne element same as getElementAt")
 
     ; **************************************************************************
     winElement.findOne("//ToggleButton[@description=""JInternalFrame demo""]").click()
