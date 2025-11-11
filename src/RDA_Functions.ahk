@@ -1179,6 +1179,56 @@ RDA_PixelSearchColor(automation, color, x, y, w, h, variation := "") {
   return p
 }
 
+; internal, to remove excesive log
+RDA_ImageSearch_noexcept(automation, imagePath, sensibility, screenRegion, options := "") {
+  local
+  global RDA_ScreenPosition
+
+  sensibility := sensibility == -1 ? automation.imageSearchSensibility : sensibility
+
+  if (!FileExist(imagePath)) {
+    throw RDA_Exception("File not found: " . imagePath)
+  }
+
+  CoordMode Pixel
+  CoordMode, Mouse, Screen
+
+  if (options) {
+    options := "*" . sensibility . " " . options . " " . imagePath
+  } else {
+    options := "*" . sensibility . " " . imagePath
+  }
+
+  x1 := 0
+  y1 := 0
+  x2 := A_ScreenWidth
+  y2 := A_ScreenHeight
+
+  if (screenRegion) {
+    x1 := screenRegion.origin.x
+    y1 := screenRegion.origin.y
+    x2 := screenRegion.origin.x + screenRegion.rect.w
+    y2 := screenRegion.origin.y + screenRegion.rect.h
+  }
+
+  ImageSearch, FoundX, FoundY, %x1%, %y1%, %x2%, %y2%, % options
+  err := ErrorLevel
+
+  ; RDA_Log_Debug(A_ThisFunc
+  ;   . " result (" . FoundX .  " ," . FoundY .  ")"
+  ;   . " ErrorLevel = " . err
+  ;   . " region (" . x1 . ", " . y1 . ", " . x2 . ", " . y2 . ")"
+  ;   . " options = " . options)
+
+  if (err == 2) {
+    throw RDA_Exception("ImageSearch failed")
+  } else if (err == 1) {
+    return 0
+  }
+
+  return new RDA_ScreenPosition(automation, FoundX, FoundY)
+}
+
 /*!
   Function: RDA_ImageSearch
     Searches a region of the screen for an image and returns its position
@@ -1213,45 +1263,14 @@ RDA_PixelSearchColor(automation, color, x, y, w, h, variation := "") {
 */
 RDA_ImageSearch(automation, imagePath, sensibility, screenRegion, options := "") {
   local
-  global RDA_ScreenPosition
 
-  sensibility := sensibility == -1 ? automation.imageSearchSensibility : sensibility
-
-  if (!FileExist(imagePath)) {
-    throw RDA_Exception("File not found: " . imagePath)
-  }
-
-  CoordMode Pixel
-  CoordMode, Mouse, Screen
-
-  if (options) {
-    options := "*" . sensibility . " " . options . " " . imagePath
-  } else {
-    options := "*" . sensibility . " " . imagePath
-  }
-
-  if (!screenRegion) {
-    RDA_Log_Debug(A_ThisFunc . " region (0, 0, " . A_ScreenWidth . ", " . A_ScreenHeight . ") options = " . options)
-    ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, % options
-  } else {
-    x1 := screenRegion.origin.x
-    y1 := screenRegion.origin.y
-    x2 := screenRegion.origin.x + screenRegion.rect.w
-    y2 := screenRegion.origin.y + screenRegion.rect.h
-    RDA_Log_Debug(A_ThisFunc . " region (" . x1 . ", " . y1 . ", " . x2 . ", " . y2 . ") options = " . options)
-    ImageSearch, FoundX, FoundY, %x1%, %y1%, %x2%, %y2%, % options
-  }
-  err := ErrorLevel
-
-  RDA_Log_Debug(A_ThisFunc . " result (" . FoundX .  " ," . FoundY .  ") ErrorLevel = " . err)
-
-  if (err == 2) {
-    throw RDA_Exception("ImageSearch failed")
-  } else if (err == 1) {
+  RDA_Log_Debug(A_ThisFunc . "(" . imagePath . ", " . sensibility . ", " . screenRegion.toString() . ", " . options . ")")
+  pos := RDA_ImageSearch_noexcept(automation, imagePath, sensibility, screenRegion, options := "")
+  if (!pos) {
     throw RDA_Exception("Image not found in the screen: " . imagePath)
   }
 
-  return new RDA_ScreenPosition(automation, FoundX, FoundY)
+  return pos
 }
 
 /*!
@@ -1285,21 +1304,24 @@ RDA_ImagesWaitAppear(automation, imagePathList, sensibility, screenRegion, optio
   startTime := A_TickCount
 
   sensibility := sensibility == -1 ? automation.imageSearchSensibility : sensibility
-  RDA_Log_Debug(A_ThisFunc . "(images = " . RDA_JSON_stringify(imagePathList) . ", sensibility = " . sensibility . ", options = " . options . ", timeout = " . timeout . ", timeout = " . delay . ")")
-
+  RDA_Log_Debug(A_ThisFunc . "(images = " . RDA_JSON_stringify(imagePathList) . ", sensibility = " . sensibility . ", " . screenRegion.toString() . ", options = " . options . ", timeout = " . timeout . ", timeout = " . delay . ")")
+  lastException := 0
   loop {
     loop % imagePathList.length() {
       try {
-        pos := RDA_ImageSearch(automation, imagePathList[A_Index], sensibility, screenRegion, options)
-        return pos
+        pos := RDA_ImageSearch_noexcept(automation, imagePathList[A_Index], sensibility, screenRegion, options)
+        if (pos) {
+          return pos
+        }
       } catch e {
-        RDA_Log_Error(e.message)
+        lastException := e
+        ; RDA_Log_Error(e.message)
       }
     }
 
     if (A_TickCount >= startTime + timeout) {
       RDA_Log_Debug(A_ThisFunc . " timeout reached")
-      throw RDA_Exception("Timeout reached at " . A_ThisFunc . ". Image(s) not found.`n" . e.message)
+      throw RDA_Exception("Timeout reached at " . A_ThisFunc . ". Image(s) not found.`n" . lastException.message)
     }
 
     sleep % delay
@@ -1341,12 +1363,12 @@ RDA_ImagesWaitDisappear(automation, imagePathList, sensibility, screenRegion, op
 
   loop {
     loop % imagePathList.length() {
-      try {
-        RDA_ImageSearch(automation, imagePathList[A_Index], sensibility, screenRegion, options)
-      } catch e {
-        RDA_Log_Debug(A_ThisFunc . " result = " . A_Index . " not found")
-        return A_Index
-      }
+        pos := RDA_ImageSearch_noexcept(automation, imagePathList[A_Index], sensibility, screenRegion, options)
+
+        if (!pos) {
+          RDA_Log_Debug(A_ThisFunc . " result = " . A_Index . " not found")
+          return A_Index
+        }
     }
 
     if (A_TickCount >= startTime + timeout) {
