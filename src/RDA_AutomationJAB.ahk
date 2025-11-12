@@ -418,6 +418,7 @@ class RDA_AutomationJAB extends RDA_Base {
     Throws:
       Not valid function name: <fnName>
       BoundFunc is not allowed as callback
+      setMouseClickedFP failed
 
     Returns:
       <RDA_AutomationJAB>
@@ -438,7 +439,109 @@ class RDA_AutomationJAB extends RDA_Base {
     if (!DllCall(this.dllName . "\setMouseClickedFP"
       , "UInt", fp
       , "Cdecl Int")) {
-      throw RDA_Exception("setFocusGainedFP failed")
+      throw RDA_Exception("setMouseClickedFP failed")
+    }
+
+    return this
+  }
+  /*!
+    Method: onFocusIn
+      Register a callback triggered when something got focus.
+
+    Remarks:
+      See <RDA_AutomationJAB.onClick>
+
+    Example:
+    ======= AutoHotKey =======
+    ; Callback definition
+    jab_element_focusin(vmID, event, acId) {
+      global jabInstance
+      RDA_Log_Debug(A_ThisFunc . "(" . vmID . ", " . event . ", " . acId . ")")
+
+      win := jabInstance.windowFromElement(vmID, acId)
+      element := new RDA_AutomationJABElement(jabInstance, win, vmID, acId)
+    }
+    ==========================
+
+    Parameters:
+      fnName - string | Func - Function name or Func
+
+    Throws:
+      Not valid function name: <fnName>
+      BoundFunc is not allowed as callback
+      SetFocusGainedFP failed
+
+    Returns:
+      <RDA_AutomationJAB>
+  */
+  onFocusIn(fnName) {
+    local
+
+    RDA_Log_Debug(A_ThisFunc . "(" . fnName . ")")
+
+    if (!IsFunc(fnName)) {
+      throw RDA_Exception("cannot find function by name: " . fnName)
+    }
+
+    ; BoundFunc not supported in v1, supported in v2
+    ; FunctionObject don't work
+
+    fp := RegisterCallback(fnName, "CDecl")
+    if (!DllCall(this.dllName . "\SetFocusGainedFP"
+      , "UInt", fp
+      , "Cdecl Int")) {
+      throw RDA_Exception("SetFocusGainedFP failed")
+    }
+
+    return this
+  }
+  /*!
+    Method: onFocusOut
+      Register a callback triggered when something lose focus.
+
+    Remarks:
+      See <RDA_AutomationJAB.onClick>
+
+    Example:
+    ======= AutoHotKey =======
+    ; Callback definition
+    jab_element_focusout(vmID, event, acId) {
+      global jabInstance
+      RDA_Log_Debug(A_ThisFunc . "(" . vmID . ", " . event . ", " . acId . ")")
+
+      win := jabInstance.windowFromElement(vmID, acId)
+      element := new RDA_AutomationJABElement(jabInstance, win, vmID, acId)
+    }
+    ==========================
+
+    Parameters:
+      fnName - string | Func - Function name or Func
+
+    Throws:
+      Not valid function name: <fnName>
+      BoundFunc is not allowed as callback
+      SetFocusLostFP failed
+
+    Returns:
+      <RDA_AutomationJAB>
+  */
+  onFocusOut(fnName) {
+    local
+
+    RDA_Log_Debug(A_ThisFunc . "(" . fnName . ")")
+
+    if (!IsFunc(fnName)) {
+      throw RDA_Exception("cannot find function by name: " . fnName)
+    }
+
+    ; BoundFunc not supported in v1, supported in v2
+    ; FunctionObject don't work
+
+    fp := RegisterCallback(fnName, "CDecl")
+    if (!DllCall(this.dllName . "\SetFocusLostFP"
+      , "UInt", fp
+      , "Cdecl Int")) {
+      throw RDA_Exception("SetFocusLostFP failed")
     }
 
     return this
