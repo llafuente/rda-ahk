@@ -180,6 +180,52 @@ class RDA_AutomationWindow extends RDA_Base {
     return this.title
   }
   /*!
+    Method: waitTitle
+      Waits until title change to the giving one. If empty it will trigger on any change.
+
+    Parameters:
+      new_title - string - Target title. Empty to trigger on the first change.
+      timeout - number - timeout, in miliseconds
+      delay - number - retry delay, in miliseconds
+
+    Returns:
+      <RDA_AutomationWindow>
+  */
+  waitTitle(new_title := "", timeout, timeout := -1, delay := -1) {
+    local
+    global RDA_Automation
+
+    timeout := timeout == -1 ? RDA_Automation.TIMEOUT : timeout
+    delay := delay == -1 ? RDA_Automation.DELAY : delay
+
+    RDA_Log_Debug(A_ThisFunc . "(" . new_title . " timeout = " . timeout . ", delay = " . delay . ")")
+
+    startTime := A_TickCount
+
+    old_title := this.title
+
+    loop {
+      if (new_title) {
+        if (this.getTitle(false) == new_title) {
+          RDA_Log_Debug(A_ThisFunc . " title changed!")
+          return this
+        }
+      } else if (old_title != this.getTitle(false)) {
+          RDA_Log_Debug(A_ThisFunc . " title changed!")
+          return this
+      }
+
+      if (A_TickCount >= startTime + timeout) {
+        RDA_Log_Error(A_ThisFunc " timeout(" . timeout . ") reached")
+        throw RDA_Exception("Timeout: waiting a title change")
+      }
+
+      sleep % delay
+    }
+
+    throw RDA_Exception("unreachable")
+  }
+  /*!
     Method: getTopLevelHWND
       Retrieves the root window by walking the chain of parent windows.
 
