@@ -191,7 +191,7 @@ class RDA_AutomationWindow extends RDA_Base {
     Returns:
       <RDA_AutomationWindow>
   */
-  waitTitle(new_title := "", timeout, timeout := -1, delay := -1) {
+  waitTitle(new_title := "", timeout := -1, delay := -1) {
     local
     global RDA_Automation
 
