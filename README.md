@@ -141,6 +141,8 @@ The *default* dist file will *include* our log system.
 
 You can disable the log swapping files: *RDA_Functions_Log.ahk* -> *RDA_Functions_NoLog.ahk* at [./dist.ps1](./dist.ps1) or implement your own see [./src/RDA_Functions_NoLog.ahk](./src/RDA_Functions_NoLog.ahk)
 
+By default it includes all libraries, but there flags to remove each one, see: [Dependencies](#dependencies)
+
 ## Documentation
 
 [rda-ahk API documentation](./docs/index.html)
@@ -198,6 +200,7 @@ There are two ways:
 * Use selenium: Covers everything, add binary dependencies. Possible but not direct.
 * Use UIAtomation: Some functionality is degraded, some is just a hack! Possible but not robust.
 
+<a name="dependencies"></a>
 ### Dependencies
 
 * https://github.com/Descolada/UIAutomation
@@ -208,16 +211,22 @@ There are two ways:
 
   JSON library it's only used for debuggin purposes.
 
-  Optional.
+  Optional (`$use_json` on [./dist.ps1](./dist.ps1#L11))
 
 * https://github.com/Uberi/Yunit
 
   Unit testing.
 
-  Optional.
+  Optional, not included in dist.
 
 * https://github.com/marius-sucan/AHK-GDIp-Library-Compilation
 
   GDIp library. Overlay and debug purposes.
 
-  Optional.
+  Optional (`$use_gdip` on [./dist.ps1](./dist.ps1#L10))
+
+* https://github.com/FuPeiJiang/VD.ahk
+
+  If you need support for Virtual Desktops
+
+  Optional (`$use_virtual_desktops` on [./dist.ps1](./dist.ps1#L12))

@@ -25,8 +25,6 @@ class RDA_VirtualDesktop extends RDA_Base {
       Virtual desktop index
   */
   index := 0
-  ; internal, this change with each execution but it's stable in the same execution
-  ptr := 0
   /*!
     Constructor: RDA_VirtualDesktop
       VirtualDesktop
@@ -36,11 +34,10 @@ class RDA_VirtualDesktop extends RDA_Base {
       index - number - 1 index
       ptr - pointer
   */
-  __New(automation, index, ptr) {
+  __New(automation, index) {
     RDA_Assert(automation, A_ThisFunc . " automation is null")
     this.automation := automation
     this.index := index
-    this.ptr := ptr
   }
 
   /*!
@@ -51,7 +48,7 @@ class RDA_VirtualDesktop extends RDA_Base {
       string - debug info
   */
   toString() {
-    return "RDA_VirtualDesktop{index: " . this.index . ", ptr: " . this.ptr . "}"
+    return "RDA_VirtualDesktop{index: " . this.index . "}"
   }
 }
 /*!
@@ -60,8 +57,6 @@ class RDA_VirtualDesktop extends RDA_Base {
 */
 class RDA_VirtualDesktops extends RDA_Base {
   automation := 0
-  iVirtualDesktopManager := 0
-  iVirtualDesktopManagerInternal := 0
   /*!
     constructor: RDA_VirtualDesktops
 
@@ -71,22 +66,9 @@ class RDA_VirtualDesktops extends RDA_Base {
   __New(automation) {
     RDA_Assert(automation, A_ThisFunc . " automation is null")
     this.automation := automation
-
-    CLSID := "{aa509086-5ca9-4c25-8f95-589d3c07b48a}" ;search VirtualDesktopManager clsid
-    IID := "{a5cd92ff-29be-454c-8d04-d82879fb3f1b}" ;search IID_IVirtualDesktopManager
-    this.iVirtualDesktopManager := ComObjCreate(CLSID, IID)
-
-    IServiceProvider                := ComObjCreate("{C2F03A33-21F5-47FA-B4BB-156362A2F239}", "{6D5140C1-7436-11CE-8034-00AA006009FA}")
-    this.iVirtualDesktopManagerInternal  := ComObjQuery(IServiceProvider, "{C5E0CDCA-7B6E-41B2-9FC4-D93975CC467B}", "{F31574D6-B682-4CDC-BD56-1827860ABEC6}")
-    ObjRelease(IServiceProvider)
-
-    ; TODO: CreateDesktopW                  := vtable(iVirtualDesktopManagerInternal, 10)
-    ; TODO: RemoveDesktop                   := vtable(iVirtualDesktopManagerInternal, 11)
   }
 
   __Delete() {
-    ObjRelease(this.iVirtualDesktopManager)
-    ObjRelease(this.iVirtualDesktopManagerInternal)
   }
   /*!
     Method: count
@@ -96,53 +78,27 @@ class RDA_VirtualDesktops extends RDA_Base {
       number - count
   */
   count() {
-    GetCount := RDA_VTable(this.iVirtualDesktopManagerInternal, 3)
+    global VD
 
-    desktopCount := 0
-    DllCall(GetCount
-      , "Ptr", this.iVirtualDesktopManagerInternal
-      , "UInt*", desktopCount
-      , "UInt")
+    index := 0+VD.getCount()
+    RDA_Log_Debug(A_ThisFunc " <-- " . index)
 
-    return 0+desktopCount
+    return index
   }
   /*!
-    Method: current
+    Method: getCurrent
       Retrieves the current virtual desktop
 
     Returns:
       <RDA_VirtualDesktop>
   */
-  current() {
-    local
+  getCurrent() {
+    global VD, RDA_VirtualDesktop
 
-    RDA_Log_Debug(A_ThisFunc . "()")
-    GetCurrentDesktop := RDA_VTable(this.iVirtualDesktopManagerInternal, 6)
-    ptr := 0
-    DllCall(GetCurrentDesktop
-      , "UPtr", this.iVirtualDesktopManagerInternal
-      , "UPtrP", ptr
-      , "Uint")
+    index := 0+VD.getCurrentDesktopNum()
+    RDA_Log_Debug(A_ThisFunc " <-- " . index)
 
-    if ErrorLevel {
-        throw RDA_Exception("GetCurrentDesktop failed")
-    }
-
-    return this._fromIVirtualDesktop(ptr)
-  }
-
-  _fromIVirtualDesktop(ptr) {
-    local
-    list := this._get()
-
-    loop % list.length() {
-      if (list[A_Index].ptr == ptr) {
-        RDA_Log_Debug(A_ThisFunc . "() current desktop index = " . list[A_Index].index)
-        return list[A_Index]
-      }
-    }
-
-    throw RDA_Exception("Could not find IVirtualDesktop in the desktop list")
+    return new RDA_VirtualDesktop(this.automation, index)
   }
   /*!
     Method: get
@@ -165,41 +121,12 @@ class RDA_VirtualDesktops extends RDA_Base {
     local
     global RDA_VirtualDesktop
 
-    GetDesktops := RDA_VTable(this.iVirtualDesktopManagerInternal, 7)
-
-    IObjectArray := 0
-    DllCall(GetDesktops
-      , "UPtr", this.iVirtualDesktopManagerInternal
-      , "UPtrP", IObjectArray
-      , "UInt")
-    if ErrorLevel {
-        throw RDA_Exception(A_ThisFunc . ".GetDesktops failed")
-    }
-    GUID := ""
-    VarSetCapacity(GUID, 16)
-    DllCall("Ole32.dll\CLSIDFromString", "Str", "{FF72FFDD-BE7E-43FC-9C03-AD81681E88E4}", "UPtr", &GUID)
-    if ErrorLevel {
-        throw RDA_Exception(A_ThisFunc . ".CLSIDFromString failed")
-    }
-    ; IObjectArray::GetAt
-    GetAt :=NumGet(NumGet(IObjectArray+0)+4*A_PtrSize)
     count := this.count()
     list := []
     loop % count {
-      desktopPtr := 0
-      DllCall(GetAt
-        , "UPtr", IObjectArray
-        , "UInt", A_Index-1
-        , "UPtr", &GUID
-        , "UPtrP", desktopPtr
-        , "UInt")
-      if ErrorLevel {
-          line := A_LineNumber - 2
-          MsgBox,,, Error in function '%A_ThisFunc%' on line %line%!`n`nError: '%A_LastError%'
-      }
-      list.push(new RDA_VirtualDesktop(this.automation, A_Index, desktopPtr + 0))
+      list.push(new RDA_VirtualDesktop(this.automation, A_Index))
     }
-    ObjRelease(IObjectArray) ; Clear comm object memory.
+
     return list
   }
   /*!
@@ -214,14 +141,11 @@ class RDA_VirtualDesktops extends RDA_Base {
   */
   switchTo(desktop) {
     local
+    global VD
+
     RDA_Log_Debug(A_ThisFunc . "(" . desktop.toString() . ")")
 
-    SwitchDesktop := RDA_VTable(this.iVirtualDesktopManagerInternal, 9)
-
-    DllCall(SwitchDesktop
-      , "Ptr", this.iVirtualDesktopManagerInternal
-      , "Ptr", desktop.ptr
-      , "UInt")
+    VD.goToDesktopNum(desktop.index)
 
     return this
   }
@@ -230,44 +154,41 @@ class RDA_VirtualDesktops extends RDA_Base {
       Indicates whether the provided window is on the currently active virtual desktop.
 
     Parameters:
-      hwnd - number - window handle
+      hwnd_or_window - number | <RDA_AutomationWindow> - window or handle
 
     Returns:
       boolean
   */
-  IsWindowOnCurrent(hwnd) {
+  IsWindowOnCurrent(hwnd_or_window) {
     local
+    global VD, RDA_AutomationWindow
 
-    RDA_Log_Debug(A_ThisFunc "(" . hwnd . ")")
+    vdesktop := this.fromWindow(hwnd_or_window)
 
-    IsWindowOnCurrentVirtualDesktop := NumGet(NumGet(this.iVirtualDesktopManager+0), 3*A_PtrSize)
-
-    ; https://msdn.microsoft.com/en-us/library/windows/desktop/mt186442(v=vs.85).aspx
-    isOnCurrentDesktop := 0
-    if(r := DllCall(IsWindowOnCurrentVirtualDesktop
-        , "Ptr", this.iVirtualDesktopManager
-        , "Ptr", hwnd
-        , "IntP", isOnCurrentDesktop)) {
-      throw RDA_Exception("IsWindowOnCurrentVirtualDesktop failed with error: " . r)
-    }
-
-    return isOnCurrentDesktop
+    return this.getCurrent().index == vdesktop.index
   }
   /*!
     Method: moveTo
       Moves a given window to the desktop indicated by index.
 
     Parameters:
-      hwnd - number - window handle
+      hwnd_or_window - number | <RDA_AutomationWindow> - window or handle
       desktop - <RDA_VirtualDesktop> - virtual desktop instance
 
     Returns:
       <RDA_VirtualDesktops> - for chaining
   */
-  moveTo(hwnd, desktop) {
+  moveTo(hwnd_or_window, desktop) {
     local
+    global VD, RDA_AutomationWindow
 
-    RDA_Log_Debug(A_ThisFunc . "(" . hwnd . ", " . desktop.toString() . ")")
+    hwnd := hwnd_or_window
+    if (RDA_instaceOf(hwnd, RDA_AutomationWindow)) {
+      hwnd := hwnd.hwnd
+      RDA_Log_Debug(A_ThisFunc "(" . hwnd_or_window.toString() . ", " . desktop.toString() . ")")
+    } else {
+      RDA_Log_Debug(A_ThisFunc "(" . hwnd_or_window . ", " . desktop.toString() . ")")
+    }
 
     ; Check window IDs (only attempt to move "valid" windows.)
     if (not this._IsValidWindow(hwnd)) {
@@ -275,30 +196,7 @@ class RDA_VirtualDesktops extends RDA_Base {
       RDA_Log_Error("hwnd validation failed, " . A_ThisFunc . " may not work")
     }
 
-    _ImmersiveShell                  := ComObjCreate("{C2F03A33-21F5-47FA-B4BB-156362A2F239}", "{00000000-0000-0000-C000-000000000046}")
-    _IApplicationViewCollection      := ComObjQuery(_ImmersiveShell,"{1841C6D7-4F9D-42C0-AF41-8747538F10E5}","{1841C6D7-4F9D-42C0-AF41-8747538F10E5}" )
-    _GetViewForHwnd                  := RDA_VTable(_IApplicationViewCollection, 6)
-
-    MoveViewToDesktop := RDA_VTable(this.iVirtualDesktopManagerInternal, 4)
-
-    pView := 0
-    r := DllCall(_GetViewForHwnd
-      , "UPtr", _IApplicationViewCollection
-      , "Ptr", hwnd
-      , "Ptr*", pView
-      , "UInt")
-    RDA_Log_Debug(A_ThisFunc . "_GetViewForHwnd r = " . r . ", ErrorLevel = " . ErrorLevel . ")")
-    RDA_Log_Debug("pView = " . pView)
-
-    r := DllCall(MoveViewToDesktop
-      , "Ptr", this.iVirtualDesktopManagerInternal
-      , "Ptr", pView
-      , "Ptr", 0 + desktop.ptr
-      , "UInt")
-    RDA_Log_Debug(A_ThisFunc . "MoveViewToDesktop r = " . r . ", ErrorLevel = " . ErrorLevel . ")")
-
-    ObjRelease(_ImmersiveShell)
-    ObjRelease(_IApplicationViewCollection)
+    VD.MoveWindowToDesktopNum("ahk_id " . hwnd, desktop.index)
 
     return this
   }
@@ -350,46 +248,38 @@ class RDA_VirtualDesktops extends RDA_Base {
     return true
   }
 
-
-
-
   /*!
     Method: fromWindow
       Retrieves the virtual desktop hosting the provided top-level window.
 
     Parameters:
-      hwnd - number - window handle
+      hwnd_or_window - number | <RDA_AutomationWindow> - window or handle
 
     Returns:
       <RDA_VirtualDesktop>
   */
-  fromWindow(hwnd) {
+  fromWindow(hwnd_or_window) {
     local
+    global VD, RDA_VirtualDesktop, RDA_AutomationWindow
 
-    RDA_Log_Debug(A_ThisFunc "(" . hwnd . ")")
-
-    GetWindowDesktopId := NumGet(NumGet(this.iVirtualDesktopManager+0), 4*A_PtrSize)
-
-    desktopId := ""
-    VarSetCapacity(desktopID, 16, 0)
-
-    ;https://msdn.microsoft.com/en-us/library/windows/desktop/mt186441(v=vs.85).aspx
-    if(r := DllCall(GetWindowDesktopId
-      , "Ptr", this.iVirtualDesktopManager
-      , "Ptr", hWnd
-      , "Ptr", &desktopID)) {
-      throw RDA_Exception("GetWindowDesktopId failed with error: " . r)
+    hwnd := hwnd_or_window
+    if (RDA_instaceOf(hwnd, RDA_AutomationWindow)) {
+      hwnd := hwnd.hwnd
+      RDA_Log_Debug(A_ThisFunc "(" . hwnd_or_window.toString() . ")")
+    } else {
+      RDA_Log_Debug(A_ThisFunc "(" . hwnd_or_window . ")")
     }
 
-    ptr := 0
-    FindDesktop := RDA_VTable(this.iVirtualDesktopManagerInternal, 12)
-    DllCall(FindDesktop
-      , "Ptr", this.iVirtualDesktopManagerInternal
-      , "Ptr", &desktopID
-      , "Ptr*", ptr)
+    index := VD.getDesktopNumOfWindow("ahk_id " . hwnd)
+    RDA_Log_Debug(A_ThisFunc " <-- " . index)
 
-    return this._fromIVirtualDesktop(ptr)
+    return new RDA_VirtualDesktop(this.automation, index)
   }
 
+
+  ; backwards compat
+  current() {
+    return this.getCurrent()
+  }
 }
 

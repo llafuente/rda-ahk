@@ -10,3 +10,6 @@
 [submodule "AHK-GDIp-Library-Compilation"]
 	path = AHK-GDIp-Library-Compilation
 	url = git@github.com:marius-sucan/AHK-GDIp-Library-Compilation
+[submodule "VD.ahk"]
+	path = VD.ahk
+	url = git@github.com:FuPeiJiang/VD.ahk

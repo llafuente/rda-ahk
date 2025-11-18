@@ -27,15 +27,15 @@ class Test_RDA_VirtualDesktops {
     notepad := windows.waitOne({process: "notepad.exe", classNN: "Notepad"}, true)
     paint := windows.waitOne({process: "mspaint.exe", "classNN": "MSPaintApp"}, true)
 
-    notepad.move(75, 75)
-    paint.move(50, 50)
+    notepad.move(75, 75).resize(1024, 768)
+    paint.move(50, 50).resize(1024, 768)
 
     RDA_Log_Debug(notepad.toString())
     RDA_Log_Debug(paint.toString())
 
-    Yunit.assert(vdesk.IsWindowOnCurrent(notepad.hwnd) == true, "1.A. notepad in current vdesk")
+    Yunit.assert(vdesk.isWindowOnCurrent(notepad) == true, "1.A. notepad in current vdesk")
     Yunit.assert(notepad.isOnCurrentVirtualDesktop() == true, "1.B. notepad in current vdesk")
-    Yunit.assert(vdesk.IsWindowOnCurrent(paint.hwnd) == true, "2.A. paint in current vdesk")
+    Yunit.assert(vdesk.isWindowOnCurrent(paint.hwnd) == true, "2.A. paint in current vdesk")
     Yunit.assert(paint.isOnCurrentVirtualDesktop() == true, "2.B. paint in current vdesk")
 
     Yunit.assert(vdesk.count() > 1, "The test requires at least 2 virtual desktops!")
@@ -50,9 +50,9 @@ class Test_RDA_VirtualDesktops {
     Yunit.assert(desktops.length() > 1, "at least two virtual desktops again!")
     Yunit.assert(current.index == 1)
 
-    Yunit.assert(vdesk.IsWindowOnCurrent(paint.hwnd) == true, "paint is in the current vdesk")
+    Yunit.assert(vdesk.isWindowOnCurrent(paint.hwnd) == true, "paint is in the current vdesk")
     vdesk.switchTo(desktops[2])
-    Yunit.assert(vdesk.IsWindowOnCurrent(paint.hwnd) == false, "switched -> paint in current vdesk")
+    Yunit.assert(vdesk.isWindowOnCurrent(paint.hwnd) == false, "switched -> paint in current vdesk")
     Yunit.assert(paint.getSize().toString() == "RDA_Rectangle{w: 1024, h: 768}", "paint size")
 
     sleep 500

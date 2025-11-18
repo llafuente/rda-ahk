@@ -9,6 +9,7 @@ FileAppend, Test start!`n, *
 #include ..\UIAutomation\Lib\UIA_Constants.ahk
 #include ..\UIAutomation\Lib\UIA_Interface.ahk
 #include ..\JSON\JSON.ahk
+#include ..\VD.ahk\VD.ahk
 
 ; RDA library
 #include ..\src\RDA_Functions.ahk

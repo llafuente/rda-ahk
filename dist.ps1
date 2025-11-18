@@ -7,9 +7,9 @@ if (Test-Path $outputFile -ne $null) {
   Remove-Item $outputFile -Force
 }
 
-$gdip = $true
-$json = $true
-
+$use_gdip = $true
+$use_json = $true
+$use_virtual_desktops = $true
 
 $files = @(
   ".\UIAutomation\Lib\UIA_Constants.ahk",
@@ -51,13 +51,17 @@ $files = @(
   ".\src\RDA_WindowPosition.ahk"
 )
 
-if ($gdip -eq $true) {
+if ($use_gdip -eq $true) {
   $files += ".\AHK-GDIp-Library-Compilation\ahk-v1-1\Gdip_All.ahk"
   $files += ".\src\RDA_Overlay.ahk"
 }
 
-if ($json -eq $true) {
+if ($use_json -eq $true) {
   $files += ".\JSON\JSON.ahk"
+}
+
+if ($use_virtual_desktops -eq $true) {
+  $files += ".\VD.ahk\VD.ahk"
 }
 
 
