@@ -1179,10 +1179,59 @@ RDA_PixelSearchColor(automation, color, x, y, w, h, variation := "") {
   return p
 }
 
+
+; TODO? onexit -> DllCall("DeleteObject", "Ptr", hBitmap)?
+__RDA_IMAGE_CACHE := {}
+/*!
+  Function: RDA_Image_cache
+    Cache given image or return the cached one
+
+  Example:
+    ======= AutoHotKey =======
+    image := A_WorkingDir . "\images\button.png"
+    RDA_Image_cache(image)
+    ==========================
+
+  Parameters:
+    imagePath - string - Absolute image path
+
+  Throws:
+    Unable to open image
+
+  Returns:
+    object - { path: string, w: number, h: number, handle: number}
+*/
+RDA_Image_cache(imagePath) {
+  local
+  global __RDA_IMAGE_CACHE
+
+  cachedImage := __RDA_IMAGE_CACHE[imagePath]
+  if (!cachedImage) {
+    hBitmap := LoadPicture(imagePath, "GDI+")
+    if (!hBitmap) {
+      throw RDA_Exception("Unable to open image: " . imagePath)
+    }
+
+    props := 0
+    VarSetCapacity(Props, size := 4*4 + A_PtrSize*2, 0)
+    DllCall("GetObject", "Ptr", hBitmap, "Int", size, "Ptr", &props)
+
+    cachedImage := {path: imagePath
+      , handle: hBitmap
+      , width: NumGet(props, 4, "UInt")
+      , height: NumGet(props, 8, "UInt")}
+
+    __RDA_IMAGE_CACHE[imagePath] := cachedImage
+  }
+
+  return cachedImage
+}
+
+
 ; internal, to remove excesive log
 RDA_ImageSearch_noexcept(automation, imagePath, sensibility, screenRegion, options := "") {
   local
-  global RDA_ScreenPosition
+  global RDA_ImageSearchResult
 
   sensibility := sensibility == -1 ? automation.imageSearchSensibility : sensibility
 
@@ -1190,14 +1239,21 @@ RDA_ImageSearch_noexcept(automation, imagePath, sensibility, screenRegion, optio
     throw RDA_Exception("File not found: " . imagePath)
   }
 
+  cachedImage := RDA_Image_cache(imagePath)
+
   CoordMode Pixel
   CoordMode, Mouse, Screen
 
   if (options) {
-    options := "*" . sensibility . " " . options . " " . imagePath
+    options := "*" . sensibility . " " . options
   } else {
-    options := "*" . sensibility . " " . imagePath
+    options := "*" . sensibility
   }
+  ; do not cached images ?
+  ; options .= " " . imagePath
+  options .= " HBITMAP:*" . cachedImage.handle
+
+  RDA_Log_Debug(options)
 
   x1 := 0
   y1 := 0
@@ -1214,19 +1270,21 @@ RDA_ImageSearch_noexcept(automation, imagePath, sensibility, screenRegion, optio
   ImageSearch, FoundX, FoundY, %x1%, %y1%, %x2%, %y2%, % options
   err := ErrorLevel
 
-  ; RDA_Log_Debug(A_ThisFunc
-  ;   . " result (" . FoundX .  " ," . FoundY .  ")"
-  ;   . " ErrorLevel = " . err
-  ;   . " region (" . x1 . ", " . y1 . ", " . x2 . ", " . y2 . ")"
-  ;   . " options = " . options)
+  RDA_Log_Debug(A_ThisFunc
+    . " result (" . FoundX .  " ," . FoundY .  ")"
+    . " ErrorLevel = " . err
+    . " region (" . x1 . ", " . y1 . ", " . x2 . ", " . y2 . ")"
+    . " options = " . options)
 
   if (err == 2) {
+    ; if there was a problem that prevented the command from conducting the search (such as failure to open the image file or a badly formatted option).
     throw RDA_Exception("ImageSearch failed")
   } else if (err == 1) {
+    ; not found
     return 0
   }
 
-  return new RDA_ScreenPosition(automation, FoundX, FoundY)
+  return new RDA_ImageSearchResult(automation, FoundX, FoundY, imagePath)
 }
 
 /*!
@@ -1237,7 +1295,7 @@ RDA_ImageSearch_noexcept(automation, imagePath, sensibility, screenRegion, optio
 
   Example:
     ======= AutoHotKey =======
-    image := Configuration.rootDir . "\images\button.png"
+    image := A_WorkingDir . "\images\button.png"
     ; search the entire screen
     pos := RDA_ImageSearch(automation, image, 5, automation.screen(1))
     ; search the entire screen with 120 sensibility
@@ -1259,18 +1317,18 @@ RDA_ImageSearch_noexcept(automation, imagePath, sensibility, screenRegion, optio
     Image not found in the screen
 
   Returns:
-    <RDA_ScreenPosition>
+    <RDA_ImageSearchResult>
 */
 RDA_ImageSearch(automation, imagePath, sensibility, screenRegion, options := "") {
   local
 
   RDA_Log_Debug(A_ThisFunc . "(" . imagePath . ", " . sensibility . ", " . screenRegion.toString() . ", " . options . ")")
-  pos := RDA_ImageSearch_noexcept(automation, imagePath, sensibility, screenRegion, options := "")
-  if (!pos) {
+  result := RDA_ImageSearch_noexcept(automation, imagePath, sensibility, screenRegion, options := "")
+  if (!result) {
     throw RDA_Exception("Image not found in the screen: " . imagePath)
   }
 
-  return pos
+  return result
 }
 
 /*!
@@ -1279,7 +1337,7 @@ RDA_ImageSearch(automation, imagePath, sensibility, screenRegion, options := "")
 
   Example:
     ======= AutoHotKey =======
-    images := [Configuration.rootDir . "\images\button.png", Configuration.rootDir . "\images\button2.png"]
+    images := [A_WorkingDir . "\images\button.png", A_WorkingDir . "\images\button2.png"]
     index := RDA_ImagesWaitAppear(images, 10)
     ==========================
 
@@ -1296,22 +1354,23 @@ RDA_ImageSearch(automation, imagePath, sensibility, screenRegion, options := "")
     Timeout reached at RDA_ImagesWaitAppear. Image(s) not found.
 
   Returns:
-    <RDA_ScreenPosition> - position the image found
+    <RDA_ImageSearchResult> - search result
 
 */
 RDA_ImagesWaitAppear(automation, imagePathList, sensibility, screenRegion, options, timeout, delay) {
   local
-  startTime := A_TickCount
 
+  startTime := A_TickCount
   sensibility := sensibility == -1 ? automation.imageSearchSensibility : sensibility
   RDA_Log_Debug(A_ThisFunc . "(images = " . RDA_JSON_stringify(imagePathList) . ", sensibility = " . sensibility . ", " . screenRegion.toString() . ", options = " . options . ", timeout = " . timeout . ", timeout = " . delay . ")")
   lastException := 0
+
   loop {
     loop % imagePathList.length() {
       try {
-        pos := RDA_ImageSearch_noexcept(automation, imagePathList[A_Index], sensibility, screenRegion, options)
-        if (pos) {
-          return pos
+        result := RDA_ImageSearch_noexcept(automation, imagePathList[A_Index], sensibility, screenRegion, options)
+        if (result) {
+          return result
         }
       } catch e {
         lastException := e
@@ -1326,6 +1385,8 @@ RDA_ImagesWaitAppear(automation, imagePathList, sensibility, screenRegion, optio
 
     sleep % delay
   }
+
+  throw RDA_Exception("unreachable")
 }
 
 /*!
@@ -1334,7 +1395,7 @@ RDA_ImagesWaitAppear(automation, imagePathList, sensibility, screenRegion, optio
 
   Example:
     ======= AutoHotKey =======
-    images := [Configuration.rootDir . "\images\button.png", Configuration.rootDir . "\images\button2.png"]
+    images := [A_WorkingDir . "\images\button.png", A_WorkingDir . "\images\button2.png"]
     index := RDA_ImagesWaitDisappear(images, 10)
     ==========================
 
@@ -1351,23 +1412,23 @@ RDA_ImagesWaitAppear(automation, imagePathList, sensibility, screenRegion, optio
     Timeout reached at RDA_ImagesWaitDisappear. Image(s) not found.
 
   Returns:
-    number - Index of the image not found
+    <RDA_ImageSearchResult> - search result
 
 */
 RDA_ImagesWaitDisappear(automation, imagePathList, sensibility, screenRegion, options, timeout, delay) {
   local
+
   startTime := A_TickCount
   sensibility := sensibility == -1 ? automation.imageSearchSensibility : sensibility
   RDA_Log_Debug(A_ThisFunc . "(images = " . RDA_JSON_stringify(imagePathList) . ", sensibility = " . sensibility . ", options = " . options . ", timeout = " . timeout . ", timeout = " . delay . ")")
 
-
   loop {
     loop % imagePathList.length() {
-        pos := RDA_ImageSearch_noexcept(automation, imagePathList[A_Index], sensibility, screenRegion, options)
+        result := RDA_ImageSearch_noexcept(automation, imagePathList[A_Index], sensibility, screenRegion, options)
 
-        if (!pos) {
+        if (!result) {
           RDA_Log_Debug(A_ThisFunc . " result = " . A_Index . " not found")
-          return A_Index
+          return result
         }
     }
 
@@ -1378,6 +1439,8 @@ RDA_ImagesWaitDisappear(automation, imagePathList, sensibility, screenRegion, op
 
     sleep % delay
   }
+
+  throw RDA_Exception("unreachable")
 }
 
 /*!
@@ -1386,7 +1449,7 @@ RDA_ImagesWaitDisappear(automation, imagePathList, sensibility, screenRegion, op
 
   Example:
     ======= AutoHotKey =======
-    images := [Configuration.rootDir . "\images\button.png", Configuration.rootDir . "\images\button2.png"]
+    images := [A_WorkingDir . "\images\button.png", A_WorkingDir . "\images\button2.png"]
     index := RDA_ImagesWaitDisappear(images, 10)
     ==========================
 

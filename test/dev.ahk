@@ -13,6 +13,7 @@ FileAppend, Test start!`n, *
 
 ; RDA library
 #include ..\src\RDA_Functions.ahk
+#include ..\src\RDA_ImageSearchResult.ahk
 #include ..\src\RDA_Functions_Log.ahk
 #include ..\src\RDA_Base.ahk
 

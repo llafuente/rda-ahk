@@ -16,6 +16,7 @@ $files = @(
   ".\UIAutomation\Lib\UIA_Interface.ahk",
 
   ".\src\RDA_Functions.ahk",
+  ".\src\RDA_ImageSearchResult.ahk",
   # CONFIG: choose one or use your own
   ".\src\RDA_Functions_Log.ahk",
   #".\src\RDA_Functions_NoLog.ahk",
