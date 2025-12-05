@@ -270,7 +270,7 @@ RDA_Exception(message, trace_offset := 0, What := "") {
 
   trace := RDA_Trace(1)
 
-  RDA_Log_Debug(A_ThisFunc . " " . message . trace)
+  RDA_Log_Debug(A_ThisFunc . " " . message . "`n" . trace)
 
   return Exception(message, trace_offset - 1, What)
 }
@@ -1367,20 +1367,16 @@ RDA_ImagesWaitAppear(automation, imagePathList, sensibility, screenRegion, optio
 
   loop {
     loop % imagePathList.length() {
-      try {
-        result := RDA_ImageSearch_noexcept(automation, imagePathList[A_Index], sensibility, screenRegion, options)
-        if (result) {
-          return result
-        }
-      } catch e {
-        lastException := e
-        ; RDA_Log_Error(e.message)
+      result := RDA_ImageSearch_noexcept(automation, imagePathList[A_Index], sensibility, screenRegion, options)
+
+      if (result) {
+        return result
       }
     }
 
     if (A_TickCount >= startTime + timeout) {
       RDA_Log_Debug(A_ThisFunc . " timeout reached")
-      throw RDA_Exception("Timeout reached at " . A_ThisFunc . ". Image(s) not found.`n" . lastException.message)
+      throw RDA_Exception("Timeout reached at " . A_ThisFunc . ". Image(s) not found.")
     }
 
     sleep % delay
@@ -1434,7 +1430,7 @@ RDA_ImagesWaitDisappear(automation, imagePathList, sensibility, screenRegion, op
 
     if (A_TickCount >= startTime + timeout) {
       RDA_Log_Debug(A_ThisFunc . " timeout reached")
-      throw RDA_Exception("Timeout reached at " . A_ThisFunc . ". Image(s) not found.`n" . e.message)
+      throw RDA_Exception("Timeout reached at " . A_ThisFunc . ". Image(s) not found.")
     }
 
     sleep % delay
