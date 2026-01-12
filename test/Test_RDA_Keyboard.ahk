@@ -2,6 +2,35 @@ class Test_RDA_Keyboard {
   Begin() {
   }
 
+  Test_Keyboard_VirtualKeys() {
+    local
+    global RDA_Automation, Yunit
+
+    RDA_Log_Debug(A_ThisFunc)
+
+    automation := new RDA_Automation()
+    windows := automation.windows()
+    keyboard := automation.keyboard()
+    Yunit.assert(keyboard.automation != 0, "keyboard.automation not null")
+
+    RDA_Assert(keyboard.getKeyboardLayouts().length() > 0, "at least one keyboard")
+
+    hkl_es := 67767306
+
+    Yunit.assert(keyboard.letterToVirtualKey("a", hkl_es).toString() == "{vk41}", "a as vk")
+    Yunit.assert(keyboard.letterToVirtualKey("A", hkl_es).toString() == "{LShift Down}{vk41}{LShift Up}", "A as vk")
+    Yunit.assert(keyboard.letterToVirtualKey("(", hkl_es).toString() == "{LShift Down}{vk38}{LShift Up}", "( as vk")
+
+    RDA_Assert(keyboard.textToSendKeys("hola", hkl_es) == "{vk48}{vk4f}{vk4c}{vk41}", "hola failed!")
+    RDA_Assert(keyboard.textToSendKeys("hOla", hkl_es) == "{vk48}{LShift Down}{vk4f}{LShift Up}{vk4c}{vk41}", "hOla failed!")
+    RDA_Assert(keyboard.textToSendKeys("hOLa", hkl_es) == "{vk48}{LShift Down}{vk4f}{vk4c}{LShift Up}{vk41}", "hOLa failed!")
+    RDA_Assert(keyboard.textToSendKeys("hOLA", hkl_es) == "{vk48}{LShift Down}{vk4f}{vk4c}{vk41}{LShift Up}", "hOLa failed!")
+
+
+    hkl_en := 67699721
+    Yunit.assert(keyboard.letterToVirtualKey("(", hkl_en).toString() == "{LShift Down}{vk39}{LShift Up}", "( as vk english")
+  }
+
   Test_Keyboard() {
     local
     global RDA_Automation, Yunit
@@ -29,26 +58,13 @@ class Test_RDA_Keyboard {
     win2.sendPassword("012-")
 
     win.close(0)
-    sleep 1000
+    win.sendKeys("n")
+    win.expectDead()
+    Yunit.assert(win.isAlive() == false, "notepad1 not Alive")
 
-    popup := win.getChild({classNN: "#32770"})
-    popup.sendKeys("n")
-
-    sleep 1000
-
-    Yunit.assert(popup.isAlive() == false, "popup not Alive")
-    Yunit.assert(win.isAlive() == false, "notepad not Alive")
-
-    win2.close(0)
-    sleep 1000
-
-    popup := win2.getChild({classNN: "#32770"})
-    popup.sendKeys("n")
-
-    sleep 1000
-
-    Yunit.assert(popup.isAlive() == false, "popup not Alive")
-    Yunit.assert(win2.isAlive() == false, "notepad not Alive")
+    win2.close()
+    win2.expectDead()
+    Yunit.assert(win2.isAlive() == false, "notepad2 not Alive")
   }
 
 
@@ -103,12 +119,8 @@ class Test_RDA_Keyboard {
     Yunit.assert(win.isMaximized() == false, "3 notepad maximized?")
 
     win.close(0)
-    popup := win.getChild({classNN: "#32770"})
-    popup.sendKeys("n")
+    win.expectDead()
 
-    sleep 1000
-
-    Yunit.assert(popup.isAlive() == false, "popup not Alive")
     Yunit.assert(win.isAlive() == false, "notepad not Alive")
   }
 
@@ -158,14 +170,14 @@ class Test_RDA_Keyboard {
 
 
     automation.setInputMode("background")
-/*
+
     ; notepad "background" 0,0 starts at Edit1 position
     ; win.mouseMoveTo(100, 100)
     ;sleep 250
     ;win.rightClick()
-    sleep 1000
+    ;sleep 1000
     ;win.rightClick(100, 100)
-*/
+
     text := "012345678901234567890123456789012345678901234567890123456789"
     expectedText := ""
     loop 10 {
@@ -184,14 +196,10 @@ class Test_RDA_Keyboard {
 
     ; TODO CLOSE IT!!
     win.close(0)
-    popup := win.getChild({classNN: "#32770"}, true)
-    popup.defaultBackgroundControl := ""
-    popup.sendKeys("n")
-    sleep 1000
-    Yunit.assert(popup.isAlive() == false, "popup is not alive")
+    win.expectDead()
+
     Yunit.assert(win.isAlive() == false, "notepad is not alive")
   }
-
 
   End() {
   }

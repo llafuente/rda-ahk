@@ -1375,4 +1375,18 @@ class RDA_AutomationWindow extends RDA_Base {
 
     return this._waitActivated(false, timeout, delay, exceptionMessage)
   }
+  /*!
+    Method: getKeyboardLayout
+      Retrieves the active input locale identifier (formerly called the keyboard layout).
+
+    Remarks:
+      https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getkeyboardlayout
+
+    Returns:
+      number
+  */
+  getKeyboardLayout() {
+    ; TODO error handling
+    return DllCall("GetKeyboardLayout", "uint", DllCall("GetWindowThreadProcessId", "ptr", this.hwnd, "ptr", 0, "uint"), "ptr")
+  }
 }
