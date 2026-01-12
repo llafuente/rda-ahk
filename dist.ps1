@@ -76,6 +76,7 @@ Copyright 2025 Luis Lafuente Morales
 
 foreach ($file in $files) {
   $contents += Get-Content $file -Encoding UTF8 -Raw
+  $contents += "`n"
 }
 #$contents = $contents -replace "(?:\/\*(?:\n|\r|.)*?\*\/)", "`n`n"
 #$contents = $contents -replace '(?sm)/\*.*?\*/|^[ \t]*//[^\r\n]*', ""
