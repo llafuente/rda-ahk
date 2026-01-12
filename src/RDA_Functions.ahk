@@ -1253,8 +1253,6 @@ RDA_ImageSearch_noexcept(automation, imagePath, sensibility, screenRegion, optio
   ; options .= " " . imagePath
   options .= " HBITMAP:*" . cachedImage.handle
 
-  RDA_Log_Debug(options)
-
   x1 := 0
   y1 := 0
   x2 := A_ScreenWidth
@@ -1274,6 +1272,7 @@ RDA_ImageSearch_noexcept(automation, imagePath, sensibility, screenRegion, optio
     . " result (" . FoundX .  " ," . FoundY .  ")"
     . " ErrorLevel = " . err
     . " region (" . x1 . ", " . y1 . ", " . x2 . ", " . y2 . ")"
+    . " imagePath = " . imagePath
     . " options = " . options)
 
   if (err == 2) {
