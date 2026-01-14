@@ -296,6 +296,63 @@ class RDA_AutomationWindow extends RDA_Base {
     return allMatch
   }
   /*!
+    Method: waitMatch
+      Waits until given object match the current window.
+
+      Match is case insensitive.
+
+    Remarks:
+      Notices that most of RDA_AutomationWindowSearch are in fact static and will never change.
+      This method is mostly to wait a title change.
+
+    Example:
+      ======= AutoHotKey =======
+      ; title change to ".*Ready.*"
+      win.waitMatch({$title: ".*Ready.*"})
+      ==========================
+
+    Remarks:
+      process,
+
+    Parameters:
+      searchObject - <RDA_AutomationWindowSearch> - search object
+      timeout - number - timeout, in miliseconds
+      delay - number - retry delay, in miliseconds
+
+    Returns:
+      boolean - If all properties match
+  */
+  waitMatch(searchObject, timeout := -1, delay := -1) {
+    local
+    global RDA_Automation
+    timeout := timeout == -1 ? RDA_Automation.TIMEOUT : timeout
+    delay := delay == -1 ? RDA_Automation.DELAY : delay
+
+    RDA_Log_Debug(A_ThisFunc . "(" . RDA_JSON_stringify(searchObject) . ", timeout = " . timeout . ", delay = " . delay . ")")
+
+    startTime := A_TickCount
+
+    loop {
+      ; clear title cache, not the best method...
+      ; isMatch should use getTitle(false) ?
+      this._title := 0
+
+      if (this.isMatch(searchObject)) {
+          RDA_Log_Debug(A_ThisFunc . " match!")
+          return this
+      }
+
+      if (A_TickCount >= startTime + timeout) {
+        RDA_Log_Error(A_ThisFunc " timeout(" . timeout . ") reached")
+        throw RDA_Exception("Timeout: waiting a title change")
+      }
+
+      sleep % delay
+    }
+
+    throw RDA_Exception("unreachable")
+  }
+  /*!
     Method: hide
       Hides the window.
 
