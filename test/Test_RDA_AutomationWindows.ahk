@@ -10,9 +10,76 @@ Test_RDA_AutomationWindows_StartNotepad() {
   Run notepad.exe
 }
 
+Test_Change_Explorer_To_C(win) {
+  RDA_Log_Debug(A_ThisFunc . " " . win.toString())
+
+  win.sendKeys("{F4}C:{Enter}")
+}
+Test_Change_Explorer_To_ProgramFiles(win) {
+  RDA_Log_Debug(A_ThisFunc . " " . win.toString())
+
+  win.sendKeys("{F4}" . A_ProgramFiles . "{Enter}")
+}
+
+
 class Test_RDA_AutomationWindows {
   Begin() {
   }
+
+  Test_Automation_Windows_TitleChanges() {
+    local
+    global RDA_Automation, Yunit
+
+    RDA_Log_Debug(A_ThisFunc)
+
+    automation := new RDA_Automation()
+    windows := automation.windows()
+    wins := windows.get()
+    Yunit.assert(wins.Length() > 0, "Return some windows")
+
+    previous := windows.get()
+
+    ; test
+    ; open at program files
+    ; change to c (see the title change)
+    ; change back to program files (see the title change)
+    Run, explore %A_ProgramFiles%
+    sleep 5000
+    wins := windows.findNew({"process": "Explorer.EXE"}, wins)
+
+    win := wins[1]
+    programFilesTitle := win.getTitle(false)
+
+    ;
+    ; waitTitleChange
+    ;
+
+    bound := Func("Test_Change_Explorer_To_C").bind(win)
+    startTime := A_TickCount
+    SetTimer % bound, 2000
+
+    win.waitTitleChange()
+    Yunit.assert(programFilesTitle != win.getTitle(false), "title changed!")
+    Yunit.assert(A_TickCount - startTime > 2000, "Elapsed at least 2000 ms")
+
+    SetTimer % bound, Off
+
+    ;
+    ; waitMatch
+    ;
+    bound := Func("Test_Change_Explorer_To_ProgramFiles").bind(win)
+    startTime := A_TickCount
+    SetTimer % bound, 2000
+
+    win.waitMatch({title: programFilesTitle})
+    Yunit.assert(programFilesTitle == win.getTitle(false), "title changed back!")
+    Yunit.assert(A_TickCount - startTime > 2000, "Elapsed at least 2000 ms")
+
+    SetTimer % bound, Off
+
+    win.close()
+  }
+
 
   Test_Automation_Windows() {
     local
