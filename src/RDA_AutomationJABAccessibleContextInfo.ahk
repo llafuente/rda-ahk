@@ -4,92 +4,112 @@
 */
 class RDA_AutomationJABAccessibleContextInfo extends RDA_Base {
   /*!
-    property: name
-      the AccessibleName of the object
+    Property: name
+      string - the AccessibleName of the object
   */
   name := 0
   /*!
-    property: description
-      the AccessibleDescription of the object
+    Property: description
+      string - the AccessibleDescription of the object
   */
   description := 0
   /*!
-    property: role
-      localized AccessibleRole string
+    Property: role
+      string - localized AccessibleRole string
   */
   role := 0
   /*!
-    property: states
-      localized AccessibleStateSet string (comma separated)
+    Property: states
+      string - localized AccessibleStateSet string (comma separated)
   */
   states := 0
   /*!
-    property: indexInParent
-      index of object in parent, starts at zero
+    Property: indexInParent
+      number - current index in parent, starts at zero
   */
   indexInParent := 0
   /*!
-    property: childrenCount
-      # of children, if any
+    Property: childrenCount
+      number - number of children, if any
   */
   childrenCount := 0
   /*!
-    property: x
-      screen x-axis co-ordinate in pixels
+    Property: x
+      number - screen x-axis co-ordinate in pixels
   */
   x := 0
   /*!
-    property: y
-      screen y-axis co-ordinate in pixels
+    Property: y
+      number - screen y-axis co-ordinate in pixels
   */
   y := 0
   /*!
-    property: width
-      pixel width of object
+    Property: width
+      number - pixel width of object
   */
   width := 0
   /*!
-    property: height
-      pixel height of object
+    Property: height
+      number - pixel height of object
   */
   height := 0
   /*!
-    property: accessibleValueInterface
-      bool, implement accessible value interface
+    Property: accessibleValueInterface
+      bool - implement accessible value interface
   */
   accessibleValueInterface := 0
   /*!
-    property: accessibleActionInterface
-      bool, implement accessible action interface
+    Property: accessibleActionInterface
+      bool - implement accessible action interface
   */
   accessibleActionInterface := 0
   /*!
-    property: accessibleComponentInterface
-      bool, implement accessible component interface
+    Property: accessibleComponentInterface
+      bool - implement accessible component interface
   */
   accessibleComponentInterface := 0
   /*!
-    property: accessibleSelectionInterface
-      bool, implement accessible selection interface
+    Property: accessibleSelectionInterface
+      bool - implement accessible selection interface
   */
   accessibleSelectionInterface := 0
   /*!
-    property: accessibleTableInterface
-      bool, implement accessible table interface
+    Property: accessibleTableInterface
+      bool - implement accessible table interface
   */
   accessibleTableInterface := 0
   /*!
-    property: accessibleTextInterface
-      bool, implement accessible text interface
+    Property: accessibleTextInterface
+      bool - implement accessible text interface
   */
   accessibleTextInterface := 0
   /*!
-    property: name
-      bool, implement accessible Hypertext interface
+    Property: name
+      bool - implement accessible Hypertext interface
   */
   accessibleHypertextInterface := 0
+  /*!
+    Property: region
+      <RDA_WindowRegion>
+  */
+  region [] {
+    get {
+      return new RDA_WindowRegion.fromPoints(this.win, this.x, this.y, this.width, this.height)
+    }
+  }
+  /*!
+    Constructor: RDA_AutomationJABAccessibleContextInfo
+      Creates RDA_AutomationJABAccessibleContextInfo
 
-  __New() {
+    Parameters:
+      win - <RDA_AutomationWindow> - window
+  */
+  __New(win) {
+    win := this.win
+
+    RDA_Assert(this.win, "invalid argument win is empty")
+    RDA_Assert(RDA_instaceOf(this.win, RDA_AutomationWindow), "expected win to be instance of RDA_AutomationWindow")
+
     this.sealed := true
   }
   /*!

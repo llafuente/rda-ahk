@@ -378,16 +378,14 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
       Retrieves screen region occupied by the element
 
     Returns:
-      <RDA_ScreenRegion>
+      <RDA_WindowRegion>
   */
   getRegion() {
     local
-    global RDA_ScreenRegion, RDA_ScreenPosition, RDA_Rectangle
 
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
 
-    info := this.cachedInfo
-    r := new RDA_ScreenRegion(new RDA_ScreenPosition(this.automation, info.x, info.y), new RDA_Rectangle(this.automation, info.width, info.height))
+    r := this.cachedInfo.region
 
     RDA_Log_Debug(A_ThisFunc . " = " . r.toString())
 
@@ -1472,7 +1470,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
 
     RDA_Log_Debug(A_ThisFunc "(" . this.toString() . ")")
 
-    info := new RDA_AutomationJABAccessibleContextInfo()
+    info := new RDA_AutomationJABAccessibleContextInfo(this.win)
     pInfo := 0
     VarSetCapacity(pInfo, 6188, 0)
     if (!DllCall(this.jab.dllName . "\getAccessibleContextInfo"
