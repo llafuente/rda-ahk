@@ -37,7 +37,7 @@ class Test_RDA_AutomationWindows {
     wins := windows.get()
     Yunit.assert(wins.Length() > 0, "Return some windows")
 
-    previous := windows.get()
+    previousWindows := windows.get()
 
     ; test
     ; open at program files
@@ -45,7 +45,7 @@ class Test_RDA_AutomationWindows {
     ; change back to program files (see the title change)
     Run, explore %A_ProgramFiles%
     sleep 5000
-    wins := windows.findNew({"process": "Explorer.EXE"}, wins)
+    wins := windows.findNew({"process": "Explorer.EXE"}, previousWindows)
 
     win := wins[1]
     programFilesTitle := win.getTitle(false)
@@ -189,23 +189,42 @@ class Test_RDA_AutomationWindows {
 
     automation := new RDA_Automation()
     windows := automation.windows()
-    ; mspaint multiple isntances
-    wins := windows.get()
+
+    ; test
+    ; save windows
+    ; open mspaint
+    ; find new mspaint
+    ; open mspaint
+    ; find two mspaint
+    startWindows := windows.get()
+
+    ; first
     Run mspaint.exe
     sleep 3000
-    wins := windows.findNew({process: "mspaint.exe"}, wins)
-    Yunit.assert(wins.length() == 1, "mspaint found")
+    wins := windows.findNew({process: "mspaint.exe"}, startWindows)
+    Yunit.assert(wins.length() == 1, "findNew: one mspaint found")
+    win := windows.findOneNew({process: "mspaint.exe"}, startWindows)
+    Yunit.assert(win.process == "mspaint.exe", "findOneNew: mspaint found")
 
-    wins := windows.get()
+    ; second
     Run mspaint.exe
     sleep 3000
-    mspaint := windows.findOneNew({process: "mspaint.exe"}, wins)
-    Yunit.assert(mspaint != 0, "mspaint2 found")
+    wins := windows.findNew({process: "mspaint.exe"}, startWindows)
+    Yunit.assert(wins.length() == 2, "findNew: two mspaint found")
 
-    wins := windows.get()
+    lastException := 0
+    try {
+      mspaint := windows.findOneNew({process: "mspaint.exe"}, startWindows)
+    } catch e {
+      lastException := e
+    }
+    Yunit.assert(lastException.message == "Multiple windows found", "Multiple windows found error")
+
+    twoPaintsWindows := windows.get()
     Run mspaint.exe
-    mspaint := windows.waitOneNew({process: "mspaint.exe"}, wins)
+    mspaint := windows.waitOneNew({process: "mspaint.exe"}, twoPaintsWindows)
 
+    ; here we have 3 ^^
     lastException := 0
     try {
       mspaint := windows.findOne({process: "mspaint.exe"}, wins)
@@ -218,14 +237,20 @@ class Test_RDA_AutomationWindows {
     paints := windows.find({process: "mspaint.exe"}, wins)
     loop % paints.length() {
       paints[A_Index].move(50 * A_Index, 50 * A_Index)
+      paints[A_Index].resize(640, 480)
       paints[A_Index].activate()
       Yunit.assert(paints[A_Index].isActivated() == true, "Check windows is activated")
+    }
+
+    sleep 1000
+
+    loop % paints.length() {
       paints[A_Index].close()
     }
 
     loop % paints.length() {
       if (paints[A_Index].isAlive()) {
-        throw Exception("close failed!")
+        throw RDA_Exception("close failed!")
       }
     }
 
