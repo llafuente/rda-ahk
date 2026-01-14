@@ -180,38 +180,37 @@ class RDA_AutomationWindow extends RDA_Base {
     return this.title
   }
   /*!
-    Method: waitTitle
-      Waits until title change to the giving one. If empty it will trigger on any change.
+    Method: waitTitleChange
+      Waits until title change from the giving one.
 
     Parameters:
-      new_title - string - Target title. Empty to trigger on the first change.
+      previous_title - string - Target title. Empty to trigger on the first change.
       timeout - number - timeout, in miliseconds
       delay - number - retry delay, in miliseconds
 
     Returns:
       <RDA_AutomationWindow>
   */
-  waitTitle(new_title := "", timeout := -1, delay := -1) {
+  waitTitleChange(previous_title := "", timeout := -1, delay := -1) {
     local
     global RDA_Automation
 
     timeout := timeout == -1 ? RDA_Automation.TIMEOUT : timeout
     delay := delay == -1 ? RDA_Automation.DELAY : delay
 
-    RDA_Log_Debug(A_ThisFunc . "(" . new_title . " timeout = " . timeout . ", delay = " . delay . ")")
+    ; initialize with the current if empty
+    if (!previous_title) {
+      previous_title := this.getTitle(false)
+    }
+
+    RDA_Log_Debug(A_ThisFunc . "(" . previous_title . " timeout = " . timeout . ", delay = " . delay . ")")
 
     startTime := A_TickCount
 
-    old_title := this.title
-
     loop {
-      if (new_title) {
-        if (this.getTitle(false) == new_title) {
-          RDA_Log_Debug(A_ThisFunc . " title changed!")
-          return this
-        }
-      } else if (old_title != this.getTitle(false)) {
-          RDA_Log_Debug(A_ThisFunc . " title changed!")
+      title := this.getTitle(false)
+      if (previous_title != title) {
+          RDA_Log_Debug(A_ThisFunc . " title changed = " . title)
           return this
       }
 
