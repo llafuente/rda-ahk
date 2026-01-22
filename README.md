@@ -112,17 +112,18 @@ There are a few differences:
 
 * JAB do not have `setValue` for Value pattern because it just does not exists. A combination of keyboard+mouse shall be used to automate.
 
-* JAB do not have `Scroll` pattern, the elment exists, but we cannot be mimic the behaviour because it lacks `setValue`.
+* JAB do not have `Scroll` pattern, the element exists, but we cannot mimic the UIA behaviour because it JAB lacks `setValue`.
 
 * Action pattern is JAB exclusive. JAB elements had many custom operations that are called `action` that expose neat functionality like "copy selected text to clipboard".
 
 ## Install
 
+To install clone the repository and update submodules.
+
 ```cmd
 git clone https://github.com/llafuente/rda-ahk
 cd rda-ahk
 git submodule update --init --recursive
-
 ```
 
 ## Distribution
@@ -168,7 +169,7 @@ do not have code coverage capabilities, but we try.
 
 There is no plan.
 
-Nevertheless as future proof all AutoHotKey APIs (commands) are encapsulated inside functions so the work should be easy.
+Nevertheless as future proof all AutoHotKey APIs (commands) are encapsulated inside functions so the work should be easy. We could eventually create `RDA_Functions_v2.ahk` and the rest could be good to go :)
 
 Dependencies:
 
@@ -176,7 +177,7 @@ Dependencies:
 * JSON, author says it works
 * YUnit, author says it works
 
-We accept volunteers to keep the port runnig.
+We accept volunteers to keep the port up and running.
 
 
 ### Java access bridge

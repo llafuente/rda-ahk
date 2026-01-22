@@ -399,7 +399,7 @@ RDA_RepeatWhileThrows(fn, timeout, delay, disable_log := false) {
     boolean - If the window exists after waiting to close
 */
 RDA_Window_WaitClose(hwnd, timeout, errorMessage := "Window still alive") {
-  RDA_Log_Debug(A_ThisFunc . "(" . hwnd . ", timeout = " . timeout . ")")
+  RDA_Log_Debug(A_ThisFunc . "(" . hwnd . ", timeout = " . timeout . ", " . errorMessage . ")")
 
   timeout /= 1000
   WinWaitClose ahk_id %hwnd%, , %timeout%

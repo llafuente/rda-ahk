@@ -229,7 +229,7 @@ class RDA_AutomationKeyboard extends RDA_Base {
       VkKeyScanExW call failed
 
     Returns:
-      <RDA_VirtualKey>
+      <RDA_VirtualKey> - virtual key
   */
   letterToVirtualKey(letter, hkl) {
     local
@@ -265,7 +265,7 @@ class RDA_AutomationKeyboard extends RDA_Base {
       VkKeyScanExW call failed
 
     Returns:
-      <RDA_VirtualKey>[]
+      <RDA_VirtualKey>[] - virtual keys list
   */
   textToVirtualKeys(text, hkl) {
     local
@@ -294,7 +294,7 @@ class RDA_AutomationKeyboard extends RDA_Base {
       VkKeyScanExW call failed
 
     Returns:
-      <RDA_VirtualKey>[]
+      <RDA_VirtualKey>[] - string that can be used in sendKeys
   */
   textToSendKeys(text, hkl) {
     local

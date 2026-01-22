@@ -8,7 +8,7 @@ class Test_RDA_Keyboard {
 
     RDA_Log_Debug(A_ThisFunc)
 
-    automation := new RDA_Automation()
+    automation := new RDA_Automation("background")
     windows := automation.windows()
     keyboard := automation.keyboard()
     Yunit.assert(keyboard.automation != 0, "keyboard.automation not null")
@@ -26,6 +26,8 @@ class Test_RDA_Keyboard {
     RDA_Assert(keyboard.textToSendKeys("hOLa", hkl_es) == "{vk48}{LShift Down}{vk4f}{vk4c}{LShift Up}{vk41}", "hOLa failed!")
     RDA_Assert(keyboard.textToSendKeys("hOLA", hkl_es) == "{vk48}{LShift Down}{vk4f}{vk4c}{vk41}{LShift Up}", "hOLa failed!")
 
+    RDA_Assert(keyboard.textToSendKeys("\", hkl_es) == "{LControl Down}{LAlt Down}{vkdc}{LControl Up}{LAlt Up}", "\ failed!")
+    RDA_Assert(keyboard.textToSendKeys("\", hkl_es) == "{LControl Down}{LAlt Down}{vk31}{LControl Up}{LAlt Up}", "| failed!")
 
     hkl_en := 67699721
     Yunit.assert(keyboard.letterToVirtualKey("(", hkl_en).toString() == "{LShift Down}{vk39}{LShift Up}", "( as vk english")
