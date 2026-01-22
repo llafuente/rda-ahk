@@ -2097,3 +2097,29 @@ RDA_File_WaitExist(file, timeout, delay) {
 RDA_GetForegroundWindow() {
   return DllCall("GetForegroundWindow")
 }
+
+
+RDA_Region_Highlight(x, y, w, h, color, strokeWidth, displayTime) {
+  local
+
+  RDA_Log_Debug(A_ThisFunc . "(" . x . ", " . y . ", " . w . ", " . h . ", " . color . ", " . strokeWidth . ", " . displayTime . ")")
+
+  if (displayTime <= 0) {
+    return
+  }
+
+  Loop 4 {
+    Gui, REGION_HIGHLIGHT_%A_Index%: +Hwndid +AlwaysOnTop -Caption +ToolWindow -DPIScale +E0x08000000
+    i:=A_Index
+    , x1:=(i == 2 ? x + w : x - strokeWidth)
+    , y1:=(i == 3 ? y + h : y - strokeWidth)
+    , w1:=(i == 1 or i == 3 ? w + 2 * strokeWidth : strokeWidth)
+    , h1:=(i == 2 or i == 4 ? h + 2 * strokeWidth : strokeWidth)
+    Gui, REGION_HIGHLIGHT_%i%: Color, %color%
+    Gui, REGION_HIGHLIGHT_%i%: Show, NA x%x1% y%y1% w%w1% h%h1%
+  }
+  Sleep, %displayTime%
+  Loop 4 {
+    Gui, REGION_HIGHLIGHT_%A_Index%: Destroy
+  }
+}

@@ -18,13 +18,21 @@ class RDA_WindowRegion extends RDA_Region {
       rect - <RDA_Rectangle> - screen position y
   */
   __New(window, origin, rect) {
+    ; RDA_Log_Debug(A_ThisFunc . "(" . window.toString() . ", " . origin.toString() . ", " . rect.toString() . ")")
 
     this.window := window
 
     this.origin := origin
     this.rect := rect
 
+    ; RDA_Log_Debug(A_ThisFunc . " " . this.toString())
+
     RDA_Assert(this.window, A_ThisFunc . " window is null")
+    RDA_Assert(RDA_instaceOf(this.window, RDA_AutomationWindow), "expected window to be instance of RDA_AutomationWindow")
+    RDA_Assert(this.origin, A_ThisFunc . " origin is null")
+    RDA_Assert(RDA_instaceOf(this.origin, RDA_ScreenPosition), "expected origin to be instance of RDA_ScreenPosition")
+    RDA_Assert(this.rect, A_ThisFunc . " rect is null")
+    RDA_Assert(RDA_instaceOf(this.rect, RDA_Rectangle), "expected rect to be instance of RDA_Rectangle")
   }
   /*
     Static: fromPoints
@@ -122,6 +130,33 @@ class RDA_WindowRegion extends RDA_Region {
 
     return new RDA_ScreenRegion(this.origin.clone().add(winPos), this.rect.clone())
   }
+
+  /*!
+    Method: highlight
+      Highlights current region
+
+    Parameters:
+      displayTime - number - miliseconds
+      color - string - color
+      d - number - outline width
+
+    Returns:
+      <RDA_WindowRegion>
+  */
+  highlight(displayTime:=-1, color := "Red", d := 4) {
+    local
+    global RDA_Automation
+
+    RDA_Log_Debug(A_ThisFunc . "(" . this.toString() . ")")
+    displayTime := displayTime == -1 ? RDA_Automation.HIGHLIGHT_TIME : displayTime
+
+    winPos := this.window.activate().getPosition().add(this.origin)
+
+    RDA_Region_Highlight(winPos.x, winPos.y, this.rect.w, this.rect.h, color, Floor(d), displayTime)
+
+    return this
+  }
+
 
 
   ;

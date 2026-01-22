@@ -9,7 +9,12 @@ class RDA_ScreenRegion extends RDA_Region {
     this.origin := origin
     this.rect := rect
 
-    RDA_Log_Debug(A_ThisFunc . " " . this.toString())
+    ; RDA_Log_Debug(A_ThisFunc . " " . this.toString())
+
+    RDA_Assert(this.origin, A_ThisFunc . " origin is null")
+    RDA_Assert(RDA_instaceOf(this.origin, RDA_ScreenPosition), "expected origin to be instance of RDA_ScreenPosition")
+    RDA_Assert(this.rect, A_ThisFunc . " rect is null")
+    RDA_Assert(RDA_instaceOf(this.rect, RDA_Rectangle), "expected rect to be instance of RDA_Rectangle")
   }
   /*
     Static: fromPoints
@@ -193,32 +198,14 @@ class RDA_ScreenRegion extends RDA_Region {
     Returns:
       <RDA_ScreenRegion>
   */
-  highlight(displayTime:=-1, color:="Red", d:=4) {
+  highlight(displayTime:=-1, color := "Red", d := 4) {
     local
     global RDA_Automation
 
     RDA_Log_Debug(A_ThisFunc . "(" . this.toString() . ")")
     displayTime := displayTime == -1 ? RDA_Automation.HIGHLIGHT_TIME : displayTime
 
-    x := this.origin.x
-    y := this.origin.y
-    w := this.rect.w
-    h := this.rect.h
-    d:=Floor(d)
-
-    Loop 4 {
-      Gui, Range_%A_Index%: +Hwndid +AlwaysOnTop -Caption +ToolWindow -DPIScale +E0x08000000
-      i:=A_Index
-      , x1:=(i=2 ? x+w : this.origin.x-d)
-      , y1:=(i=3 ? y+h : y-d)
-      , w1:=(i=1 or i=3 ? w+2*d : d)
-      , h1:=(i=2 or i=4 ? h+2*d : d)
-      Gui, Range_%i%: Color, %color%
-      Gui, Range_%i%: Show, NA x%x1% y%y1% w%w1% h%h1%
-    }
-    Sleep, %displayTime%
-    Loop 4
-      Gui, Range_%A_Index%: Destroy
+    RDA_Region_Highlight(this.origin.x, this.origin.y, this.rect.w, this.rect.h, color, Floor(d), displayTime)
 
     return this
   }

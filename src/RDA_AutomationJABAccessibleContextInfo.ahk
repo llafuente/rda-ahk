@@ -88,13 +88,22 @@ class RDA_AutomationJABAccessibleContextInfo extends RDA_Base {
       bool - implement accessible Hypertext interface
   */
   accessibleHypertextInterface := 0
+
+  _region := 0
   /*!
     Property: region
       <RDA_WindowRegion>
   */
   region [] {
     get {
-      return new RDA_WindowRegion.fromPoints(this.win, this.x, this.y, this.width, this.height)
+      local
+      global RDA_WindowRegion
+
+      if (!this._region) {
+        winPos := this.win.getPosition()
+        this._region := RDA_WindowRegion.fromPoints(this.win, this.x - winPos.x, this.y - winPos.y, this.width, this.height)
+      }
+      return this._region
     }
   }
   /*!
@@ -105,7 +114,7 @@ class RDA_AutomationJABAccessibleContextInfo extends RDA_Base {
       win - <RDA_AutomationWindow> - window
   */
   __New(win) {
-    win := this.win
+    this.win := win
 
     RDA_Assert(this.win, "invalid argument win is empty")
     RDA_Assert(RDA_instaceOf(this.win, RDA_AutomationWindow), "expected win to be instance of RDA_AutomationWindow")

@@ -1542,6 +1542,10 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     VarSetCapacity(pInfo, 0, 0)
     RDA_Log_Debug(A_ThisFunc . " " . info.toString())
 
+    ; TODO XXX - pass all parameters to constructor this goes there!!!
+    ; cache region as it need to be bound to current window position
+    this.region
+
     return info
   }
 
