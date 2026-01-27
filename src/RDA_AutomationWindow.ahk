@@ -570,7 +570,34 @@ class RDA_AutomationWindow extends RDA_Base {
     }
     return region
   }
+  /*!
+    Method: getWindowRegion
+      Retrieves a piece/entire of the current window region.
 
+      By default get the region of the window
+
+    Remarks:
+      Region get out of sync if the windows is moved.
+
+    Remarks:
+      It can create a region outside current window bounds.
+
+    Parameters:
+      x - number - x amount
+      y - number - y amount
+      w - number - width (default means same as window)
+      h - number - height (default means same as window)
+
+    Returns:
+      <RDA_WindowRegion>
+  */
+  getWindowRegion(x := 0, y := 0, w := 0, h := 0) {
+    local
+    global RDA_WindowRegion
+
+    region := RDA_Window_GetSizeAndPosition(this.automation, this.hwnd)
+    return RDA_WindowRegion.fromPoints(this, x, y, w ? w : region.rect.w, h ? h : region.rect.h)
+  }
   ;
   ; window mouse
   ;
