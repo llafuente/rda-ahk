@@ -184,11 +184,11 @@ class RDA_Region extends RDA_Base {
   }
 
   /*!
-    Method: expandOut
+    Method: isInside
       checks if this region is inside the given one
 
     Parameters:
-      value - number - value
+      region - <RDA_WindowRegion> | <RDA_ScreenWindow> - value
 
     Returns:
       <RDA_ScreenRegion>
@@ -203,7 +203,16 @@ class RDA_Region extends RDA_Base {
 
     return bigRegion.x <= smallRegion.x && bigRegion.y <= smallRegion.y && bigRegion.x2 >= smallRegion.x2 && bigRegion.y2 >= smallRegion.y2
   }
+  /*!
+    Method: intersection
+      Calculates the intersection of this regoion and given region
 
+    Parameters:
+      region - <RDA_WindowRegion> | <RDA_ScreenWindow> - value
+
+    Returns:
+      <RDA_ScreenRegion> - The result of intersection
+  */
   intersection(region) {
     local
     global RDA_ScreenRegion
