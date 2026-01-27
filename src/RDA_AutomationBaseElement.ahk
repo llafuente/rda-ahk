@@ -21,8 +21,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
     local
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
 
-    position := this.getRegion().getCenter().subtract(this.win.getRegion().getTopLeft())
-    this.win.click(position.x, position.y)
+    this.getRegion().getCenter().click()
 
     return this
   }
@@ -44,8 +43,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
     local
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
 
-    position := this.getRegion().getCenter().subtract(this.win.getRegion().getTopLeft())
-    this.win.rightClick(position.x, position.y)
+    this.getRegion().getCenter().rightClick()
 
     return this
   }
@@ -67,8 +65,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
     local
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
 
-    position := this.getRegion().getCenter().subtract(this.win.getRegion().getTopLeft())
-    this.win.doubleClick(position.x, position.y)
+    this.getRegion().getCenter().doubleClick()
 
     return this
   }
@@ -86,8 +83,7 @@ class RDA_AutomationBaseElement extends RDA_Base {
   osHover() {
     RDA_Log_Debug(A_ThisFunc . " @ " . this.toString())
 
-    position := this.getRegion().getCenter().subtract(this.win.getRegion().getTopLeft())
-    this.win.mouseMoveTo(position.x, position.y)
+    this.getRegion().getCenter().mouseMove()
 
     return this
   }

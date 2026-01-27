@@ -354,15 +354,6 @@ class RDA_AutomationJAB extends RDA_Base {
     element := this.elementFromHandle(win.hwnd)
 
     acId := 0
-    RDA_Log_Debug(this.dllName . "\getAccessibleContextAt"
-      . " Int" . element.vmId
-      . this.acType . element.acId
-      . " Int" . x
-      . " Int" . y
-      . this.acpType . acId
-      . " Cdecl Int")
-
-    acId := 0
     if !DllCall(this.dllName . "\getAccessibleContextAt"
       , "Int", element.vmId
       , this.acType, element.acId

@@ -4,6 +4,11 @@
 */
 class RDA_AutomationJABAccessibleContextInfo extends RDA_Base {
   /*!
+    Property: window
+      <RDA_AutomationWindow> - window instance
+  */
+  window := 0
+  /*!
     Property: name
       string - the AccessibleName of the object
   */
@@ -89,7 +94,9 @@ class RDA_AutomationJABAccessibleContextInfo extends RDA_Base {
   */
   accessibleHypertextInterface := 0
 
+  ; internal: cache
   _region := 0
+
   /*!
     Property: region
       <RDA_WindowRegion>
@@ -100,12 +107,15 @@ class RDA_AutomationJABAccessibleContextInfo extends RDA_Base {
       global RDA_WindowRegion
 
       if (!this._region) {
-        winPos := this.win.getPosition()
-        this._region := RDA_WindowRegion.fromPoints(this.win, this.x - winPos.x, this.y - winPos.y, this.width, this.height)
+        winPos := this.window.getPosition()
+        this._region := RDA_WindowRegion.fromPoints(this.window, this.x - winPos.x, this.y - winPos.y, this.width, this.height)
       }
+
+      ; RDA_Log_Debug(A_ThisFunc . " " . this._region.toString())
       return this._region
     }
   }
+
   /*!
     Constructor: RDA_AutomationJABAccessibleContextInfo
       Creates RDA_AutomationJABAccessibleContextInfo
@@ -114,10 +124,10 @@ class RDA_AutomationJABAccessibleContextInfo extends RDA_Base {
       win - <RDA_AutomationWindow> - window
   */
   __New(win) {
-    this.win := win
+    this.window := win
 
-    RDA_Assert(this.win, "invalid argument win is empty")
-    RDA_Assert(RDA_instaceOf(this.win, RDA_AutomationWindow), "expected win to be instance of RDA_AutomationWindow")
+    RDA_Assert(this.window, "invalid argument win is empty")
+    RDA_Assert(RDA_instaceOf(this.window, RDA_AutomationWindow), "expected win to be instance of RDA_AutomationWindow")
 
     this.sealed := true
   }
