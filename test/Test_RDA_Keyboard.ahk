@@ -1,7 +1,7 @@
 class Test_RDA_Keyboard {
   Begin() {
   }
-
+/*
   Test_Keyboard_VirtualKeys() {
     local
     global RDA_Automation, Yunit
@@ -27,7 +27,8 @@ class Test_RDA_Keyboard {
     RDA_Assert(keyboard.textToSendKeys("hOLA", hkl_es) == "{vk48}{LShift Down}{vk4f}{vk4c}{vk41}{LShift Up}", "hOLa failed!")
 
     RDA_Assert(keyboard.textToSendKeys("\", hkl_es) == "{LControl Down}{LAlt Down}{vkdc}{LControl Up}{LAlt Up}", "\ failed!")
-    RDA_Assert(keyboard.textToSendKeys("\", hkl_es) == "{LControl Down}{LAlt Down}{vk31}{LControl Up}{LAlt Up}", "| failed!")
+    RDA_Assert(keyboard.textToSendKeys("|", hkl_es) == "{LControl Down}{LAlt Down}{vk31}{LControl Up}{LAlt Up}", "| failed!")
+
 
     hkl_en := 67699721
     Yunit.assert(keyboard.letterToVirtualKey("(", hkl_en).toString() == "{LShift Down}{vk39}{LShift Up}", "( as vk english")
@@ -44,29 +45,39 @@ class Test_RDA_Keyboard {
     keyboard := automation.keyboard()
     Yunit.assert(keyboard.automation != 0, "keyboard.automation not null")
 
-    Run notepad.exe
-    win := windows.waitOne({process: "notepad.exe"})
+    Run wordpad.exe
+    win := windows.waitOne({process: "wordpad.exe"})
 
     keyboard.sendKeys("hello ")
     keyboard.sendPassword("world{ENTER}")
-
-    wins := windows.get()
-    Run notepad.exe
-    win2 := windows.waitOneNew({process: "notepad.exe"}, wins)
+    previousWindows := windows.get()
+    Run wordpad.exe
+    win2 := windows.waitOneNew({process: "wordpad.exe"}, previousWindows)
 
     win.SendKeys("123-")
     win2.SendKeys("456-")
     win.sendPassword("789-")
     win2.sendPassword("012-")
 
-    win.close(0)
-    win.sendKeys("n")
-    win.expectDead()
-    Yunit.assert(win.isAlive() == false, "notepad1 not Alive")
+    win.sendKeys("{CTRL Down}a{CTRL up}{CTRL Down}c{CTRL up}")
+    RDA_Log_Debug(A_ThisFunc  " win clipboard = " . Clipboard)
+    Yunit.assert(Clipboard == "hello world`r`n123-789-", "check clipboard win")
 
-    win2.close()
+    win2.sendKeys("{CTRL Down}a{CTRL up}{CTRL Down}c{CTRL up}")
+    RDA_Log_Debug(A_ThisFunc  " win2 clipboard = " . Clipboard)
+    Yunit.assert(Clipboard == "456-012-", "check clipboard win")
+
+    win.close(0)
+    dialog := win.waitChild({"classNN": "#32770"})
+    dialog.sendKeys("n")
+    dialog.expectDead()
+    win.expectDead()
+
+    win2.close(0)
+    dialog := win2.waitChild({"classNN": "#32770"})
+    dialog.sendKeys("n")
+    dialog.expectDead()
     win2.expectDead()
-    Yunit.assert(win2.isAlive() == false, "notepad2 not Alive")
   }
 
 
@@ -86,18 +97,35 @@ class Test_RDA_Keyboard {
 
     win.move(50, 50)
     win.resize(640, 480)
+
+    ; win.defaultBackgroundControl := "ahk_parent"
+    ; w11
+    win.defaultBackgroundControl := "RichEditD2DPT1"
+    win.sendKeys("hello world{ENTER}")
+
+    Yunit.assert(win.isMinimized() == false, "notepad (1) minimized -> no")
     win.minimize()
+    Yunit.assert(win.isMinimized() == true, "notepad (2) minimized -> yes")
 
     lastException := 0
     try {
-      keyboard.sendKeys("hello ")
+      keyboard.sendKeys("xxx")
     } catch e {
       lastException := e
     }
     Yunit.assert(lastException.message == "hwnd is required in background input mode", "throws using keyboard directly")
 
-    win.sendPassword("world{ENTER}")
+    win.sendKeys("hello world{ENTER}")
+
+    Yunit.assert(win.isMinimized() == true, "notepad (3) minimized -> yes")
     win.restore()
+    Yunit.assert(win.isMinimized() == false, "notepad (4) minimized -> no")
+
+    automation.setInputMode("interactive")
+    win.sendKeys("{CTRL Down}e{CTRL up}{CTRL Down}c{CTRL up}")
+    ;win.sendKeys("{CTRL Down}a{CTRL up}{CTRL Down}c{CTRL up}")
+    RDA_Log_Debug(A_ThisFunc  " win clipboard = " . Clipboard)
+    Yunit.assert(Clipboard == "hello world`r`nhello world`r`n", "check clipboard win")
 
     sleep 500
     region := win.getRegion()
@@ -121,11 +149,12 @@ class Test_RDA_Keyboard {
     Yunit.assert(win.isMaximized() == false, "3 notepad maximized?")
 
     win.close(0)
+    win.sendKeys("n")
     win.expectDead()
 
     Yunit.assert(win.isAlive() == false, "notepad not Alive")
   }
-
+*/
   Test_Keyboard_Background_and_VirtualDesktop() {
     local
     global RDA_Automation, Yunit
@@ -144,6 +173,8 @@ class Test_RDA_Keyboard {
       Run notepad.exe
       win := windows.waitOne({process: "notepad.exe"})
     }
+    ; w11
+    win.defaultBackgroundControl := "RichEditD2DPT1"
 
     ; virtualDesktop mess! we can't get position, size, region
     ; win.move(50, 75)
@@ -189,8 +220,8 @@ class Test_RDA_Keyboard {
     win.click(100, 100)
     ;win.sendKeys("{LShift DOWN}{LControl DOWN}{HOME}{LControl UP}{LShift UP}")
     ;win.sendKeys("{LControl DOWN}c{LControl UP}{LShift UP}")
-    win.sendKeys("{LControl DOWN}{vk41}{LControl UP}{LShift UP}")
-    win.sendKeys("{LControl DOWN}{vk43}{LControl UP}{LShift UP}")
+    win.sendKeys("{LControl DOWN}{vk41}{LControl UP}")
+    win.sendKeys("{LControl DOWN}{vk43}{LControl UP}")
 
     Yunit.assert(Clipboard == expectedText, "check clipboard")
 

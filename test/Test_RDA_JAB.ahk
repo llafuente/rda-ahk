@@ -85,7 +85,7 @@ class Test_RDA_JAB {
 
     ; **************************************************************************
     element := winElement.findOne("//ToggleButton[@description=""JInternalFrame demo""]")
-    pos := element.getRegion().getCenter()
+    pos := element.getRegion().getCenter().toScreen()
     element2 := automation.jab.getElementAt(win, pos.x, pos.y)
     Yunit.assert(element.isSameElement(element2), "findOne element same as getElementAt")
     ; **************************************************************************
