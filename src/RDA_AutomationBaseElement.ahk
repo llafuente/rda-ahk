@@ -378,6 +378,8 @@ class RDA_AutomationBaseElement extends RDA_Base {
             throw RDA_Exception("Unkown identifier: " . access.identifier)
         }
       }
+      case "call":
+        return item.xpathCall(access.name, access.arguments)
       default:
         throw RDA_Exception("Unkown type: " . access.type)
     }
@@ -443,6 +445,39 @@ class RDA_AutomationBaseElement extends RDA_Base {
     return this.xpathGetValue(left) != this.xpathGetValue(right) ? [this] : []
   }
   ; internal
+  xpathFilterCall(fn, arguments) {
+    return this.xpathCall(fn, arguments) ? [this] : []
+  }
+  ; internal
+  xpathCall(fn, arguments) {
+    local
+    RDA_Log_Debug(A_ThisFunc . "(" . fn . ", " . RDA_JSON_stringify(arguments) . ")")
+
+    functor := Func(fn)
+    if (!functor) {
+      throw RDA_Exception("function not found: " . fn)
+    }
+    RDA_Log_Debug(A_ThisFunc . " call[" . functor.MaxParams() . "/" . arguments.length() . "]: " . fn)
+
+    ;RDA_Assert(functor.MaxParams() == arguments.length(), "invalid number of arguments: " . fn)
+
+    ;msgbox % A_ThisFunc . " call[" . arguments.length() . "]: " . action.name
+
+    ;switch (functor.MinParams()) {
+    switch (arguments.length()) {
+      case 1:
+        return functor.bind(this.xpathGetValue(arguments[1])).call()
+      case 2:
+        return functor.bind(this.xpathGetValue(arguments[1]), this.xpathGetValue(arguments[2])).call()
+      case 3:
+        return functor.bind(this.xpathGetValue(arguments[1]), this.xpathGetValue(arguments[2]), this.xpathGetValue(arguments[3])).call()
+      case 4:
+        return functor.bind(this.xpathGetValue(arguments[1]), this.xpathGetValue(arguments[2]), this.xpathGetValue(arguments[3]), this.xpathGetValue(arguments[4])).call()
+    }
+
+    throw RDA_Exception("4+ arguments not supported")
+  }
+  ; internal
   xPathExecuteAction(action, item) {
     local
 
@@ -465,6 +500,8 @@ class RDA_AutomationBaseElement extends RDA_Base {
         return item.xPathFilterMatch(action.arguments[1], action.arguments[2])
       case "xpathFilterNotMatch":
         return item.xpathFilterNotMatch(action.arguments[1], action.arguments[2])
+      case "call":
+        return item.xpathFilterCall(action.name, action.arguments)
       default:
         throw RDA_Exception("Unkown action: " . action.action)
     }

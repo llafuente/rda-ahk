@@ -2,7 +2,21 @@ class Test_RDA_XPath {
   Begin() {
   }
 
+  __parse_error(xpath, message) {
+    local
+    global Yunit
 
+    RDA_Log_Debug(A_ThisFunc . "(" . xpath . ", " . message . ")")
+
+    lastException := 0
+    try {
+      RDA_xPath_Parse(xpath)
+    } catch e {
+      lastException := e
+    }
+    RDA_Log_Debug(lastException.message)
+    Yunit.assert(InStr(lastException.message, message) == 1, "exception thrown: " . message)
+  }
 
   Test_15_Automation_XPath() {
     local
@@ -19,7 +33,6 @@ class Test_RDA_XPath {
       lastException := e
     }
     Yunit.assert(lastException.message == "Unclosed string literal", "double Unclosed string literal")
-
     lastException := 0
     try {
       _RDA_xPath_Tokenize("/Button[@Name='Close]")
@@ -203,15 +216,59 @@ class Test_RDA_XPath {
     Yunit.assert(actions[3].action == "getParent", "./ 2nd action")
     RDA_Log_Debug(actions)
 
-;
-;  xpath := "//Button[matches(@Name, ""\d+"")]/Text"
-;  xpathObj := { "recurse": true,
-;    , tests: [{attribute: "Name", operation: "matches", value: "\d+"}
-;            , {attribute: "Type", operation: "equals", value: "Button"}]}
-;    , child: {"recurse": true, Type: "Text"
-;      , tests: []}}
-;
 
+
+    this.__parse_error("/Button[starts-with(@value, ""xxx""]","Could not find close parenthesis")
+    this.__parse_error("/Button[starts-with(@value]","Could not find close parenthesis")
+    this.__parse_error("/Button[@value , ""xxx""]","unexpected comma operator position")
+    this.__parse_error("/Button[@value(""xxx"",)]", "unexpected comma operator position")
+
+
+    actions := RDA_xPath_Parse("/Button[starts-with()]")
+    RDA_Log_Debug(actions)
+    Yunit.assert(actions[3].action == "call", " 3rd action is a call")
+    Yunit.assert(actions[3].name == "RDA_XPath_fn_starts_with", " 3rd action is a call to: RDA_XPath_fn_starts_with")
+    Yunit.assert(actions[3].arguments.length() == 0, "3rd action is a call with no arguments")
+
+
+    actions := RDA_xPath_Parse("/Button[starts-with(@value)]")
+    RDA_Log_Debug(actions)
+    Yunit.assert(actions[3].action == "call", " 3rd action is a call")
+    Yunit.assert(actions[3].name == "RDA_XPath_fn_starts_with", " 3rd action is a call to: RDA_XPath_fn_starts_with")
+    Yunit.assert(actions[3].arguments.length() == 1, "3rd action is a call with 1 argument")
+    Yunit.assert(actions[3].arguments[1].identifier == "@value", "3rd action 1st argument: @value")
+
+    actions := RDA_xPath_Parse("/Button[starts-with(@value, @value)]")
+    RDA_Log_Debug(actions)
+    Yunit.assert(actions[3].action == "call", "3rd action is a call")
+    Yunit.assert(actions[3].name == "RDA_XPath_fn_starts_with", "3rd action is a call to: RDA_XPath_fn_starts_with")
+    Yunit.assert(actions[3].arguments.length() == 2, "3rd action is a call with 2 argument")
+    Yunit.assert(actions[3].arguments[1].identifier == "@value", "3rd action 1st argument: @value")
+    Yunit.assert(actions[3].arguments[2].identifier == "@value", "3rd action 2nd argument: @value")
+
+
+
+
+    actions := RDA_xPath_Parse("/Button[starts-with(@value, @value, ""xxx"")]")
+    RDA_Log_Debug(actions)
+    Yunit.assert(actions.length() == 3, "3 actions")
+    Yunit.assert(actions[3].action == "call", "3rd action is a call")
+    Yunit.assert(actions[3].name == "RDA_XPath_fn_starts_with", "3rd action is a call to: RDA_XPath_fn_starts_with")
+    Yunit.assert(actions[3].arguments.length() == 3, "3rd action is a call with 3 argument")
+    Yunit.assert(actions[3].arguments[1].identifier == "@value", "3rd action 1st argument: @value")
+    Yunit.assert(actions[3].arguments[2].identifier == "@value", "3rd action 2nd argument: @value")
+    Yunit.assert(actions[3].arguments[3].literal == "xxx", "3rd action 2nd argument: @value")
+
+
+    ; recursive
+    actions := RDA_xPath_Parse("/Button[a(b(), c(d()))]")
+    RDA_Log_Debug(actions)
+    Yunit.assert(actions.length() == 3, "3 actions")
+    Yunit.assert(actions[3].action == "call", "3rd action is a call")
+    Yunit.assert(actions[3].name == "RDA_XPath_fn_a", "call a")
+    Yunit.assert(actions[3].arguments[1].name == "RDA_XPath_fn_b", "call a(b")
+    Yunit.assert(actions[3].arguments[2].name == "RDA_XPath_fn_c", "call a(b,c")
+    Yunit.assert(actions[3].arguments[2].arguments[1].name == "RDA_XPath_fn_d", "call a(b,c(d")
   }
 
   End() {

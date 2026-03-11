@@ -83,6 +83,31 @@ RDA_instaceOf(obj, cls) {
   }
 }
 
+/*!
+  Function: RDA_Str_LastIndexOf
+    Returns the last index of the needle in the haystack
+
+  Example:
+    ======= AutoHotKey =======
+    RDA_Assert(RDA_Str_LastIndexOf("xxx", "x") == 3, "RDA_Str_LastIndexOf 1 failed")
+    RDA_Assert(RDA_Str_LastIndexOf("yyy", "x") == 0, "RDA_Str_LastIndexOf 2 failed")
+    ==========================
+
+  Parameters:
+    Haystack - string - Haystack
+    Needle - string - Needle
+
+  Returns:
+    number - 1 index if found, 0 otherwise
+*/
+RDA_Str_LastIndexOf(Haystack, Needle) {
+  last := 0
+  while (c := InStr(Haystack, Needle, false, last + 1)) {
+    last := c
+  }
+
+  return last
+}
 
 /*!
   Function: RDA_Array_IndexOf
@@ -1612,6 +1637,22 @@ _RDA_Screenshot_SetClipboardData(hBitmap) {
 ; "xPath" support limited but enought :)
 ;
 
+RDA_XPath_fn_starts_with(haystack, needle) {
+  RDA_Log_Debug(A_ThisFunc . "(" . haystack . ", " . needle . ") <-- " . (InStr(haystack, needle) == 1))
+  return InStr(haystack, needle) == 1
+}
+RDA_XPath_fn_ends_with(haystack, needle) {
+  index := RDA_Str_LastIndexOf(haystack, needle)
+  ends_index := StrLen(haystack) - StrLen(needle) + 1
+  RDA_Log_Debug(A_ThisFunc . "(" . haystack . ", " . needle . ") <-- " . (ends_index == index))
+
+  return index == ends_index
+}
+RDA_XPath_fn_contains(haystack, needle) {
+  RDA_Log_Debug(A_ThisFunc . "(" . haystack . ", " . needle . ")")
+  return InStr(haystack, needle) > 0
+}
+
 _RDA_xPath_AddIdentifier(tokenize, identifier) {
   local
 
@@ -1658,7 +1699,7 @@ _RDA_xPath_Tokenize(xpath) {
     }
 
     ; token
-    if (c == "/" || c == "[" || c == "]" || c == "=" || c == "!" || c == ".") {
+    if (c == "/" || c == "[" || c == "]" || c == "(" || c == "," || c == ")" || c == "=" || c == "!" || c == ".") {
       if (StrLen(identifier)) {
         _RDA_xPath_AddIdentifier(tokenize, identifier)
         identifier := ""
@@ -1737,49 +1778,123 @@ _RDA_xPath_Tokenize(xpath) {
   return tokenize
 }
 
-_RDA_xPath_ParseSubExpr(stack) {
+; single expr
+; expr +- expr
+; expr ( expr , )
+_RDA_xPath_ParseSubExpr(stack, in_arguments) {
   local
 
-  if (stack.length() < 3) {
-    RDA_Log_Error(A_ThisFunc . " Invalid token found")
-    RDA_Log_Error(stack)
-    throw RDA_Exception("Requested to parse and expression but not enought tokens found")
+  RDA_Log_Debug(A_ThisFunc . "stack = " . RDA_JSON_stringify(stack, 0, 2))
+
+  if (stack.length() == 0) {
+    return 0
   }
 
   left := stack[1]
-  op := stack[2]
-  right := stack[3]
+  stack.removeAt(1) ; remove identifier
 
-  RDA_Log_Debug("--expr--")
-  RDA_Log_Debug(left)
-  RDA_Log_Debug(op)
-  RDA_Log_Debug(right)
-  RDA_Log_Debug("--expr--")
+  if (stack.length() == 0) {
+    RDA_Log_Debug(A_ThisFunc . " leaf = " . RDA_JSON_stringify(left))
+    RDA_Assert(left.type == "literal" || left.type == "identifier", "Invalid leaf type, should be: identifier or literal")
+    return left
+  }
 
-  stack.RemoveAt(1, 3)
+  ; eat "excesive" commas
+  if (left.operator == "," && in_arguments) {
+    RDA_Log_Error(A_ThisFunc . " eat comma!")
+    return 0
+  }
+
+  op := stack[1]
+  stack.removeAt(1) ; remove operator
+
+
   if (left.type == "operator") {
     RDA_Log_Error(A_ThisFunc . " invalid token found")
     RDA_Log_Error(left)
     throw RDA_Exception("Left hand side must be an identifier or literal")
   }
+
   if (op.type != "operator") {
     RDA_Log_Error(A_ThisFunc . " invalid token found")
     RDA_Log_Error(op)
     throw RDA_Exception("After identifier or literal must be an operator")
   }
-  if (right.type == "operator") {
-    RDA_Log_Error(A_ThisFunc . " invalid token found")
-    RDA_Log_Error(right)
-    throw RDA_Exception("Right hand side must be an identifier or literal")
-  }
 
+
+
+  ; identifier operator is common for arithmetic expression and call expr
   switch (op.operator) {
-    case "=":
-      return {"action": "xpathFilterMatch", "arguments": [left, right]}
+  case "(":
+    ; we assume it's a call expression!
 
-    case "!=":
-      return {"action": "xpathFilterNotMatch", "arguments": [left, right]}
-    default:
+    ; first search the "close" token for arguments
+
+    parenthesis := 0
+    arg_stack := []
+    while (stack.length()) {
+      tk := stack[1]
+      if (tk.operator == "(") {
+        parenthesis += 1
+      } else if (tk.operator == ")") {
+        ; closing parenthesis at level 0 ?
+        if (parenthesis == 0) {
+          break
+        }
+
+        parenthesis -= 1
+      }
+      arg_stack.push(tk)
+      stack.removeAt(1)
+      RDA_Log_Debug(A_ThisFunc . "parenthesis = " . parenthesis . " push " . RDA_JSON_stringify(tk) . "stack.length = " . stack.length())
+    }
+
+    if (stack[1].operator != ")") {
+      throw RDA_Exception("Could not find close parenthesis")
+    }
+    stack.removeAt(1) ; remove )
+
+    arguments := []
+
+    loop {
+      arg := _RDA_xPath_ParseSubExpr(arg_stack, true)
+      if (arg) {
+        arguments.push(arg)
+      }
+    } until (!arg_stack.length())
+
+
+    xpath_to_func := "RDA_XPath_fn_" . StrReplace(left.identifier, "-", "_")
+
+    return {"action": "call", "name": xpath_to_func, "arguments": arguments}
+
+  case ",":
+    ; comma as last character
+    if (!in_arguments || !stack.length()) {
+      throw RDA_Exception("unexpected comma operator position")
+    }
+
+    RDA_Assert(stack[1].type == "literal" || stack[1].type == "identifier", "Invalid leaf type, should be: identifier or literal")
+    return left
+  case "=":
+  case "!=":
+    if (in_arguments) {
+      throw RDA_Exception("operator: " . op.operator . " not allowed inside arguments list")
+    }
+    ; we assume it's an arithmetic expression
+    right := stack[3]
+    stack.RemoveAt(1)
+
+    if (right.type == "operator") {
+      RDA_Log_Error(A_ThisFunc . " invalid token found")
+      RDA_Log_Error(right)
+      throw RDA_Exception("Right hand side must be an identifier or literal")
+    }
+
+    operator_to_action := {"=": "xpathFilterMatch", "!=": "xpathFilterNotMatch"}
+    return {"action": operator_to_action[op.operator], "arguments": [left, right]}
+
+  default:
     RDA_Log_Error(A_ThisFunc . " invalid token found")
     RDA_Log_Error(op)
     throw RDA_Exception("Operator not implemented")
@@ -1792,14 +1907,14 @@ _RDA_xPath_ParseSubExpr(stack) {
 _RDA_xPath_ParseExpr(stack, nodes) {
   local
 
-  RDA_Log_Debug(stack)
+  RDA_Log_Debug("stack = " . RDA_JSON_stringify(stack, 0, 2))
 
   expr := 0
 
   pos := 1
   while(stack.length()) {
     if (!expr) {
-      expr := _RDA_xPath_ParseSubExpr(stack)
+      expr := _RDA_xPath_ParseSubExpr(stack, false)
     } else {
       ; now the first shall be and operator!
       logicalOp := stack[1]
@@ -1811,9 +1926,9 @@ _RDA_xPath_ParseExpr(stack, nodes) {
         throw RDA_Exception("Expected a logical operator")
       }
       if (logicalOp.operator == "&&") {
-        expr := {"action": "xpathLogicalAnd", "arguments": [expr, _RDA_xPath_ParseSubExpr(stack)]}
+        expr := {"action": "xpathLogicalAnd", "arguments": [expr, _RDA_xPath_ParseSubExpr(stack, false)]}
       } else {
-        expr := {"action": "xpathLogicalOr", "arguments": [expr, _RDA_xPath_ParseSubExpr(stack)]}
+        expr := {"action": "xpathLogicalOr", "arguments": [expr, _RDA_xPath_ParseSubExpr(stack, false)]}
       }
     }
     ; stack.pop() ; debug empty
@@ -1883,7 +1998,9 @@ _RDA_xPath_Parse(tokens) {
             }
           }
           case "[": {
-            ; now it will appear a (identifier|literal) operator (identifier|literal)
+            ; inside square brackets there will be an expression
+            ; * (identifier|literal) operator (identifier|literal)
+            ; * identifier ( expression "," )
             ; until "]"
             stack := []
             pos += 1 ; skip  [
@@ -1987,6 +2104,7 @@ RDA_xPath_Parse(xpath) {
   } catch e {
     RDA_Log_Level := 3
     RDA_Log_Error(A_ThisFunc . " " . e.message)
+    e.message .= "`nparsing: " . xpath
     throw e
   }
 }

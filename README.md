@@ -73,7 +73,7 @@ Components and Controls are the most common words for UI elements, but as you wi
 
 UIA use Pattern to report what an `element` is capable / operations that can be performed. JAB use the word Interfaces. And a browser ~should~ use `aria-*`. We made a decision to use *pattern* and make an effort to match what UIA does in other APIs.
 
-Each library use their own system to locate elements, that is a mess (for API ergonomics) so we implement a *"small/distilled" version of xPath* and that's how you locate elements!
+Each library use their own system to locate elements, that is a mess (for API ergonomics) so we implement a [*"small/distilled" version of xPath*](#xpath) and that's how you locate elements!
 
 The API is designed to be *chained*.
 
@@ -87,6 +87,39 @@ The API is built in *layers of functionality* for example a `RDA_Window` will re
 While the main purpose of the library is to automate we include many unit test functions to ensure that data is saved as expected or to test an application.
 
 *Traceability*. AHK can call a non-existing method or worst, don't call a method at all. Every method/function will leave a trace in the log so you will know what your robot does in any moment and you will be able to perform a proper post-mortem if necessary.
+
+<a name="xpath"></a>
+## xPath
+
+A small version of xPath is implemented with support for:
+
+### query
+
+* `//` get descendants
+* `/` get children
+* `.` current element
+
+### filter/select
+
+* starts-with
+* ends-with
+* contains
+* attributes: @VALUE, @DESCRIPTION, @TYPE, @NAME, @ID, @IDX, @INDEX
+* operators: =, !=, and, or
+
+*Examples*
+
+```
+; get the third children of a Menu
+uiaEl.findOne("/Menu/*[@idx=3]")
+
+; find all buttons wich description starts with File
+uiaEl.find("//Button[starts-with(@description, ""File"")]")
+
+; find all elements that contains Ctrl
+uiaEl.find("//MenuItem[contains(@name, ""Ctrl"")]")
+```
+
 
 ## Patterns
 
