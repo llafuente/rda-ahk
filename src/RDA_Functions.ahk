@@ -1437,6 +1437,7 @@ RDA_ImagesWaitAppear(automation, imagePathList, sensibility, screenRegion, optio
 */
 RDA_ImagesWaitDisappear(automation, imagePathList, sensibility, screenRegion, options, timeout, delay) {
   local
+  global RDA_ImageSearchResult
 
   startTime := A_TickCount
   sensibility := sensibility == -1 ? automation.imageSearchSensibility : sensibility
@@ -1444,10 +1445,12 @@ RDA_ImagesWaitDisappear(automation, imagePathList, sensibility, screenRegion, op
 
   loop {
     loop % imagePathList.length() {
-        result := RDA_ImageSearch_noexcept(automation, imagePathList[A_Index], sensibility, screenRegion, options)
+        imagePath := imagePathList[A_Index]
+        result := RDA_ImageSearch_noexcept(automation, imagePath, sensibility, screenRegion, options)
 
         if (!result) {
-          RDA_Log_Debug(A_ThisFunc . " result = " . A_Index . " not found")
+          result := new RDA_ImageSearchResult(automation, -1, -1, imagePath)
+          RDA_Log_Debug(A_ThisFunc . " result = " . result.toString() . " not found")
           return result
         }
     }

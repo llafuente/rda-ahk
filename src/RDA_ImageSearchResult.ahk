@@ -1,9 +1,16 @@
 /*!
   class: RDA_ImageSearchResult
     Automation a window
+
+  Extends: RDA_ScreenRegion
 */
 class RDA_ImageSearchResult extends RDA_ScreenRegion {
+  /*!
+    Property: image
+      string - image path
+  */
   image := 0
+
   /*!
     Constructor: RDA_AutomationWindow
 
@@ -21,5 +28,9 @@ class RDA_ImageSearchResult extends RDA_ScreenRegion {
     cachedImg := RDA_Image_cache(imagePath)
     this.origin := new RDA_ScreenPosition(automation, x, y)
     this.rect := new RDA_Rectangle(automation, cachedImg.width, cachedImg.heght)
+  }
+
+  toString() {
+    return "RDA_ImageSearchResult{ image: " . this.image . ", origin: " . this.origin.toString() . ", rect: " . this.rect.toString() . " }"
   }
 }

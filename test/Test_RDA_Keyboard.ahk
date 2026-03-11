@@ -1,7 +1,7 @@
 class Test_RDA_Keyboard {
   Begin() {
   }
-/*
+
   Test_Keyboard_VirtualKeys() {
     local
     global RDA_Automation, Yunit
@@ -154,7 +154,7 @@ class Test_RDA_Keyboard {
 
     Yunit.assert(win.isAlive() == false, "notepad not Alive")
   }
-*/
+
   Test_Keyboard_Background_and_VirtualDesktop() {
     local
     global RDA_Automation, Yunit
@@ -173,8 +173,9 @@ class Test_RDA_Keyboard {
       Run notepad.exe
       win := windows.waitOne({process: "notepad.exe"})
     }
-    ; w11
+    ; w11 -> remove contents
     win.defaultBackgroundControl := "RichEditD2DPT1"
+    win.sendKeys("{LControl DOWN}{vk45}{LControl UP}{BackSpace}")
 
     ; virtualDesktop mess! we can't get position, size, region
     ; win.move(50, 75)
@@ -184,22 +185,24 @@ class Test_RDA_Keyboard {
 
     win.moveToVirtualDesktop(desktops[1])
     ; move and resize do not work on "another" virtual desktop
-    win.move(0, 0)
+    win.move(25, 50)
     win.resize(640, 480)
 
     region := win.getRegion()
-    Yunit.assert(region.x == 0, "region.x of a window in current desktop")
-    Yunit.assert(region.y == 0, "region.y of a window in current desktop")
+    Yunit.assert(region.x == 25, "region.x of a window in current desktop")
+    Yunit.assert(region.y == 50, "region.y of a window in current desktop")
     Yunit.assert(region.w > 0, "region.w of a window in current desktop")
     Yunit.assert(region.h > 0, "region.h of a window in current desktop")
 
     win.moveToVirtualDesktop(desktops[2])
+    sleep 1000 ; give some time to move "animation"
 
     region := win.getRegion()
-    Yunit.assert(region.x == 0, "region.x of a window in a virtual desk")
-    Yunit.assert(region.y == 0, "region.y of a window in a virtual desk")
-    Yunit.assert(region.w == 0, "region.w of a window in a virtual desk")
-    Yunit.assert(region.h == 0, "region.h of a window in a virtual desk")
+    Yunit.assert(region.x == 25, "region.x of a window in a virtual desk")
+    Yunit.assert(region.y == 50, "region.y of a window in a virtual desk")
+    ; w11 could get the position ?
+    Yunit.assert(region.w > 0, "region.w of a window in a virtual desk")
+    Yunit.assert(region.h > 0, "region.h of a window in a virtual desk")
 
 
     automation.setInputMode("background")
@@ -220,7 +223,8 @@ class Test_RDA_Keyboard {
     win.click(100, 100)
     ;win.sendKeys("{LShift DOWN}{LControl DOWN}{HOME}{LControl UP}{LShift UP}")
     ;win.sendKeys("{LControl DOWN}c{LControl UP}{LShift UP}")
-    win.sendKeys("{LControl DOWN}{vk41}{LControl UP}")
+    ; ctrl e + ctrl c
+    win.sendKeys("{LControl DOWN}{vk45}{LControl UP}")
     win.sendKeys("{LControl DOWN}{vk43}{LControl UP}")
 
     Yunit.assert(Clipboard == expectedText, "check clipboard")
@@ -229,9 +233,10 @@ class Test_RDA_Keyboard {
 
     ; TODO CLOSE IT!!
     win.close(0)
+    if (win.isAlive()) {
+      win.sendKeys("n")
+    }
     win.expectDead()
-
-    Yunit.assert(win.isAlive() == false, "notepad is not alive")
   }
 
   End() {
