@@ -236,6 +236,9 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
     if (info.accessibleTextInterface) {
       ret.push("Text")
     }
+    if (info.accessibleTableInterface) {
+      ret.push("Table")
+    }
     if (InStr(s, "selectable")) {
       ret.push("SelectionItem")
     }
