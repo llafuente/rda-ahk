@@ -101,9 +101,7 @@ A small version of xPath is implemented with support for:
 
 ### filter/select
 
-* starts-with
-* ends-with
-* contains
+* Functions: starts-with, ends-with, contains
 * attributes: @VALUE, @DESCRIPTION, @TYPE, @NAME, @ID, @IDX, @INDEX
 * operators: =, !=, and, or
 
@@ -119,6 +117,17 @@ uiaEl.find("//Button[starts-with(@description, ""File"")]")
 ; find all elements that contains Ctrl
 uiaEl.find("//MenuItem[contains(@name, ""Ctrl"")]")
 ```
+
+*Need custom functions ?*
+
+Add a function following the replacement pattern
+
+* replace `-` for `_`
+* prepend: `RDA_XPath_fn_`
+
+example: `starts-width` -> `RDA_XPath_fn_starts_with`
+
+Your function should return a boolean and has proper parameter count, AHK won't check it.
 
 
 ## Patterns

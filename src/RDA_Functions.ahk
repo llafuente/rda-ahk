@@ -1782,12 +1782,13 @@ _RDA_xPath_Tokenize(xpath) {
 }
 
 ; single expr
-; expr +- expr
-; expr ( expr , )
+; expr = expr
+; expr != expr
+; expr ( [expr [, expr]*]? )
 _RDA_xPath_ParseSubExpr(stack, in_arguments) {
   local
 
-  RDA_Log_Debug(A_ThisFunc . "stack = " . RDA_JSON_stringify(stack, 0, 2))
+  RDA_Log_Debug(A_ThisFunc . " in_arguments(" . in_arguments . ") stack = " . RDA_JSON_stringify(stack, 0, 2))
 
   if (stack.length() == 0) {
     return 0
@@ -1795,6 +1796,7 @@ _RDA_xPath_ParseSubExpr(stack, in_arguments) {
 
   left := stack[1]
   stack.removeAt(1) ; remove identifier
+  RDA_Log_Debug(A_ThisFunc . " left = " . RDA_JSON_stringify(left, 0, 2))
 
   if (stack.length() == 0) {
     RDA_Log_Debug(A_ThisFunc . " leaf = " . RDA_JSON_stringify(left))
@@ -1810,6 +1812,7 @@ _RDA_xPath_ParseSubExpr(stack, in_arguments) {
 
   op := stack[1]
   stack.removeAt(1) ; remove operator
+  RDA_Log_Debug(A_ThisFunc . " operator = " . RDA_JSON_stringify(op, 0, 2))
 
 
   if (left.type == "operator") {
@@ -1827,6 +1830,7 @@ _RDA_xPath_ParseSubExpr(stack, in_arguments) {
 
 
   ; identifier operator is common for arithmetic expression and call expr
+  RDA_Log_Debug(A_ThisFunc . " op.operator = """ . op.operator . """")
   switch (op.operator) {
   case "(":
     ; we assume it's a call expression!
@@ -1880,13 +1884,24 @@ _RDA_xPath_ParseSubExpr(stack, in_arguments) {
     RDA_Assert(stack[1].type == "literal" || stack[1].type == "identifier", "Invalid leaf type, should be: identifier or literal")
     return left
   case "=":
+      ; really ??!!!
+      goto continue_inequality
   case "!=":
+continue_inequality:
+
     if (in_arguments) {
       throw RDA_Exception("operator: " . op.operator . " not allowed inside arguments list")
     }
+
+    RDA_Log_Debug(A_ThisFunc . " stack.length() = " . stack.length())
+    if (!stack.length()) {
+      throw RDA_Exception("Requested to parse and expression but not enought tokens found")
+    }
+
     ; we assume it's an arithmetic expression
-    right := stack[3]
+    right := stack[1]
     stack.RemoveAt(1)
+    RDA_Log_Debug(A_ThisFunc . " right = " . RDA_JSON_stringify(right, 0, 2))
 
     if (right.type == "operator") {
       RDA_Log_Error(A_ThisFunc . " invalid token found")
@@ -2039,10 +2054,16 @@ _RDA_xPath_Parse(tokens) {
         }
       }
       case "literal": {
+        lit := tokens[pos].literal
+        ; literal shall be number -> throw otherwise
+        if (!RegExMatch(lit, "^[0-9]+$")) {
+          throw RDA_Exception("Index literal shall be a number")
+        }
+
         ; number -> by position
         nodes.push({action: "xpathFilterMatch"
           , arguments: [{"identifier": "@Idx", "type": "identifier"}
-            , {"type": "literal", "literal": tokens[pos].literal}]})
+            , {"type": "literal", "literal": lit}]})
       }
       default: {
         RDA_Log_Error(A_ThisFunc . " Invalid token at " . pos)

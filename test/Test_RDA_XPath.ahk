@@ -1,3 +1,16 @@
+test_RDA_xPath_Parse_error(xpath, expected_message) {
+  global Yunit
+
+  lastException := 0
+  try {
+    RDA_xPath_Parse(xpath)
+  } catch e {
+    lastException := e
+  }
+  expected_message := expected_message . "`nparsing: " . xpath
+  Yunit.assert(lastException.message == expected_message, RDA_JSON_stringify(lastException.message) . " != " . RDA_JSON_stringify(expected_message))
+}
+
 class Test_RDA_XPath {
   Begin() {
   }
@@ -41,89 +54,17 @@ class Test_RDA_XPath {
     }
     Yunit.assert(lastException.message == "Unclosed string literal", "single Unclosed string literal")
 
-    lastException := 0
-    try {
-      RDA_xPath_Parse("x")
-    } catch e {
-      lastException := e
-    }
-    Yunit.assert(lastException.message == "Query shall start with slash or dot", "Query shall start with slash 1")
-
-    lastException := 0
-    try {
-      RDA_xPath_Parse("+")
-    } catch e {
-      lastException := e
-    }
-    Yunit.assert(lastException.message == "Query shall start with slash or dot", "Query shall start with slash 2")
-
-    lastException := 0
-    try {
-      RDA_xPath_Parse("//Button[@Name = 'pepe'")
-    } catch e {
-      lastException := e
-    }
-    Yunit.assert(lastException.message == "Unclosed brace found", "Unclosed brace found 1")
-
-    lastException := 0
-    try {
-      RDA_xPath_Parse("//Button[@Name = 'pepe']/Text[")
-    } catch e {
-      lastException := e
-    }
-    Yunit.assert(lastException.message == "Unclosed brace found", "Unclosed brace found 2")
-
-
-    lastException := 0
-    try {
-      RDA_xPath_Parse("/Button[@Name!=""Close"" and @idx =]")
-    } catch e {
-      lastException := e
-    }
-    Yunit.assert(lastException.message == "Requested to parse and expression but not enought tokens found", "parse error expr")
-
-    lastException := 0
-    try {
-      RDA_xPath_Parse("/Button[@Name!=""Close"" @idx]")
-    } catch e {
-      lastException := e
-    }
-    Yunit.assert(lastException.message == "Expected a logical operator", "parse error expr")
-
-    lastException := 0
-    try {
-      RDA_xPath_Parse("/Button[= 7 8]")
-    } catch e {
-      lastException := e
-    }
-    Yunit.assert(lastException.message == "Left hand side must be an identifier or literal", "parse error expr")
-
-    lastException := 0
-    try {
-      RDA_xPath_Parse("/Button[7 7 8]")
-    } catch e {
-      lastException := e
-    }
-    Yunit.assert(lastException.message == "After identifier or literal must be an operator", "parse error expr")
-
-    lastException := 0
-    try {
-      RDA_xPath_Parse("/Button[7 = =]")
-    } catch e {
-      lastException := e
-    }
-    Yunit.assert(lastException.message == "Right hand side must be an identifier or literal", "parse error expr")
-
-
-    lastException := 0
-    try {
-      RDA_xPath_Parse("[")
-    } catch e {
-      lastException := e
-    }
-    Yunit.assert(lastException.message == "Query shall start with slash or dot", "Query shall start with slash 3")
-
-
+    test_RDA_xPath_Parse_error("x", "Query shall start with slash or dot")
+    test_RDA_xPath_Parse_error("+", "Query shall start with slash or dot")
+    test_RDA_xPath_Parse_error("//Button[@Name = 'pepe'", "Unclosed brace found")
+    test_RDA_xPath_Parse_error("//Button[@Name = 'pepe']/Text[", "Unclosed brace found")
+    test_RDA_xPath_Parse_error("/""button""", "Index literal shall be a number")
+    test_RDA_xPath_Parse_error("/Button[@Name!=""Close"" and @idx =]", "Requested to parse and expression but not enought tokens found")
+    test_RDA_xPath_Parse_error("/Button[@Name!=""Close"" @idx]", "Expected a logical operator")
+    test_RDA_xPath_Parse_error("/Button[= 7 8]", "Left hand side must be an identifier or literal")
+    test_RDA_xPath_Parse_error("/Button[7 7 8]", "After identifier or literal must be an operator")
+    test_RDA_xPath_Parse_error("/Button[7 = =]", "Right hand side must be an identifier or literal")
+    test_RDA_xPath_Parse_error("[", "Query shall start with slash or dot")
 
     actions := RDA_xPath_Parse("//*")
     Yunit.assert(actions.length() == 1, "1 actions 1")
