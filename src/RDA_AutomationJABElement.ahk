@@ -1413,6 +1413,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
       <RDA_AutomationUIAElement>
   */
   setValue2(text) {
+    local
     ; alternative method - slow
     actions := this.getActions()
     if (!RDA_Array_IndexOf(actions, "paste-from-clipboard")) {
@@ -1441,6 +1442,7 @@ class RDA_AutomationJABElement extends RDA_AutomationBaseElement {
       string
   */
   getValue2() {
+    local
     actions := this.getActions()
     if (!RDA_Array_IndexOf(actions, "select-all")) {
       throw RDA_Exception("Could not find a compatible action: select-all")

@@ -78,6 +78,7 @@ class RDA_VirtualDesktops extends RDA_Base {
       number - count
   */
   count() {
+    local
     global VD
 
     index := 0+VD.getCount()
@@ -93,6 +94,7 @@ class RDA_VirtualDesktops extends RDA_Base {
       <RDA_VirtualDesktop>
   */
   getCurrent() {
+    local
     global VD, RDA_VirtualDesktop
 
     index := 0+VD.getCurrentDesktopNum()
@@ -203,6 +205,7 @@ class RDA_VirtualDesktops extends RDA_Base {
 
   ; Fn to check if a window handle is valid.
   _IsValidWindow(hwnd) {
+    local
     if (hwnd == 0)
         return false ; not a valid ID.
 

@@ -1641,10 +1641,12 @@ _RDA_Screenshot_SetClipboardData(hBitmap) {
 ;
 
 RDA_XPath_fn_starts_with(haystack, needle) {
+  local
   RDA_Log_Debug(A_ThisFunc . "(" . haystack . ", " . needle . ") <-- " . (InStr(haystack, needle) == 1))
   return InStr(haystack, needle) == 1
 }
 RDA_XPath_fn_ends_with(haystack, needle) {
+  local
   index := RDA_Str_LastIndexOf(haystack, needle)
   ends_index := StrLen(haystack) - StrLen(needle) + 1
   RDA_Log_Debug(A_ThisFunc . "(" . haystack . ", " . needle . ") <-- " . (ends_index == index))
@@ -1652,6 +1654,7 @@ RDA_XPath_fn_ends_with(haystack, needle) {
   return index == ends_index
 }
 RDA_XPath_fn_contains(haystack, needle) {
+  local
   RDA_Log_Debug(A_ThisFunc . "(" . haystack . ", " . needle . ")")
   return InStr(haystack, needle) > 0
 }
