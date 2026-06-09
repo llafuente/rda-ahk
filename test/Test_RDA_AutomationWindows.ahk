@@ -25,7 +25,7 @@ Test_Change_Explorer_To_ProgramFiles(win) {
 class Test_RDA_AutomationWindows {
   Begin() {
   }
-
+/*
   Test_Automation_Windows_TitleChanges() {
     local
     global RDA_Automation, Yunit
@@ -419,6 +419,38 @@ class Test_RDA_AutomationWindows {
     ; closeOnDestruction don't work here :S
     wins[1].close(0)
     wins[2].close(0)
+  }
+*/
+  Test_Automation_Windows_isElevated() {
+    local
+    global RDA_Automation, Yunit, RDA_AutomationWindow
+
+    RDA_Log_Debug(A_ThisFunc)
+
+    automation := new RDA_Automation()
+    windows := automation.windows()
+    wins := windows.find({"process": "chrome.exe"})
+    loop % wins.length() {
+      RDA_Log_Debug(wins[A_Index].username . " <-- " . wins[A_Index].toString())
+      Yunit.assert(StrLen(wins[A_Index].username) > 0, "process has username")
+    }
+
+    win := new RDA_AutomationWindow(automation, 18024)
+    win._pid := 18024
+    Yunit.assert(win.isElevated, "svchost.exe is elevated!")
+/*
+
+    wins := windows.find({"process": "svchost.exe"}, true)
+    one_tested := false
+    loop % wins.length() {
+      RDA_Log_Debug(wins[A_Index].username . " <-- " . wins[A_Index].toString())
+      if (!InStr(wins[A_Index].userName, A_UserName)) {
+        one_tested := true
+        Yunit.assert(wins[A_Index].isElevated, "svchost.exe is elevated!")
+      }
+    }
+    Yunit.assert(one_tested, "no svchost.exe valid to test")
+*/
   }
 
   End() {

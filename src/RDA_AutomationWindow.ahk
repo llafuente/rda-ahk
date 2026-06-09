@@ -119,7 +119,57 @@ class RDA_AutomationWindow extends RDA_Base {
       return this.automation.virtualDesktops().fromWindow(this.hwnd)
     }
   }
+  /*!
+    Property: isElevated
+      bool - Retrieves if current window is elevated because you may need to elevate too to automate
+  */
+  isElevated [] {
+    get {
+      local
+      if !(hProcess := DllCall("OpenProcess", "uint", 0x0400, "int", 0, "uint", this.pid, "ptr")) {
+        throw Exception("OpenProcess failed", -1)
+      }
+      if !(DllCall("advapi32\OpenProcessToken", "ptr", hProcess, "uint", 0x0008, "ptr*", hToken)) {
+        DllCall("CloseHandle", "ptr", hProcess)
+        throw Exception("OpenProcessToken failed", -1)
+      }
+      if !(DllCall("advapi32\GetTokenInformation", "ptr", hToken, "int", 20, "uint*", IsElevated, "uint", 4, "uint*", size)) {
+        DllCall("CloseHandle", "ptr", hToken)
+        DllCall("CloseHandle", "ptr", hProcess)
+        throw Exception("GetTokenInformation failed", -1)
+      }
 
+      DllCall("CloseHandle", "ptr", hToken)
+      DllCall("CloseHandle", "ptr", hProcess)
+      return IsElevated
+    }
+  }
+  /*!
+    Property: username
+      string - Retrieves domain\\username or username
+  */
+  username [] {
+    get {
+      local
+      ; VT_REF
+      VarSetCapacity(uname, 24, 0)
+      vref := ComObject(0x400C, &uname)
+
+      VarSetCapacity(udomain, 24, 0)
+      vref2 := ComObject(0x400C, &udomain)
+
+      ;for p in ComObjGet("winmgmts:").ExecQuery("Select * from Win32_Process WHERE processId=" . this.pid) {
+      for p in ComObjGet("winmgmts:\\.\root\cimv2").ExecQuery("Select * from Win32_Process WHERE processId=" . this.pid) {
+        p.GetOwner(vref, vref2)
+        uname := vref[]
+        udomain := vref2[]
+
+        return udomain ? udomain . "\\" . uname : uname
+      }
+
+      throw RDA_Exception("Could not determine username")
+    }
+  }
   /*!
     Property: defaultBackgroundControl
       string - Control parameter from ControlSend. See <RDA_KeyboardSendKeys>
