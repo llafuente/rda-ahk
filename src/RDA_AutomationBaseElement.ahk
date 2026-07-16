@@ -821,6 +821,63 @@ class RDA_AutomationBaseElement extends RDA_Base {
       sleep % delay
     }
   }
+  /*!
+    Method: getSibling
+      Retrieves sibling by index
+
+    Throws:
+      There is no next sibling
+
+    Returns:
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
+  */
+  getSibling(idx) {
+    local
+    RDA_Log_Debug(A_ThisFunc . "(" . idx . ")")
+
+    if (idx < 1) {
+      throw RDA_Exception("Invalid sibling index")
+    }
+
+    siblings := this.getParent().getChildren()
+    if (siblings.length() < idx) {
+      throw RDA_Exception("There is no next sibling")
+    }
+
+    return siblings[idx]
+  }
+  /*!
+    Method: getNextSibling
+      Retrieves the next sibling if possible
+
+    Throws:
+      There is no next sibling
+
+    Returns:
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
+  */
+  getNextSibling() {
+    local
+    RDA_Log_Debug(A_ThisFunc . "()")
+    return this.getSibling(this.getIndex() + 1)
+  }
+
+  /*!
+    Method: getPreviousSibling
+      Retrieves the next sibling if possible
+
+    Throws:
+      There is no next sibling
+
+    Returns:
+      <RDA_AutomationBaseElement> | <RDA_AutomationJABElement> | <RDA_AutomationUIAElement>
+  */
+  getPreviousSibling() {
+    local
+    RDA_Log_Debug(A_ThisFunc . "()")
+    return this.getSibling(this.getIndex() - 1)
+  }
+
   ;
   ; actions
   ;
