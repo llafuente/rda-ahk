@@ -449,6 +449,24 @@ body {
  <div class="CBody"><p>Waits to appear n elements that match given query</p><div class="CHeading">Remarks</div><p>It will honor <a href="#RDA_Automation.limits" target="_top"   >RDA_Automation.limits</a></p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">query</td><td class="CDLDefinition"><p>string - xpath-ish</p></td></tr><tr><td class="CDLEntry">n</td><td class="CDLDefinition"><p>number - Expected element count</p></td></tr><tr><td class="CDLEntry">timeout</td><td class="CDLDefinition"><p>number - timeout, in miliseconds</p></td></tr><tr><td class="CDLEntry">delay</td><td class="CDLDefinition"><p>number - delay, in miliseconds</p></td></tr></table><div class="CHeading">Throws</div><p>Timeout reached at ?: Element not found</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationBaseElement" target="_top"   >RDA_AutomationBaseElement</a> | <a href="#RDA_AutomationJABElement" target="_top"   >RDA_AutomationJABElement</a> | <a href="#RDA_AutomationUIAElement" target="_top"   >RDA_AutomationUIAElement</a></p></div>
 </div>
 
+<a name="RDA_AutomationBaseElement.getSibling"></a><div class="CTopic TFunction LAutoHotKey">
+ <div class="CTitle">getSibling</div>
+ <div  class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">getSibling(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">idx</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
+ <div class="CBody"><p>Retrieves sibling by index</p><div class="CHeading">Throws</div><p>There is no next sibling</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationBaseElement" target="_top"   >RDA_AutomationBaseElement</a> | <a href="#RDA_AutomationJABElement" target="_top"   >RDA_AutomationJABElement</a> | <a href="#RDA_AutomationUIAElement" target="_top"   >RDA_AutomationUIAElement</a></p></div>
+</div>
+
+<a name="RDA_AutomationBaseElement.getNextSibling"></a><div class="CTopic TFunction LAutoHotKey">
+ <div class="CTitle">getNextSibling</div>
+ <div  class="NDPrototype"><div class="PSection PPlainSection">getNextSibling()</div></div>
+ <div class="CBody"><p>Retrieves the next sibling if possible</p><div class="CHeading">Throws</div><p>There is no next sibling</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationBaseElement" target="_top"   >RDA_AutomationBaseElement</a> | <a href="#RDA_AutomationJABElement" target="_top"   >RDA_AutomationJABElement</a> | <a href="#RDA_AutomationUIAElement" target="_top"   >RDA_AutomationUIAElement</a></p></div>
+</div>
+
+<a name="RDA_AutomationBaseElement.getPreviousSibling"></a><div class="CTopic TFunction LAutoHotKey">
+ <div class="CTitle">getPreviousSibling</div>
+ <div  class="NDPrototype"><div class="PSection PPlainSection">getPreviousSibling()</div></div>
+ <div class="CBody"><p>Retrieves the next sibling if possible</p><div class="CHeading">Throws</div><p>There is no next sibling</p><div class="CHeading">Returns</div><p><a href="#RDA_AutomationBaseElement" target="_top"   >RDA_AutomationBaseElement</a> | <a href="#RDA_AutomationJABElement" target="_top"   >RDA_AutomationJABElement</a> | <a href="#RDA_AutomationUIAElement" target="_top"   >RDA_AutomationUIAElement</a></p></div>
+</div>
+
 <a name="RDA_AutomationBaseElement.getRoot"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">getRoot</div>
  <div  class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/2/2">getRoot(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">max</div><div class="PDefaultValueSeparator" data-WideGridArea="1/3/2/4" data-NarrowGridArea="2/2/3/3" style="grid-area:1/3/2/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="1/4/2/5" data-NarrowGridArea="2/3/3/4" style="grid-area:1/4/2/5"><span class="SHNumber">250</span></div><div class="PAfterParameters" data-WideGridArea="1/5/2/6" data-NarrowGridArea="3/1/4/5" style="grid-area:1/5/2/6">)</div></div></div></div>
@@ -657,6 +675,11 @@ body {
 <a name="RDA_AutomationJABAccessibleContextInfo"></a><div class="CTopic TClass LAutoHotKey first">
  <div class="CTitle">RDA_AutomationJABAccessibleContextInfo</div>
  <div class="CBody"><p>Java Access Bridge element info</p></div>
+</div>
+
+<a name="RDA_AutomationJABAccessibleContextInfo.window"></a><div class="CTopic TProperty LAutoHotKey">
+ <div class="CTitle">window</div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a href="#RDA_AutomationWindow" target="_top"   >RDA_AutomationWindow</a></td><td class="CDLDefinition"><p>window instance</p></td></tr></table></div>
 </div>
 
 <a name="RDA_AutomationJABAccessibleContextInfo.name"></a><div class="CTopic TProperty LAutoHotKey">
@@ -2005,6 +2028,16 @@ body {
  <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry"><a href="#RDA_VirtualDesktop" target="_top"   >RDA_VirtualDesktop</a></td><td class="CDLDefinition"><p>Retrieve current virtual desktop</p></td></tr></table></div>
 </div>
 
+<a name="RDA_AutomationWindow.isElevated"></a><div class="CTopic TProperty LAutoHotKey">
+ <div class="CTitle">isElevated</div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">bool</td><td class="CDLDefinition"><p>Retrieves if current window is elevated because you may need to elevate too to automate</p></td></tr></table></div>
+</div>
+
+<a name="RDA_AutomationWindow.username"></a><div class="CTopic TProperty LAutoHotKey">
+ <div class="CTitle">username</div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">string</td><td class="CDLDefinition"><p>Retrieves domain\\username or username</p></td></tr></table></div>
+</div>
+
 <a name="RDA_AutomationWindow.defaultBackgroundControl"></a><div class="CTopic TProperty LAutoHotKey">
  <div class="CTitle">defaultBackgroundControl</div>
  <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">string</td><td class="CDLDefinition"><p>Control parameter from ControlSend. See <a href="#RDA_KeyboardSendKeys" target="_top"   >RDA_KeyboardSendKeys</a></p></td></tr></table><div class="CHeading">Remarks</div><p>Only apply when <a href="#RDA_Automation.inputMode" target="_top"   >RDA_Automation.inputMode</a> is background</p></div>
@@ -2139,6 +2172,12 @@ body {
  <div class="CTitle">getRegion</div>
  <div  class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/5/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/5/2">getRegion(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">x</div><div class="PDefaultValueSeparator" data-WideGridArea="1/3/2/4" data-NarrowGridArea="2/2/3/3" style="grid-area:1/3/2/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="1/4/2/5" data-NarrowGridArea="2/3/3/4" style="grid-area:1/4/2/5"><span class="SHNumber">0</span>,</div><div class="PName InFirstParameterColumn" data-WideGridArea="2/2/3/3" data-NarrowGridArea="3/1/4/2" style="grid-area:2/2/3/3">y</div><div class="PDefaultValueSeparator" data-WideGridArea="2/3/3/4" data-NarrowGridArea="3/2/4/3" style="grid-area:2/3/3/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="2/4/3/5" data-NarrowGridArea="3/3/4/4" style="grid-area:2/4/3/5"><span class="SHNumber">0</span>,</div><div class="PName InFirstParameterColumn" data-WideGridArea="3/2/4/3" data-NarrowGridArea="4/1/5/2" style="grid-area:3/2/4/3">w</div><div class="PDefaultValueSeparator" data-WideGridArea="3/3/4/4" data-NarrowGridArea="4/2/5/3" style="grid-area:3/3/4/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="3/4/4/5" data-NarrowGridArea="4/3/5/4" style="grid-area:3/4/4/5"><span class="SHNumber">0</span>,</div><div class="PName InFirstParameterColumn" data-WideGridArea="4/2/5/3" data-NarrowGridArea="5/1/6/2" style="grid-area:4/2/5/3">h</div><div class="PDefaultValueSeparator" data-WideGridArea="4/3/5/4" data-NarrowGridArea="5/2/6/3" style="grid-area:4/3/5/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="4/4/5/5" data-NarrowGridArea="5/3/6/4" style="grid-area:4/4/5/5"><span class="SHNumber">0</span></div><div class="PAfterParameters NegativeLeftSpaceOnWide" data-WideGridArea="4/5/5/6" data-NarrowGridArea="6/1/7/5" style="grid-area:4/5/5/6">)</div></div></div></div>
  <div class="CBody"><p>Retrieves a piece/entire of the current window region.</p><p>By default get the region of the window</p><div class="CHeading">Remarks</div><p>Region get out of sync if the windows is moved.</p><div class="CHeading">Remarks</div><p>It can create a region outside current window bounds.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">x</td><td class="CDLDefinition"><p>number - x amount</p></td></tr><tr><td class="CDLEntry">y</td><td class="CDLDefinition"><p>number - y amount</p></td></tr><tr><td class="CDLEntry">w</td><td class="CDLDefinition"><p>number - width (default means same as window)</p></td></tr><tr><td class="CDLEntry">h</td><td class="CDLDefinition"><p>number - height (default means same as window)</p></td></tr></table><div class="CHeading">Returns</div><p><a href="#RDA_ScreenRegion" target="_top"   >RDA_ScreenRegion</a></p></div>
+</div>
+
+<a name="RDA_AutomationWindow.getWindowRegion"></a><div class="CTopic TFunction LAutoHotKey">
+ <div class="CTitle">getWindowRegion</div>
+ <div  class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/5/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/5/2">getWindowRegion(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">x</div><div class="PDefaultValueSeparator" data-WideGridArea="1/3/2/4" data-NarrowGridArea="2/2/3/3" style="grid-area:1/3/2/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="1/4/2/5" data-NarrowGridArea="2/3/3/4" style="grid-area:1/4/2/5"><span class="SHNumber">0</span>,</div><div class="PName InFirstParameterColumn" data-WideGridArea="2/2/3/3" data-NarrowGridArea="3/1/4/2" style="grid-area:2/2/3/3">y</div><div class="PDefaultValueSeparator" data-WideGridArea="2/3/3/4" data-NarrowGridArea="3/2/4/3" style="grid-area:2/3/3/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="2/4/3/5" data-NarrowGridArea="3/3/4/4" style="grid-area:2/4/3/5"><span class="SHNumber">0</span>,</div><div class="PName InFirstParameterColumn" data-WideGridArea="3/2/4/3" data-NarrowGridArea="4/1/5/2" style="grid-area:3/2/4/3">w</div><div class="PDefaultValueSeparator" data-WideGridArea="3/3/4/4" data-NarrowGridArea="4/2/5/3" style="grid-area:3/3/4/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="3/4/4/5" data-NarrowGridArea="4/3/5/4" style="grid-area:3/4/4/5"><span class="SHNumber">0</span>,</div><div class="PName InFirstParameterColumn" data-WideGridArea="4/2/5/3" data-NarrowGridArea="5/1/6/2" style="grid-area:4/2/5/3">h</div><div class="PDefaultValueSeparator" data-WideGridArea="4/3/5/4" data-NarrowGridArea="5/2/6/3" style="grid-area:4/3/5/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="4/4/5/5" data-NarrowGridArea="5/3/6/4" style="grid-area:4/4/5/5"><span class="SHNumber">0</span></div><div class="PAfterParameters NegativeLeftSpaceOnWide" data-WideGridArea="4/5/5/6" data-NarrowGridArea="6/1/7/5" style="grid-area:4/5/5/6">)</div></div></div></div>
+ <div class="CBody"><p>Retrieves a piece/entire of the current window region.</p><p>By default get the region of the window</p><div class="CHeading">Remarks</div><p>Region get out of sync if the windows is moved.</p><div class="CHeading">Remarks</div><p>It can create a region outside current window bounds.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">x</td><td class="CDLDefinition"><p>number - x amount</p></td></tr><tr><td class="CDLEntry">y</td><td class="CDLDefinition"><p>number - y amount</p></td></tr><tr><td class="CDLEntry">w</td><td class="CDLDefinition"><p>number - width (default means same as window)</p></td></tr><tr><td class="CDLEntry">h</td><td class="CDLDefinition"><p>number - height (default means same as window)</p></td></tr></table><div class="CHeading">Returns</div><p><a href="#RDA_WindowRegion" target="_top"   >RDA_WindowRegion</a></p></div>
 </div>
 
 <a name="RDA_AutomationWindow.click"></a><div class="CTopic TFunction LAutoHotKey">
@@ -2618,6 +2657,12 @@ body {
  <div class="CBody"><p>Returns if given obj is the type of cls</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">obj</td><td class="CDLDefinition"><p>any - instance of an object</p></td></tr><tr><td class="CDLEntry">cls</td><td class="CDLDefinition"><p>any - The class</p></td></tr></table><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">boolean</td><td class="CDLDefinition"><p>Found?</p></td></tr></table></div>
 </div>
 
+<a name="RDA_Str_LastIndexOf"></a><div class="CTopic TFunction LAutoHotKey">
+ <div class="CTitle">RDA_Str_LastIndexOf</div>
+ <div  class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/3/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/3/2">RDA_Str_LastIndexOf(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">Haystack,</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="2/2/3/3" data-NarrowGridArea="3/1/4/2" style="grid-area:2/2/3/3">Needle</div><div class="PAfterParameters NegativeLeftSpaceOnWide" data-WideGridArea="2/3/3/4" data-NarrowGridArea="4/1/5/3" style="grid-area:2/3/3/4">)</div></div></div></div>
+ <div class="CBody"><p>Returns the last index of the needle in the haystack</p><div class="CHeading">Example</div><pre class="CCode">RDA_Assert(RDA_Str_LastIndexOf(<span class="SHString">&quot;xxx&quot;</span>, <span class="SHString">&quot;x&quot;</span>) == <span class="SHNumber">3</span>, <span class="SHString">&quot;RDA_Str_LastIndexOf 1 failed&quot;</span>)<br />RDA_Assert(RDA_Str_LastIndexOf(<span class="SHString">&quot;yyy&quot;</span>, <span class="SHString">&quot;x&quot;</span>) == <span class="SHNumber">0</span>, <span class="SHString">&quot;RDA_Str_LastIndexOf 2 failed&quot;</span>)</pre><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">Haystack</td><td class="CDLDefinition"><p>string - Haystack</p></td></tr><tr><td class="CDLEntry">Needle</td><td class="CDLDefinition"><p>string - Needle</p></td></tr></table><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">number</td><td class="CDLDefinition"><p>1 index if found, 0 otherwise</p></td></tr></table></div>
+</div>
+
 <a name="RDA_Array_IndexOf"></a><div class="CTopic TFunction LAutoHotKey">
  <div class="CTitle">RDA_Array_IndexOf</div>
  <div  class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/4/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/4/2">RDA_Array_IndexOf(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">arr,</div><div class="PName InFirstParameterColumn" data-WideGridArea="2/2/3/3" data-NarrowGridArea="3/1/4/2" style="grid-area:2/2/3/3">avalue,</div><div class="PName InFirstParameterColumn" data-WideGridArea="3/2/4/3" data-NarrowGridArea="4/1/5/2" style="grid-area:3/2/4/3">fromIndex</div><div class="PDefaultValueSeparator" data-WideGridArea="3/3/4/4" data-NarrowGridArea="4/2/5/3" style="grid-area:3/3/4/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="3/4/4/5" data-NarrowGridArea="4/3/5/4" style="grid-area:3/4/4/5"><span class="SHNumber">1</span></div><div class="PAfterParameters" data-WideGridArea="3/5/4/6" data-NarrowGridArea="5/1/6/5" style="grid-area:3/5/4/6">)</div></div></div></div>
@@ -2929,7 +2974,12 @@ body {
 
 <a name="RDA_ImageSearchResult"></a><div class="CTopic TClass LAutoHotKey first">
  <div class="CTitle">RDA_ImageSearchResult</div>
- <div class="CBody"><p>Automation a window</p></div>
+ <div class="CBody"><p>Automation a window</p><p>Extends: RDA_ScreenRegion</p></div>
+</div>
+
+<a name="RDA_ImageSearchResult.image"></a><div class="CTopic TProperty LAutoHotKey">
+ <div class="CTitle">image</div>
+ <div class="CBody"><table class="CDefinitionList"><tr><td class="CDLEntry">string</td><td class="CDLDefinition"><p>image path</p></td></tr></table></div>
 </div>
 
 <a name="RDA_ImageSearchResult.RDA_AutomationWindow"></a><div class="CTopic TFunction LAutoHotKey last">
@@ -3462,9 +3512,16 @@ body {
  <div class="CBody"><p>Expands region outwards</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">value</td><td class="CDLDefinition"><p>number - value</p></td></tr></table><div class="CHeading">Returns</div><p><a href="#RDA_ScreenRegion" target="_top"   >RDA_ScreenRegion</a></p></div>
 </div>
 
-<a name="expandOut(2)"></a><div class="CTopic TFunction LAutoHotKey">
- <div class="CTitle">expandOut</div>
- <div class="CBody"><p>checks if this region is inside the given one</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">value</td><td class="CDLDefinition"><p>number - value</p></td></tr></table><div class="CHeading">Returns</div><p><a href="#RDA_ScreenRegion" target="_top"   >RDA_ScreenRegion</a></p></div>
+<a name="isInside"></a><div class="CTopic TFunction LAutoHotKey">
+ <div class="CTitle">isInside</div>
+ <div  class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">isInside(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">region</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
+ <div class="CBody"><p>checks if this region is inside the given one</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">region</td><td class="CDLDefinition"><p><a href="#RDA_WindowRegion" target="_top"   >RDA_WindowRegion</a> | &lt;RDA_ScreenWindow&gt; - value</p></td></tr></table><div class="CHeading">Returns</div><p><a href="#RDA_ScreenRegion" target="_top"   >RDA_ScreenRegion</a></p></div>
+</div>
+
+<a name="intersection"></a><div class="CTopic TFunction LAutoHotKey">
+ <div class="CTitle">intersection</div>
+ <div  class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="3" data-NarrowColumnCount="2"><div class="PBeforeParameters" data-WideGridArea="1/1/2/2" data-NarrowGridArea="1/1/2/3" style="grid-area:1/1/2/2">intersection(</div><div class="PName InFirstParameterColumn InLastParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">region</div><div class="PAfterParameters" data-WideGridArea="1/3/2/4" data-NarrowGridArea="3/1/4/3" style="grid-area:1/3/2/4">)</div></div></div></div>
+ <div class="CBody"><p>Calculates the intersection of this regoion and given region</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">region</td><td class="CDLDefinition"><p><a href="#RDA_WindowRegion" target="_top"   >RDA_WindowRegion</a> | &lt;RDA_ScreenWindow&gt; - value</p></td></tr></table><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry"><a href="#RDA_ScreenRegion" target="_top"   >RDA_ScreenRegion</a></td><td class="CDLDefinition"><p>The result of intersection</p></td></tr></table></div>
 </div>
 
 <a name="searchColor"></a><div class="CTopic TFunction LAutoHotKey">
@@ -3912,6 +3969,12 @@ body {
  <div class="CTitle">toScreen</div>
  <div  class="NDPrototype"><div class="PSection PPlainSection">toScreen()</div></div>
  <div class="CBody"><p>Changes current relative position to screen position</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">win</td><td class="CDLDefinition"><p>RDA_Window -window</p></td></tr></table><div class="CHeading">Example</div><pre class="CCode">automation := RDA_Automation()<br />windows := automation.windows()<br />win := windows.findOne({<span class="SHString">&quot;process&quot;</span>: <span class="SHString">&quot;xxx.exe&quot;</span>})<br />winPos := <span class="SHKeyword">new</span> RDA_WindowRegion(automation, <span class="SHNumber">50</span>, <span class="SHNumber">50</span>).relativeTo(win)<br />screenPos := winPos.toScreen()</pre><div class="CHeading">Returns</div><p><a href="#RDA_ScreenRegion" target="_top"   >RDA_ScreenRegion</a></p></div>
+</div>
+
+<a name="RDA_WindowRegion.highlight"></a><div class="CTopic TFunction LAutoHotKey">
+ <div class="CTitle">highlight</div>
+ <div  class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><div class="PParameterCells" data-WideColumnCount="5" data-NarrowColumnCount="4"><div class="PBeforeParameters" data-WideGridArea="1/1/4/2" data-NarrowGridArea="1/1/2/5" style="grid-area:1/1/4/2">highlight(</div><div class="PName InFirstParameterColumn" data-WideGridArea="1/2/2/3" data-NarrowGridArea="2/1/3/2" style="grid-area:1/2/2/3">displayTime</div><div class="PDefaultValueSeparator" data-WideGridArea="1/3/2/4" data-NarrowGridArea="2/2/3/3" style="grid-area:1/3/2/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="1/4/2/5" data-NarrowGridArea="2/3/3/4" style="grid-area:1/4/2/5"><span class="SHNumber">-1</span>,</div><div class="PName InFirstParameterColumn" data-WideGridArea="2/2/3/3" data-NarrowGridArea="3/1/4/2" style="grid-area:2/2/3/3">color</div><div class="PDefaultValueSeparator" data-WideGridArea="2/3/3/4" data-NarrowGridArea="3/2/4/3" style="grid-area:2/3/3/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="2/4/3/5" data-NarrowGridArea="3/3/4/4" style="grid-area:2/4/3/5"><span class="SHString">&quot;Red&quot;</span>,</div><div class="PName InFirstParameterColumn" data-WideGridArea="3/2/4/3" data-NarrowGridArea="4/1/5/2" style="grid-area:3/2/4/3">d</div><div class="PDefaultValueSeparator" data-WideGridArea="3/3/4/4" data-NarrowGridArea="4/2/5/3" style="grid-area:3/3/4/4">&nbsp:=&nbsp;</div><div class="PDefaultValue InLastParameterColumn" data-WideGridArea="3/4/4/5" data-NarrowGridArea="4/3/5/4" style="grid-area:3/4/4/5"><span class="SHNumber">4</span></div><div class="PAfterParameters NegativeLeftSpaceOnWide" data-WideGridArea="3/5/4/6" data-NarrowGridArea="5/1/6/5" style="grid-area:3/5/4/6">)</div></div></div></div>
+ <div class="CBody"><p>Highlights current region</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">displayTime</td><td class="CDLDefinition"><p>number - miliseconds</p></td></tr><tr><td class="CDLEntry">color</td><td class="CDLDefinition"><p>string - color</p></td></tr><tr><td class="CDLEntry">d</td><td class="CDLDefinition"><p>number - outline width</p></td></tr></table><div class="CHeading">Returns</div><p><a href="#RDA_WindowRegion" target="_top"   >RDA_WindowRegion</a></p></div>
 </div>
 
 <a name="RDA_WindowRegion.getCenter"></a><div class="CTopic TFunction LAutoHotKey">
