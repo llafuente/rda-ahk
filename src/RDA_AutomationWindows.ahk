@@ -277,6 +277,10 @@ class RDA_AutomationWindows extends RDA_Base {
     timeout := timeout == -1 ? RDA_Automation.TIMEOUT : timeout
     delay := delay == -1 ? RDA_Automation.DELAY : delay
 
+    if (!searchObjects.length()) {
+      throw RDA_Exception("searchObjects is empty")
+    }
+
     RDA_Log_Debug(A_ThisFunc . "(" . RDA_JSON_stringify(searchObjects) . ", hidden? " . (hidden ? "yes" : "no") . ", " . timeout . ", " . delay . ")")
 
     startTime := A_TickCount
