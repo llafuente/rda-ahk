@@ -27,7 +27,7 @@ class RDA_ImageSearchResult extends RDA_ScreenRegion {
     this.image := imagePath
     cachedImg := RDA_Image_cache(imagePath)
     this.origin := new RDA_ScreenPosition(automation, x, y)
-    this.rect := new RDA_Rectangle(automation, cachedImg.width, cachedImg.heght)
+    this.rect := new RDA_Rectangle(automation, cachedImg.width, cachedImg.height)
   }
 
   toString() {

@@ -286,7 +286,7 @@ class RDA_AutomationWindows extends RDA_Base {
     startTime := A_TickCount
 
     loop {
-      wins := this.get(hidden)
+      wins := this._get(hidden)
 
       loop % wins.Length() {
         win := wins[A_Index]
